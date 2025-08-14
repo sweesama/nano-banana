@@ -1,247 +1,198 @@
-# nano-banana — 新词站点规划与落地执行文档
+# Nano Banana — AI Image Editing Benchmarks & Quickstart
 
-English version follows Chinese.
+> Free AI image editing benchmarks, prompt recipes, and quickstart guides for the Nano Banana model. Compare with FLUX Kontext and other models using reproducible test cases.
 
-[English](#english) | [中文](#中文)
-
----
-
-## 中文
-
-### 1) 网站定位
-- __主题__：围绕新涌现的图像编辑/重绘模型“nano-banana”（参考截图与业内传播），做“最快信息聚合 + 可验证对比 + 新手入门”的轻量内容站。
-- __目标人群__：AI 绘画从业者、设计师、AIGC 爱好者、Prompt 工程师、产品/媒体从业者。
-- __价值主张__：
-  - 第一时间聚合「模型动态、使用教程、Prompt 范式、效果对比、最佳实践」。
-  - 提供可复现的对比基准（基于固定测试图与固定参数），帮助用户判断“是否值得切换/尝试”。
-  - 提供面向新手的“5 分钟上手路线”。
-
-### 2) 域名与品牌
-- 已注册：`nano-banana.live`、`nano-banana.online`。
-- 建议：
-  - 主站使用 `nano-banana.live`（强调“活跃/最新”）。
-  - 备用/镜像/实验站使用 `nano-banana.online`。
-  - 统一品牌名：Nano Banana（记法：NB）。
-
-### 3) 网站信息架构（IA）
-- __首页 `/`__：模型简介 + 最新动态 + 对比卡片预览 + 新手入口。
-- __动态 `/news/[slug]`__：跟踪模型版本迭代、生态动向、兼容性、UI 插件等。
-- __指南 `/guides/[slug]`__：安装/接入、参数解释、工作流（本地/云端/Colab/UI 工具）。
-- __对比 `/benchmarks`__：
-  - `/benchmarks` 列表页：不同任务场景的基准集合（重绘、人像修复、场景替换、风格迁移等）。
-  - `/benchmarks/[task]` 详情：固定输入、固定参数、可复现流程、下载链接、原图/结果图对比（lightbox）。
-- __Prompt 库 `/prompts`__：
-  - `/prompts` 列表：主题分类、可复制、含参数注释。
-  - `/prompts/[slug]` 详情：示例图、适用场景、注意事项、可视化参数块。
-- __画廊 `/gallery`__：社区精选与官方示例，支持标签与来源标注（版权声明/署名）。
-- __工具 `/tools`__：启动脚本、Colab、ComfyUI/Forge 节点、参数计算器等链接聚合。
-- __常见问题 `/faq`__：兼容性、显存需求、出图失败排查、伦理与版权提醒。
-- __关于 `/about`__：站点说明、免责声明、联系/投稿、RSS。
-
-### 4) 内容模型（建议用 MDX 管理）
-- `News`：`title`、`excerpt`、`date`、`tags`、`cover`、`sourceUrl`。
-- `Guide`：`title`、`readingTime`、`steps[]`、`requirements`（GPU/VRAM/平台）、`downloads[]`。
-- `Benchmark`：`task`、`inputs[]`、`params`、`pipeline`、`results[]`（含对照：原图、NB、其它模型） 、`replicateSteps`。
-- `Prompt`：`title`、`prompt`、`negativePrompt`、`params`、`samples[]`、`notes`、`license`。
-- `GalleryItem`：`title`、`author`、`source`、`tags`、`image`、`promptRef`、`license`。
-
-### 5) SEO 与分发策略
-- __URL 规范__：小写、短路径，中文内容 slug 使用拼音或英文；如 `/guides/quickstart`。
-- __元信息模板__：`<title>`、`description`、OG/Twitter、canonical、JSON-LD（Article/Gallery）。
-- __多语言__：先中英双语，`/en/...` 作为英文路径；`hreflang` 互链。
-- __站点地图/Robots__：`/sitemap.xml` 每日更新；`/robots.txt` 允许抓取，基准中临时页可 `noindex`。
-- __结构化数据__：文章用 `Article`，对比页可用 `Dataset`/`CreativeWork` 扩展。
-- __RSS/Atom__：`/rss.xml` 输出 News 与 Guides。
-
-#### SEO 目标关键词（English-first）
-- Primary：`nano-banana`、`nano banana`、`nanobanana`、`nano-banana image editing model`
-- Secondary：`text-guided image editing`、`image-to-image editing`、`local edits`、`inpainting`、`outpainting`、`background replacement`、`face restoration`、`character consistency`、`style transfer`、`reproducible benchmarks`
-- Context/Compare：`LMArena`、`FLUX Kontext`、`FLUX Kontext vs nano-banana`
-- Workflow：`ComfyUI workflow`、`Colab pipeline`、`prompt engineering for image editing`
-
-### 6) 技术栈与部署
-- __静态优先（Vercel）__：Next.js 15 App Router + MDX，采用 SSG/ISR；无需自建数据库。
-- __图片与对比__：`next/image` + 轻量 lightbox，对比组件支持 A/B 滑块。
-- __表单/订阅__：Buttondown/ConvertKit（无后端）或 Cloudflare Turnstile + 简易 API Route。
-- __分析__：Vercel Analytics 或 Umami（自部署可选）。
-- __性能__：预渲染、图片优化、懒加载、`dynamicParams=false` 的批量静态化。
-
-### 7) 初始交付清单（MVP ≤ 2 天）
-- __页面__：`/`、`/benchmarks`、`/benchmarks/portrait-editing`（示例基准）、`/guides/quickstart`、`/prompts`、`/about`、`/faq`。
-- __组件__：对比滑块、参数卡片、复制按钮、Tag 过滤、面包屑。
-- __内容__：
-  - 1 篇 News：宣布/解析“nano-banana”模型与竞品关系。
-  - 1 篇 Guide：5 分钟快速上手（含 Colab/本地两条路线）。
-  - 1 个 Benchmark：固定人像编辑案例三方对比（NB vs FLUX Kontext 等）。
-  - 5 条 Prompt：常见场景可直接复制。
-- __SEO__：站点级模板、sitemap、robots、OG 资源。
-
-### 8) 路由/URL 设计
-- `/` 首页
-- `/news/[slug]`
-- `/guides/[slug]`
-- `/benchmarks`
-- `/benchmarks/[task]`
-- `/prompts`
-- `/prompts/[slug]`
-- `/gallery`
-- `/tools`
-- `/faq`
-- `/about`
-- `/en/...` 英文镜像路径
-
-### 9) 内容与法务
-- __免责声明__：
-  - 站点仅为信息与教育用途；示例图像版权归原作者/来源所有；请遵循对应许可协议。
-  - 对比结果受参数、硬件、版本影响；请以复现实验为准。
-- __署名与来源__：所有示例图/基准需标注来源与许可。
-
-### 10) 运营与增长
-- __捕捉趋势__：监控官方/社区渠道，设立“快讯模板”，30 分钟内完成发布。
-- __邮件订阅__：每周简报；发布时触发 RSS + 邮件自动化。
-- __社媒卡片__：统一 OG 图模板，自动化生成（必要时使用 `og.svg` + 动态标题）。
-
-### 11) 开发里程碑
-- __M1：信息骨架__（本仓库）
-  - 初始化 Next.js + MDX 项目结构与基础 SEO。
-  - 完成首页/基准页/指南页模板与示例内容。
-- __M2：对比与画廊__
-  - A/B 滑块、灯箱、标签筛选。
-- __M3：多语言与订阅__
-  - `/en` 版本、RSS、订阅对接。
-
-### 12) 快速开始（待项目初始化后更新）
-- `npm i`、`npm run dev`、`npm run build`、`npm run start`
-- 环境变量：`NEXT_PUBLIC_SITE_URL=https://nano-banana.live`
-
- ### 13) 静态 MVP（已创建）
- 为了“最快上线”，已在 `web/` 目录生成纯静态版本（英文默认，Google/科技风格），包含：
- - 页面：`/`、`/benchmarks/`、`/benchmarks/portrait-editing.html`、`/guides/quickstart.html`、`/prompts/`、`/faq.html`、`/about.html`、`/404.html`
- - 资源与 SEO：`/styles.css`、`/og.svg`、`/robots.txt`、`/sitemap.xml`、全页 canonical/OG/Twitter meta
-
- 部署到 Vercel（最简）：
- 1. 新建 Git 仓库并推送本项目。
- 2. Vercel -> New Project -> Import -> 选择该仓库。
- 3. 在 “Root Directory” 选择 `web/` 作为项目根，Framework 选 “Other”。
- 4. Build Command 留空，Output Directory 留空（静态直出）。
- 5. 部署完成后，在 Vercel 的 “Domains” 绑定 `nano-banana.live` 与 `nano-banana.online`，将你的域名 DNS 的 A/ALIAS/CNAME 指向 Vercel 提示的记录。
-
- 上线后可立刻被抓取；随后可无缝迁移到 Next.js + MDX（保持相同 URL 结构）。
-
- #### 域名与 301 重定向策略（已配置）
- - 目标：避免“重复内容”（同一页面多个域名/子域名可访问）影响 SEO。统一收敛到唯一规范域名。
- - 规范域名：`https://www.nano-banana.live`（全站 canonical 与站点地图均指向此域名）。
- - 其他域名与子域名（含 `nano-banana.live` 裸域、`nano-banana.online`、`www.nano-banana.online`）均做 301 永久重定向到 `www.nano-banana.live`，且保留路径与查询参数。
- - 配置文件：项目根的 `vercel.json`（已创建）。
-   ```json
-   {
-     "redirects": [
-       {"source": "/(.*)", "has": [{"type":"host","value":"nano-banana.live"}], "destination": "https://www.nano-banana.live/$1", "permanent": true},
-       {"source": "/(.*)", "has": [{"type":"host","value":"nano-banana.online"}], "destination": "https://www.nano-banana.live/$1", "permanent": true},
-       {"source": "/(.*)", "has": [{"type":"host","value":"www.nano-banana.online"}], "destination": "https://www.nano-banana.live/$1", "permanent": true}
-     ]
-   }
-   ```
-  - 效果：
-    - 用户访问 `http(s)://nano-banana.live/xxx` 或 `http(s)://(www.)nano-banana.online/xxx`，都会 301 到 `https://www.nano-banana.live/xxx`。
-    - 搜索引擎索引集中到 `www.nano-banana.live`，权重不会被多个域名拆分。
+🌐 **Live Site**: [nano-banana.live](https://www.nano-banana.live) | [English](#english) | [中文](#中文)
 
 ---
 
 ## English
 
-### Changelog (2025-08-14)
-- Favicon: added `web/favicon.png` and referenced across all pages (`/favicon.png`, plus `/nano.png` as apple-touch-icon).
-- JSON-LD coverage:
-  - Home (`web/index.html`): `WebSite`
-  - Benchmarks list (`web/benchmarks/index.html`): `CollectionPage`
-  - Benchmark detail (`web/benchmarks/portrait-editing.html`): `CreativeWork`
-  - Quickstart (`web/guides/quickstart.html`): `HowTo` (lightweight meta)
-  - Prompts list (`web/prompts/index.html`): `CollectionPage`
-  - FAQ (`web/faq.html`): `WebPage`
-  - About (`web/about.html`): `AboutPage`
-  - 404 (`web/404.html`): favicon applied
+### 🎯 Project Overview
+**Nano Banana** is a comprehensive resource hub for the emerging AI image editing model. This site provides reproducible benchmarks, prompt recipes, and quickstart guides to help users evaluate and master text-guided image editing.
 
-#### Favicon optimization (added)
-- New small assets generated with ImageMagick and referenced site-wide:
-  - `web/favicon-32x32.png`
-  - `web/favicon-16x16.png`
-  - `web/favicon.ico` (16,32,48)
-- Head tags now include multi-size PNG and `.ico`, while keeping `/favicon.png` as fallback.
+**Target Audience**: AI artists, designers, AIGC enthusiasts, prompt engineers, and media professionals.
 
-Regenerate commands (Windows, ImageMagick):
+**Key Features**:
+- **Reproducible Benchmarks**: Fixed inputs, parameters, and pipelines for fair model comparisons
+- **Prompt Library**: Copy-ready recipes with optimized parameters for consistent results  
+- **5-Minute Quickstart**: Get your first edit running in minutes (Colab + Local routes)
+- **A/B Comparisons**: Interactive sliders to compare results side-by-side
 
+### 🌐 Domain & Branding
+- **Primary**: `nano-banana.live` (emphasizing "live" updates)
+- **Secondary**: `nano-banana.online` (backup/mirror)
+- **Brand**: Nano Banana
+
+### 📋 Site Architecture
+- **Home `/`**: Model intro + latest updates + benchmark previews + quickstart entry
+- **Benchmarks `/benchmarks`**: Reproducible test cases with downloadable inputs/outputs
+  - `/benchmarks/portrait-editing`: Portrait editing comparison (Nano Banana vs FLUX Kontext)
+- **Prompts `/prompts`**: Categorized prompt recipes with copy buttons and parameters
+- **Quickstart `/guides/quickstart`**: Two routes - Colab (zero setup) or Local (full control)
+- **FAQ `/faq`**: Compatibility, VRAM requirements, troubleshooting, ethics
+- **About `/about`**: Site info, disclaimers, contact
+- **Legal**: Privacy Policy `/privacy` and Terms of Service `/terms`
+
+### 🛠 Tech Stack
+- **Framework**: Static HTML/CSS (current), Next.js + MDX (planned)
+- **Deployment**: Vercel/Netlify with CDN
+- **Features**: A/B comparison sliders, lightbox galleries, copy-to-clipboard prompts
+- **SEO**: Canonical URLs, OG/Twitter cards, JSON-LD structured data, sitemap
+
+### 🔍 SEO & Performance
+- **URL Structure**: Clean, lowercase paths (`/guides/quickstart`, `/benchmarks/portrait-editing`)
+- **Meta Data**: Consistent title patterns, descriptions, OG/Twitter cards
+- **Structured Data**: JSON-LD for articles, benchmarks, and galleries
+- **Performance**: Optimized images, minimal CSS/JS, fast loading
+- **Sitemap**: Auto-generated `/sitemap.xml` with all pages
+- **Robots**: SEO-friendly `/robots.txt`
+
+### 📈 Latest Updates (2025-08-15)
+
+#### Navigation Enhancement & Brand Strengthening
+1. **Navigation Layout Redesign**:
+   - Implemented split layout: "Nano Banana" brand left-aligned, other nav items right-aligned
+   - Used `justify-content: space-between` and `.nav-links` container for perfect left-right distribution
+   - Removed redundant "Image Editing" badges from all pages for cleaner navigation
+
+2. **Brand Identity Enhancement**:
+   - Added favicon icons to "Nano Banana" links across all 11 pages (20x20px)
+   - Enhanced brand link styling: bold font, full opacity, optimized icon-text spacing
+   - Ensured entire brand area is clickable for better UX
+
+3. **Technical Implementation**:
+   - CSS: `.nav a:first-child` uses flexbox layout with `gap: 8px` for icon-text spacing
+   - HTML: Consistent favicon usage `<img src="./favicon.png">` (root) or `../favicon.png` (subdirs)
+   - Link fixes: Homepage uses `./index.html` to avoid local file:// protocol issues
+
+4. **Coverage**:
+   - ✅ All 11 HTML pages updated
+   - ✅ Unified navigation structure
+   - ✅ Desktop and mobile responsive
+   - ✅ Local development and production compatible
+
+---
+
+## 中文
+
+### 🎯 项目概述
+**Nano Banana** 是新兴AI图像编辑模型的综合资源中心。本站提供可复现的基准测试、提示词配方和快速入门指南，帮助用户评估和掌握文本引导的图像编辑技术。
+
+**目标用户**: AI艺术家、设计师、AIGC爱好者、提示词工程师和媒体从业者。
+
+**核心功能**:
+- **可复现基准**: 固定输入、参数和流程，确保模型对比的公平性
+- **提示词库**: 可直接复制的配方，附带优化参数以获得一致结果
+- **5分钟快速入门**: 快速开始你的第一次编辑（Colab + 本地两种方式）
+- **A/B对比**: 交互式滑块并排比较结果
+
+### 🌐 域名与品牌
+- **主域名**: `nano-banana.live`（强调"实时"更新）
+- **备用域名**: `nano-banana.online`（备份/镜像）
+- **品牌**: Nano Banana
+
+### 📋 网站架构
+- **首页 `/`**: 模型介绍 + 最新更新 + 基准预览 + 快速入门入口
+- **基准测试 `/benchmarks`**: 可复现测试案例，提供可下载的输入/输出
+  - `/benchmarks/portrait-editing`: 肖像编辑对比（Nano Banana vs FLUX Kontext）
+- **提示词 `/prompts`**: 分类提示词配方，带复制按钮和参数
+- **快速入门 `/guides/quickstart`**: 两种路线 - Colab（零配置）或本地（完全控制）
+- **常见问题 `/faq`**: 兼容性、显存需求、故障排除、伦理
+- **关于 `/about`**: 网站信息、免责声明、联系方式
+- **法律**: 隐私政策 `/privacy` 和服务条款 `/terms`
+
+### 🛠 技术栈
+- **框架**: 静态HTML/CSS（当前），Next.js + MDX（计划中）
+- **部署**: Vercel/Netlify with CDN
+- **功能**: A/B对比滑块、灯箱画廊、提示词一键复制
+- **SEO**: 规范URL、OG/Twitter卡片、JSON-LD结构化数据、站点地图
+
+### 🔍 SEO与性能
+- **URL结构**: 简洁小写路径（`/guides/quickstart`、`/benchmarks/portrait-editing`）
+- **元数据**: 一致的标题模式、描述、OG/Twitter卡片
+- **结构化数据**: 文章、基准和画廊的JSON-LD
+- **性能**: 优化图片、精简CSS/JS、快速加载
+- **站点地图**: 自动生成的 `/sitemap.xml` 包含所有页面
+- **Robots**: SEO友好的 `/robots.txt`
+
+### 📈 最新更新 (2025-08-15)
+
+#### 导航增强与品牌强化
+1. **导航布局重新设计**:
+   - 实现分离式布局："Nano Banana"品牌左对齐，其他导航项右对齐
+   - 使用 `justify-content: space-between` 和 `.nav-links` 容器实现完美的左右分布
+   - 移除所有页面的冗余"Image Editing"标签，导航更简洁
+
+2. **品牌标识增强**:
+   - 在所有11个页面的"Nano Banana"链接前添加favicon图标（20x20px）
+   - 增强品牌链接样式：粗体字体、完全不透明度、优化图标文字间距
+   - 确保整个品牌区域可点击，提升用户体验
+
+3. **技术实现**:
+   - CSS: `.nav a:first-child` 使用flexbox布局，`gap: 8px` 实现图标文字间距
+   - HTML: 一致使用favicon `<img src="./favicon.png">`（根目录）或 `../favicon.png`（子目录）
+   - 链接修复：首页使用 `./index.html` 避免本地 file:// 协议问题
+
+4. **覆盖范围**:
+   - ✅ 所有11个HTML页面已更新
+   - ✅ 统一导航结构
+   - ✅ 桌面端和移动端响应式
+   - ✅ 本地开发和生产环境兼容
+
+### 🚀 部署说明
+
+#### 域名重定向策略
+- **目标**: 统一收敛到唯一规范域名 `https://www.nano-banana.live`
+- **配置**: 已在 `vercel.json` 中设置301重定向
+- **效果**: 所有域名访问（裸域、.online等）都会重定向到主域名
+
+#### 快速部署到Vercel
+1. 推送代码到Git仓库
+2. Vercel → New Project → Import 该仓库
+3. Root Directory 选择 `web/`，Framework 选择 "Other"
+4. Build Command 和 Output Directory 留空（静态站点）
+5. 在Vercel Domains中绑定域名，配置DNS记录
+
+### 📝 开发说明
+
+#### Favicon生成命令 (ImageMagick)
 ```bat
 magick web\favicon.png -resize 32x32 -strip -define png:compression-level=9 web\favicon-32x32.png
 magick web\favicon.png -resize 16x16 -strip -define png:compression-level=9 web\favicon-16x16.png
 magick web\favicon.png -define icon:auto-resize=16,32,48 web\favicon.ico
 ```
 
-#### FAQ page revamp (added)
-- File: `web/faq.html`
-- Improvements:
-  - Richer Q&A content exceeding competitors; clear, concise answers
-  - Collapsible sections with `<details>/<summary>` for scannability
-  - In-page TOC with anchors for quick navigation
-  - SEO: `FAQPage` JSON-LD + improved `og:title/description`, Twitter card
-  - A11y/UX: keyboard-friendly toggles, readable spacing, responsive 2-column grid
-  - Consistent nav links to `Benchmarks/`, `Prompts/`, `Quickstart`, `About`
+#### 项目结构
+```
+web/
+├── index.html              # 首页
+├── benchmarks/
+│   ├── index.html         # 基准测试列表
+│   └── portrait-editing.html  # 肖像编辑对比
+├── guides/
+│   └── quickstart.html    # 快速入门指南
+├── prompts/
+│   └── index.html         # 提示词库
+├── faq.html               # 常见问题
+├── about.html             # 关于页面
+├── blog.html              # 博客
+├── privacy.html           # 隐私政策
+├── terms.html             # 服务条款
+├── styles.css             # 全局样式
+├── sitemap.xml            # 站点地图
+├── robots.txt             # 搜索引擎指令
+└── assets/                # 图片资源
+```
 
-#### Homepage "Effect comparison" section (enhanced)
-- File: `web/index.html`
-- Comparison now includes multiple sets: `web/assets/ab/a/`, `web/assets/ab/b/`, `web/assets/ab/c/`.
-- Layout: horizontally scrolling rows; each row shows Original → Nano Banana → other models (e.g., Gemini, GPT‑Image‑1, seededit/step1x‑edit).
-- Lightbox: on-page preview (no new tab). Click image to open; click overlay or press Esc to close.
-- Prompt presentation: concise single‑line caption beneath each row (parsed from original filename).
-- Spacing: inter‑card gap reduced from 16px → 10px for a tighter look; fixed width/height/aspect‑ratio to avoid CLS.
-- Accessibility/SEO: descriptive `alt` and `figcaption` updated.
-
-#### Quickstart image fix (updated)
-- File: `web/guides/quickstart.html`
-- Replaced broken `og.svg` with `nano.png` and wrapped with link to LMArena.
-
-#### Latest cards alignment (fixed)
-- Files: `web/styles.css`, `web/index.html`
-- Cards in the "Latest" section are now equal height with bottom links aligned. Implemented via `.grid{align-items:stretch}` and `.card{display:flex;flex-direction:column}` with `.card a{margin-top:auto}`.
-
-### 1) What this site is
-A lightweight, static-first hub around the emerging image editing model “nano-banana”: fastest updates, reproducible benchmarks, practical guides, and prompt recipes.
-
-### 2) Domains & brand
-- Domains: `nano-banana.live` (primary), `nano-banana.online` (mirror/experiments).
-
-### 3) Information Architecture
-- Home `/`: intro, latest news, preview of comparisons, quickstart.
-- News `/news/[slug]`
-- Guides `/guides/[slug]`
-- Benchmarks `/benchmarks`, `/benchmarks/[task]`
-- Prompts `/prompts`, `/prompts/[slug]`
-- Gallery `/gallery`
-- Tools `/tools`
-- FAQ `/faq`
-- About `/about`
-- English mirror under `/en`.
-
-### 4) Tech stack
-- Next.js App Router + MDX, SSG/ISR on Vercel.
-- next/image, A/B slider, lightbox.
-- Optional newsletter via Buttondown; analytics via Vercel Analytics.
-
-### 5) MVP checklist
-- Pages: Home, Benchmarks, one benchmark detail, Quickstart, Prompts, About, FAQ.
-- Content: 1 news, 1 guide, 1 benchmark, 5 prompts.
-- SEO: canonical meta, OG/Twitter, sitemap, robots, JSON-LD.
-
-### 6) Legal
-Educational purpose only; images belong to their owners; results vary by params/hardware/version.
+#### SEO优化清单
+- ✅ 所有页面统一标题格式 `| Mzu`
+- ✅ 完整的OG/Twitter卡片
+- ✅ JSON-LD结构化数据
+- ✅ 多尺寸favicon支持
+- ✅ 站点地图和robots.txt
+- ✅ 规范URL和301重定向
+- ✅ 移动端响应式设计
+- ✅ 页面加载性能优化
 
 ---
-
-## 待你确认的选项
-1. __主题色/风格__：暗色科技 or 极简白。
-2. __语言默认__：中文优先，英文镜像；是否需要更多语言？
-3. __是否接入订阅__：Buttondown/ConvertKit/其他或先不接入。
-4. __是否需要评论功能__：Giscus/Disqus/Utterances 或暂不启用。
-5. __首页 Hero 文案基调__：更技术向 or 更媒体向。
-
-确认后我将直接初始化代码仓库，输出可部署的 Next.js + MDX 模板与示例内容。
