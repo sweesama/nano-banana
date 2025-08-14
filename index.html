@@ -31,7 +31,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
   <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
-  <link rel="stylesheet" href="./styles.css"/>
+  <link rel="stylesheet" href="./styles.css?v=20250814"/>
   <link rel="preload" as="image" href="/nano.png"/>
   <style>
     h1{font-size:clamp(34px,3.6vw,44px);line-height:1.25}
@@ -41,6 +41,9 @@
     .lightbox img{max-width:min(92vw,1400px);max-height:92vh;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.5);border:1px solid #233244}
     .lightbox .hint{position:absolute;bottom:16px;color:#b6c2cf}
     .cursor-zoom{cursor:zoom-in}
+    /* Force horizontal layout for comparison rows */
+    .compare-row{display:flex !important;gap:10px;overflow:auto;padding-bottom:4px;flex-wrap:nowrap !important;flex-direction:row !important}
+    .compare-figure{flex:0 0 clamp(220px,22vw,280px) !important;min-width:220px !important;display:block !important}
   </style>
   <script type="application/ld+json">{
     "@context":"https://schema.org",

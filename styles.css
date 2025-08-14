@@ -100,10 +100,10 @@ img{max-width:100%;height:auto;border-radius:10px}
 .lightbox .hint{position:absolute;bottom:16px;color:#b6c2cf}
 .cursor-zoom{cursor:zoom-in}
 
-/* Comparison rows */
-.compare-row{display:flex;gap:10px;overflow:auto;padding-bottom:4px;flex-wrap:nowrap}
+/* Comparison rows - Force horizontal layout */
+.compare-row{display:flex !important;gap:10px;overflow:auto;padding-bottom:4px;flex-wrap:nowrap !important;flex-direction:row !important}
 .compare-row.mt{margin-top:22px}
-.compare-figure{flex:0 0 clamp(220px,22vw,280px);min-width:220px}
+.compare-figure{flex:0 0 clamp(220px,22vw,280px) !important;min-width:220px;display:block !important}
 .compare-img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;border-radius:10px;border:1px solid #233244}
 
 /* Spacing utilities */
