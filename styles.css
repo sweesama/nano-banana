@@ -97,3 +97,12 @@ img{max-width:100%;height:auto;border-radius:10px}
 .lightbox img{max-width:min(92vw,1400px);max-height:92vh;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.5);border:1px solid #233244}
 .lightbox .hint{position:absolute;bottom:16px;color:#b6c2cf}
 .cursor-zoom{cursor:zoom-in}
+
+/* Comparison rows */
+.compare-row{display:flex;gap:10px;overflow:auto;padding-bottom:4px}
+.compare-row.mt{margin-top:22px}
+.compare-figure{min-width:260px}
+.compare-img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;border-radius:10px;border:1px solid #233244}
+
+/* Spacing utilities */
+.mt8{margin-top:8px}
