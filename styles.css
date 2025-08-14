@@ -89,6 +89,8 @@ img{max-width:100%;height:auto;border-radius:10px}
   .lead{font-size:20px;max-width:840px}
   .section{margin:48px 0}
   .grid{grid-template-columns:repeat(4,1fr)}
+  /* Ensure compare-row stays flex on large screens */
+  .compare-row{display:flex !important}
 }
 
 /* Lightbox (reusable) */
