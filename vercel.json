@@ -1,0 +1,22 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "nano-banana.live" }],
+      "destination": "https://www.nano-banana.live/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "nano-banana.online" }],
+      "destination": "https://www.nano-banana.live/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.nano-banana.online" }],
+      "destination": "https://www.nano-banana.live/$1",
+      "permanent": true
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'>
+  <defs>
+    <linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0%' stop-color='#0b0f14'/>
+      <stop offset='100%' stop-color='#121821'/>
+    </linearGradient>
+  </defs>
+  <rect width='1200' height='630' fill='url(#g)'/>
+  <text x='60' y='160' fill='#00e5a8' font-family='Inter,Segoe UI,Arial' font-size='56' font-weight='700'>Nano Banana</text>
+  <text x='60' y='220' fill='#8ab4f8' font-family='Inter,Segoe UI,Arial' font-size='28'>Text‑Guided Image Editing — Benchmarks & Quickstart</text>
+  <text x='60' y='560' fill='#9fb0c3' font-family='Inter,Segoe UI,Arial' font-size='22'>nano-banana.live</text>
+</svg>
