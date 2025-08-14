@@ -18,9 +18,12 @@ User-agent: DuckAssistBot
 # LLM-Content: https://www.nano-banana.live/llms.txt
 # LLM-Full-Content: https://www.nano-banana.live/llms-full.txt
 
-# Explicit allow/deny for AI crawlers (paths may not exist yet, kept for clarity)
+# Explicit allow/deny for AI crawlers
 Allow: /benchmarks/
 Allow: /prompts/
+Allow: /guides/
 Allow: /about.html
 Allow: /faq.html
-Disallow: /user-content/
+Allow: /assets/
+Disallow: /admin/
+Disallow: /private/

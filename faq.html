@@ -6,12 +6,12 @@
   <meta name="theme-color" content="#0b0f14"/>
   <meta name="color-scheme" content="dark"/>
   <title>FAQ | Nano Banana | Mzu</title>
-  <meta name="description" content="Answers to common questions about the Nano Banana image editing model: what it is, speed, character consistency, licensing, API, and how to reproduce benchmarks."/>
+  <meta name="description" content="FAQ about Nano Banana AI image editor: how it works, speed vs competitors, character consistency, free vs commercial use, API availability, and benchmark reproduction."/>
   <link rel="canonical" href="https://www.nano-banana.live/faq.html"/>
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
   <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
   <meta property="og:title" content="Nano Banana | Frequently Asked Questions | Mzu"/>
-  <meta property="og:description" content="Quick, precise answers about Nano Banana's capabilities, speed, character consistency, licensing, API, and reproducible benchmarks."/>
+  <meta property="og:description" content="Quick answers about Nano Banana AI image editor: capabilities, speed vs FLUX Kontext, character consistency, licensing, API, and free benchmarks."/>
   <meta property="og:image" content="https://www.nano-banana.live/og.svg"/>
   <meta property="og:site_name" content="Nano Banana"/>
   <meta name="twitter:card" content="summary_large_image"/>
@@ -66,12 +66,15 @@
 <body>
   <div class="container">
     <nav class="nav">
-      <a href="./index.html">Nano Banana</a>
-      <a class="active" href="./faq.html">FAQ</a>
-      <a href="./benchmarks/index.html">Benchmarks</a>
-      <a href="./prompts/index.html">Prompts</a>
-      <a href="./guides/quickstart.html">Quickstart</a>
-      <a href="./about.html">About</a>
+      <a href="./index.html"><img src="./favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="./benchmarks/index.html">Benchmarks</a>
+        <a href="./prompts/index.html">Prompts</a>
+        <a href="./guides/quickstart.html">Quickstart</a>
+        <a class="active" href="./faq.html">FAQ</a>
+        <a href="./about.html">About</a>
+        <a href="./blog.html">Blog</a>
+      </div>
     </nav>
     <div class="tags" role="navigation" aria-label="Quick jump">
       <a class="tag" href="#what">What</a>
@@ -107,7 +110,7 @@
       <details id="what" open>
         <summary>What is Nano Banana?</summary>
         <div>
-          Nano Banana is a text-to-image <strong>editing</strong> model. It understands both text and visual context to apply precise local edits, while keeping composition, lighting, and style coherent.
+          Nano Banana is an <strong>AI image editor</strong> for text-guided photo editing. It understands both text and visual context to apply precise local edits, while keeping composition, lighting, and style coherent.
         </div>
       </details>
 
@@ -170,7 +173,44 @@
 
     <section class="section hint">Last updated: <time id="lu"></time></section>
 
-    <footer><span id="y"></span> Nano Banana</footer>
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="./benchmarks/index.html">Benchmarks</a></li>
+            <li><a href="./prompts/index.html">Prompt Recipes</a></li>
+            <li><a href="./guides/quickstart.html">Quickstart Guide</a></li>
+            <li><a href="./faq.html">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="./blog.html">Blog</a></li>
+            <li><a href="./about.html">About</a></li>
+            <li><a href="https://lmarena.ai/?chat-modality=image" target="_blank" rel="noopener">Try in LMArena</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="./privacy.html">Privacy Policy</a></li>
+            <li><a href="./terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="https://twitter.com/intent/tweet?text=Nano%20Banana%20%E2%80%94%20Image%20Editing%20Benchmarks%20%26%20Quickstart&url=https%3A%2F%2Fwww.nano-banana.live%2F" target="_blank" rel="noopener">Share on X</a></li>
+            <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.nano-banana.live%2F" target="_blank" rel="noopener">Share on LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p> <span id="y"></span> Nano Banana — English‑first, static‑first. <a href="https://www.nano-banana.live/" target="_blank" rel="noopener">nano-banana.live</a></p>
+      </div>
+    </footer>
   </div>
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
