@@ -5,24 +5,24 @@
 Help users quickly understand what the model is, how to run it, and how it compares with alternatives like FLUX Kontext. All examples are designed to be reproducible.
 
 ## Structure
-- Home: https://nano-banana.live/
+- Home: https://www.nano-banana.live/
   - Hero explaining the model and scope
   - CTA: Try in LMArena (https://lmarena.ai/?chat-modality=image)
   - Cards linking to Benchmarks / Quickstart / Prompts
-- Benchmarks index: https://nano-banana.live/benchmarks/
+- Benchmarks index: https://www.nano-banana.live/benchmarks/
   - Lists available benchmarks
   - Each benchmark has fixed inputs and parameter sets
-- Portrait Editing Benchmark: https://nano-banana.live/benchmarks/portrait-editing.html
+- Portrait Editing Benchmark: https://www.nano-banana.live/benchmarks/portrait-editing.html
   - Inputs to download, fixed params, and pipeline steps
   - A/B slider: left (FLUX Kontext) vs right (Nano Banana)
-- Quickstart: https://nano-banana.live/guides/quickstart.html
+- Quickstart: https://www.nano-banana.live/guides/quickstart.html
   - Route A: Google Colab (no setup)
   - Route B: Local (full control)
   - Copy buttons for prompt/params/CLI
-- Prompts: https://nano-banana.live/prompts/
+- Prompts: https://www.nano-banana.live/prompts/
   - Copy‑ready prompt recipes with suggested parameters
-- FAQ: https://nano-banana.live/faq.html
-- About: https://nano-banana.live/about.html
+- FAQ: https://www.nano-banana.live/faq.html
+- About: https://www.nano-banana.live/about.html
 
 ## Content model
 - Benchmark
@@ -34,9 +34,9 @@ Help users quickly understand what the model is, how to run it, and how it compa
 
 ## Technical notes for crawlers
 - Canonical URLs use directory form for index pages (e.g., /benchmarks/). Some internal links point to explicit index.html for local file browsing; treat them equivalently.
-- Sitemap: https://nano-banana.live/sitemap.xml
-- Robots: https://nano-banana.live/robots.txt
-- OG image: https://nano-banana.live/og.svg
+- Sitemap: https://www.nano-banana.live/sitemap.xml
+- Robots: https://www.nano-banana.live/robots.txt
+- OG image: https://www.nano-banana.live/og.svg
 - Theme color: #0b0f14; color-scheme: dark
 
 ## Update cadence

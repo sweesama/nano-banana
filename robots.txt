@@ -4,7 +4,7 @@ Disallow: /admin/
 Disallow: /private/
 
 # Website sitemap
-Sitemap: https://nano-banana.live/sitemap.xml
+Sitemap: https://www.nano-banana.live/sitemap.xml
 
 # AI crawler specific rules
 User-agent: GPTBot
@@ -14,9 +14,9 @@ User-agent: PerplexityBot
 User-agent: GoogleOther
 User-agent: DuckAssistBot
 
-# Point AI crawlers to LLM-specific content summaries
-LLM-Content: https://nano-banana.live/llms.txt
-LLM-Full-Content: https://nano-banana.live/llms-full.txt
+# LLM content summaries (non-standard for robots.txt validators, so left as comments)
+# LLM-Content: https://www.nano-banana.live/llms.txt
+# LLM-Full-Content: https://www.nano-banana.live/llms-full.txt
 
 # Explicit allow/deny for AI crawlers (paths may not exist yet, kept for clarity)
 Allow: /benchmarks/

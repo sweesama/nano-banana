@@ -23,9 +23,10 @@ a:focus{outline:2px solid #36506e;outline-offset:2px;border-radius:6px}
 .hero p{color:var(--muted);max-width:68ch}
 .hero-grid{display:grid;grid-template-columns:1.2fr 0.8fr;gap:32px;align-items:center}
 .hero img.art{width:100%;max-width:clamp(360px,38vw,560px);justify-self:end;border-radius:16px;border:1px solid #1f2937;background:#0f1721}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin:26px 0}
-.card{background:var(--card);border:1px solid #1f2937;border-radius:12px;padding:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin:26px 0;align-items:stretch}
+.card{background:var(--card);border:1px solid #1f2937;border-radius:12px;padding:16px;display:flex;flex-direction:column}
 .card h3{margin:0 0 8px}
+.card a{margin-top:auto}
 footer{margin:48px 0 16px;color:var(--muted);font-size:14px}
 .btn{display:inline-block;background:var(--acc);color:#00140e;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:600}
 .btn.blue{background:#8ab4f8;color:#001428}
@@ -89,3 +90,10 @@ img{max-width:100%;height:auto;border-radius:10px}
   .section{margin:48px 0}
   .grid{grid-template-columns:repeat(4,1fr)}
 }
+
+/* Lightbox (reusable) */
+.lightbox{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.8);z-index:1000}
+.lightbox.hidden{display:none}
+.lightbox img{max-width:min(92vw,1400px);max-height:92vh;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.5);border:1px solid #233244}
+.lightbox .hint{position:absolute;bottom:16px;color:#b6c2cf}
+.cursor-zoom{cursor:zoom-in}

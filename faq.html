@@ -1,1 +1,170 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>FAQ — Nano Banana</title><meta name="description" content="Frequently asked questions about Nano Banana image editing model."/><link rel="canonical" href="https://nano-banana.live/faq.html"/><meta property="og:image" content="https://nano-banana.live/og.svg"/><link rel="stylesheet" href="./styles.css"/></head><body><div class="container"><nav class="nav"><a href="./index.html">Nano Banana</a><a class="active" href="./faq.html">FAQ</a><a href="./about.html">About</a><a href="./benchmarks/">Benchmarks</a></nav><section class="section"><h1>FAQ</h1><p class="lead">Short answers to common questions about the model and this site.</p></section><section class="section"><h2>Is Nano Banana official?</h2><p>It is discussed across community channels. We track sources and update as things stabilize.</p><h2>Commercial usage?</h2><p>Follow the license of the respective model release or service you use.</p><h2>Will there be API links?</h2><p>If stable public endpoints appear, we will link/compare them. For now the site focuses on education and reproducible benchmarks.</p></section><footer>© <span id="y"></span> Nano Banana</footer></div><script>document.getElementById('y').textContent=new Date().getFullYear()</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="theme-color" content="#0b0f14"/>
+  <meta name="color-scheme" content="dark"/>
+  <title>FAQ — Nano Banana</title>
+  <meta name="description" content="Answers to common questions about the Nano Banana image editing model: what it is, speed, character consistency, licensing, API, and how to reproduce benchmarks."/>
+  <link rel="canonical" href="https://www.nano-banana.live/faq.html"/>
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+  <meta property="og:title" content="Nano Banana — Frequently Asked Questions"/>
+  <meta property="og:description" content="Quick, precise answers about Nano Banana's capabilities, speed, character consistency, licensing, API, and reproducible benchmarks."/>
+  <meta property="og:image" content="https://www.nano-banana.live/og.svg"/>
+  <meta property="og:site_name" content="Nano Banana"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <link rel="apple-touch-icon" href="/nano.png"/>
+  <link rel="icon" href="/favicon.png" type="image/png"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+  <link rel="stylesheet" href="./styles.css"/>
+  <style>
+    h1{font-size:clamp(34px,3.6vw,44px);line-height:1.25}
+    .lead{opacity:.9}
+    .faq-grid{display:grid;gap:24px;grid-template-columns:1fr;}
+    @media(min-width:900px){.faq-grid{grid-template-columns:1fr 1fr}}
+    .toc{margin:12px 0 28px;padding:12px 16px;border:1px solid #233244;border-radius:10px;background:#0e141b}
+    .toc a{color:#9cc6ff;text-decoration:none;margin-right:14px}
+    details{border:1px solid #233244;border-radius:12px;padding:14px 16px;background:#0e141b}
+    details[open]{background:#101821}
+    summary{cursor:pointer;font-weight:600;list-style:none}
+    summary::-webkit-details-marker{display:none}
+    .hint{font-size:.92rem;opacity:.85}
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "name":"FAQ — Nano Banana",
+    "url":"https://www.nano-banana.live/faq.html",
+    "inLanguage":"en",
+    "description":"Answers to common questions about the Nano Banana image editing model.",
+    "isPartOf":{"@type":"WebSite","name":"Nano Banana","url":"https://www.nano-banana.live/"}
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"What is Nano Banana?","acceptedAnswer":{"@type":"Answer","text":"Nano Banana is a text-to-image editing model focused on controllable, iterative edits. It understands both text and visual context to modify existing images while keeping style and structure coherent."}},
+      {"@type":"Question","name":"How does Nano Banana's AI technology work?","acceptedAnswer":{"@type":"Answer","text":"The system encodes text and image into a shared semantic space, then uses a controlled, iterative generator to refine targeted regions. Attention plus prompt/mask constraints preserve global composition and lighting while applying local, reproducible edits."}},
+      {"@type":"Question","name":"How fast is it?","acceptedAnswer":{"@type":"Answer","text":"Interactive speed for most edits; typical tasks complete within ~10–30 seconds depending on resolution and hardware."}},
+      {"@type":"Question","name":"Can it keep character consistency?","acceptedAnswer":{"@type":"Answer","text":"Yes. The model is optimized to preserve identity and style across scenes. Use consistent prompts and seeds for best results."}},
+      {"@type":"Question","name":"What can I create?","acceptedAnswer":{"@type":"Answer","text":"Portrait retouching, background replacement, local edits, product shots, and style tweaks. See Benchmarks for reproducible examples."}},
+      {"@type":"Question","name":"Is it official?","acceptedAnswer":{"@type":"Answer","text":"We track public sources and community experiments. This site aggregates information and reproducible workflows as things mature."}},
+      {"@type":"Question","name":"Commercial usage","acceptedAnswer":{"@type":"Answer","text":"Follow the license of the specific release or service you run. Check terms before commercial deployment."}},
+      {"@type":"Question","name":"API availability","acceptedAnswer":{"@type":"Answer","text":"If stable public endpoints become available, we will link and compare them here. Currently we focus on local and notebook guides."}},
+      {"@type":"Question","name":"How to reproduce benchmarks?","acceptedAnswer":{"@type":"Answer","text":"Each benchmark lists inputs, parameters, and downloads. Follow the Quickstart, then replicate settings from the benchmark page."}}
+    ]
+  }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="./index.html">Nano Banana</a>
+      <a class="active" href="./faq.html">FAQ</a>
+      <a href="./benchmarks/">Benchmarks</a>
+      <a href="./prompts/">Prompts</a>
+      <a href="./guides/quickstart.html">Quickstart</a>
+      <a href="./about.html">About</a>
+    </nav>
+
+    <section class="section">
+      <h1>Frequently Asked Questions</h1>
+      <p class="lead">Clear, practical answers about Nano Banana. Need more help? See <a href="./guides/quickstart.html">Quickstart</a> or explore <a href="./benchmarks/">Benchmarks</a>.</p>
+
+      <div class="toc hint">
+        Jump to:
+        <a href="#what">What is it</a>
+        <a href="#tech">How it works</a>
+        <a href="#speed">Speed</a>
+        <a href="#consistency">Character consistency</a>
+        <a href="#create">What to create</a>
+        <a href="#compare">Compared to others</a>
+        <a href="#license">Commercial use</a>
+        <a href="#api">API</a>
+        <a href="#reproduce">Reproduce benchmarks</a>
+      </div>
+    </section>
+
+    <section class="section faq-grid">
+      <details id="what" open>
+        <summary>What is Nano Banana?</summary>
+        <div>
+          Nano Banana is a text-to-image <strong>editing</strong> model. It understands both text and visual context to apply precise local edits, while keeping composition, lighting, and style coherent.
+        </div>
+      </details>
+
+      <details id="tech">
+        <summary>How does Nano Banana's AI technology work?</summary>
+        <div>
+          The system encodes <em>text</em> and <em>image</em> into a shared semantic space, then runs a controlled, iterative generator to refine only the targeted regions. With attention and prompt/mask constraints, it preserves global composition and lighting while applying local changes, enabling precise, reproducible edits.
+        </div>
+      </details>
+
+      <details id="speed">
+        <summary>How fast is image editing?</summary>
+        <div>
+          Typical edits complete within <strong>10–30 seconds</strong> depending on resolution and hardware. The workflow is iterative, so you can refine prompts and masks in real time.
+        </div>
+      </details>
+
+      <details id="consistency">
+        <summary>Can it keep character consistency across images?</summary>
+        <div>
+          Yes. Use consistent prompts, identity tokens (if available), and fixed seeds to preserve identity and style across scenes. See the <a href="./benchmarks/portrait-editing.html">Portrait Editing benchmark</a> for examples.
+        </div>
+      </details>
+
+      <details id="create">
+        <summary>What can I create with Nano Banana?</summary>
+        <div>
+          Portrait retouching, background replacement, product shots, local object edits, color/style tweaks, and layout-safe changes for marketing creatives.
+        </div>
+      </details>
+
+      <details id="compare">
+        <summary>What makes it different from other tools?</summary>
+        <div>
+          Context-aware editing, strong local control, and iterative refinement while preserving visual relationships. We highlight apples-to-apples results in <a href="./benchmarks/">Benchmarks</a>.
+        </div>
+      </details>
+
+      <details id="license">
+        <summary>Can I use it commercially?</summary>
+        <div>
+          Follow the license/ToS of the specific release or hosted service you run. If unsure, start with non-commercial tests and consult the provider’s terms.
+        </div>
+      </details>
+
+      <details id="api">
+        <summary>Is there an API?</summary>
+        <div>
+          If stable public endpoints become available, we will link and compare them. For now, start with <a href="./guides/quickstart.html">Quickstart</a> to run locally or via notebook.
+        </div>
+      </details>
+
+      <details id="reproduce">
+        <summary>How do I reproduce benchmark results?</summary>
+        <div>
+          Each benchmark page lists inputs, parameters, and downloads. Match those settings after completing the Quickstart; this ensures reproducible, comparable outputs.
+        </div>
+      </details>
+    </section>
+
+    <section class="section hint">Last updated: <time id="lu"></time></section>
+
+    <footer><span id="y"></span> Nano Banana</footer>
+  </div>
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    const d = new Date();
+    document.getElementById('lu').textContent = d.toISOString().slice(0,10);
+  </script>
+</body>
+</html>
