@@ -99,9 +99,9 @@ img{max-width:100%;height:auto;border-radius:10px}
 .cursor-zoom{cursor:zoom-in}
 
 /* Comparison rows */
-.compare-row{display:flex;gap:10px;overflow:auto;padding-bottom:4px}
+.compare-row{display:flex;gap:10px;overflow:auto;padding-bottom:4px;flex-wrap:nowrap}
 .compare-row.mt{margin-top:22px}
-.compare-figure{min-width:260px}
+.compare-figure{flex:0 0 clamp(220px,22vw,280px);min-width:220px}
 .compare-img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;border-radius:10px;border:1px solid #233244}
 
 /* Spacing utilities */
