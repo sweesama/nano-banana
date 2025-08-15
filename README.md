@@ -154,6 +154,57 @@
 4. Build Command 和 Output Directory 留空（静态站点）
 5. 在Vercel Domains中绑定域名，配置DNS记录
 
+## SEO & GSC 诊断记录（2025-08-15）
+- 统一样式表引用与相对路径；移除所有 `?v=` 版本参数，避免缓存与渲染偏差（参考 `web/*.html`）。
+- 全站页面已覆盖 canonical（404 除外）：`/`、`/benchmarks/`、`/prompts/`、`/guides/quickstart.html`、`/faq.html`、`/about.html`、`/blog.html`、`/privacy.html`、`/terms.html`、`/benchmarks/portrait-editing.html`。
+  - `web/sitemap.xml` 规范化为目录形式：`/benchmarks/`、`/prompts/`，与对应页面 canonical 一致。
+  - `vercel.json` 强制 301 收敛到主域 `https://www.nano-banana.live`；`web/robots.txt` 允许抓取并指向站点地图。
+  - 新增：`web/404.html` 添加 `<meta name="robots" content="noindex, nofollow">`，防止 404 被索引。
+
+### 上午追加更新（2025-08-15）
+ - `web/sitemap.xml`：将所有 URL 的 `<lastmod>` 统一更新为 `2025-08-15`；保持 `/benchmarks/`、`/prompts/` 目录规范与页面 canonical 一致。
+ - `web/robots.txt`：重构为显式分组，确保被各爬虫正确解析。
+   - 保留通用组 `User-agent: *`：`Allow: /`，`Disallow: /admin/`、`/private/`。
+   - 新增并允许主流与 AI 爬虫（继续屏蔽 /admin/ 与 /private/）：
+     - OpenAI：`GPTBot`
+     - Anthropic：`Claude-Web`、`Anthropic-AI`
+     - Perplexity：`PerplexityBot`
+     - Google：`Googlebot`、`GoogleOther`、`Google-Extended`
+     - Apple：`Applebot`、`Applebot-Extended`
+     - Meta：`Meta-ExternalAgent`
+     - Amazon：`Amazonbot`
+     - Common Crawl：`CCBot`
+     - ByteDance：`Bytespider`
+     - DuckDuckGo：`DuckDuckBot`
+     - Yahoo：`Slurp`
+     - Yandex：`YandexBot`
+     - 韩国：`Yeti (Naver)`、`NaverBot`
+   - 保留 LLM 内容说明注释：`/llms.txt`、`/llms-full.txt`。
+ - 部署与验证建议：
+   - 部署后（如使用 Cloudflare），建议对 `/sitemap.xml` 执行缓存清除。
+   - 在线核对：`/sitemap.xml` 的 `<lastmod>` 是否均为 `2025-08-15`；`/robots.txt` 是否出现新分组。
+   - 在 GSC 重新提交 `sitemap.xml`；关键页用 “Test Live URL” + “Request Indexing”。
+
+### 在 Google Search Console 的操作建议
+1. 确认属性：选择 `https://www.nano-banana.live/`。
+2. URL Inspection → Test Live URL（实时测试）：`/`、`/benchmarks/`、`/prompts/`、`/benchmarks/portrait-editing.html`。
+3. 若渲染正常，点击 Request Indexing（请求编入索引）。
+4. 在 Sitemaps 再次提交 `https://www.nano-banana.live/sitemap.xml`。
+5. 观察 24–72 小时，“Pages” 报告是否消除渲染/规范化误报。
+
+### 线上自检（可选）
+- 重定向与状态码：
+  - `curl -I -L https://nano-banana.live/`
+  - `curl -I -L https://nano-banana.online/`
+  - `curl -I -L https://www.nano-banana.online/`
+- 关键资源：
+  - `curl -I https://www.nano-banana.live/styles.css`
+  - `curl -I https://www.nano-banana.live/benchmarks/`
+  - `curl -I https://www.nano-banana.live/prompts/`
+  - `curl -I https://www.nano-banana.live/guides/quickstart.html`
+
+注：GSC 的渲染异常多由旧快照导致。以上步骤可快速让 GSC 获取最新渲染结果。
+
 ### 📝 开发说明
 
 #### Favicon生成命令 (ImageMagick)
