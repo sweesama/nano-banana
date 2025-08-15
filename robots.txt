@@ -6,24 +6,103 @@ Disallow: /private/
 # Website sitemap
 Sitemap: https://www.nano-banana.live/sitemap.xml
 
-# AI crawler specific rules
-User-agent: GPTBot
-User-agent: Claude-Web
-User-agent: Anthropic-AI
-User-agent: PerplexityBot
-User-agent: GoogleOther
-User-agent: DuckAssistBot
-
-# LLM content summaries (non-standard for robots.txt validators, so left as comments)
+# AI & search crawlers (explicit groups; '*' above already allows sitewide except /admin/ & /private/)
+# LLM content summaries (non-standard; comments only)
 # LLM-Content: https://www.nano-banana.live/llms.txt
 # LLM-Full-Content: https://www.nano-banana.live/llms-full.txt
 
-# Explicit allow/deny for AI crawlers
-Allow: /benchmarks/
-Allow: /prompts/
-Allow: /guides/
-Allow: /about.html
-Allow: /faq.html
-Allow: /assets/
+# OpenAI
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Anthropic
+User-agent: Claude-Web
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: Anthropic-AI
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Google misc/AI
+User-agent: GoogleOther
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Apple AI extension
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Meta
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Amazon
+User-agent: Amazonbot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Common Crawl / ByteDance
+User-agent: CCBot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: Bytespider
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Mainstream search engines
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: Applebot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: YandexBot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: Slurp
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Korea (Naver)
+User-agent: Yeti
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: NaverBot
+Allow: /
 Disallow: /admin/
 Disallow: /private/
