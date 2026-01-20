@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Can I Run It? Hardware Requirements | Nono Banana</title>
+    <meta name="description"
+        content="Detailed hardware guide for Nano Banana. Comparison of requirements for the Pro Client (CPU) vs Offline Alternatives (GPU)." />
+    <link rel="stylesheet" href="../styles.css" />
+    <style>
+        body {
+            background-image: radial-gradient(circle at 50% 0%, rgba(77, 171, 247, 0.05) 0%, transparent 50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="nav">
+            <a href="../index.html" class="logo"><img src="../favicon.png" alt="Nano" width="24" height="24">Nano
+                Banana</a>
+            <div class="nav-links">
+                <a href="../benchmarks/index.html">Benchmarks</a>
+                <a href="../prompts/index.html">Prompts</a>
+                <a href="../guides/quickstart.html">Quickstart</a>
+                <a href="../blog.html" class="active">Blog</a>
+            </div>
+        </nav>
+
+        <article class="article-container">
+            <header class="article-header">
+                <div class="meta" style="justify-content: center; display: flex;">Hardware • Jan 18, 2026</div>
+                <h1>Can My PC Run It? The Hardware Truth</h1>
+                <p class="lead" style="margin: 20px auto;">Confused by VRAM specs? Here is exactly what you need.</p>
+                <div class="article-image bg-gradient-2"
+                    style="height: 400px; margin-top: 40px; display: flex; align-items: center; justify-content: center;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 4em; margin-bottom: 0px;">⚙️</div>
+                        <div style="font-family: monospace; color: rgba(255,255,255,0.7);">System Specs</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="article-content">
+                <p>One of the most common questions we get is: <em>"Do I need an RTX 5090 to run Nano Banana?"</em></p>
+                <p>The answer depends entirely on <strong>which version</strong> you are running.</p>
+
+                <h2>Scenario A: Nano Banana Pro (The Client)</h2>
+                <p><strong>Status: Closed Source / Cloud</strong></p>
+                <p>Since the Pro model runs on Google's servers, your computer is just sending text and receiving
+                    images.</p>
+                <ul>
+                    <li><strong>CPU:</strong> Any modern CPU (Intel i3 / AMD Ryzen 3 or better).</li>
+                    <li><strong>RAM:</strong> 4GB is plenty.</li>
+                    <li><strong>GPU:</strong> Not required.</li>
+                    <li><strong>Storage:</strong> ~100MB for Python libraries.</li>
+                </ul>
+                <p class="quote">✅ <strong>Verdict:</strong> Runs on any laptop, including MacBook Air.</p>
+
+                <h2>Scenario B: Offline Alternatives (Z-Image / Qwen)</h2>
+                <p><strong>Status: Open Source / Local Weights</strong></p>
+                <p>If you choose to use the "Offline Alternatives" listed in our Quickstart because you cannot connect
+                    to the internet, be prepared for heavy requirements.</p>
+
+                <h3>Minimum Specs (SDXL Turbo)</h3>
+                <ul>
+                    <li><strong>GPU:</strong> NVIDIA RTX 3060 (8GB VRAM).</li>
+                    <li><strong>RAM:</strong> 16GB System RAM.</li>
+                </ul>
+
+                <h3>Recommended Specs (Z-Image / Qwen-Image)</h3>
+                <ul>
+                    <li><strong>GPU:</strong> NVIDIA RTX 3090 / 4090 (24GB VRAM).</li>
+                    <li><strong>RAM:</strong> 32GB System RAM.</li>
+                    <li><strong>Storage:</strong> 50GB+ SSD space for model weights.</li>
+                </ul>
+
+                <div
+                    style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 12px; margin-top: 30px;">
+                    <h3>Why is there such a difference?</h3>
+                    <p>Nano Banana Pro (Cloud) uses models with hundreds of billions of parameters (Gemini 3.0 class).
+                        To run that locally, you would need a server rack costing $50,000+. By using the cloud API, you
+                        get that power on a $500 laptop.</p>
+                </div>
+            </div>
+        </article>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="../benchmarks/index.html">Benchmarks</a></li>
+                        <li><a href="../prompts/index.html">Prompt Recipes</a></li>
+                        <li><a href="../guides/quickstart.html">Quickstart Guide</a></li>
+                        <li><a href="../faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="../blog.html">Blog</a></li>
+                        <li><a href="../about.html">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="../privacy.html">Privacy Policy</a></li>
+                        <li><a href="../terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>©
+                    <script>document.write(new Date().getFullYear())</script> Nano Banana
+                </p>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

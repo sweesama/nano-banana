@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3758496128431673"
+    crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P0QMF67972"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-P0QMF67972');
+  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b0f14" />
+  <meta name="color-scheme" content="dark" />
+  <title>Nano Banana | Run Locally (Python) & Offline AI Image Editor | Mzu</title>
+  <meta name="description"
+    content="AI image editor for text-guided photo editing. Run locally via Python SDK or offline via FLUX. Free benchmarks, scripts & prompt recipes." />
+  <meta name="keywords"
+    content="Nano Banana local install, AI image editor offline, run Nano Banana locally, consistent character editing, FLUX context, photo editing" />
+  <link rel="canonical" href="https://www.nano-banana.live/" />
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+  <meta property="og:title" content="Nano Banana | Best AI Image Editor, Consistent Edits | Mzu" />
+  <meta property="og:description"
+    content="AI image editor for text-guided photo editing. Superior character consistency vs FLUX Kontext. Free benchmarks & quickstart." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.nano-banana.live/" />
+  <meta property="og:image" content="https://www.nano-banana.live/og.svg" />
+  <meta property="og:site_name" content="Nano Banana" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="apple-touch-icon" href="/nano.png" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="preload" as="image" href="/nano.png" />
+  <style>
+    h1 {
+      font-size: clamp(34px, 3.6vw, 44px);
+      line-height: 1.25
+    }
+
+    /* lightweight lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, .8);
+      z-index: 1000
+    }
+
+    .lightbox.hidden {
+      display: none
+    }
+
+    .lightbox img {
+      max-width: min(92vw, 1400px);
+      max-height: 92vh;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .5);
+      border: 1px solid #233244
+    }
+
+    .lightbox .hint {
+      position: absolute;
+      bottom: 16px;
+      color: #b6c2cf
+    }
+
+    .cursor-zoom {
+      cursor: zoom-in
+    }
+
+    /* Force horizontal layout for comparison rows */
+    .compare-row {
+      display: flex !important;
+      gap: 10px;
+      overflow: auto;
+      padding-bottom: 4px;
+      flex-wrap: nowrap !important;
+      flex-direction: row !important
+    }
+
+    .compare-figure {
+      flex: 0 0 clamp(220px, 22vw, 280px) !important;
+      min-width: 220px !important;
+      display: block !important
+    }
+  </style>
+  <script type="application/ld+json">{
+    "@context":"https://schema.org",
+    "@type":"WebSite",
+    "name":"Nano Banana",
+    "url":"https://www.nano-banana.live/",
+    "inLanguage":"en",
+    "description":"Nano Banana: image editing benchmarks and quickstart. Reproducible comparisons, prompt recipes, and guides.",
+    "publisher":{"@type":"Organization","name":"Nano Banana"}
+  }</script>
+</head>
+
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="./index.html" class="logo"><img src="./favicon.png" alt="Nano Banana" width="24" height="24">Nano
+        Banana</a>
+      <div class="nav-links">
+        <a href="./benchmarks/index.html">Benchmarks</a>
+        <a href="./prompts/index.html">Prompts</a>
+        <a href="./guides/quickstart.html">Quickstart</a>
+        <a href="./faq.html">FAQ</a>
+        <a href="./about.html">About</a>
+        <a href="./blog.html">Blog</a>
+      </div>
+    </nav>
+    <div class="tags" role="navigation" aria-label="Quick jump">
+      <a class="tag" href="#try">Try</a>
+      <a class="tag" href="#comparison">Comparison</a>
+      <a class="tag" href="#what">What</a>
+      <a class="tag" href="#benchmarks">Reproducibility</a>
+      <a class="tag" href="#why">Why</a>
+      <a class="tag" href="#use-cases">Use cases</a>
+      <a class="tag" href="#testimonials">Testimonials</a>
+      <a class="tag" href="#share">Share</a>
+      <a class="tag" href="#latest">Latest</a>
+    </div>
+
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <h1>Nano Banana | AI Image Editor for Text‑Guided, Consistent Edits | Mzu</h1>
+          <p>AI image editor for text-guided photo editing. Nano Banana delivers <strong>consistent character
+              editing</strong> and <strong>natural scene preservation</strong> compared to <em>FLUX Kontext</em>. Free
+            to explore: reproducible benchmarks, copy‑ready prompt recipes, and a 5‑minute quickstart.</p>
+          <p>
+            <a class="btn" href="benchmarks/index.html">See benchmarks</a>
+            <span style="margin-left:12px"></span>
+            <a class="btn" style="background:#52b788;color:#001428" href="guides/quickstart.html#local">Download
+              Script</a>
+          </p>
+          <div class="tags">
+            <span class="tag">AI image editor</span>
+            <span class="tag">local edits</span>
+            <span class="tag">photo editing AI</span>
+            <span class="tag">background replacement</span>
+            <span class="tag">character consistency</span>
+          </div>
+        </div>
+        <div>
+          <img class="art" src="./nano.png" alt="Nano Banana illustration" width="1256" height="1247"
+            fetchpriority="high" decoding="async" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="try">
+      <div class="cta">
+        <h2>Try Nano Banana in LMArena</h2>
+        <p class="lead">Validate text‑guided image editing in minutes. Try real prompts and compare outputs.</p>
+        <p><a class="btn blue" href="https://lmarena.ai/?chat-modality=image" target="_blank" rel="noopener">Open
+            LMArena →</a></p>
+      </div>
+    </section>
+
+    <section class="section" id="comparison">
+      <h2>Start Creating</h2>
+      <p class="lead" style="text-align: center; margin-top: 40px;">
+        Explore our model gallery, view reproducible examples, and learn how to run them locally.
+      </p>
+
+      <p class="lead mt8" style="text-align: center;">
+        <a href="guides/quickstart.html" class="btn btn-glass">Get Started & View Models →</a>
+      </p>
+    </section>
+
+    <section class="section" id="what">
+      <h2>What is Nano Banana?</h2>
+      <p class="lead">Nano Banana is a text‑guided AI image editor focused on <strong>precise local edits</strong>. It
+        maintains <strong>character consistency</strong> and blends changes naturally into the original scene. We track
+        progress versus peers like <em>FLUX Kontext</em> and provide recipes you can reproduce.</p>
+      <div class="kpis">
+        <div class="kpi">
+          <div class="num">5‑min</div>
+          <div class="label">to first edit</div>
+        </div>
+        <div class="kpi">
+          <div class="num">A/B</div>
+          <div class="label">benchmarks vs FLUX</div>
+        </div>
+        <div class="kpi">
+          <div class="num">Copy‑ready</div>
+          <div class="label">prompt recipes</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="benchmarks">
+      <h2>Benchmarks & Reproducibility</h2>
+      <p class="lead">Each benchmark publishes the original inputs, masks (when applicable), and fixed parameters (seed,
+        steps, guidance) for <strong>apples‑to‑apples</strong> comparisons. With the same prompt and settings, you can
+        reproduce our results or swap a different model. Clear visuals emphasize local edit quality, identity
+        consistency, and background replacement.</p>
+    </section>
+
+    <section class="section" id="why">
+      <h2>Why choose Nano Banana</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Precise Local Edits</h3>
+          <p>Text‑guided AI image editor optimized for <strong>local edits</strong> and <strong>background
+              replacement</strong> without affecting the entire scene.</p>
+        </div>
+        <div class="card">
+          <h3>Character Consistency</h3>
+          <p><strong>Character consistency</strong> and <strong>scene preservation</strong> you can verify versus peers
+            like <em>FLUX Kontext</em> in our benchmarks.</p>
+        </div>
+        <div class="card">
+          <h3>Reproducible Results</h3>
+          <p>Fixed <code>seed/steps/guidance</code> parameters, downloadable inputs & masks for transparent,
+            reproducible comparisons.</p>
+        </div>
+        <div class="card">
+          <h3>Quick to Start</h3>
+          <p>5‑minute quickstart guide and <strong>copy‑ready prompt recipes</strong> for everyday image editing
+            workflows.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="use-cases">
+      <h2>Real‑world use cases</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Social profile updates</h3>
+          <p>Change outfits, adjust background, or fix lighting with text prompts while keeping identity consistent.</p>
+        </div>
+        <div class="card">
+          <h3>Product photography</h3>
+          <p>Replace backgrounds, add props, or local retouching without breaking scene realism.</p>
+        </div>
+        <div class="card">
+          <h3>Marketing creatives</h3>
+          <p>Quickly iterate banners/posters; preserve subject pose and blend edits naturally.</p>
+        </div>
+        <div class="card">
+          <h3>Content creation</h3>
+          <p>Streamline photo editing for blogs, social media, and digital content with consistent AI-powered results.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="testimonials">
+      <h2>What users say</h2>
+      <div class="grid">
+        <div class="card">
+          <p class="lead">“Edits feel natural and keep the face consistent across shots.”</p>
+          <p><small>Designer, portrait workflow</small></p>
+        </div>
+        <div class="card">
+          <p class="lead">“Prompt‑based background swaps that don’t destroy lighting—huge time saver.”</p>
+          <p><small>E‑commerce operator</small></p>
+        </div>
+        <div class="card">
+          <p class="lead">"Compared with FLUX Kontext, scene preservation is more reliable in our tests."</p>
+          <p><small>Creative studio</small></p>
+        </div>
+        <div class="card">
+          <p class="lead">"Background replacement quality beats manual editing, saves hours per project."</p>
+          <p><small>Photo retoucher</small></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="share">
+      <h2>Share</h2>
+      <p class="lead">If this site helps you, share it with friends.</p>
+      <div class="btn-group">
+        <a class="btn"
+          href="https://twitter.com/intent/tweet?text=Nano%20Banana%20%E2%80%94%20Image%20Editing%20Benchmarks%20%26%20Quickstart&url=https%3A%2F%2Fwww.nano-banana.live%2F"
+          target="_blank" rel="noopener">Share on X</a>
+        <a class="btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.nano-banana.live%2F"
+          target="_blank" rel="noopener">Share on LinkedIn</a>
+      </div>
+    </section>
+
+    <section class="section" id="latest">
+      <h2>Latest</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Portrait editing benchmark</h3>
+          <p>A/B comparison: Nano Banana vs FLUX Kontext on face/character consistency.</p>
+          <a href="benchmarks/portrait-editing.html">Open benchmark →</a>
+        </div>
+        <div class="card">
+          <h3>Quickstart</h3>
+          <p>Run Nano Banana via Colab or locally. Minimal steps to first edit.</p>
+          <a href="guides/quickstart.html">Read guide →</a>
+        </div>
+        <div class="card">
+          <h3>Prompt recipes</h3>
+          <p>Copy‑ready prompts for local edits, replacement, and style tweaks.</p>
+          <a href="prompts/index.html">Browse prompts →</a>
+        </div>
+        <div class="card">
+          <h3>FAQ & Support</h3>
+          <p>Common questions about AI image editing, character consistency, and commercial usage.</p>
+          <a href="faq.html">Read FAQ →</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="benchmarks/index.html">Benchmarks</a></li>
+            <li><a href="prompts/index.html">Prompt Recipes</a></li>
+            <li><a href="guides/quickstart.html">Quickstart Guide</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="https://lmarena.ai/?chat-modality=image" target="_blank" rel="noopener">Try in LMArena</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Connect</h4>
+          <ul>
+            <li><a
+                href="https://twitter.com/intent/tweet?text=Nano%20Banana%20%E2%80%94%20Image%20Editing%20Benchmarks%20%26%20Quickstart&url=https%3A%2F%2Fwww.nano-banana.live%2F"
+                target="_blank" rel="noopener">Share on X</a></li>
+            <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.nano-banana.live%2F"
+                target="_blank" rel="noopener">Share on LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© <span id="y"></span> Nano Banana — English‑first, static‑first. <a href="https://www.nano-banana.live/"
+            target="_blank" rel="noopener">nano-banana.live</a></p>
+      </div>
+    </footer>
+  </div>
+  <div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Image preview"><img
+      id="lightboxImg" alt="Preview" />
+    <div class="hint">Click anywhere to close · Esc</div>
+  </div>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();
+    // lightbox
+    (function () {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightboxImg');
+      document.querySelectorAll('.compare-row a[data-fullsrc]').forEach(a => {
+        a.addEventListener('click', e => { e.preventDefault(); img.src = a.getAttribute('data-fullsrc'); lb.classList.remove('hidden'); });
+      });
+      const close = () => { img.src = ''; lb.classList.add('hidden'); }
+      lb.addEventListener('click', close);
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    })();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>How to Run Nano Banana Locally | Integration Guide | Nano Banana</title>
+    <meta name="description"
+        content="Step-by-step guide to running the Nano Banana Python client locally. Understand why the Pro model is cloud-based and how to control it from your terminal." />
+    <link rel="stylesheet" href="../styles.css" />
+    <style>
+        body {
+            background-image: radial-gradient(circle at 50% 0%, rgba(192, 235, 117, 0.05) 0%, transparent 50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="nav">
+            <a href="../index.html" class="logo"><img src="../favicon.png" alt="Nano" width="24" height="24">Nano
+                Banana</a>
+            <div class="nav-links">
+                <a href="../benchmarks/index.html">Benchmarks</a>
+                <a href="../prompts/index.html">Prompts</a>
+                <a href="../guides/quickstart.html">Quickstart</a>
+                <a href="../blog.html" class="active">Blog</a>
+            </div>
+        </nav>
+
+        <article class="article-container">
+            <header class="article-header">
+                <div class="meta" style="justify-content: center; display: flex;">Integration • Jan 20, 2026</div>
+                <h1>How to Run Nano Banana Locally: A Definitive Guide</h1>
+                <p class="lead" style="margin: 20px auto;">Everything you need to know about setting up the local Python
+                    client.</p>
+                <div class="article-image bg-gradient-1"
+                    style="height: 400px; margin-top: 40px; display: flex; align-items: center; justify-content: center;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 4em; margin-bottom: 0px;">💻</div>
+                        <div style="font-family: monospace; color: rgba(255,255,255,0.7);">nano_api.py</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="article-content">
+                <div
+                    style="background: rgba(255, 0, 0, 0.1); border-left: 4px solid #f87171; padding: 20px; margin-bottom: 30px; border-radius: 0 8px 8px 0;">
+                    <h3 style="margin-top: 0; color: #f87171;">The "Closed Source" Reality</h3>
+                    <p>Before we begin, a crucial clarification: <strong>Nano Banana Pro cannot truly run
+                            offline.</strong></p>
+                    <p>Why? Because the core model is **closed source**. It runs on Google's Gemini 3.0 infrastructure.
+                        When you "run it locally," you are actually running a <strong>local client</strong> that sends
+                        instructions to our cloud brain.</p>
+                </div>
+
+                <h2>Step 1: Get Your API Key</h2>
+                <p>Since the logic happens in the cloud, you need a key to unlock it.</p>
+                <ol>
+                    <li>Visit <a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a>.</li>
+                    <li>Click "Get API Key".</li>
+                    <li>Copy it to a safe place.</li>
+                </ol>
+
+                <h2>Step 2: Prepare Your Environment</h2>
+                <p>You don't need a GPU, but you do need Python.</p>
+                <pre><code class="language-bash"># Check if you have Python installed
+python --version
+
+# Create a clean workspace
+mkdir nano-client
+cd nano-client
+python -m venv venv
+# On Windows:
+.\venv\Scripts\activate
+# On Mac/Linux:
+source venv/bin/activate</code></pre>
+
+                <h2>Step 3: Install the Client SDK</h2>
+                <p>We use the official Google GenAI SDK to communicate with the Pro model.</p>
+                <pre><code class="language-bash">pip install google-genai pillow</code></pre>
+
+                <h2>Step 4: The Core Script</h2>
+                <p>Save the following as <code>nano_api.py</code>:</p>
+                <pre><code class="language-python">import os
+from google import genai
+from PIL import Image
+
+# Paste your key here (or better, use environment variables)
+os.environ["GOOGLE_API_KEY"] = "YOUR_KEY_HERE"
+
+client = genai.Client(api_key=os.environ["GOOGLE_API_KEY"])
+
+print("Connecting to Nano Banana Pro (Cloud)...")
+# Your logic here...
+</code></pre>
+
+                <h2>Want True Offline?</h2>
+                <p>If you strictly need to run without internet (e.g., for air-gapped security), you cannot use Nano
+                    Banana Pro. Instead, check out the <strong>Z-Image Turbo</strong> alternative in our <a
+                        href="../guides/quickstart.html">Quickstart Guide</a>. It is open-source and runs completely
+                    offline, provided you have an RTX 4080 or better.</p>
+            </div>
+        </article>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="../benchmarks/index.html">Benchmarks</a></li>
+                        <li><a href="../prompts/index.html">Prompt Recipes</a></li>
+                        <li><a href="../guides/quickstart.html">Quickstart Guide</a></li>
+                        <li><a href="../faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="../blog.html">Blog</a></li>
+                        <li><a href="../about.html">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="../privacy.html">Privacy Policy</a></li>
+                        <li><a href="../terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>©
+                    <script>document.write(new Date().getFullYear())</script> Nano Banana
+                </p>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

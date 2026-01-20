@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b0f14" />
+  <meta name="color-scheme" content="dark" />
+  <title>FAQ | Nano Banana | Mzu</title>
+  <meta name="description"
+    content="FAQ about Nano Banana AI image editor: how it works, speed vs competitors, character consistency, and API availability." />
+  <meta name="keywords"
+    content="Nano Banana FAQ, AI image editor, character consistency, FLUX Kontext comparison, API, benchmarks" />
+  <link rel="canonical" href="https://www.nano-banana.live/faq.html" />
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+  <meta property="og:title" content="Nano Banana | Frequently Asked Questions | Mzu" />
+  <meta property="og:description"
+    content="Quick answers about Nano Banana AI image editor: capabilities, speed vs FLUX Kontext, character consistency, licensing, API, and free benchmarks." />
+  <meta property="og:image" content="https://www.nano-banana.live/og.svg" />
+  <meta property="og:site_name" content="Nano Banana" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="apple-touch-icon" href="/nano.png" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="./styles.css" />
+  <style>
+    h1 {
+      font-size: clamp(34px, 3.6vw, 44px);
+      line-height: 1.25
+    }
+
+    .lead {
+      opacity: .9
+    }
+
+    .faq-grid {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: 1fr;
+    }
+
+    @media(min-width:900px) {
+      .faq-grid {
+        grid-template-columns: 1fr 1fr
+      }
+    }
+
+    .toc {
+      margin: 12px 0 28px;
+      padding: 12px 16px;
+      border: 1px solid #233244;
+      border-radius: 10px;
+      background: #0e141b
+    }
+
+    .toc a {
+      color: #9cc6ff;
+      text-decoration: none;
+      margin-right: 14px
+    }
+
+    details {
+      border: 1px solid #233244;
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: #0e141b
+    }
+
+    details[open] {
+      background: #101821
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      list-style: none
+    }
+
+    summary::-webkit-details-marker {
+      display: none
+    }
+
+    .hint {
+      font-size: .92rem;
+      opacity: .85
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "name":"FAQ — Nano Banana",
+    "url":"https://www.nano-banana.live/faq.html",
+    "inLanguage":"en",
+    "description":"Answers to common questions about the Nano Banana image editing model.",
+    "isPartOf":{"@type":"WebSite","name":"Nano Banana","url":"https://www.nano-banana.live/"}
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"What is Nano Banana?","acceptedAnswer":{"@type":"Answer","text":"Nano Banana is a text-to-image editing model focused on controllable, iterative edits. It understands both text and visual context to modify existing images while keeping style and structure coherent."}},
+      {"@type":"Question","name":"How does Nano Banana's AI technology work?","acceptedAnswer":{"@type":"Answer","text":"The system encodes text and image into a shared semantic space, then uses a controlled, iterative generator to refine targeted regions. Attention plus prompt/mask constraints preserve global composition and lighting while applying local, reproducible edits."}},
+      {"@type":"Question","name":"How fast is it?","acceptedAnswer":{"@type":"Answer","text":"Interactive speed for most edits; typical tasks complete within ~10–30 seconds depending on resolution and hardware."}},
+      {"@type":"Question","name":"Can it keep character consistency?","acceptedAnswer":{"@type":"Answer","text":"Yes. The model is optimized to preserve identity and style across scenes. Use consistent prompts and seeds for best results."}},
+      {"@type":"Question","name":"What can I create?","acceptedAnswer":{"@type":"Answer","text":"Portrait retouching, background replacement, local edits, product shots, and style tweaks. See Benchmarks for reproducible examples."}},
+      {"@type":"Question","name":"Is it official?","acceptedAnswer":{"@type":"Answer","text":"We track public sources and community experiments. This site aggregates information and reproducible workflows as things mature."}},
+      {"@type":"Question","name":"Commercial usage","acceptedAnswer":{"@type":"Answer","text":"Follow the license of the specific release or service you run. Check terms before commercial deployment."}},
+      {"@type":"Question","name":"API availability","acceptedAnswer":{"@type":"Answer","text":"If stable public endpoints become available, we will link and compare them here. Currently we focus on local and notebook guides."}},
+      {"@type":"Question","name":"How to reproduce benchmarks?","acceptedAnswer":{"@type":"Answer","text":"Each benchmark lists inputs, parameters, and downloads. Follow the Quickstart, then replicate settings from the benchmark page."}}
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="./index.html"><img src="./favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="./benchmarks/index.html">Benchmarks</a>
+        <a href="./prompts/index.html">Prompts</a>
+        <a href="./guides/quickstart.html">Quickstart</a>
+        <a class="active" href="./faq.html">FAQ</a>
+        <a href="./about.html">About</a>
+        <a href="./blog.html">Blog</a>
+      </div>
+    </nav>
+    <div class="tags" role="navigation" aria-label="Quick jump">
+      <a class="tag" href="#what">What</a>
+      <a class="tag" href="#tech">How it works</a>
+      <a class="tag" href="#speed">Speed</a>
+      <a class="tag" href="#consistency">Consistency</a>
+      <a class="tag" href="#create">Use cases</a>
+      <a class="tag" href="#compare">Compared</a>
+      <a class="tag" href="#license">Commercial</a>
+      <a class="tag" href="#api">API</a>
+      <a class="tag" href="#reproduce">Reproduce</a>
+    </div>
+
+    <section class="section">
+      <h1>Frequently Asked Questions</h1>
+      <p class="lead">Clear, practical answers about Nano Banana. Need more help? See <a
+          href="./guides/quickstart.html">Quickstart</a> or explore <a href="./benchmarks/">Benchmarks</a>.</p>
+
+      <div class="toc hint">
+        Jump to:
+        <a href="#what">What is it</a>
+        <a href="#tech">How it works</a>
+        <a href="#speed">Speed</a>
+        <a href="#consistency">Character consistency</a>
+        <a href="#create">What to create</a>
+        <a href="#compare">Compared to others</a>
+        <a href="#license">Commercial use</a>
+        <a href="#api">API</a>
+        <a href="#reproduce">Reproduce benchmarks</a>
+      </div>
+    </section>
+
+    <section class="section faq-grid">
+      <details id="what" open>
+        <summary>What is Nano Banana?</summary>
+        <div>
+          Nano Banana is an <strong>AI image editing brain</strong> powered by Gemini 3.0. Unlike traditional "filters,"
+          it understands natural language instructions (e.g., "Make the cat wear sunglasses") to perform precise,
+          context-aware edits.
+        </div>
+      </details>
+
+      <details id="local">
+        <summary>Can I run Nano Banana locally?</summary>
+        <div>
+          <strong>Yes and No.</strong> The "Pro" model (Gemini 3.0) is closed-source and cannot run totally offline.
+          However, you can run the <strong>Nano Banana Client</strong> locally via Python to control it from your
+          terminal. <br><br>
+          If you need a 100% offline solution (e.g., for air-gapped security), check out our <a
+            href="./blog/hardware-requirements.html">Hardware Guide</a> for alternative models like Z-Image Turbo
+          (Requires 16GB+ VRAM).
+        </div>
+      </details>
+
+      <details id="cost">
+        <summary>Is it free?</summary>
+        <div>
+          The local Python Client uses Google's Gemini API, which currently offers a generous free tier for
+          experimentation. Heavy commercial use may require a paid billing account with Google Cloud.
+        </div>
+      </details>
+
+      <details id="speed">
+        <summary>How fast is it?</summary>
+        <div>
+          The <strong>Pro Client</strong> takes about 5-10 seconds per edit (Cloud Latency).<br>
+          <strong>Offline Models</strong> (Z-Image) can generate in ~2 seconds on an RTX 4090, or ~2 minutes on a CPU.
+        </div>
+      </details>
+
+      <details id="consistency">
+        <summary>How do I keep character consistency?</summary>
+        <div>
+          Consistency is Nano Banana's main strength over models like Flux. Our "Instruction Mode" preserves structural
+          identity by default. For advanced consistency, check our <a href="./blog/top-prompt-recipes.html">Recipes</a>
+          for "Outfit Change" workflows.
+        </div>
+      </details>
+
+      <details id="api">
+        <summary>Where is the API Key?</summary>
+        <div>
+          You can get your key from <a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a>. Once
+          you have it, set `export GOOGLE_API_KEY=your_key` in your terminal to empower the client.
+        </div>
+      </details>
+
+      <details id="commercial">
+        <summary>Can I use images commercially?</summary>
+        <div>
+          Images generated via Gemini 3.0 (Pro) are generally yours to own, but subject to Google's Generative AI terms.
+          Offline models (Z-Image) are often Apache 2.0. Always verify the specific model license before commercial
+          deployment.
+        </div>
+      </details>
+
+      <details id="reproduce">
+        <summary>How do I reproduce benchmark results?</summary>
+        <div>
+          Each benchmark page lists the exact Prompt, Seed, and Model Version. If using the Cloud Client, results may
+          vary slightly over time as the base model updates. Offline models offer bit-exact reproducibility.
+        </div>
+      </details>
+    </section>
+
+    <section class="section hint">Last updated: <time id="lu"></time></section>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="./benchmarks/index.html">Benchmarks</a></li>
+            <li><a href="./prompts/index.html">Prompt Recipes</a></li>
+            <li><a href="./guides/quickstart.html">Quickstart Guide</a></li>
+            <li><a href="./faq.html">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="./blog.html">Blog</a></li>
+            <li><a href="./about.html">About</a></li>
+            <li><a href="https://lmarena.ai/?chat-modality=image" target="_blank" rel="noopener">Try in LMArena</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="./privacy.html">Privacy Policy</a></li>
+            <li><a href="./terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Connect</h4>
+          <ul>
+            <li><a
+                href="https://twitter.com/intent/tweet?text=Nano%20Banana%20%E2%80%94%20Image%20Editing%20Benchmarks%20%26%20Quickstart&url=https%3A%2F%2Fwww.nano-banana.live%2F"
+                target="_blank" rel="noopener">Share on X</a></li>
+            <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.nano-banana.live%2F"
+                target="_blank" rel="noopener">Share on LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p> <span id="y"></span> Nano Banana — English‑first, static‑first. <a href="https://www.nano-banana.live/"
+            target="_blank" rel="noopener">nano-banana.live</a></p>
+      </div>
+    </footer>
+  </div>
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    const d = new Date();
+    document.getElementById('lu').textContent = d.toISOString().slice(0, 10);
+  </script>
+</body>
+
+</html>

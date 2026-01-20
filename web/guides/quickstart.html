@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P0QMF67972"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-P0QMF67972');
+  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b0f14" />
+  <meta name="color-scheme" content="dark" />
+
+  <!-- SEO Optimization -->
+  <title>Run Nano Banana Locally | Local Install & Offline AI Models | Mzu</title>
+  <meta name="description"
+    content="Learn how to run Nano Banana locally. A complete Nano Banana local install guide with Python scripts, offline models (GLM, Qwen, Z-Image), and copy-ready nano banana recipes." />
+  <meta name="keywords"
+    content="run nano banana locally, how to run nano banana locally, nano banana local install, nano banana recipes, offline AI image editor, local LLM image generation" />
+
+  <link rel="icon" href="../favicon.png" type="image/png" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    /* Page-Specific Overrides */
+
+    .hardware-specs {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 16px 0;
+      border: 1px solid var(--glass-border);
+      font-size: 0.9em;
+    }
+
+    .spec-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .spec-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 10px;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .dot-green {
+      background: #4ade80;
+      box-shadow: 0 0 10px rgba(74, 222, 128, 0.4);
+    }
+
+    .dot-yellow {
+      background: #facc15;
+      box-shadow: 0 0 10px rgba(250, 204, 21, 0.4);
+    }
+
+    .dot-red {
+      background: #f87171;
+      box-shadow: 0 0 10px rgba(248, 113, 113, 0.4);
+    }
+
+    .gallery-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      margin: 40px 0;
+    }
+
+    .gallery-item {
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+      background: #000;
+      display: block;
+    }
+
+    .gallery-caption {
+      text-align: center;
+      color: var(--text-muted);
+      margin-top: 12px;
+      font-size: 0.9em;
+      font-style: italic;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 20px 0;
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85em;
+    }
+
+    .data-table th {
+      background: rgba(255, 255, 255, 0.05);
+      text-align: left;
+      padding: 12px;
+      color: #fff;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .data-table td {
+      padding: 12px;
+      border-top: 1px solid var(--glass-border);
+      color: var(--text-muted);
+    }
+
+    .data-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+      color: #fff;
+    }
+
+    .rank-num {
+      font-weight: 900;
+      color: var(--primary);
+      font-size: 1.2em;
+      margin-right: 8px;
+    }
+
+    /* Collapsible */
+    details {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+      margin-top: 24px;
+      transition: background 0.2s;
+    }
+
+    summary {
+      padding: 16px;
+      cursor: pointer;
+      color: var(--text-main);
+      font-weight: 600;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+
+    summary:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    summary::after {
+      content: '+';
+      font-size: 1.2em;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+
+    details[open] summary::after {
+      content: '-';
+    }
+
+    details[open] summary {
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .details-body {
+      padding: 24px;
+      overflow-x: auto;
+    }
+
+    .model-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .model-title {
+      font-size: 2em;
+      margin: 0;
+      background: none;
+      -webkit-text-fill-color: initial;
+      color: #fff;
+    }
+
+    .badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75em;
+      font-weight: 700;
+      text-transform: uppercase;
+      border: 1px solid var(--glass-border);
+      white-space: nowrap;
+    }
+
+    .badge-primary {
+      background: rgba(192, 235, 117, 0.1);
+      color: var(--primary);
+      border-color: rgba(192, 235, 117, 0.3);
+    }
+
+    .badge-blue {
+      background: rgba(77, 171, 247, 0.1);
+      color: var(--secondary);
+      border-color: rgba(77, 171, 247, 0.3);
+    }
+
+    .badge-gray {
+      background: rgba(255, 255, 255, 0.05);
+      color: #999;
+    }
+
+    .paper-info {
+      margin-bottom: 24px;
+      border-left: 2px solid var(--primary);
+      padding-left: 16px;
+      background: rgba(192, 235, 117, 0.05);
+      padding: 16px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .paper-title {
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+      display: block;
+      font-size: 1.1em;
+    }
+
+    .paper-meta {
+      font-size: 0.9em;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 8px;
+      font-family: monospace;
+    }
+
+    pre code {
+      font-size: 0.85em;
+    }
+
+    /* Repo Content Specifics */
+    .repo-content h3 {
+      font-size: 1.2em;
+      margin-top: 24px;
+      color: #fff;
+      border-bottom: 1px solid var(--glass-border);
+      padding-bottom: 8px;
+    }
+
+    .repo-content p {
+      font-size: 0.95em;
+      line-height: 1.7;
+    }
+
+    .repo-content ul {
+      padding-left: 20px;
+      color: var(--text-muted);
+      font-size: 0.95em;
+    }
+
+    .repo-content li {
+      margin-bottom: 8px;
+    }
+
+    .highlight-box {
+      background: rgba(255, 204, 0, 0.1);
+      border: 1px solid rgba(255, 204, 0, 0.2);
+      padding: 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+      color: #ddd;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html" class="logo"><img src="../favicon.png" alt="Nano Banana" width="24" height="24">Nano
+        Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="quickstart.html" class="active">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../about.html">About</a>
+        <a href="../blog.html">Blog</a>
+      </div>
+    </nav>
+
+    <div style="text-align:center; padding: 40px 0 20px;">
+      <h1 style="font-size: 3.5em; margin-bottom: 10px;">Run Nano Banana Locally</h1>
+      <p class="lead" style="margin: 0 auto; max-width: 800px;">
+        The definitive hub for <strong>local installs</strong>. Compare enterprise-grade models for your hardware, from
+        cloud APIs to highly efficient <strong>offline</strong> engines.
+      </p>
+    </div>
+
+    <!-- LANDSCAPE TABLE -->
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Rank / Model</th>
+            <th>Type</th>
+            <th>Best For</th>
+            <th>GPU Req</th>
+            <th>TIIF Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="rank-num">#1</span> Nano Banana 2.0</td>
+            <td><span class="badge badge-primary">Closed</span></td>
+            <td>Logic & Reasoning</td>
+            <td>—</td>
+            <td>91.00</td>
+          </tr>
+          <tr>
+            <td><span class="rank-num">#2</span> Seedream 4.5</td>
+            <td><span class="badge badge-blue">Closed</span></td>
+            <td>General Purpose</td>
+            <td>—</td>
+            <td>90.49</td>
+          </tr>
+          <tr>
+            <td><span class="rank-num">#3</span> GLM-Image</td>
+            <td><span class="badge badge-gray">Open</span></td>
+            <td>Knowledge & Text</td>
+            <td>24GB</td>
+            <td>81.01</td>
+          </tr>
+          <tr>
+            <td><span class="rank-num">#4</span> Qwen-Image</td>
+            <td><span class="badge badge-gray">Open</span></td>
+            <td>Photorealism</td>
+            <td>24GB</td>
+            <td>86.14</td>
+          </tr>
+          <tr>
+            <td><span class="rank-num">#5</span> Z-Image-Turbo</td>
+            <td><span class="badge badge-gray">Open</span></td>
+            <td>Speed (8-step)</td>
+            <td>16GB</td>
+            <td>80.20</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr style="border:0; border-top:1px solid var(--glass-border); margin: 60px 0;">
+
+    <!-- 1. NANO BANANA PRO -->
+    <div id="nano-banana" class="card" style="border-color: var(--primary-glow);">
+      <div class="model-header">
+        <h2 class="model-title" style="color:var(--primary)">Nano Banana 2.0 (Pro)</h2>
+        <div class="badges"><span class="badge badge-primary">Recommended</span></div>
+      </div>
+      <p>Powered by Gemini 3.0 Pro logic. The best choice if you cannot <strong>run locally</strong>.</p>
+      <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; margin: 20px 0;">
+        <pre style="margin:0; background:transparent; border:none; padding:0;"><code>pip install google-genai
+from google import genai
+client = genai.Client(api_key="YOUR_KEY")</code></pre>
+      </div>
+      <a href="https://aistudio.google.com/" target="_blank" class="btn btn-primary">Launch AI Studio</a>
+    </div>
+
+    <!-- 2. SEEDREAM -->
+    <div id="seedream" class="card">
+      <div class="model-header">
+        <h2 class="model-title">Seedream 4.5</h2>
+        <div class="badges"><span class="badge badge-blue">Alternative</span></div>
+      </div>
+      <p>Cloud alternative for "run locally" quality without overhead.</p>
+      <a href="https://seed.bytedance.com/en/seedream4_5" target="_blank" class="btn btn-glass">Visit Official Site
+        ↗</a>
+    </div>
+
+    <h3 style="margin-top:80px; text-align:center; opacity:0.6; letter-spacing: 2px;">OFFLINE MODELS (LOCAL INSTALL)
+    </h3>
+
+    <!-- 3. GLM-IMAGE -->
+    <div id="glm-image" class="card">
+      <div class="model-header">
+        <h2 class="model-title">GLM-Image</h2>
+        <div class="badges"><span class="badge badge-gray">Knowledge</span> <span class="badge badge-gray">9B
+            Params</span></div>
+      </div>
+      <p>A hybrid autoregressive model for dense information generation.</p>
+      <div class="hardware-specs">
+        <div class="spec-item"><span class="dot dot-green"></span> <strong>Recommended:</strong> RTX 3090 / 4090 (24GB)
+        </div>
+        <div class="spec-item"><span class="dot dot-red"></span> <strong>Minimum:</strong> 24GB VRAM required</div>
+      </div>
+      <div class="gallery-stack">
+        <div><img src="https://raw.githubusercontent.com/zai-org/GLM-Image/main/resources/show_case_t2i.jpeg"
+            class="gallery-item" loading="lazy">
+          <div class="gallery-caption">T2I Dense Knowledge</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:16px; margin:20px 0;">
+        <a href="https://huggingface.co/zai-org/GLM-Image" class="btn btn-glass">🤗 Hugging Face</a>
+        <a href="https://modelscope.cn/models/ZhipuAI/GLM-Image" class="btn btn-glass">🤖 ModelScope</a>
+      </div>
+
+      <details>
+        <summary>Full Technical Details (Repo Mirror)</summary>
+        <div class="details-body repo-content">
+          <div class="paper-info">
+            <span class="paper-title">GLM-Image: Auto-regressive for Dense-knowledge and High-fidelity Image
+              Generation</span>
+            <span class="paper-meta">Zhipu AI Team · 2025</span>
+            <p>Hybrid Architecture: AR Transformer (Semantic) + Diffusion Decoder (Detail).</p>
+          </div>
+          <h3>Introduction</h3>
+          <p>GLM-Image is an image generation model that adopts a hybrid autoregressive + diffusion decoder
+            architecture. It aligns with mainstream latent diffusion approaches in general quality but shows significant
+            advantages in text-rendering and knowledge-intensive generation. It supports T2I, Inpainting, and Style
+            Transfer.</p>
+
+          <h3>Architecture</h3>
+          <img src="https://raw.githubusercontent.com/zai-org/GLM-Image/main/resources/architecture_1.jpeg"
+            style="width:100%; border-radius:8px;">
+          <ul>
+            <li><strong>Autoregressive Generator</strong>: 9B parameter model initialized from GLM-4-9B. Expands 256
+              compact tokens to 1K-4K visual tokens.</li>
+            <li><strong>Diffusion Decoder</strong>: 7B parameter single-stream DiT for latent decoding. Features a Glyph
+              Encoder for text rendering.</li>
+          </ul>
+
+          <h3>Inference Cost (H100)</h3>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Res</th>
+                  <th>Batch</th>
+                  <th>Time (s)</th>
+                  <th>Peak VRAM</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1024x1024</td>
+                  <td>1</td>
+                  <td>64.34</td>
+                  <td>37.82 GB</td>
+                </tr>
+                <tr>
+                  <td>2048x2048</td>
+                  <td>1</td>
+                  <td>252.59</td>
+                  <td>45.08 GB</td>
+                </tr>
+                <tr>
+                  <td>512x512</td>
+                  <td>1</td>
+                  <td>27.30</td>
+                  <td>34.26 GB</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Quick Start: Diffusers</h3>
+          <pre><code>pip install git+https://github.com/huggingface/diffusers.git transformers
+import torch
+from diffusers import GlmImagePipeline
+pipe = GlmImagePipeline.from_pretrained("zai-org/GLM-Image", torch_dtype=torch.bfloat16).to("cuda")
+image = pipe(prompt="A futuristic city", width=1024, height=1024).images[0]</code></pre>
+
+          <h3>Quick Start: SGLang Server</h3>
+          <pre><code>pip install "sglang[diffusion] @ git+https://github.com/sgl-project/sglang.git"
+sglang serve --model-path zai-org/GLM-Image
+# Client
+curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", "size": "1024x1024"}'</code></pre>
+
+          <div class="highlight-box">
+            <strong>Note:</strong> Target image resolution must be divisible by 32. Requires >80GB memory or multi-GPU
+            for training/finetuning, but inference fits on 24GB with optimizations.
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- 4. QWEN-IMAGE -->
+    <div id="qwen-image" class="card" class="gradient-qwen" style="border-top: 1px solid rgba(255, 165, 0, 0.3);">
+      <div class="model-header">
+        <h2 class="model-title">Qwen-Image</h2>
+        <div class="badges"><span class="badge badge-gray">Photorealism</span> <span class="badge badge-gray">20B
+            Params</span></div>
+      </div>
+      <p>A massive 20B MMDiT foundation model. Unmatched realism in humans, nature, and complex textures.</p>
+      <div class="hardware-specs">
+        <div class="spec-item"><span class="dot dot-green"></span> <strong>Recommended:</strong> RTX 3090 / 4090 (24GB)
+        </div>
+        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Minimum:</strong> RTX 3080 12GB (Restricted)
+        </div>
+      </div>
+      <div class="gallery-stack">
+        <img src="https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-Image/image2512/幻灯片1.JPG" class="gallery-item"
+          loading="lazy">
+        <img src="https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-Image/image2512/幻灯片5.JPG" class="gallery-item"
+          loading="lazy">
+      </div>
+      <div style="display:flex; gap:16px; margin:20px 0;">
+        <a href="https://huggingface.co/Qwen/Qwen-Image-2512" class="btn btn-glass">🤗 Qwen-2512</a>
+        <a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" class="btn btn-glass">🤗 Edit-2511</a>
+      </div>
+
+      <details>
+        <summary>Full Technical Details (Repo Mirror)</summary>
+        <div class="details-body repo-content">
+          <div class="paper-info">
+            <span class="paper-title">Qwen-Image Technical Report</span>
+            <span class="paper-meta">Alibaba Cloud · arXiv:2508.02324 · 2025</span>
+            <p>20B Parameter MMDiT Image Foundation Model.</p>
+          </div>
+
+          <h3>News & Updates</h3>
+          <ul>
+            <li><strong>2025.12.31:</strong> Released Qwen-Image-2512! Enhanced human realism, finer natural textures,
+              and improved text rendering. Ranks #1 Open Source on AI Arena.</li>
+            <li><strong>2025.12.23:</strong> Released Qwen-Image-Edit-2511. Improved consistency and multi-person
+              editing.</li>
+            <li><strong>2025.12.19:</strong> Released Qwen-Image-Layered.</li>
+          </ul>
+
+          <h3>Showcase: Qwen-Image-Edit-2511</h3>
+          <p>Supports multi-person consistency and built-in LoRA support (Lighting, Viewpoint).</p>
+          <img src="https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-Image/edit2511/幻灯片5.JPG" class="gallery-item">
+
+          <h3>Deployment & Acceleration</h3>
+          <ul>
+            <li><strong>vLLM-Omni:</strong> Day-0 support for high performance offline inference.</li>
+            <li><strong>LightX2V:</strong> 25x reduction in DiT NFEs, 42x speedup for editing.</li>
+            <li><strong>Multi-GPU API Server:</strong> Supports queue management and auto prompt optimization.</li>
+          </ul>
+
+          <h3>Prompt Enhance Tool</h3>
+          <pre><code>from tools.prompt_utils import rewrite
+prompt = rewrite("original prompt")</code></pre>
+
+          <h3>Citation</h3>
+          <pre><code>@misc{wu2025qwenimagetechnicalreport, title={Qwen-Image Technical Report}, author={Chenfei Wu et al.}, year={2025}, eprint={2508.02324}}</code></pre>
+        </div>
+      </details>
+    </div>
+
+    <!-- 5. Z-IMAGE TURBO -->
+    <div id="z-image" class="card" style="border-top: 1px solid rgba(139, 92, 246, 0.3);">
+      <div class="model-header">
+        <h2 class="model-title">Z-Image Turbo</h2>
+        <div class="badges"><span class="badge badge-primary">Speed</span> <span class="badge badge-gray">6B
+            Params</span></div>
+      </div>
+      <p>The efficiency king. <strong>8-step</strong> generation via Decoupled-DMD distillation.</p>
+      <div class="hardware-specs">
+        <div class="spec-item"><span class="dot dot-green"></span> <strong>Great:</strong> RTX 4080 / 3090 (16GB+)</div>
+        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Entry:</strong> RX 580 / GTX 1070 (Via cpp)
+        </div>
+      </div>
+      <div class="gallery-stack">
+        <img src="assets/z-image-showcase.png" class="gallery-item" loading="lazy">
+      </div>
+      <div style="display:flex; gap:16px; margin:20px 0;">
+        <a href="https://huggingface.co/Tongyi-MAI/Z-Image-Turbo" class="btn btn-glass">🤗 Hugging Face</a>
+        <a href="https://modelscope.cn/models/Tongyi-MAI/Z-Image-Turbo" class="btn btn-glass">🤖 ModelScope</a>
+      </div>
+
+      <details>
+        <summary>Full Technical Details (Repo Mirror)</summary>
+        <div class="details-body repo-content">
+          <div class="paper-info">
+            <span class="paper-title">Z-Image: An Efficient Image Generation Foundation Model</span>
+            <span class="paper-meta">Tongyi-MAI · arXiv:2511.22699 · 2025</span>
+            <p>Single-Stream DiT with Decoupled-DMD Distillation.</p>
+          </div>
+
+          <h3>Model Zoo</h3>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>Steps</th>
+                  <th>Quality</th>
+                  <th>VRAM Friendly</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Z-Image-Turbo</td>
+                  <td>8</td>
+                  <td>Very High</td>
+                  <td>✅ Yes</td>
+                </tr>
+                <tr>
+                  <td>Z-Image-Base</td>
+                  <td>50</td>
+                  <td>High</td>
+                  <td>❌ No</td>
+                </tr>
+                <tr>
+                  <td>Z-Image-Edit</td>
+                  <td>50</td>
+                  <td>Editing</td>
+                  <td>⚠️ Med</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Decoupled-DMD Algorithm</h3>
+          <p><strong>Core Insight:</strong> Decoupling CFG Augmentation (Engine) from Distribution Matching (Shield).
+            This allows 8-step inference with high fidelity.</p>
+          <img src="https://github.com/Tongyi-MAI/Z-Image/blob/main/assets/decoupled-dmd.webp?raw=true"
+            style="width:100%; border-radius:8px;">
+
+          <h3>Community Acceleration (Low VRAM)</h3>
+          <ul>
+            <li><strong>stable-diffusion.cpp:</strong> Pure C++ inference. Runs on 4GB VRAM. <a
+                href="https://github.com/leejet/stable-diffusion.cpp" style="color:var(--primary)">Link</a></li>
+            <li><strong>Cache-DiT:</strong> 4x speedup on multi-GPU.</li>
+            <li><strong>LeMiCa:</strong> Training-free timestep acceleration.</li>
+          </ul>
+
+          <h3>Citation</h3>
+          <pre><code>@article{team2025zimage, title={Z-Image: An Efficient Image Generation Foundation Model}, author={Z-Image Team}, year={2025}}</code></pre>
+        </div>
+      </details>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="../benchmarks/index.html">Benchmarks</a></li>
+            <li><a href="../prompts/index.html">Prompt Recipes</a></li>
+            <li><a href="quickstart.html">Quickstart Guide</a></li>
+            <li><a href="../faq.html">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="../blog.html">Blog</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="https://lmarena.ai/?chat-modality=image">Try in LMArena</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="../privacy.html">Privacy Policy</a></li>
+            <li><a href="../terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="text-align:center; padding-top:40px; color:var(--text-muted); font-size:14px;">
+        <p>© 2026 Nano Banana — English‑first, static‑first.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

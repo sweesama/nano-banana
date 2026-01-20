@@ -1,0 +1,48 @@
+# Nano Banana — LLM Full Summary
+> Nano Banana is a static, SEO‑friendly hub about a new text‑guided image editing model. We focus on reproducible benchmarks, prompt recipes, and quickstarts. The site is English‑first, minimal/Google‑style UI, mobile‑friendly, and deployable to Vercel.
+
+## Mission
+Help users quickly understand what the model is, how to run it, and how it compares with alternatives like FLUX Kontext. All examples are designed to be reproducible.
+
+## Structure
+- Home: https://www.nano-banana.live/
+  - Hero explaining the model and scope
+  - CTA: Try in LMArena (https://lmarena.ai/?chat-modality=image)
+  - Cards linking to Benchmarks / Quickstart / Prompts
+- Benchmarks index: https://www.nano-banana.live/benchmarks/index.html
+  - Lists available benchmarks
+  - Each benchmark has fixed inputs and parameter sets
+- Portrait Editing Benchmark: https://www.nano-banana.live/benchmarks/portrait-editing.html
+  - Inputs to download, fixed params, and pipeline steps
+  - A/B slider: left (FLUX Kontext) vs right (Nano Banana)
+- Quickstart: https://www.nano-banana.live/guides/quickstart.html
+  - Route A: Google Colab (no setup)
+  - Route B: Local (full control)
+  - Copy buttons for prompt/params/CLI
+- Prompts: https://www.nano-banana.live/prompts/index.html
+  - Copy‑ready prompt recipes with suggested parameters
+- FAQ: https://www.nano-banana.live/faq.html
+- About: https://www.nano-banana.live/about.html
+
+## Content model
+- Benchmark
+  - fields: title, description, inputs (urls), params (seed, steps, guidance, strength, scheduler), pipeline steps, comparison images
+- Prompt
+  - fields: title, prompt text, params (seed, steps, guidance, strength), notes
+- Guide
+  - fields: title, route (colab/local), code blocks, assets
+
+## Technical notes for crawlers
+- All URLs use explicit .html extensions for consistency. Internal navigation uses index.html for directory pages to ensure compatibility with local file:// browsing.
+- Sitemap: https://www.nano-banana.live/sitemap.xml
+- Robots: https://www.nano-banana.live/robots.txt
+- OG image: https://www.nano-banana.live/og.svg
+- Theme color: #0b0f14; color-scheme: dark
+
+## Update cadence
+- Benchmarks: updated when new tasks/inputs are verified
+- Prompts: incremental additions
+- Quickstart: updated after tooling or notebooks change
+
+## Contact
+- Use the About page for ownership/credits; no newsletter or comments for MVP.

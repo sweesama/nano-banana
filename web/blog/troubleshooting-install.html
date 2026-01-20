@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Troubleshooting Local Install | Nano Banana Support</title>
+    <meta name="description"
+        content="Fix common errors when running the Nano Banana client. Solutions for ModuleNotFoundError, API Key errors, and 403 Forbidden issues." />
+    <link rel="stylesheet" href="../styles.css" />
+    <style>
+        body {
+            background-image: radial-gradient(circle at 50% 0%, rgba(214, 51, 108, 0.05) 0%, transparent 50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="nav">
+            <a href="../index.html" class="logo"><img src="../favicon.png" alt="Nano" width="24" height="24">Nano
+                Banana</a>
+            <div class="nav-links">
+                <a href="../benchmarks/index.html">Benchmarks</a>
+                <a href="../prompts/index.html">Prompts</a>
+                <a href="../guides/quickstart.html">Quickstart</a>
+                <a href="../blog.html" class="active">Blog</a>
+            </div>
+        </nav>
+
+        <article class="article-container">
+            <header class="article-header">
+                <div class="meta" style="justify-content: center; display: flex;">Support • Jan 12, 2026</div>
+                <h1>Troubleshooting Your Local Install</h1>
+                <p class="lead" style="margin: 20px auto;">Stuck on "pip install"? Here are the solutions.</p>
+                <div class="article-image bg-gradient-3"
+                    style="height: 400px; margin-top: 40px; display: flex; align-items: center; justify-content: center;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 4em; margin-bottom: 0px;">🔧</div>
+                        <div style="font-family: monospace; color: rgba(255,255,255,0.7);">Error: 403</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="article-content">
+                <h2>1. "ModuleNotFoundError: No module named 'google'"</h2>
+                <p><strong>The Cause:</strong> You likely skipped the environment setup or installed packages globally
+                    but ran inside a venv (or vice versa).</p>
+                <p><strong>The Fix:</strong> Force install the package again in your current terminal:</p>
+                <pre><code>pip install --upgrade google-genai</code></pre>
+
+                <h2>2. API Key Errors (403 / 401)</h2>
+                <p><strong>The Cause:</strong> The client cannot authenticate with the closed-source backend.</p>
+                <p><strong>Checklist:</strong></p>
+                <ul>
+                    <li>Did you actually create a key in Google AI Studio?</li>
+                    <li>Did you enable "Payment" on Google Cloud? (For Pro 1.5/3.0, the free tier is generous but
+                        sometimes requires billing setup).</li>
+                    <li><strong>Region Lock:</strong> If you are in a region where Google is unavailable, you
+                        <em>must</em> use a proxy.</li>
+                </ul>
+
+                <h3>Setting a Proxy in Python</h3>
+                <p>If you are getting connection timeouts:</p>
+                <pre><code class="language-python">import os
+# Set this BEFORE importing google.genai
+os.environ["http_proxy"] = "http://127.0.0.1:7890"
+os.environ["https_proxy"] = "http://127.0.0.1:7890"
+
+from google import genai</code></pre>
+
+                <h2>3. "RuntimeError: CUDA out of memory"</h2>
+                <p><strong>The Cause:</strong> Wait, why are you seeing this? Nano Banana Pro Client DOES NOT use CUDA!
+                </p>
+                <p>If you see this, you are likely trying to run the <strong>Z-Image</strong> offline fallback script
+                    (`offline_diffusers.py`). As mentioned in our hardware guide, Z-Image requires 16GB+ VRAM. If you
+                    have less, please stick to the `nano_api.py` client.</p>
+            </div>
+        </article>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="../benchmarks/index.html">Benchmarks</a></li>
+                        <li><a href="../prompts/index.html">Prompt Recipes</a></li>
+                        <li><a href="../guides/quickstart.html">Quickstart Guide</a></li>
+                        <li><a href="../faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="../blog.html">Blog</a></li>
+                        <li><a href="../about.html">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="../privacy.html">Privacy Policy</a></li>
+                        <li><a href="../terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>©
+                    <script>document.write(new Date().getFullYear())</script> Nano Banana
+                </p>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

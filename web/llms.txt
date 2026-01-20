@@ -1,0 +1,19 @@
+# Nano Banana
+> A concise hub for a new text‑guided image editing model. We publish reproducible benchmarks, prompt recipes, and 5‑minute quickstart guides. Compare with FLUX Kontext on common editing tasks.
+
+Nano Banana focuses on practical, reproducible image editing workflows and side‑by‑side comparisons. Static, fast, SEO‑friendly.
+
+## Core Content
+- [Home](https://www.nano-banana.live/): Overview, CTA to try in LMArena, latest content
+- [Benchmarks](https://www.nano-banana.live/benchmarks/index.html): Fixed inputs/params for reproducible comparisons
+- [Portrait Editing Benchmark](https://www.nano-banana.live/benchmarks/portrait-editing.html): A/B slider, pipeline, params
+- [Quickstart](https://www.nano-banana.live/guides/quickstart.html): Colab and Local routes to first edit
+- [Prompts](https://www.nano-banana.live/prompts/index.html): Copy‑ready prompts with suggested params
+
+## Common Resources
+- [FAQ](https://www.nano-banana.live/faq.html): Answers to common questions and limits
+- [About](https://www.nano-banana.live/about.html): Site purpose and credits
+
+## Optional
+- LMArena entry: https://lmarena.ai/?chat-modality=image
+- OG image: https://www.nano-banana.live/og.svg

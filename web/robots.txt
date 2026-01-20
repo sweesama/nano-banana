@@ -1,0 +1,108 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Website sitemap
+Sitemap: https://www.nano-banana.live/sitemap.xml
+
+# AI & search crawlers (explicit groups; '*' above already allows sitewide except /admin/ & /private/)
+# LLM content summaries (non-standard; comments only)
+# LLM-Content: https://www.nano-banana.live/llms.txt
+# LLM-Full-Content: https://www.nano-banana.live/llms-full.txt
+
+# OpenAI
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Anthropic
+User-agent: Claude-Web
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: Anthropic-AI
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Google misc/AI
+User-agent: GoogleOther
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Apple AI extension
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Meta
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Amazon
+User-agent: Amazonbot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Common Crawl / ByteDance
+User-agent: CCBot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: Bytespider
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Mainstream search engines
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: Applebot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: YandexBot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: Slurp
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Korea (Naver)
+User-agent: Yeti
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+User-agent: NaverBot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
