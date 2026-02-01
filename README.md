@@ -42,7 +42,21 @@ This site hosts the official **Nano Banana Client** documentation, reproducible 
 - **Model (Pro)**: Google Gemini 3.0 (Cloud).
 - **Model (Offline)**: Z-Image / SDXL Turbo / Qwen-Image (Local via Diffusers).
 
-### 📈 Latest Updates (2026-01-20)
+### 📈 Latest Updates (2026-02-01)
+
+#### Z-Image Page Enhancements
+- **Gallery Carousels**: Refined image selection across all capability sections (removed inconsistent aspect ratios).
+- **Architecture Diagram**: Enlarged to full width for better readability.
+- **Internal Navigation**: All links now properly route to internal pages.
+
+#### Quick Start Page Updates
+- **Closed-Source Warning**: Added prominent notice that Nano Banana Pro cannot run locally.
+- **Z-Image Section**: Added 6-image CDN showcase and "Read Full Guide" button linking to z-image.html.
+- **External Links**: Hugging Face and ModelScope links now open in new tabs.
+
+---
+
+### 📈 Previous Updates (2026-01-20)
 
 #### 1. Content Strategy Pivot: "The Truth"
 - **New Blog Section**: Launched 4 deep-dive articles addressing the "Local Run" confusion.
