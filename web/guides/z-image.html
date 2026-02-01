@@ -1,0 +1,845 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P0QMF67972"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-P0QMF67972');
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#0b0f14" />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- SEO Optimization -->
+    <title>Z-Image Documentation | Efficient 6B Image Generation | Nano Banana</title>
+    <meta name="description"
+        content="Complete Z-Image documentation. 6B parameter model with photorealistic quality, bilingual text rendering, and 16GB VRAM efficiency. Z-Image-Turbo for generation, Z-Image-Edit for editing." />
+    <meta name="keywords"
+        content="Z-Image, Z-Image-Turbo, Z-Image-Edit, image generation, diffusion transformer, bilingual text, 6B parameters, Tongyi-MAI" />
+
+    <link rel="canonical" href="https://www.nano-banana.live/guides/z-image.html" />
+    <link rel="icon" href="../favicon.png" type="image/png" />
+    <link rel="stylesheet" href="../styles.css" />
+    <style>
+        /* Page-Specific Styles */
+        .hero-section {
+            text-align: center;
+            padding: 80px 0 60px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+            border-radius: 24px;
+            margin-bottom: 60px;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.8;
+        }
+
+        .bilingual-text {
+            background: rgba(139, 92, 246, 0.1);
+            border-left: 3px solid #8b5cf6;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            color: var(--text-muted);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .feature-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(139, 92, 246, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .feature-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .models-section {
+            margin: 60px 0;
+        }
+
+        .model-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .model-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 28px;
+            transition: transform 0.3s ease;
+        }
+
+        .model-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .model-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: #a78bfa;
+        }
+
+        .model-card p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .capability-section {
+            margin: 60px 0;
+            padding: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+        }
+
+        .capability-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .capability-section p {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .capability-image {
+            width: 100%;
+            border-radius: 16px;
+            margin-top: 20px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .architecture-diagram {
+            width: 100%;
+            margin: 30px auto;
+            display: block;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .citation-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        .citation-box pre {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .arena-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin: 10px 5px;
+        }
+
+        /* Carousel Styles */
+        .carousel-container {
+            position: relative;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .carousel-track {
+            display: flex;
+            gap: 16px;
+            transition: transform 0.4s ease;
+            padding: 10px 0;
+        }
+
+        .carousel-slide {
+            flex: 0 0 calc(33.333% - 11px);
+            min-width: calc(33.333% - 11px);
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            background: rgba(59, 130, 246, 0.9);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(59, 130, 246, 1);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-btn.prev {
+            left: 8px;
+        }
+
+        .carousel-btn.next {
+            right: 8px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .carousel-dot.active {
+            background: rgba(59, 130, 246, 0.9);
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 768px) {
+            .carousel-slide {
+                flex: 0 0 calc(50% - 8px);
+                min-width: calc(50% - 8px);
+            }
+
+            .carousel-slide img {
+                max-height: 320px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .carousel-slide {
+                flex: 0 0 100%;
+                min-width: 100%;
+            }
+
+            .carousel-slide img {
+                max-height: 280px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav class="nav">
+            <a href="../index.html" class="nav-brand">
+                <img src="../favicon.png" alt="" width="20" height="20"
+                    style="vertical-align:middle;margin-right:8px" />
+                Nano Banana
+            </a>
+            <div class="nav-links">
+                <a href="../benchmarks/index.html">Benchmarks</a>
+                <a href="../prompts/index.html">Prompts</a>
+                <a href="quickstart.html">Quickstart</a>
+                <a href="../blog.html">Blog</a>
+                <a href="../faq.html">FAQ</a>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1 class="hero-title">Z-Image</h1>
+            <p style="font-size:1rem; color:#a78bfa; margin-bottom:20px;">Efficient Image Generation with Single-Stream
+                Diffusion</p>
+            <p class="hero-subtitle">
+                An efficient 6-billion-parameter foundation model for image generation. Through systematic optimization,
+                it proves that top-tier performance is achievable without relying on enormous model sizes.
+            </p>
+            <div class="bilingual-text">
+                欢迎来到 Z-Image 项目！我们很高兴地推出
+                Z-Image，一个高效的60亿参数图像生成基础模型。它通过系统性的优化证明了顶尖性能的实现无需依赖巨大规模，在照片级真实感图像生成和中英双语文本渲染方面效果突出。
+            </div>
+            <div class="btn-group" style="justify-content:center;">
+                <a href="https://huggingface.co/Tongyi-MAI/Z-Image-Turbo" target="_blank" rel="noopener"
+                    class="btn btn-primary">🤗 Hugging Face</a>
+                <a href="https://modelscope.cn/models/Tongyi-MAI/Z-Image-Turbo" target="_blank" rel="noopener"
+                    class="btn btn-glass">🤖 ModelScope</a>
+                <a href="https://github.com/Tongyi-MAI/Z-Image" target="_blank" rel="noopener" class="btn btn-glass">📦
+                    GitHub</a>
+            </div>
+        </section>
+
+        <!-- Core Features -->
+        <section>
+            <h2 class="section-title">Core Features 核心特性</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📸</div>
+                    <div class="feature-title">Photorealistic</div>
+                    <div class="feature-desc">Photography-level Realism<br>摄影级真实感</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-title">1 Second</div>
+                    <div class="feature-desc">Ultra-fast Inference<br>超快推理速度</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <div class="feature-title">6B+ Params</div>
+                    <div class="feature-desc">Efficient Architecture<br>60亿高效参数</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔤</div>
+                    <div class="feature-title">Bilingual Text</div>
+                    <div class="feature-desc">CN/EN Text Rendering<br>中英文本渲染</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💾</div>
+                    <div class="feature-title">16 GB VRAM</div>
+                    <div class="feature-desc">Consumer GPU Friendly<br>消费级显卡友好</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <div class="feature-title">World Knowledge</div>
+                    <div class="feature-desc">Deep Understanding<br>广博世界知识</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Models Section -->
+        <section class="models-section">
+            <h2 class="section-title">Models 模型系列</h2>
+            <p style="text-align:center; color:var(--text-muted); margin-bottom:30px;">
+                At just 6 billion parameters, Z-Image produces photorealistic images on par with models an order of
+                magnitude larger.<br>
+                仅以60亿参数的规模，Z-Image 能生成与参数量大一个数量级的模型相媲美的照片级真实感图像。
+            </p>
+            <div class="model-cards">
+                <div class="model-card">
+                    <h3>🔧 Z-Image-Omni-Base</h3>
+                    <p>A foundation model designed for easy fine-tuning, unifying image generation and editing
+                        capabilities.</p>
+                    <div class="bilingual-text">一个易于微调的全能基础模型，统一了图像生成与编辑两大核心功能。</div>
+                </div>
+                <div class="model-card">
+                    <h3>⚡ Z-Image-Turbo</h3>
+                    <p>A distilled version with strong photorealistic generation, accurate bilingual text rendering.
+                        Achieves top performance with only <strong>8 steps</strong>.</p>
+                    <div class="bilingual-text">蒸馏版本，仅需8步推理即可达到或超越主流竞品性能。</div>
+                    <div class="btn-group">
+                        <a href="https://huggingface.co/Tongyi-MAI/Z-Image-Turbo" target="_blank" rel="noopener"
+                            class="btn btn-glass" style="font-size:0.9rem;">🤗 Download</a>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <h3>✏️ Z-Image-Edit</h3>
+                    <p>Specialized for image editing. Excels at complex instructions, from local modifications to global
+                        style transformations.</p>
+                    <div class="bilingual-text">图像编辑专用版本，精于遵循复杂指令，从局部修改到全局风格变换。</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Architecture -->
+        <section class="capability-section">
+            <h2>Architecture 架构</h2>
+            <p>
+                Z-Image adopts a <strong>Single-Stream Diffusion Transformer</strong> architecture. This design unifies
+                the processing of
+                various conditional inputs (text, image embeddings) with noisy image latents into a single sequence fed
+                into the Transformer backbone.
+            </p>
+            <div class="bilingual-text">
+                Z-Image 模型采用单流扩散 Transformer 架构。该设计将文本、图像嵌入等多种条件输入与带噪声的图像潜变量统一为单个序列，并送入 Transformer 主干网络进行处理。
+            </div>
+            <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_6_architecture.png"
+                alt="Z-Image Architecture: Single-Stream Diffusion Transformer" class="architecture-diagram"
+                loading="lazy">
+        </section>
+
+        <!-- Arena Ranking -->
+        <section class="capability-section" style="text-align:center;">
+            <h2>Arena Ranking 竞技场排名</h2>
+            <p>
+                According to Elo-based Human Preference Evaluation (Alibaba AI Arena), Z-Image shows highly competitive
+                performance
+                against leading models, achieving <strong>state-of-the-art results among open-source models</strong>.
+            </p>
+            <div class="bilingual-text">
+                根据 Elo 人类偏好评估（在 Alibaba AI Arena 上），Z-Image 与其他领先模型相比表现出极强的竞争力，在开源模型中取得了最先进的结果。
+            </div>
+            <div style="margin-top:20px;">
+                <span class="arena-badge">🏆 #1 Open Source</span>
+                <span class="arena-badge">⚡ 8-Step Inference</span>
+                <span class="arena-badge">💾 16GB VRAM</span>
+            </div>
+            <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_7_arena.jpg"
+                alt="Z-Image Arena Ranking" class="capability-image" loading="lazy">
+        </section>
+
+        <!-- Capability 1: Photorealistic -->
+        <section class="capability-section">
+            <h2>1. Efficient Photorealistic Quality 极致高效的照片级真实感</h2>
+            <p>
+                Z-Image-Turbo excels at producing images with photography-level realism, demonstrating fine control over
+                details,
+                lighting, and textures. It balances high fidelity with strong aesthetic quality in composition and
+                overall mood.
+            </p>
+            <div class="bilingual-text">
+                Z-Image-Turbo 擅长生成具有摄影级别真实感的图像，能够精细控制画面的细节、光影和纹理。它在保证高保真度的同时，兼顾了构图与整体氛围上的美学表现。
+            </div>
+            <div class="carousel-container" data-carousel="photorealistic">
+                <button class="carousel-btn prev" aria-label="Previous">‹</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_8_5.png"
+                            loading="lazy" alt="Sculpture"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_9_6.png"
+                            loading="lazy" alt="Hand nail"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_10_7.png"
+                            loading="lazy" alt="Hand ring"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_11_8.png"
+                            loading="lazy" alt="Girl reading"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_12_9.png"
+                            loading="lazy" alt="Man in suit"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_13_10.png"
+                            loading="lazy" alt="Portrait"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_14_11.png"
+                            loading="lazy" alt="Group photo"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_15_1.png"
+                            loading="lazy" alt="Girl in car"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_16_2.png"
+                            loading="lazy" alt="Beijing opera"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_17_3.png"
+                            loading="lazy" alt="Lotus"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_18_4.png"
+                            loading="lazy" alt="Girl with mask"></div>
+                </div>
+                <button class="carousel-btn next" aria-label="Next">›</button>
+                <div class="carousel-dots"></div>
+            </div>
+        </section>
+
+        <!-- Capability 2: Bilingual Text -->
+        <section class="capability-section">
+            <h2>2. Excellent Bilingual Text Rendering 卓越的中英双语文本渲染</h2>
+            <p>
+                Z-Image-Turbo can accurately render Chinese and English text while preserving facial realism and
+                aesthetic composition,
+                with results comparable to top-tier closed-source models. Even in challenging scenarios with small font
+                sizes,
+                it delivers designs that are both textually precise and visually compelling.
+            </p>
+            <div class="bilingual-text">
+                Z-Image-Turbo 能准确渲染中英文文本，同时保持人脸真实性和画面美感，效果媲美顶尖闭源模型。即使在小字号等高难度场景下，模型也能高质量地渲染文字。
+            </div>
+            <div class="carousel-container" data-carousel="bilingual">
+                <button class="carousel-btn prev" aria-label="Previous">‹</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_20_3.jpg"
+                            loading="lazy" alt="Mid-Autumn"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_21_4.jpg"
+                            loading="lazy" alt="Sunday Sale"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_24_7.jpg"
+                            loading="lazy" alt="CHUANGWEI"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_23_6.jpg"
+                            loading="lazy" alt="Journey"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_19_2.jpg"
+                            loading="lazy" alt="Pearl of Orient"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_22_5.jpg"
+                            loading="lazy" alt="Horse Spirit"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_25_8.jpg"
+                            loading="lazy" alt="Festive"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_28_1.jpg"
+                            loading="lazy" alt="Design Contest"></div>
+                </div>
+                <button class="carousel-btn next" aria-label="Next">›</button>
+                <div class="carousel-dots"></div>
+            </div>
+        </section>
+
+        <!-- Capability 3: World Knowledge -->
+        <section class="capability-section">
+            <h2>3. Rich World Knowledge 广博的知识与文化理解</h2>
+            <p>
+                Z-Image possesses a vast understanding of world knowledge and diverse cultural concepts. This allows it
+                to accurately
+                generate famous landmarks, well-known characters, and specific real-world objects.
+            </p>
+            <div class="bilingual-text">
+                Z-Image 具备广博的世界知识与对多元文化的深刻理解。这使其能够精确生成各种主题，包括著名地标、知名人物和特定的现实世界物体。
+            </div>
+            <div class="carousel-container" data-carousel="world">
+                <button class="carousel-btn prev" aria-label="Previous">‹</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_29_5.png"
+                            loading="lazy" alt="Notre Dame"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_30_6.png"
+                            loading="lazy" alt="Empire State"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_31_7.png"
+                            loading="lazy" alt="Hagia Sophia"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_32_8.png"
+                            loading="lazy" alt="Taj Mahal"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_33_9.png"
+                            loading="lazy" alt="Myanmar Pagoda"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_34_10.png"
+                            loading="lazy" alt="Acropolis"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_35_11.png"
+                            loading="lazy" alt="Forbidden City"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_36_1.png"
+                            loading="lazy" alt="St Paul"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_37_2.png"
+                            loading="lazy" alt="Golden Gate"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_38_3.png"
+                            loading="lazy" alt="Moscow Cathedral"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_39_4.png"
+                            loading="lazy" alt="Temple"></div>
+                </div>
+                <button class="carousel-btn next" aria-label="Next">›</button>
+                <div class="carousel-dots"></div>
+            </div>
+        </section>
+
+        <!-- Capability 4: Semantic Understanding -->
+        <section class="capability-section">
+            <h2>4. Deep Semantic Understanding 引入先验知识的深度语义理解</h2>
+            <p>
+                The powerful prompt enhancer (PE) uses a structured reasoning chain to inject logic and common sense,
+                enabling the model to handle complex tasks like the "chicken-and-rabbit problem" or visualizing
+                classical Chinese poetry.
+            </p>
+            <div class="bilingual-text">
+                强大的提示词增强器（PE）通过结构化推理链注入逻辑与常识，使模型能处理诸如"鸡兔同笼"或古诗可视化等复杂任务。在编辑任务中，即使用户指令模糊不清，模型也能运用其推理能力来推断用户的潜在意图。
+            </div>
+            <div class="carousel-container" data-carousel="semantic">
+                <button class="carousel-btn prev" aria-label="Previous">‹</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_42_1.jpg"
+                            loading="lazy" alt="Chicken rabbit"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_43_2.jpg"
+                            loading="lazy" alt="Horse riding"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_45_4.jpg"
+                            loading="lazy" alt="Tea cup"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_46_5.jpg"
+                            loading="lazy" alt="West Lake"></div>
+                </div>
+                <button class="carousel-btn next" aria-label="Next">›</button>
+                <div class="carousel-dots"></div>
+            </div>
+        </section>
+
+        <!-- Capability 5: Creative Editing -->
+        <section class="capability-section">
+            <h2>5. Strong Instruction-Following 强大的指令遵循与创意编辑</h2>
+            <p>
+                Z-Image-Edit can precisely execute complex instructions, such as simultaneously modifying a character's
+                expression
+                and pose while adding specified text. It maintains strong consistency even during significant
+                transformations.
+            </p>
+            <div class="bilingual-text">
+                Z-Image-Edit 可精准执行复合指令，如同时修改人物的表情、动作并添加指定文字。即便在如此大幅的图像变换中，它也能保持极高的一致性，体现了对画面每一处元素的精细控制。
+            </div>
+            <div class="carousel-container" data-carousel="editing">
+                <button class="carousel-btn prev" aria-label="Previous">‹</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_47_6.jpg"
+                            loading="lazy" alt="Water town"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_48_2.jpg"
+                            loading="lazy" alt="Girl with dog"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_49_3.jpg"
+                            loading="lazy" alt="Roasted food"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_50_4.jpg"
+                            loading="lazy" alt="Dog in hoodie"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_51_5.jpg"
+                            loading="lazy" alt="Dog and owner"></div>
+                    <div class="carousel-slide"><img
+                            src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_52_6.jpg"
+                            loading="lazy" alt="Hoodie dog"></div>
+                </div>
+                <button class="carousel-btn next" aria-label="Next">›</button>
+                <div class="carousel-dots"></div>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="capability-section">
+            <h2>Summary 总结</h2>
+            <p>
+                Z-Image demonstrates that top-tier performance is not solely dependent on massive models and
+                computational resources.
+                This lowers the technical and cost barriers for researchers and developers, paving the way for more
+                accessible
+                and innovative applications.
+            </p>
+            <div class="bilingual-text">
+                Z-Image 证明了顶尖性能并非只依赖于巨大的模型和计算资源。这为更广泛的研究者和开发者降低了技术与成本门槛，为更多普惠、创新的应用铺平了道路。我们期待社区的积极参与和反馈。
+            </div>
+        </section>
+
+        <!-- Citation -->
+        <section class="capability-section">
+            <h2>Citation 引用</h2>
+            <p>Welcome to cite our work. 欢迎引用我们的工作。</p>
+            <div class="citation-box">
+                <pre>@misc{z-image-2025,
+  title={Z-Image: An Efficient Image Generation Foundation Model with Single-Stream Diffusion Transformer},
+  author={Tongyi Lab},
+  year={2025},
+  publisher={GitHub},
+  journal={GitHub repository},
+  howpublished={\url{https://github.com/Tongyi-MAI/Z-Image}}
+}</pre>
+            </div>
+        </section>
+
+        <!-- Back to Quickstart -->
+        <div style="text-align:center; margin:60px 0;">
+            <a href="quickstart.html#z-image" class="btn btn-primary">← Back to Quickstart</a>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="../benchmarks/index.html">Benchmarks</a></li>
+                        <li><a href="../prompts/index.html">Prompt Recipes</a></li>
+                        <li><a href="quickstart.html">Quickstart Guide</a></li>
+                        <li><a href="../faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="../blog.html">Blog</a></li>
+                        <li><a href="../about.html">About</a></li>
+                        <li><a href="https://lmarena.ai/?chat-modality=image" target="_blank" rel="noopener">Try in
+                                LMArena</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="../privacy.html">Privacy Policy</a></li>
+                        <li><a href="../terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div style="text-align:center; padding-top:40px; color:var(--text-muted); font-size:14px;">
+                <p>© 2026 Nano Banana — English‑first, static‑first.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Carousel functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.carousel-container').forEach(carousel => {
+                const track = carousel.querySelector('.carousel-track');
+                const slides = carousel.querySelectorAll('.carousel-slide');
+                const prevBtn = carousel.querySelector('.carousel-btn.prev');
+                const nextBtn = carousel.querySelector('.carousel-btn.next');
+                const dotsContainer = carousel.querySelector('.carousel-dots');
+
+                let currentIndex = 0;
+                let autoPlayInterval;
+                const slidesPerView = window.innerWidth <= 480 ? 1 : window.innerWidth <= 768 ? 2 : 3;
+                const maxIndex = Math.max(0, slides.length - slidesPerView);
+
+                // Create dots - one per slide
+                for (let i = 0; i < slides.length; i++) {
+                    const dot = document.createElement('button');
+                    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                    dot.addEventListener('click', () => goToSlide(i));
+                    dotsContainer.appendChild(dot);
+                }
+                const dots = dotsContainer.querySelectorAll('.carousel-dot');
+
+                function updateCarousel() {
+                    const slideWidth = slides[0].offsetWidth + 16; // 16px gap
+                    track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+
+                    // Update dots
+                    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
+                }
+
+                function goToSlide(index) {
+                    currentIndex = Math.max(0, Math.min(index, maxIndex));
+                    updateCarousel();
+                }
+
+                function nextSlide() {
+                    if (currentIndex >= maxIndex) {
+                        currentIndex = 0; // Loop back to start
+                    } else {
+                        currentIndex++;
+                    }
+                    updateCarousel();
+                }
+
+                function prevSlide() {
+                    if (currentIndex <= 0) {
+                        currentIndex = maxIndex; // Loop to end
+                    } else {
+                        currentIndex--;
+                    }
+                    updateCarousel();
+                }
+
+                prevBtn.addEventListener('click', prevSlide);
+                nextBtn.addEventListener('click', nextSlide);
+
+                // Auto-play functionality (4 seconds interval)
+                function startAutoPlay() {
+                    autoPlayInterval = setInterval(nextSlide, 4000);
+                }
+
+                function stopAutoPlay() {
+                    clearInterval(autoPlayInterval);
+                }
+
+                // Pause on hover
+                carousel.addEventListener('mouseenter', stopAutoPlay);
+                carousel.addEventListener('mouseleave', startAutoPlay);
+
+                // Start auto-play
+                startAutoPlay();
+
+                // Handle resize
+                window.addEventListener('resize', () => {
+                    currentIndex = Math.min(currentIndex, maxIndex);
+                    updateCarousel();
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

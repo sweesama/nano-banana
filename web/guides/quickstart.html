@@ -371,13 +371,29 @@
 
     <hr style="border:0; border-top:1px solid var(--glass-border); margin: 60px 0;">
 
+    <!-- Important Notice -->
+    <div
+      style="background: linear-gradient(135deg, rgba(248, 113, 113, 0.15) 0%, rgba(251, 191, 36, 0.1) 100%); border: 1px solid rgba(248, 113, 113, 0.4); border-radius: 16px; padding: 24px; margin-bottom: 40px;">
+      <h3 style="color: #f87171; margin: 0 0 12px 0; font-size: 1.2rem;">⚠️ Important: Nano Banana is Closed-Source</h3>
+      <p style="margin: 0; color: var(--text-muted); line-height: 1.7;">
+        <strong style="color: #fff;">Nano Banana 2.0 (Pro) is a closed-source cloud API</strong> and <strong
+          style="color: #fff;">cannot be deployed locally</strong>.
+        If you're looking to run AI image generation on your own hardware, please scroll down to our <strong
+          style="color: #4ade80;">Open-Source Alternatives</strong> section below —
+        we provide detailed guides for <strong>GLM-Image</strong>, <strong>Qwen-Image</strong>, and
+        <strong>Z-Image-Turbo</strong>, all of which can run locally on consumer GPUs.
+      </p>
+    </div>
+
     <!-- 1. NANO BANANA PRO -->
     <div id="nano-banana" class="card" style="border-color: var(--primary-glow);">
       <div class="model-header">
         <h2 class="model-title" style="color:var(--primary)">Nano Banana 2.0 (Pro)</h2>
-        <div class="badges"><span class="badge badge-primary">Recommended</span></div>
+        <div class="badges"><span class="badge badge-primary">Recommended</span> <span class="badge"
+            style="background: rgba(248,113,113,0.2); color: #f87171;">Closed-Source</span></div>
       </div>
-      <p>Powered by Gemini 3.0 Pro logic. The best choice if you cannot <strong>run locally</strong>.</p>
+      <p><strong style="color: #f87171;">⚠️ Cloud API Only — Cannot Run Locally.</strong> Powered by Gemini 3.0 Pro
+        logic. Best for users who prefer cloud convenience over local deployment.</p>
       <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; margin: 20px 0;">
         <pre style="margin:0; background:transparent; border:none; padding:0;"><code>pip install google-genai
 from google import genai
@@ -390,9 +406,11 @@ client = genai.Client(api_key="YOUR_KEY")</code></pre>
     <div id="seedream" class="card">
       <div class="model-header">
         <h2 class="model-title">Seedream 4.5</h2>
-        <div class="badges"><span class="badge badge-blue">Alternative</span></div>
+        <div class="badges"><span class="badge badge-blue">Alternative</span> <span class="badge"
+            style="background: rgba(248,113,113,0.2); color: #f87171;">Closed-Source</span></div>
       </div>
-      <p>Cloud alternative for "run locally" quality without overhead.</p>
+      <p><strong style="color: #f87171;">⚠️ Cloud API Only.</strong> Another cloud alternative with excellent quality.
+      </p>
       <a href="https://seed.bytedance.com/en/seedream4_5" target="_blank" class="btn btn-glass">Visit Official Site
         ↗</a>
     </div>
@@ -575,18 +593,40 @@ prompt = rewrite("original prompt")</code></pre>
         <div class="badges"><span class="badge badge-primary">Speed</span> <span class="badge badge-gray">6B
             Params</span></div>
       </div>
-      <p>The efficiency king. <strong>8-step</strong> generation via Decoupled-DMD distillation.</p>
+      <p>The efficiency king. <strong>8-step</strong> generation via Decoupled-DMD distillation. <a href="z-image.html"
+          style="color:#a78bfa;">📖
+          View Full Z-Image Documentation →</a></p>
       <div class="hardware-specs">
         <div class="spec-item"><span class="dot dot-green"></span> <strong>Great:</strong> RTX 4080 / 3090 (16GB+)</div>
         <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Entry:</strong> RX 580 / GTX 1070 (Via cpp)
         </div>
       </div>
-      <div class="gallery-stack">
-        <img src="assets/z-image-showcase.png" class="gallery-item" loading="lazy">
+      <div class="gallery-stack" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+        <img
+          src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_8_5.png"
+          class="gallery-item" loading="lazy" style="height: 280px; object-fit: cover;">
+        <img
+          src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_11_8.png"
+          class="gallery-item" loading="lazy" style="height: 280px; object-fit: cover;">
+        <img
+          src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_12_9.png"
+          class="gallery-item" loading="lazy" style="height: 280px; object-fit: cover;">
+        <img
+          src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_20_3.jpg"
+          class="gallery-item" loading="lazy" style="height: 280px; object-fit: cover;">
+        <img
+          src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_42_1.jpg"
+          class="gallery-item" loading="lazy" style="height: 280px; object-fit: cover;">
+        <img
+          src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Z-Image%20-%20Efficient%20Image%20Generation%20with%20Single-Stream%20Diffusion/imgi_47_6.jpg"
+          class="gallery-item" loading="lazy" style="height: 280px; object-fit: cover;">
       </div>
       <div style="display:flex; gap:16px; margin:20px 0;">
-        <a href="https://huggingface.co/Tongyi-MAI/Z-Image-Turbo" class="btn btn-glass">🤗 Hugging Face</a>
-        <a href="https://modelscope.cn/models/Tongyi-MAI/Z-Image-Turbo" class="btn btn-glass">🤖 ModelScope</a>
+        <a href="https://huggingface.co/Tongyi-MAI/Z-Image-Turbo" target="_blank" rel="noopener"
+          class="btn btn-glass">🤗 Hugging Face</a>
+        <a href="https://modelscope.cn/models/Tongyi-MAI/Z-Image-Turbo" target="_blank" rel="noopener"
+          class="btn btn-glass">🤖 ModelScope</a>
+        <a href="z-image.html" class="btn btn-primary">📖 Read Full Guide</a>
       </div>
 
       <details>
@@ -640,8 +680,8 @@ prompt = rewrite("original prompt")</code></pre>
 
           <h3>Community Acceleration (Low VRAM)</h3>
           <ul>
-            <li><strong>stable-diffusion.cpp:</strong> Pure C++ inference. Runs on 4GB VRAM. <a
-                href="https://github.com/leejet/stable-diffusion.cpp" style="color:var(--primary)">Link</a></li>
+            <li><strong>stable-diffusion.cpp:</strong> Pure C++ inference. Runs on 4GB VRAM. <a href="z-image.html"
+                style="color:var(--primary)">View Details →</a></li>
             <li><strong>Cache-DiT:</strong> 4x speedup on multi-GPU.</li>
             <li><strong>LeMiCa:</strong> Training-free timestep acceleration.</li>
           </ul>
