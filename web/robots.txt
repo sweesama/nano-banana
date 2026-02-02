@@ -7,9 +7,8 @@ Disallow: /private/
 Sitemap: https://www.nano-banana.live/sitemap.xml
 
 # AI & search crawlers (explicit groups; '*' above already allows sitewide except /admin/ & /private/)
-# LLM content summaries (non-standard; comments only)
-# LLM-Content: https://www.nano-banana.live/llms.txt
-# LLM-Full-Content: https://www.nano-banana.live/llms-full.txt
+# LLM content summaries
+LLM-Content: https://www.nano-banana.live/llms.txt
 
 # OpenAI
 User-agent: GPTBot
