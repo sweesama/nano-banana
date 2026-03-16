@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Can I Run It? Hardware Requirements | Nono Banana</title>
+    <title>Can I Run It? Hardware Requirements | Nano Banana</title>
     <meta name="description"
         content="Detailed hardware guide for Nano Banana. Comparison of requirements for the Pro Client (CPU) vs Offline Alternatives (GPU)." />
     <meta name="robots" content="index, follow" />
@@ -60,7 +60,7 @@
                 </ul>
                 <p class="quote">✅ <strong>Verdict:</strong> Runs on any laptop, including MacBook Air.</p>
 
-                <h2>Scenario B: Offline Alternatives (Z-Image / Qwen)</h2>
+                <h2>Scenario B: Offline Alternatives (Z-Image / Qwen / GLM)</h2>
                 <p><strong>Status: Open Source / Local Weights</strong></p>
                 <p>If you choose to use the "Offline Alternatives" listed in our Quickstart because you cannot connect
                     to the internet, be prepared for heavy requirements.</p>
@@ -71,17 +71,20 @@
                     <li><strong>RAM:</strong> 16GB System RAM.</li>
                 </ul>
 
-                <h3>Recommended Specs (Z-Image / Qwen-Image)</h3>
+                <h3>Recommended Specs (Z-Image / Qwen-Image / GLM-Image)</h3>
                 <ul>
-                    <li><strong>GPU:</strong> NVIDIA RTX 3090 / 4090 (24GB VRAM).</li>
+                    <li><strong>GPU:</strong> NVIDIA RTX 3090 / 4090 (24GB VRAM) for Qwen-Image and GLM-Image.</li>
                     <li><strong>RAM:</strong> 32GB System RAM.</li>
                     <li><strong>Storage:</strong> 50GB+ SSD space for model weights.</li>
                 </ul>
+                <p>For a more balanced local setup, <strong>Z-Image-Turbo</strong> is one of the strongest current
+                    options because it is more speed-oriented and often friendlier to 16GB-class GPUs.</p>
 
                 <div
                     style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 12px; margin-top: 30px;">
                     <h3>Why is there such a difference?</h3>
-                    <p>Nano Banana Pro (Cloud) uses models with hundreds of billions of parameters (Gemini 3.0 class).
+                    <p>Nano Banana Pro (Cloud) uses Google's latest Gemini image stack rather than a lightweight local
+                        checkpoint.
                         To run that locally, you would need a server rack costing $50,000+. By using the cloud API, you
                         get that power on a $500 laptop.</p>
                 </div>

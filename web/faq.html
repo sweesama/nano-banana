@@ -167,7 +167,8 @@
       <details id="what" open>
         <summary>What is Nano Banana?</summary>
         <div>
-          Nano Banana is an <strong>AI image editing brain</strong> powered by Gemini 3.0. Unlike traditional "filters,"
+          Nano Banana is an <strong>AI image editing brain</strong> powered by Google's latest Gemini image models.
+          Unlike traditional "filters,"
           it understands natural language instructions (e.g., "Make the cat wear sunglasses") to perform precise,
           context-aware edits.
         </div>
@@ -176,12 +177,12 @@
       <details id="local">
         <summary>Can I run Nano Banana locally?</summary>
         <div>
-          <strong>Yes and No.</strong> The "Pro" model (Gemini 3.0) is closed-source and cannot run totally offline.
+          <strong>Yes and No.</strong> The "Pro" model is closed-source and cannot run totally offline.
           However, you can run the <strong>Nano Banana Client</strong> locally via Python to control it from your
           terminal. <br><br>
           If you need a 100% offline solution (e.g., for air-gapped security), check out our <a
-            href="./blog/hardware-requirements.html">Hardware Guide</a> for alternative models like Z-Image Turbo
-          (Requires 16GB+ VRAM).
+            href="./blog/hardware-requirements.html">Hardware Guide</a> for alternative models like Z-Image, Qwen-Image,
+          and GLM-Image.
         </div>
       </details>
 
@@ -196,8 +197,9 @@
       <details id="speed">
         <summary>How fast is it?</summary>
         <div>
-          The <strong>Pro Client</strong> takes about 5-10 seconds per edit (Cloud Latency).<br>
-          <strong>Offline Models</strong> (Z-Image) can generate in ~2 seconds on an RTX 4090, or ~2 minutes on a CPU.
+          The <strong>Pro Client</strong> is usually interactive and depends on cloud latency plus queueing.<br>
+          <strong>Offline Models</strong> vary a lot: Z-Image-Turbo is optimized for speed, while Qwen-Image and
+          GLM-Image generally need more VRAM and longer generation times.
         </div>
       </details>
 
@@ -214,15 +216,16 @@
         <summary>Where is the API Key?</summary>
         <div>
           You can get your key from <a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a>. Once
-          you have it, set `export GOOGLE_API_KEY=your_key` in your terminal to empower the client.
+          you have it, set `GOOGLE_API_KEY` or `GEMINI_API_KEY` in your terminal to empower the client.
         </div>
       </details>
 
       <details id="commercial">
         <summary>Can I use images commercially?</summary>
         <div>
-          Images generated via Gemini 3.0 (Pro) are generally yours to own, but subject to Google's Generative AI terms.
-          Offline models (Z-Image) are often Apache 2.0. Always verify the specific model license before commercial
+          Images generated via Gemini-based cloud services are generally yours to use, but remain subject to Google's
+          current Generative AI terms. Offline models like Z-Image and many Qwen releases are often Apache 2.0, but
+          some checkpoints and demos can differ. Always verify the specific model license before commercial
           deployment.
         </div>
       </details>

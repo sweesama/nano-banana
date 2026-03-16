@@ -51,9 +51,10 @@
                     <h3 style="margin-top: 0; color: #f87171;">The "Closed Source" Reality</h3>
                     <p>Before we begin, a crucial clarification: <strong>Nano Banana Pro cannot truly run
                             offline.</strong></p>
-                    <p>Why? Because the core model is **closed source**. It runs on Google's Gemini 3.0 infrastructure.
+                    <p>Why? Because the core model is **closed source**. It runs on Google's current Gemini image
+                        infrastructure, while your machine only acts as the local controller.
                         When you "run it locally," you are actually running a <strong>local client</strong> that sends
-                        instructions to our cloud brain.</p>
+                        instructions to the cloud model.</p>
                 </div>
 
                 <h2>Step 1: Get Your API Key</h2>
@@ -88,9 +89,7 @@ source venv/bin/activate</code></pre>
 from google import genai
 from PIL import Image
 
-# Paste your key here (or better, use environment variables)
-os.environ["GOOGLE_API_KEY"] = "YOUR_KEY_HERE"
-
+# Recommended: set GOOGLE_API_KEY or GEMINI_API_KEY in your shell first
 client = genai.Client(api_key=os.environ["GOOGLE_API_KEY"])
 
 print("Connecting to Nano Banana Pro (Cloud)...")
@@ -99,9 +98,10 @@ print("Connecting to Nano Banana Pro (Cloud)...")
 
                 <h2>Want True Offline?</h2>
                 <p>If you strictly need to run without internet (e.g., for air-gapped security), you cannot use Nano
-                    Banana Pro. Instead, check out the <strong>Z-Image Turbo</strong> alternative in our <a
-                        href="../guides/quickstart.html">Quickstart Guide</a>. It is open-source and runs completely
-                    offline, provided you have an RTX 4080 or better.</p>
+                    Banana Pro. Instead, check out the <strong>Z-Image</strong>, <strong>Qwen-Image</strong>, and
+                    <strong>GLM-Image</strong> alternatives in our <a href="../guides/quickstart.html">Quickstart
+                        Guide</a>. These open models can run fully offline, but usually require a stronger GPU and more
+                    setup than the cloud client.</p>
             </div>
         </article>
 

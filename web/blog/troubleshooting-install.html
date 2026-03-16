@@ -56,8 +56,8 @@
                 <p><strong>Checklist:</strong></p>
                 <ul>
                     <li>Did you actually create a key in Google AI Studio?</li>
-                    <li>Did you enable "Payment" on Google Cloud? (For Pro 1.5/3.0, the free tier is generous but
-                        sometimes requires billing setup).</li>
+                    <li>Did you enable billing if your current Gemini image route requires it? Free-tier availability and
+                        limits can change over time.</li>
                     <li><strong>Region Lock:</strong> If you are in a region where Google is unavailable, you
                         <em>must</em> use a proxy.
                     </li>
@@ -75,9 +75,10 @@ from google import genai</code></pre>
                 <h2>3. "RuntimeError: CUDA out of memory"</h2>
                 <p><strong>The Cause:</strong> Wait, why are you seeing this? Nano Banana Pro Client DOES NOT use CUDA!
                 </p>
-                <p>If you see this, you are likely trying to run the <strong>Z-Image</strong> offline fallback script
-                    (`offline_diffusers.py`). As mentioned in our hardware guide, Z-Image requires 16GB+ VRAM. If you
-                    have less, please stick to the `nano_api.py` client.</p>
+                <p>If you see this, you are likely trying to run an <strong>offline model</strong> such as Z-Image,
+                    Qwen-Image, GLM-Image, SDXL, or FLUX on your own GPU. As mentioned in our hardware guide, these
+                    local routes can require anywhere from 8GB to 24GB+ VRAM depending on the model. If your hardware is
+                    limited, stick to the `nano_api.py` client.</p>
             </div>
         </article>
 
