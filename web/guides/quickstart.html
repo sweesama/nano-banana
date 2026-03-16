@@ -679,122 +679,19 @@ client = genai.Client(api_key="YOUR_KEY")</code></pre>
         </div>
       </div>
       <div style="display:flex; gap:16px; margin:20px 0;">
-        <a href="https://huggingface.co/zai-org/GLM-Image" class="btn btn-glass">🤗 Hugging Face</a>
-        <a href="https://modelscope.cn/models/ZhipuAI/GLM-Image" class="btn btn-glass">🤖 ModelScope</a>
+        <a href="https://huggingface.co/zai-org/GLM-Image" target="_blank" rel="noopener" class="btn btn-glass">🤗 Hugging Face</a>
+        <a href="https://modelscope.cn/models/ZhipuAI/GLM-Image" target="_blank" rel="noopener" class="btn btn-glass">🤖 ModelScope</a>
+        <a href="https://github.com/zai-org/GLM-Image" target="_blank" rel="noopener" class="btn btn-glass">📚 GitHub</a>
+
       </div>
 
       <details>
         <summary>Full Technical Details (Repo Mirror)</summary>
         <div class="details-body repo-content">
-          <div class="paper-info">
-            <span class="paper-title">GLM-Image: Auto-regressive for Dense-knowledge and High-fidelity Image
-              Generation</span>
-            <span class="paper-meta">Zhipu AI Team · 2025</span>
-            <p>Hybrid Architecture: AR Transformer (Semantic) + Diffusion Decoder (Detail).</p>
-          </div>
-          <h3>Introduction</h3>
-          <p>GLM-Image is an image generation model that adopts a hybrid autoregressive + diffusion decoder
-            architecture. According to the official release, it shows significant advantages in text rendering and
-            knowledge-intensive generation, while also supporting text-to-image and rich image-to-image workflows.</p>
-
-          <h3>Architecture</h3>
-          <img src="https://raw.githubusercontent.com/zai-org/GLM-Image/main/resources/architecture_1.jpeg"
-            style="width:100%; border-radius:8px;">
-          <ul>
-            <li><strong>Autoregressive Generator</strong>: 9B parameter model initialized from GLM-4-9B. Expands 256
-              compact tokens to 1K-4K visual tokens.</li>
-            <li><strong>Diffusion Decoder</strong>: 7B parameter single-stream DiT for latent decoding. Features a Glyph
-              Encoder for text rendering.</li>
-          </ul>
-
-          <h3>Inference Cost (H100)</h3>
-          <div class="table-wrapper">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Res</th>
-                  <th>Batch</th>
-                  <th>Time (s)</th>
-                  <th>Peak VRAM</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1024x1024</td>
-                  <td>1</td>
-                  <td>64.34</td>
-                  <td>37.82 GB</td>
-                </tr>
-                <tr>
-                  <td>2048x2048</td>
-                  <td>1</td>
-                  <td>252.59</td>
-                  <td>45.08 GB</td>
-                </tr>
-                <tr>
-                  <td>512x512</td>
-                  <td>1</td>
-                  <td>27.30</td>
-                  <td>34.26 GB</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <h3>Quick Start: Diffusers</h3>
-          <pre><code>pip install git+https://github.com/huggingface/diffusers.git transformers
-import torch
-from diffusers import GlmImagePipeline
-pipe = GlmImagePipeline.from_pretrained("zai-org/GLM-Image", torch_dtype=torch.bfloat16).to("cuda")
-image = pipe(prompt="A futuristic city", width=1024, height=1024).images[0]</code></pre>
-
-          <h3>Quick Start: SGLang Server</h3>
-          <pre><code>pip install "sglang[diffusion] @ git+https://github.com/sgl-project/sglang.git#subdirectory=python"
-sglang serve --model-path zai-org/GLM-Image
-# Client
-curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", "size": "1024x1024"}'</code></pre>
-
-          <div class="highlight-box">
-            <strong>Note:</strong> Target image resolution must be divisible by 32. The official notes say inference can
-            run with about 23GB GPU memory using CPU offload, but runtime cost is still relatively high and some serving
-            integrations are still being added.
-          </div>
-        </div>
-      </details>
-    </div>
-
-    <!-- 4. QWEN-IMAGE -->
-    <div id="qwen-image" class="card" class="gradient-qwen" style="border-top: 1px solid rgba(255, 165, 0, 0.3);">
-      <div class="model-header">
-        <h2 class="model-title">Qwen-Image</h2>
-        <div class="badges"><span class="badge badge-gray">Text Rendering</span> <span class="badge badge-gray">Official
-            Release</span></div>
-
-      </div>
-      <p><strong>Qwen-Image</strong> is the official open image model in the Qwen series. The official release
-        highlights strong performance in complex text rendering, precise image editing, and general image generation.</p>
-
-      <div class="hardware-specs">
-        <div class="spec-item"><span class="dot dot-green"></span> <strong>Recommended:</strong> RTX 3090 / 4090 (24GB)
-        </div>
-        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Minimum:</strong> RTX 3080 12GB (Restricted)
-        </div>
-      </div>
-      <div class="gallery-stack">
-        <img src="https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-Image/image2512/幻灯片1.JPG" class="gallery-item"
+{{ ... }
           loading="lazy">
         <img src="https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-Image/image2512/幻灯片5.JPG" class="gallery-item"
           loading="lazy">
-      </div>
-      <div style="display:flex; gap:16px; margin:20px 0;">
-        <a href="https://huggingface.co/Qwen/Qwen-Image" class="btn btn-glass">🤗 Hugging Face</a>
-        <a href="https://modelscope.cn/models/Qwen/Qwen-Image" class="btn btn-glass">🤖 ModelScope</a>
-
-      </div>
-
-      <details>
-        <summary>Full Technical Details (Repo Mirror)</summary>
-        <div class="details-body repo-content">
           <div class="paper-info">
             <span class="paper-title">Qwen-Image Technical Report</span>
             <span class="paper-meta">Alibaba Cloud · arXiv:2508.02324 · 2025</span>
