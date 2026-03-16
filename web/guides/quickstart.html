@@ -293,6 +293,170 @@
       margin: 16px 0;
       color: #ddd;
     }
+
+    .overview-panel {
+      margin-top: 8px;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .overview-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .overview-top h3 {
+      margin: 0;
+      color: #fff;
+      font-size: 1.45rem;
+    }
+
+    .overview-top p {
+      margin: 8px 0 0 0;
+      color: var(--text-muted);
+      max-width: 640px;
+      line-height: 1.6;
+    }
+
+    .overview-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .overview-card {
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 16px;
+      min-height: 176px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .overview-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      min-height: 48px;
+    }
+
+    .overview-card-title {
+      margin: 0;
+      color: #fff;
+      font-size: 1.05rem;
+      line-height: 1.35;
+      font-weight: 700;
+      flex: 1;
+    }
+
+    .overview-card .badge {
+      flex-shrink: 0;
+      align-self: flex-start;
+      margin-top: 1px;
+    }
+
+    .overview-card-desc {
+      margin: 0;
+      color: var(--text-muted);
+      line-height: 1.65;
+      font-size: 0.96em;
+      min-height: 72px;
+    }
+
+    .overview-card-meta {
+      margin-top: auto;
+      padding-top: 12px;
+      color: var(--text-muted);
+      font-size: 0.92em;
+      line-height: 1.6;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .overview-note {
+      margin: 16px 0 0 0;
+      color: var(--text-muted);
+      font-size: 0.95em;
+      line-height: 1.7;
+    }
+
+    .summary-table .data-table {
+      font-size: 0.92em;
+      table-layout: fixed;
+    }
+
+    .summary-table .data-table th,
+    .summary-table .data-table td {
+      padding: 16px 14px;
+      vertical-align: top;
+      line-height: 1.7;
+    }
+
+    .summary-table .data-table th {
+      font-size: 0.92em;
+      letter-spacing: 0.01em;
+    }
+
+    .summary-table .data-table td:nth-child(1) {
+      width: 17%;
+      color: #fff;
+      font-weight: 600;
+      line-height: 1.45;
+    }
+
+    .summary-table .data-table td:nth-child(2) {
+      width: 12%;
+      vertical-align: middle;
+    }
+
+    .summary-table .data-table td:nth-child(3) {
+      width: 28%;
+    }
+
+    .summary-table .data-table td:nth-child(4) {
+      width: 11%;
+      white-space: nowrap;
+      color: #d8dee9;
+      font-weight: 600;
+      vertical-align: middle;
+    }
+
+    .summary-table .data-table td:nth-child(5) {
+      width: 32%;
+    }
+
+    .summary-table .badge {
+      min-width: 56px;
+      text-align: center;
+      justify-content: center;
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 12px;
+      font-size: 0.72em;
+      line-height: 1;
+    }
+
+    .summary-table .data-table tr td {
+      word-break: break-word;
+    }
+
+    .summary-table .data-table tr td:last-child {
+      color: #cfd6e4;
+    }
   </style>
 </head>
 
@@ -312,60 +476,131 @@
     </nav>
 
     <div style="text-align:center; padding: 40px 0 20px;">
-      <h1 style="font-size: 3.5em; margin-bottom: 10px;">Run Nano Banana Locally</h1>
+      <h1 style="font-size: 3.5em; margin-bottom: 10px;">Run Nano Banana Locally?</h1>
+
       <p class="lead" style="margin: 0 auto; max-width: 800px;">
         The definitive hub for <strong>local installs</strong>. Compare enterprise-grade models for your hardware, from
         cloud APIs to highly efficient <strong>offline</strong> engines.
       </p>
     </div>
 
-    <!-- LANDSCAPE TABLE -->
-    <div class="table-wrapper">
+    <div class="overview-panel">
+      <div class="overview-top">
+        <div>
+          <h3>Quick Model Overview</h3>
+          <p>Five common routes. Closed models are cloud-only; open models can be self-hosted.</p>
+        </div>
+        <div class="overview-actions">
+          <a href="https://artificialanalysis.ai/image/leaderboard/text-to-image" target="_blank" rel="noopener"
+            class="btn btn-glass">Text-to-Image Elo</a>
+          <a href="https://artificialanalysis.ai/image/leaderboard/editing" target="_blank" rel="noopener"
+            class="btn btn-glass">Image Editing Elo</a>
+        </div>
+      </div>
+
+      <div class="overview-grid">
+        <div class="overview-card">
+          <div class="overview-card-header">
+            <h4 class="overview-card-title">Nano Banana Pro</h4>
+            <span class="badge badge-gray">Closed</span>
+          </div>
+          <p class="overview-card-desc">Cloud editing route. Cannot run locally.</p>
+          <div class="overview-card-meta">AA latest: <strong style="color:#fff;">T2I #3</strong> · <strong
+              style="color:#fff;">Edit #2</strong></div>
+        </div>
+
+        <div class="overview-card">
+          <div class="overview-card-header">
+            <h4 class="overview-card-title">Seedream 4.5</h4>
+            <span class="badge badge-gray">Closed</span>
+          </div>
+          <p class="overview-card-desc">Cloud alternative. Cannot run locally.</p>
+          <div class="overview-card-meta">Use it when you want another proprietary quality route.</div>
+        </div>
+
+        <div class="overview-card">
+          <div class="overview-card-header">
+            <h4 class="overview-card-title">Qwen-Image</h4>
+            <span class="badge badge-primary">Open</span>
+          </div>
+          <p class="overview-card-desc">Strong text rendering and editing. Can run locally.</p>
+          <div class="overview-card-meta">AA open-weight: <strong style="color:#fff;">T2I #3</strong> · <strong
+              style="color:#fff;">Edit #3</strong></div>
+        </div>
+
+        <div class="overview-card">
+          <div class="overview-card-header">
+            <h4 class="overview-card-title">Z-Image / Turbo</h4>
+            <span class="badge badge-primary">Open</span>
+          </div>
+          <p class="overview-card-desc">Fast local generation route. Can run locally.</p>
+          <div class="overview-card-meta">Official release available. Not in current top AA snapshot.</div>
+        </div>
+
+        <div class="overview-card">
+          <div class="overview-card-header">
+            <h4 class="overview-card-title">GLM-Image</h4>
+            <span class="badge badge-primary">Open</span>
+          </div>
+          <p class="overview-card-desc">Knowledge-heavy layouts and text rendering. Can run locally.</p>
+          <div class="overview-card-meta">Official release available. Not in current top AA snapshot.</div>
+        </div>
+      </div>
+
+      <p class="overview-note">
+        We use Artificial Analysis as a practical third-party preference reference. For this page, the more important
+        distinction is whether a route is <strong>closed cloud-only</strong> or <strong>open and locally deployable</strong>.
+      </p>
+    </div>
+
+    <div class="table-wrapper summary-table" style="margin-top: 24px;">
       <table class="data-table">
         <thead>
           <tr>
-            <th>Rank / Model</th>
+            <th>Model</th>
             <th>Type</th>
             <th>Best For</th>
             <th>GPU Req</th>
-            <th>TIIF Score</th>
+            <th>Deploy / Ranking Note</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><span class="rank-num">#1</span> Nano Banana 2.0</td>
-            <td><span class="badge badge-primary">Closed</span></td>
-            <td>Logic & Reasoning</td>
+            <td>Nano Banana Pro</td>
+            <td><span class="badge badge-gray">Closed</span></td>
+
+            <td>Best cloud editing workflow and convenience</td>
             <td>—</td>
-            <td>91.00</td>
+            <td>Cloud only · cannot run locally · AA latest T2I #3 / Edit #2</td>
           </tr>
           <tr>
-            <td><span class="rank-num">#2</span> Seedream 4.5</td>
-            <td><span class="badge badge-blue">Closed</span></td>
-            <td>General Purpose</td>
+            <td>Seedream 4.5</td>
+            <td><span class="badge badge-gray">Closed</span></td>
+
+            <td>Alternative proprietary image route</td>
             <td>—</td>
-            <td>90.49</td>
+            <td>Cloud only · cannot run locally</td>
           </tr>
           <tr>
-            <td><span class="rank-num">#3</span> GLM-Image</td>
-            <td><span class="badge badge-gray">Open</span></td>
-            <td>Knowledge & Text</td>
-            <td>24GB</td>
-            <td>81.01</td>
+            <td>Qwen-Image</td>
+            <td><span class="badge badge-primary">Open</span></td>
+            <td>Complex text rendering and precise image editing</td>
+            <td>24GB+</td>
+            <td>AA open-weight snapshot: T2I #3 / Edit #3</td>
           </tr>
           <tr>
-            <td><span class="rank-num">#4</span> Qwen-Image</td>
-            <td><span class="badge badge-gray">Open</span></td>
-            <td>Photorealism</td>
-            <td>24GB</td>
-            <td>86.14</td>
+            <td>Z-Image / Turbo</td>
+            <td><span class="badge badge-primary">Open</span></td>
+            <td>Fast local generation, 8-step efficiency, balanced quality/speed</td>
+            <td>16GB+</td>
+            <td>Local deployable · official GitHub release · not in current top AA snapshot</td>
           </tr>
           <tr>
-            <td><span class="rank-num">#5</span> Z-Image-Turbo</td>
-            <td><span class="badge badge-gray">Open</span></td>
-            <td>Speed (8-step)</td>
-            <td>16GB</td>
-            <td>80.20</td>
+            <td>GLM-Image</td>
+            <td><span class="badge badge-primary">Open</span></td>
+            <td>Text rendering, knowledge-heavy layouts, rich image-to-image tasks</td>
+            <td>24GB+</td>
+            <td>Local deployable · official Hugging Face release · not in current top AA snapshot</td>
           </tr>
         </tbody>
       </table>
@@ -378,24 +613,28 @@
       style="background: linear-gradient(135deg, rgba(248, 113, 113, 0.15) 0%, rgba(251, 191, 36, 0.1) 100%); border: 1px solid rgba(248, 113, 113, 0.4); border-radius: 16px; padding: 24px; margin-bottom: 40px;">
       <h3 style="color: #f87171; margin: 0 0 12px 0; font-size: 1.2rem;">⚠️ Important: Nano Banana is Closed-Source</h3>
       <p style="margin: 0; color: var(--text-muted); line-height: 1.7;">
-        <strong style="color: #fff;">Nano Banana 2.0 (Pro) is a closed-source cloud API</strong> and <strong
+        <strong style="color: #fff;">Nano Banana Pro is a closed-source cloud API</strong> and <strong
           style="color: #fff;">cannot be deployed locally</strong>.
+
         If you're looking to run AI image generation on your own hardware, please scroll down to our <strong
           style="color: #4ade80;">Open-Source Alternatives</strong> section below —
         we provide detailed guides for <strong>GLM-Image</strong>, <strong>Qwen-Image</strong>, and
-        <strong>Z-Image-Turbo</strong>, all of which can run locally on consumer GPUs.
+        <strong>Z-Image</strong>, all of which can run locally with the right GPU and software stack.
+
       </p>
     </div>
 
     <!-- 1. NANO BANANA PRO -->
     <div id="nano-banana" class="card" style="border-color: var(--primary-glow);">
       <div class="model-header">
-        <h2 class="model-title" style="color:var(--primary)">Nano Banana 2.0 (Pro)</h2>
+        <h2 class="model-title" style="color:var(--primary)">Nano Banana Pro</h2>
+
         <div class="badges"><span class="badge badge-primary">Recommended</span> <span class="badge"
             style="background: rgba(248,113,113,0.2); color: #f87171;">Closed-Source</span></div>
       </div>
-      <p><strong style="color: #f87171;">⚠️ Cloud API Only — Cannot Run Locally.</strong> Powered by Gemini 3.0 Pro
-        logic. Best for users who prefer cloud convenience over local deployment.</p>
+      <p><strong style="color: #f87171;">⚠️ Cloud API Only — Cannot Run Locally.</strong> Best for users who want
+        Gemini 3 image workflows, strong multi-turn editing, and minimal local setup.</p>
+
       <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; margin: 20px 0;">
         <pre style="margin:0; background:transparent; border:none; padding:0;"><code>pip install google-genai
 from google import genai
@@ -455,9 +694,8 @@ client = genai.Client(api_key="YOUR_KEY")</code></pre>
           </div>
           <h3>Introduction</h3>
           <p>GLM-Image is an image generation model that adopts a hybrid autoregressive + diffusion decoder
-            architecture. It aligns with mainstream latent diffusion approaches in general quality but shows significant
-            advantages in text-rendering and knowledge-intensive generation. It supports T2I, Inpainting, and Style
-            Transfer.</p>
+            architecture. According to the official release, it shows significant advantages in text rendering and
+            knowledge-intensive generation, while also supporting text-to-image and rich image-to-image workflows.</p>
 
           <h3>Architecture</h3>
           <img src="https://raw.githubusercontent.com/zai-org/GLM-Image/main/resources/architecture_1.jpeg"
@@ -511,14 +749,15 @@ pipe = GlmImagePipeline.from_pretrained("zai-org/GLM-Image", torch_dtype=torch.b
 image = pipe(prompt="A futuristic city", width=1024, height=1024).images[0]</code></pre>
 
           <h3>Quick Start: SGLang Server</h3>
-          <pre><code>pip install "sglang[diffusion] @ git+https://github.com/sgl-project/sglang.git"
+          <pre><code>pip install "sglang[diffusion] @ git+https://github.com/sgl-project/sglang.git#subdirectory=python"
 sglang serve --model-path zai-org/GLM-Image
 # Client
 curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", "size": "1024x1024"}'</code></pre>
 
           <div class="highlight-box">
-            <strong>Note:</strong> Target image resolution must be divisible by 32. Requires >80GB memory or multi-GPU
-            for training/finetuning, but inference fits on 24GB with optimizations.
+            <strong>Note:</strong> Target image resolution must be divisible by 32. The official notes say inference can
+            run with about 23GB GPU memory using CPU offload, but runtime cost is still relatively high and some serving
+            integrations are still being added.
           </div>
         </div>
       </details>
@@ -528,10 +767,13 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
     <div id="qwen-image" class="card" class="gradient-qwen" style="border-top: 1px solid rgba(255, 165, 0, 0.3);">
       <div class="model-header">
         <h2 class="model-title">Qwen-Image</h2>
-        <div class="badges"><span class="badge badge-gray">Photorealism</span> <span class="badge badge-gray">20B
-            Params</span></div>
+        <div class="badges"><span class="badge badge-gray">Text Rendering</span> <span class="badge badge-gray">Official
+            Release</span></div>
+
       </div>
-      <p>A massive 20B MMDiT foundation model. Unmatched realism in humans, nature, and complex textures.</p>
+      <p><strong>Qwen-Image</strong> is the official open image model in the Qwen series. The official release
+        highlights strong performance in complex text rendering, precise image editing, and general image generation.</p>
+
       <div class="hardware-specs">
         <div class="spec-item"><span class="dot dot-green"></span> <strong>Recommended:</strong> RTX 3090 / 4090 (24GB)
         </div>
@@ -545,8 +787,9 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
           loading="lazy">
       </div>
       <div style="display:flex; gap:16px; margin:20px 0;">
-        <a href="https://huggingface.co/Qwen/Qwen-Image-2512" class="btn btn-glass">🤗 Qwen-2512</a>
-        <a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" class="btn btn-glass">🤗 Edit-2511</a>
+        <a href="https://huggingface.co/Qwen/Qwen-Image" class="btn btn-glass">🤗 Hugging Face</a>
+        <a href="https://modelscope.cn/models/Qwen/Qwen-Image" class="btn btn-glass">🤖 ModelScope</a>
+
       </div>
 
       <details>
@@ -555,33 +798,38 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
           <div class="paper-info">
             <span class="paper-title">Qwen-Image Technical Report</span>
             <span class="paper-meta">Alibaba Cloud · arXiv:2508.02324 · 2025</span>
-            <p>20B Parameter MMDiT Image Foundation Model.</p>
+            <p>Image generation foundation model in the Qwen series, with strong complex text rendering and precise image
+              editing according to the official release.</p>
+
           </div>
 
           <h3>News & Updates</h3>
           <ul>
-            <li><strong>2025.12.31:</strong> Released Qwen-Image-2512! Enhanced human realism, finer natural textures,
-              and improved text rendering. Ranks #1 Open Source on AI Arena.</li>
-            <li><strong>2025.12.23:</strong> Released Qwen-Image-Edit-2511. Improved consistency and multi-person
-              editing.</li>
-            <li><strong>2025.12.19:</strong> Released Qwen-Image-Layered.</li>
+            <li><strong>2025.08.04:</strong> Official technical report released.</li>
+            <li><strong>2025.08.04:</strong> Official Qwen-Image weights released on Hugging Face and ModelScope.</li>
+            <li><strong>2025.08.04:</strong> Official Qwen-Image blog post published by the Qwen team.</li>
+
           </ul>
 
-          <h3>Showcase: Qwen-Image-Edit-2511</h3>
-          <p>Supports multi-person consistency and built-in LoRA support (Lighting, Viewpoint).</p>
-          <img src="https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-Image/edit2511/幻灯片5.JPG" class="gallery-item">
+          <h3>Showcase</h3>
+          <p>The official examples emphasize text rendering quality and instruction-following for both image generation
+            and editing.</p>
+
+          <img src="https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-Image/image2512/幻灯片5.JPG" class="gallery-item">
 
           <h3>Deployment & Acceleration</h3>
           <ul>
-            <li><strong>vLLM-Omni:</strong> Day-0 support for high performance offline inference.</li>
-            <li><strong>LightX2V:</strong> 25x reduction in DiT NFEs, 42x speedup for editing.</li>
-            <li><strong>Multi-GPU API Server:</strong> Supports queue management and auto prompt optimization.</li>
+            <li><strong>Diffusers:</strong> Official quick start uses the latest diffusers build.</li>
+            <li><strong>Aspect-ratio presets:</strong> The official example lists 1:1, 16:9, 9:16, 4:3, 3:4, 3:2, and
+              2:3 generation presets.</li>
+            <li><strong>Official links:</strong> Prefer the Hugging Face page, ModelScope page, and Qwen blog for the
+              latest release notes.</li>
+
           </ul>
 
           <h3>Prompt Enhance Tool</h3>
           <pre><code>from tools.prompt_utils import rewrite
 prompt = rewrite("original prompt")</code></pre>
-
           <h3>Citation</h3>
           <pre><code>@misc{wu2025qwenimagetechnicalreport, title={Qwen-Image Technical Report}, author={Chenfei Wu et al.}, year={2025}, eprint={2508.02324}}</code></pre>
         </div>
