@@ -73,12 +73,17 @@ os.environ["https_proxy"] = "http://127.0.0.1:7890"
 from google import genai</code></pre>
 
                 <h2>3. "RuntimeError: CUDA out of memory"</h2>
-                <p><strong>The Cause:</strong> Wait, why are you seeing this? Nano Banana Pro Client DOES NOT use CUDA!
+                <p><strong>The Cause:</strong> Wait, why are you seeing this? Nano Banana 2 Client DOES NOT use CUDA!
                 </p>
-                <p>If you see this, you are likely trying to run an <strong>offline model</strong> such as Z-Image,
-                    Qwen-Image, GLM-Image, SDXL, or FLUX on your own GPU. As mentioned in our hardware guide, these
+                <div style="background: rgba(43, 116, 255, 0.1); border-left: 4px solid #3b82f6; padding: 20px; margin-bottom: 24px; border-radius: 0 8px 8px 0;">
+                    <h4 style="margin-top: 0; color: #60a5fa;">💡 Short on 24GB VRAM for Offline Models?</h4>
+                    <p style="margin-bottom: 12px; font-size: 0.95em;">If you're trying to run heavy open-weight models like Hunyuan 3.0 locally but your hardware is limited, you can rent an A100 GPU in the cloud for less than $0.50/hour using our optimized template.</p>
+                    <a href="../guides/cloud-deployment.html" class="btn btn-primary" style="font-size: 0.85em; padding: 8px 16px;">Read the Cloud Deployment Sandbox Guide &rarr;</a>
+                </div>
+                <p>If you see this, you are likely trying to run an <strong>offline model</strong> such as Hunyuan 3.0,
+                    Qwen-Image, Z-Image, SDXL, or FLUX on your own GPU. As mentioned in our hardware guide, these
                     local routes can require anywhere from 8GB to 24GB+ VRAM depending on the model. If your hardware is
-                    limited, stick to the `nano_api.py` client.</p>
+                    limited, stick to the `nano_api.py` client or use the cloud GPU solution above.</p>
             </div>
         </article>
 

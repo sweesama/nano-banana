@@ -18,9 +18,9 @@
   <!-- SEO Optimization -->
   <title>Run Nano Banana Locally | Local Install Guide</title>
   <meta name="description"
-    content="Run Nano Banana locally with Python scripts and offline models like GLM, Qwen, Z-Image. Complete local install guide with copy-ready recipes." />
+    content="Run Nano Banana locally with Python scripts and offline models like HunyuanImage, Qwen-Image, GLM-Image, Z-Image. Complete local install guide with hardware requirements and copy-ready recipes." />
   <meta name="keywords"
-    content="run nano banana locally, nano banana local install, nano banana recipes, offline AI image editor" />
+    content="run nano banana locally, nano banana local install, nano banana self hosted, offline AI image editor, HunyuanImage 3.0" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://www.nano-banana.live/guides/quickstart.html" />
 
@@ -332,7 +332,7 @@
 
     .overview-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 14px;
     }
 
@@ -492,21 +492,21 @@
         </div>
         <div class="overview-actions">
           <a href="https://artificialanalysis.ai/image/leaderboard/text-to-image" target="_blank" rel="noopener"
-            class="btn btn-glass">Text-to-Image Elo</a>
+            class="btn-glass-subtle">Text-to-Image Elo  ↗</a>
           <a href="https://artificialanalysis.ai/image/leaderboard/editing" target="_blank" rel="noopener"
-            class="btn btn-glass">Image Editing Elo</a>
+            class="btn-glass-subtle">Image Editing Elo  ↗</a>
         </div>
       </div>
 
       <div class="overview-grid">
         <div class="overview-card">
           <div class="overview-card-header">
-            <h4 class="overview-card-title">Nano Banana Pro</h4>
+            <h4 class="overview-card-title">Nano Banana 2</h4>
             <span class="badge badge-gray">Closed</span>
           </div>
-          <p class="overview-card-desc">Cloud editing route. Cannot run locally.</p>
-          <div class="overview-card-meta">AA latest: <strong style="color:#fff;">T2I #3</strong> · <strong
-              style="color:#fff;">Edit #2</strong></div>
+          <p class="overview-card-desc">Latest cloud route (Gemini 3.1 Flash Image). Cannot run locally.</p>
+          <div class="overview-card-meta">AA Apr 2026: <strong style="color:#fff;">T2I #2</strong> · <strong
+              style="color:#fff;">Edit #3</strong></div>
         </div>
 
         <div class="overview-card">
@@ -524,7 +524,7 @@
             <span class="badge badge-primary">Open</span>
           </div>
           <p class="overview-card-desc">Strong text rendering and editing. Can run locally.</p>
-          <div class="overview-card-meta">AA open-weight: <strong style="color:#fff;">T2I #3</strong> · <strong
+          <div class="overview-card-meta">AA open-weight Apr 2026: <strong style="color:#fff;">T2I #2</strong> · <strong
               style="color:#fff;">Edit #3</strong></div>
         </div>
 
@@ -545,11 +545,21 @@
           <p class="overview-card-desc">Knowledge-heavy layouts and text rendering. Can run locally.</p>
           <div class="overview-card-meta">Official release available. Not in current top AA snapshot.</div>
         </div>
+
+        <div class="overview-card">
+          <div class="overview-card-header">
+            <h4 class="overview-card-title">HunyuanImage 3.0</h4>
+            <span class="badge badge-primary">Open</span>
+          </div>
+          <p class="overview-card-desc">80B MoE with CoT reasoning and multi-image editing. Can run locally.</p>
+          <div class="overview-card-meta">AA open-weight Apr 2026: <strong style="color:#fff;">Edit #1</strong> 🏆</div>
+        </div>
       </div>
 
       <p class="overview-note">
         We use Artificial Analysis as a practical third-party preference reference. For this page, the more important
-        distinction is whether a route is <strong>closed cloud-only</strong> or <strong>open and locally deployable</strong>.
+        distinction is whether a route is <strong>closed cloud-only</strong> or <strong>open and locally
+          deployable</strong>.
       </p>
     </div>
 
@@ -566,12 +576,12 @@
         </thead>
         <tbody>
           <tr>
-            <td>Nano Banana Pro</td>
+            <td>Nano Banana 2</td>
             <td><span class="badge badge-gray">Closed</span></td>
 
-            <td>Best cloud editing workflow and convenience</td>
+            <td>Latest cloud image route with reasoning-driven generation</td>
             <td>—</td>
-            <td>Cloud only · cannot run locally · AA latest T2I #3 / Edit #2</td>
+            <td>Cloud only · cannot run locally · AA Apr 2026: T2I #2 / Edit #3</td>
           </tr>
           <tr>
             <td>Seedream 4.5</td>
@@ -586,7 +596,7 @@
             <td><span class="badge badge-primary">Open</span></td>
             <td>Complex text rendering and precise image editing</td>
             <td>24GB+</td>
-            <td>AA open-weight snapshot: T2I #3 / Edit #3</td>
+            <td>AA open-weight Apr 2026: T2I #2 / Edit #3</td>
           </tr>
           <tr>
             <td>Z-Image / Turbo</td>
@@ -602,6 +612,13 @@
             <td>24GB+</td>
             <td>Local deployable · official Hugging Face release · not in current top AA snapshot</td>
           </tr>
+          <tr>
+            <td>HunyuanImage 3.0</td>
+            <td><span class="badge badge-primary">Open</span></td>
+            <td>CoT reasoning, intelligent editing, multi-image fusion (up to 3 inputs)</td>
+            <td>48GB+</td>
+            <td>AA open-weight Apr 2026: Edit #1 🏆 · Tencent Community License</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -613,27 +630,28 @@
       style="background: linear-gradient(135deg, rgba(248, 113, 113, 0.15) 0%, rgba(251, 191, 36, 0.1) 100%); border: 1px solid rgba(248, 113, 113, 0.4); border-radius: 16px; padding: 24px; margin-bottom: 40px;">
       <h3 style="color: #f87171; margin: 0 0 12px 0; font-size: 1.2rem;">⚠️ Important: Nano Banana is Closed-Source</h3>
       <p style="margin: 0; color: var(--text-muted); line-height: 1.7;">
-        <strong style="color: #fff;">Nano Banana Pro is a closed-source cloud API</strong> and <strong
+        <strong style="color: #fff;">Nano Banana 2 (Gemini 3.1 Flash Image) is a closed-source cloud API</strong> and <strong
           style="color: #fff;">cannot be deployed locally</strong>.
 
         If you're looking to run AI image generation on your own hardware, please scroll down to our <strong
           style="color: #4ade80;">Open-Source Alternatives</strong> section below —
-        we provide detailed guides for <strong>GLM-Image</strong>, <strong>Qwen-Image</strong>, and
+        we provide detailed guides for <strong>HunyuanImage 3.0</strong>, <strong>GLM-Image</strong>, <strong>Qwen-Image</strong>, and
         <strong>Z-Image</strong>, all of which can run locally with the right GPU and software stack.
 
       </p>
     </div>
 
-    <!-- 1. NANO BANANA PRO -->
+    <!-- 1. NANO BANANA 2 -->
     <div id="nano-banana" class="card" style="border-color: var(--primary-glow);">
       <div class="model-header">
-        <h2 class="model-title" style="color:var(--primary)">Nano Banana Pro</h2>
+        <h2 class="model-title" style="color:var(--primary)">Nano Banana 2</h2>
 
         <div class="badges"><span class="badge badge-primary">Recommended</span> <span class="badge"
             style="background: rgba(248,113,113,0.2); color: #f87171;">Closed-Source</span></div>
       </div>
-      <p><strong style="color: #f87171;">⚠️ Cloud API Only — Cannot Run Locally.</strong> Best for users who want
-        Gemini 3 image workflows, strong multi-turn editing, and minimal local setup.</p>
+      <p><strong style="color: #f87171;">⚠️ Cloud API Only — Cannot Run Locally.</strong> The latest Gemini 3.1 Flash
+        Image model with reasoning-driven generation, high-precision text rendering, and subject consistency across
+        images. AA T2I #2 (Elo 1,256) · Edit #3 (Elo 1,245) as of April 2026.</p>
 
       <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; margin: 20px 0;">
         <pre style="margin:0; background:transparent; border:none; padding:0;"><code>pip install google-genai
@@ -659,7 +677,368 @@ client = genai.Client(api_key="YOUR_KEY")</code></pre>
     <h3 style="margin-top:80px; text-align:center; opacity:0.6; letter-spacing: 2px;">OFFLINE MODELS (LOCAL INSTALL)
     </h3>
 
-    <!-- 3. GLM-IMAGE -->
+    <!-- 3. HUNYUANIMAGE 3.0 INSTRUCT -->
+    <div id="hunyuan-image" class="card" style="border-top: 1px solid rgba(99, 102, 241, 0.3);">
+      <div class="model-header">
+        <h2 class="model-title">HunyuanImage 3.0 Instruct</h2>
+        <div class="badges"><span class="badge badge-primary">Edit #1 Open</span> <span class="badge badge-gray">80B
+            MoE</span></div>
+      </div>
+      <p>The <strong>largest open-source image generation MoE model</strong> (80B params, 13B active/token) from Tencent.
+        There are two variants: <strong>HunyuanImage 3.0</strong> (text-to-image) and <strong>HunyuanImage 3.0
+          Instruct</strong> (editing + reasoning). The Instruct version excels at <strong style="color: #4ade80;">image
+          editing</strong> via Chain-of-Thought reasoning, prompt self-rewrite, and multi-image fusion (up to 3 inputs).
+        <strong style="color: #4ade80;">AA open-weight Editing #1 🏆</strong> (Elo 1,224) as of April 2026.
+      </p>
+
+      <div class="hardware-specs">
+        <div class="spec-item"><span class="dot dot-green"></span> <strong>Recommended:</strong> 4× A100 80GB or 4× RTX
+          4090 (multi-GPU)</div>
+        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Minimum:</strong> Single 48GB GPU (vLLM +
+          CPU offload)</div>
+        <div class="spec-item"><span class="dot dot-red"></span> <strong>Distil Version:</strong> 8-step inference for
+          faster generation</div>
+      </div>
+      
+      <div style="background: rgba(96, 165, 250, 0.1); border-left: 3px solid #60a5fa; padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 24px;">
+        <p style="margin: 0; font-size: 0.9em; color: #dbeafe;">
+          <strong>No 48GB GPU?</strong> Don't buy expensive hardware. Follow our <a href="cloud-deployment.html" style="color: #60a5fa; text-decoration: underline; font-weight: bold;">Cloud Sandbox Guide</a> to run this model on an A100 for less than $0.50/hour.
+        </p>
+      </div>
+
+      <!-- ═══════════ EDITING SHOWCASE ═══════════ -->
+      <h3
+        style="text-align:center; margin:40px 0 8px; font-size:1.4rem; background: linear-gradient(90deg, #818cf8, #c084fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+        Reasoning-Level Image Editing: Transform at Your Command</h3>
+      <p style="text-align:center; color:var(--text-muted); margin-bottom:24px; max-width:680px; margin-left:auto; margin-right:auto; line-height:1.6;">
+        Native multimodal models are capable of first analyzing the content of user-provided images and editing
+        instructions, then optimizing editing behaviors through a Cha      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-bottom:40px;">
+        <!-- Row 1 -->
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/d9c4f6f7f800a9b4c905.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#818cf8; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">Change to real photograph portrait.</p>
+          </div>
+        </div>
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/962d3a1687e9cb6c58b3.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#818cf8; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">Change the perspective to a top down view.</p>
+          </div>
+        </div>
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/85df66fe9beb58fb3aa3.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#818cf8; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">Change the lighting to Rembrandt lighting; the subject's face should be high-definition and textured.</p>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/106ca3ea8483897dc7c1.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#818cf8; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">Restore and colorize the entire photo, making every detail very high definition.</p>
+          </div>
+        </div>
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/a85c9e10c053078edfaa.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#818cf8; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">Remove facial blisters and repair the face, while preserving the subject's identity and original features.</p>
+          </div>
+        </div>
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/686aecc87b6d3b74a7a2.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#818cf8; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">Replace the croissant with lasagna.</p>
+          </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/95483d80855feac86cac.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#818cf8; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">Make the bird fly.</p>
+          </div>
+        </div>
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/d14d080f8ba4c7c95159.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#818cf8; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">Remove clutter from the background.</p>
+          </div>
+        </div>
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/67bb9428bf6d82c1501c.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#818cf8; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">Make this doll wearing superman's outfit.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════ FUSION SHOWCASE ═══════════ -->
+      <h3
+        style="text-align:center; margin:48px 0 8px; font-size:1.4rem; background: linear-gradient(90deg, #f472b6, #fb923c); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+        Multi-Image Fusion: Infinite Possibilities</h3>
+      <p style="text-align:center; color:var(--text-muted); margin-bottom:24px; max-width:680px; margin-left:auto; margin-right:auto; line-height:1.6;">
+        Enables the fusion of up to three input images and generates outputs consistent with reference images.</p>
+
+      <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:20px; margin-bottom:40px;">
+        <!-- Row 1 -->
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/9c45c8ada177b95ca4c0.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#f472b6; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">Apply the logo from Image 1 onto the belly of the plush toy in Image 2, ensuring that the cute style and texture of the toy remain unchanged.</p>
+          </div>
+        </div>
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/778bb38bd5e86d56a1c9.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#f472b6; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">Generate an image of pears that perfectly matches the artistic aesthetic and style of the provided concept.</p>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/4ec7bd6581d2bbce55aa.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#f472b6; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">Based on the reference style, generate a rear-view portrait of an Asian woman with Eastern aesthetics, balancing different fruits on her head. Change the background color, maintaining consistent artistic beauty.</p>
+          </div>
+        </div>
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/f2f5cd12b62566a12626.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#f472b6; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">In my birthday photo, decorate the wall behind me with the same balloon arrangement seen on the wall in Image 2, excluding any foreground table content. Maintain the vertical aspect ratio and resolution of Image 1 unchanged.</p>
+          </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/a310a0b474a6162f35eb.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#f472b6; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">A photorealistic selfie taken jointly by the characters from Image 1 and Image 2. The background is changed to a modern city street scene. Transform the original oil painting style into realistic photography. The entire image must have the authentic look and feel of an iPhone shot, including slight motion blur to indicate movement.</p>
+          </div>
+        </div>
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/9694ab63e42cd9feb6a3.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#f472b6; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">Generate a dynamic image of the penguin wearing the birthday hat from Image 1 riding on the back of the unicorn from Image 2. The unicorn is galloping at full speed.</p>
+          </div>
+        </div>
+
+        <!-- Row 4 -->
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/70ca4000d3c8b49fc244.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#f472b6; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">A group photo of me and my best friend in the style of Image 2. Maintain the specific horizontal aspect ratio and resolution of Image 2.</p>
+          </div>
+        </div>
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/52cddbc5f18c09d2b9b6.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#f472b6; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">Merge them into a new species, retaining their respective characteristics.</p>
+          </div>
+        </div>
+
+        <!-- Row 5 -->
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/8686a0ecac3d4660728a.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#f472b6; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">Change the hairstyle of the boy on the left to the short wolf-tail hairstyle shown on the right. Do not alter the features of the character on the left.</p>
+          </div>
+        </div>
+        <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/3457b3da6a488a9b0dbc.png"
+            loading="lazy" style="width:100%; height:auto; object-fit:contain; display:block; flex:1;">
+          <div style="padding:12px 14px; background:rgba(0,0,0,0.3);">
+            <span style="color:#f472b6; font-size:0.75rem; font-weight:600;">PROMPT</span>
+            <p style="margin:4px 0 0; color:var(--text-muted); font-size:0.85rem; line-height:1.4;">Generate an image of me strolling through the forest shown in Image 2.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════ LINKS ═══════════ -->
+      <div style="display:flex; gap:16px; margin:20px 0; flex-wrap: wrap;">
+        <a href="https://huggingface.co/tencent/HunyuanImage-3.0-Instruct" target="_blank" rel="noopener"
+          class="btn btn-glass">🤗 Hugging Face</a>
+        <a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener"
+          class="btn btn-glass">💻 GitHub</a>
+        <a href="https://huggingface.co/tencent/HunyuanImage-3.0-Instruct-Distil" target="_blank" rel="noopener"
+          class="btn btn-glass">⚡ Distil (Fast)</a>
+        <a href="https://arxiv.org/abs/2509.23951" target="_blank" rel="noopener"
+          class="btn btn-glass">📄 arXiv Paper</a>
+      </div>
+
+      <!-- ═══════════ TECHNICAL DETAILS ═══════════ -->
+      <details>
+        <summary>Technical Details</summary>
+        <div class="details-body repo-content">
+          <p style="line-height:1.8; color:var(--text-muted);">
+            We use an MoE LLM as the base model and introduce image understanding and generation capabilities into the
+            model. For image understanding tasks, we utilize a joint feature composed of VAE and ViT as the image input;
+            for image generation tasks, we incorporate Diffusion-based image modeling into the LLM architecture based on
+            the Transfusion approach. Through mixed training of different multimodal tasks, we are able to unleash the
+            potential of the MoE architecture and enhance the model's generalization ability. HunyuanImage 3.0 is the
+            image generation component of this model.
+          </p>
+
+          <!-- Architecture Diagram -->
+          <div style="margin:24px 0;">
+            <img
+              src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/0ce8d564b7b837ad7fa0.png"
+              loading="lazy" style="width:100%; border-radius:12px; background:#fff;">
+            <p style="text-align:center; color:var(--text-muted); font-size:0.85rem; margin-top:8px;">
+              Decoder-Only Transformer (Hunyuan-A13B) — unified architecture for image understanding, language modeling,
+              and image generation.</p>
+          </div>
+
+          <p style="line-height:1.8; color:var(--text-muted);">
+            For multimodal data with intertwined text and images, we have specifically designed attention masks and 2D
+            positional encoding. The attention mask isolates noisy images from clean images, ensuring that different
+            images within a rich-text sequence do not interfere with each other. By employing 2D RoPE compatible with the
+            original 1D RoPE of the LLM base model, we promote more efficient learning and convergence of image
+            structures.
+          </p>
+
+          <!-- Attention Mask & 2D RoPE Diagram -->
+          <div style="margin:24px 0;">
+            <img
+              src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/2bd0364bf7ff9c4ead2f.png"
+              loading="lazy" style="width:100%; border-radius:12px; background:#fff;">
+            <p style="text-align:center; color:var(--text-muted); font-size:0.85rem; margin-top:8px;">
+              2D RoPE illustration with joint feature — attention mask design ensures text and image tokens do not
+              interfere during training.</p>
+          </div>
+
+          <p style="line-height:1.8; color:var(--text-muted);">
+            <strong>Native Chain-of-Thought (CoT) Generation:</strong> To leverage the advantages of native multimodal
+            models, we have constructed a Chain-of-Thought process for every image-to-image data point. The model is
+            guided to first analyze the features of the original image, then further decompose the user's instructions.
+            By combining the image feature analysis with the user's intent, the model constructs a more complex and
+            systematic fine-grained editing command. This command includes specific details on how to modify the areas
+            requiring change, as well as which features from the original image must be preserved. Ultimately, the model
+            expands the user's prompt into a complex, detailed, and structured instruction.
+          </p>
+
+          <!-- CoT Generation Diagram -->
+          <div style="margin:24px 0;">
+            <img
+              src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/69f62eb3170a3e03439b.png"
+              loading="lazy" style="width:100%; border-radius:12px; background:#fff;">
+            <p style="text-align:center; color:var(--text-muted); font-size:0.85rem; margin-top:8px;">
+              Native CoT Generation workflow — the model analyzes input images, decomposes instructions, and constructs
+              structured editing commands before generation.</p>
+          </div>
+
+          <h3>Model Variants</h3>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>Focus</th>
+                  <th>Steps</th>
+                  <th>Link</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>HunyuanImage-3.0</td>
+                  <td>Text-to-Image</td>
+                  <td>50</td>
+                  <td><a href="https://huggingface.co/tencent/HunyuanImage-3.0" target="_blank">HF</a></td>
+                </tr>
+                <tr>
+                  <td>HunyuanImage-3.0-Instruct</td>
+                  <td>Editing + Reasoning</td>
+                  <td>50</td>
+                  <td><a href="https://huggingface.co/tencent/HunyuanImage-3.0-Instruct" target="_blank">HF</a></td>
+                </tr>
+                <tr>
+                  <td>HunyuanImage-3.0-Instruct-Distil</td>
+                  <td>Fast Inference</td>
+                  <td>8</td>
+                  <td><a href="https://huggingface.co/tencent/HunyuanImage-3.0-Instruct-Distil" target="_blank">HF</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Quick Start: Transformers</h3>
+          <pre><code>pip install torch==2.8.0 torchvision==0.23.0 --index-url https://download.pytorch.org/whl/cu128
+from transformers import AutoModelForCausalLM
+
+model_id = "./HunyuanImage-3-Instruct"
+kwargs = dict(
+    attn_implementation="sdpa",
+    trust_remote_code=True,
+    torch_dtype="auto",
+    device_map="auto",
+    moe_impl="eager",  # Use "flashinfer" if installed
+    moe_drop_tokens=True,
+)
+model = AutoModelForCausalLM.from_pretrained(model_id, **kwargs)
+model.load_tokenizer(model_id)
+
+prompt = "A futuristic city at sunset with flying vehicles"
+cot_text, samples = model.generate_image(
+    prompt=prompt, seed=42, image_size="1024x1024",
+    use_system_prompt="en_unified",
+    bot_task="think_recaption",
+    diff_infer_steps=50, verbose=2
+)
+samples[0].save("output.png")</code></pre>
+
+          <h3>License</h3>
+          <p><strong>Tencent Hunyuan Community License</strong> — free for personal and commercial use.</p>
+
+          <h3>Citation</h3>
+          <pre><code>@article{cao2025hunyuanimage,
+  title={HunyuanImage 3.0 Technical Report},
+  author={Cao, Siyu and Chen, Hangting and Chen, Peng et al.},
+  journal={arXiv preprint arXiv:2509.23951},
+  year={2025}
+}</code></pre>
+        </div>
+      </details>
+    </div>
+
+    <!-- 4. GLM-IMAGE -->
     <div id="glm-image" class="card">
       <div class="model-header">
         <h2 class="model-title">GLM-Image</h2>
@@ -679,8 +1058,10 @@ client = genai.Client(api_key="YOUR_KEY")</code></pre>
         </div>
       </div>
       <div style="display:flex; gap:16px; margin:20px 0;">
-        <a href="https://huggingface.co/zai-org/GLM-Image" target="_blank" rel="noopener" class="btn btn-glass">🤗 Hugging Face</a>
-        <a href="https://modelscope.cn/models/ZhipuAI/GLM-Image" target="_blank" rel="noopener" class="btn btn-glass">🤖 ModelScope</a>
+        <a href="https://huggingface.co/zai-org/GLM-Image" target="_blank" rel="noopener" class="btn btn-glass">🤗
+          Hugging Face</a>
+        <a href="https://modelscope.cn/models/ZhipuAI/GLM-Image" target="_blank" rel="noopener" class="btn btn-glass">🤖
+          ModelScope</a>
       </div>
 
       <details>
@@ -772,7 +1153,8 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
 
       </div>
       <p><strong>Qwen-Image</strong> is the official open image model in the Qwen series. The official release
-        highlights strong performance in complex text rendering, precise image editing, and general image generation.</p>
+        highlights strong performance in complex text rendering, precise image editing, and general image generation.
+      </p>
 
       <div class="hardware-specs">
         <div class="spec-item"><span class="dot dot-green"></span> <strong>Recommended:</strong> RTX 3090 / 4090 (24GB)
@@ -787,8 +1169,10 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
           loading="lazy">
       </div>
       <div style="display:flex; gap:16px; margin:20px 0;">
-        <a href="https://huggingface.co/Qwen/Qwen-Image" target="_blank" rel="noopener" class="btn btn-glass">🤗 Hugging Face</a>
-        <a href="https://modelscope.cn/models/Qwen/Qwen-Image" target="_blank" rel="noopener" class="btn btn-glass">🤖 ModelScope</a>
+        <a href="https://huggingface.co/Qwen/Qwen-Image" target="_blank" rel="noopener" class="btn btn-glass">🤗 Hugging
+          Face</a>
+        <a href="https://modelscope.cn/models/Qwen/Qwen-Image" target="_blank" rel="noopener" class="btn btn-glass">🤖
+          ModelScope</a>
 
       </div>
 
@@ -798,7 +1182,8 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
           <div class="paper-info">
             <span class="paper-title">Qwen-Image Technical Report</span>
             <span class="paper-meta">Alibaba Cloud · arXiv:2508.02324 · 2025</span>
-            <p>Image generation foundation model in the Qwen series, with strong complex text rendering and precise image
+            <p>Image generation foundation model in the Qwen series, with strong complex text rendering and precise
+              image
               editing according to the official release.</p>
 
           </div>

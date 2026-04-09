@@ -49,7 +49,7 @@
                 <div
                     style="background: rgba(255, 0, 0, 0.1); border-left: 4px solid #f87171; padding: 20px; margin-bottom: 30px; border-radius: 0 8px 8px 0;">
                     <h3 style="margin-top: 0; color: #f87171;">The "Closed Source" Reality</h3>
-                    <p>Before we begin, a crucial clarification: <strong>Nano Banana Pro cannot truly run
+                    <p>Before we begin, a crucial clarification: <strong>Nano Banana 2 cannot truly run
                             offline.</strong></p>
                     <p>Why? Because the core model is **closed source**. It runs on Google's current Gemini image
                         infrastructure, while your machine only acts as the local controller.
@@ -80,7 +80,7 @@ python -m venv venv
 source venv/bin/activate</code></pre>
 
                 <h2>Step 3: Install the Client SDK</h2>
-                <p>We use the official Google GenAI SDK to communicate with the Pro model.</p>
+                <p>We use the official Google GenAI SDK to communicate with the Nano Banana 2 model.</p>
                 <pre><code class="language-bash">pip install google-genai pillow</code></pre>
 
                 <h2>Step 4: The Core Script</h2>
@@ -98,8 +98,8 @@ print("Connecting to Nano Banana Pro (Cloud)...")
 
                 <h2>Want True Offline?</h2>
                 <p>If you strictly need to run without internet (e.g., for air-gapped security), you cannot use Nano
-                    Banana Pro. Instead, check out the <strong>Z-Image</strong>, <strong>Qwen-Image</strong>, and
-                    <strong>GLM-Image</strong> alternatives in our <a href="../guides/quickstart.html">Quickstart
+                    Banana 2. Instead, check out the <strong>HunyuanImage 3.0</strong>, <strong>Qwen-Image</strong>, and
+                    <strong>Z-Image</strong> alternatives in our <a href="../guides/quickstart.html">Quickstart
                         Guide</a>. These open models can run fully offline, but usually require a stronger GPU and more
                     setup than the cloud client.</p>
             </div>

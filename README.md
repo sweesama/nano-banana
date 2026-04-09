@@ -40,9 +40,20 @@ This site hosts the official **Nano Banana Client** documentation, reproducible 
 ### 🛠 Tech Stack
 - **Web**: Pure Static HTML5/CSS3 (Glassmorphism Design).
 - **Model (Pro)**: Google Gemini 3.1 Flash Image / Gemini 3 Pro Image (Cloud).
-- **Model (Offline)**: Z-Image / Qwen-Image / GLM-Image / SDXL Turbo (Local via Diffusers and related serving stacks).
+- **Model (Offline)**: Z-Image / Qwen-Image / GLM-Image / HunyuanImage 3.0 / SDXL Turbo (Local via Diffusers and related serving stacks).
 
-### 📈 Latest Updates (2026-02-01)
+### 📈 Latest Updates (2026-04-08)
+
+#### Quick Start Page — Major Content Refresh
+- **Nano Banana 2**: Replaced Nano Banana Pro with the newer Nano Banana 2 (Gemini 3.1 Flash Image) across the entire page. AA T2I #2 / Edit #3.
+- **HunyuanImage 3.0 Instruct**: Added as the 4th open-source model. 80B MoE, CoT reasoning, multi-image fusion. AA open-weight Edit #1 🏆.
+- **AA Rankings Updated**: All Artificial Analysis rankings refreshed to April 2026 data. Qwen-Image now open-weight T2I #2.
+- **SEO Meta**: Updated description and keywords to include HunyuanImage and "self hosted".
+- **Sitemap**: Updated quickstart.html lastmod to 2026-04-08.
+
+---
+
+### 📈 Previous Updates (2026-02-01)
 
 #### Z-Image Page Enhancements
 - **Gallery Carousels**: Refined image selection across all capability sections (removed inconsistent aspect ratios).
