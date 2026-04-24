@@ -511,6 +511,16 @@
 
         <div class="overview-card">
           <div class="overview-card-header">
+            <h4 class="overview-card-title">ChatGPT Image 2</h4>
+            <span class="badge badge-gray">Closed</span>
+          </div>
+          <p class="overview-card-desc">OpenAI's proprietary model. Cannot run locally.</p>
+          <div class="overview-card-meta">AA Apr 2026: <strong style="color:#fff;">T2I #1</strong> · <strong
+              style="color:#fff;">Edit #2</strong></div>
+        </div>
+
+        <div class="overview-card">
+          <div class="overview-card-header">
             <h4 class="overview-card-title">Seedream 4.5</h4>
             <span class="badge badge-gray">Closed</span>
           </div>
@@ -578,15 +588,20 @@
           <tr>
             <td>Nano Banana 2</td>
             <td><span class="badge badge-gray">Closed</span></td>
-
             <td>Latest cloud image route with reasoning-driven generation</td>
             <td>—</td>
             <td>Cloud only · cannot run locally · AA Apr 2026: T2I #2 / Edit #3</td>
           </tr>
           <tr>
+            <td>ChatGPT Image 2</td>
+            <td><span class="badge badge-gray">Closed</span></td>
+            <td>OpenAI's proprietary image generation model</td>
+            <td>—</td>
+            <td>Cloud only · cannot run locally · AA Apr 2026: T2I #1 / Edit #2</td>
+          </tr>
+          <tr>
             <td>Seedream 4.5</td>
             <td><span class="badge badge-gray">Closed</span></td>
-
             <td>Alternative proprietary image route</td>
             <td>—</td>
             <td>Cloud only · cannot run locally</td>
@@ -661,7 +676,28 @@ client = genai.Client(api_key="YOUR_KEY")</code></pre>
       <a href="https://aistudio.google.com/" target="_blank" class="btn btn-primary">Launch AI Studio</a>
     </div>
 
-    <!-- 2. SEEDREAM -->
+    <!-- 2. CHATGPT IMAGE 2 -->
+    <div id="chatgpt-image-2" class="card" style="border-color: rgba(16, 185, 129, 0.3);">
+      <div class="model-header">
+        <h2 class="model-title" style="color: #10b981;">ChatGPT Image 2</h2>
+        <div class="badges"><span class="badge" style="background: rgba(248,113,113,0.2); color: #f87171;">Closed-Source</span>
+          <span class="badge badge-primary">AA #1 Apr 2026</span></div>
+      </div>
+      <p><strong style="color: #f87171;">⚠️ Cannot Run Locally.</strong> ChatGPT Image 2 is OpenAI's proprietary image
+        generation model. OpenAI does not release model weights, which means there is no legal or technical way to deploy
+        it on your own hardware. <strong>AA T2I #1 (Elo 1,307) · Edit #2 (Elo 1,273)</strong> as of April 2026.</p>
+
+      <div class="hardware-specs">
+        <div class="spec-item"><span class="dot dot-red"></span> <strong>Deployment:</strong> Cloud API only via
+          ChatGPT Plus/Pro</div>
+        <div class="spec-item"><span class="dot dot-red"></span> <strong>Local Install:</strong> Not possible — no
+          weights released</div>
+      </div>
+
+      <a href="https://openai.com/zh-Hans-CN/index/introducing-chatgpt-images-2-0/" target="_blank" class="btn btn-glass" style="margin-top: 20px;">Visit Official Site ↗</a>
+    </div>
+
+    <!-- 3. SEEDREAM -->
     <div id="seedream" class="card">
       <div class="model-header">
         <h2 class="model-title">Seedream 4.5</h2>
@@ -674,10 +710,7 @@ client = genai.Client(api_key="YOUR_KEY")</code></pre>
         ↗</a>
     </div>
 
-    <h3 style="margin-top:80px; text-align:center; opacity:0.6; letter-spacing: 2px;">OFFLINE MODELS (LOCAL INSTALL)
-    </h3>
-
-    <!-- 3. HUNYUANIMAGE 3.0 INSTRUCT -->
+    <!-- 4. HUNYUANIMAGE 3.0 INSTRUCT -->
     <div id="hunyuan-image" class="card" style="border-top: 1px solid rgba(99, 102, 241, 0.3);">
       <div class="model-header">
         <h2 class="model-title">HunyuanImage 3.0 Instruct</h2>
@@ -1144,34 +1177,40 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
       </details>
     </div>
 
-    <!-- 4. QWEN-IMAGE -->
+    <!-- 4. QWEN-IMAGE 2.0 -->
     <div id="qwen-image" class="card" class="gradient-qwen" style="border-top: 1px solid rgba(255, 165, 0, 0.3);">
       <div class="model-header">
-        <h2 class="model-title">Qwen-Image</h2>
-        <div class="badges"><span class="badge badge-gray">Text Rendering</span> <span class="badge badge-gray">Official
-            Release</span></div>
+        <h2 class="model-title">Qwen-Image 2.0</h2>
+        <div class="badges"><span class="badge badge-primary">Open</span> <span class="badge badge-gray">7B Unified</span>
+          <span class="badge badge-gray">2026-02-10</span></div>
 
       </div>
-      <p><strong>Qwen-Image</strong> is the official open image model in the Qwen series. The official release
-        highlights strong performance in complex text rendering, precise image editing, and general image generation.
+      <p><strong>Qwen-Image 2.0</strong> — the next-generation 7B image foundation model that unifies text-to-image generation 
+        and image editing into a single architecture. Launched on February 10, 2026, it delivers <strong>native 2K resolution</strong> 
+        (2048×2048), professional typography rendering with up to <strong>1,000-token prompts</strong>, and lighter architecture 
+        for faster inference. Scored <strong>88.32 on DPG-Bench</strong> — outperforming FLUX.1 (12B) at 83.84. 
+        Ranked <strong>#1 on AI Arena</strong> for both text-to-image and image editing (Feb 2026).
       </p>
 
       <div class="hardware-specs">
-        <div class="spec-item"><span class="dot dot-green"></span> <strong>Recommended:</strong> RTX 3090 / 4090 (24GB)
+        <div class="spec-item"><span class="dot dot-green"></span> <strong>Recommended:</strong> RTX 4070 Ti Super 16GB / RTX 3090 24GB / RTX 4090 24GB
         </div>
-        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Minimum:</strong> RTX 3080 12GB (Restricted)
+        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Minimum:</strong> RTX 4070 12GB (tiling/quantization required)
         </div>
       </div>
       <div class="gallery-stack">
-        <img src="https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-Image/image2512/幻灯片1.JPG" class="gallery-item"
-          loading="lazy">
-        <img src="https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-Image/image2512/幻灯片5.JPG" class="gallery-item"
-          loading="lazy">
+        <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Qwen%20image%202.0/qwen-image-2-cover.webp" class="gallery-item"
+          loading="lazy" alt="Qwen-Image 2.0 Cover">
+        <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Qwen%20image%202.0/qwen-image-2-bears-composition.webp" class="gallery-item"
+          loading="lazy" alt="Qwen-Image 2.0 Bears Composition">
+        <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Qwen%20image%202.0/qwen-image-2-text-rendering.webp" class="gallery-item"
+          loading="lazy" alt="Qwen-Image 2.0 Text Rendering">
       </div>
-      <div style="display:flex; gap:16px; margin:20px 0;">
-        <a href="https://huggingface.co/Qwen/Qwen-Image" target="_blank" rel="noopener" class="btn btn-glass">🤗 Hugging
+      <div style="display:flex; gap:16px; margin:20px 0; flex-wrap: wrap;">
+        <a href="https://aiimageedit.ai/qwen-image-2" target="_blank" rel="noopener" class="btn btn-primary">🚀 Try Online</a>
+        <a href="https://huggingface.co/Qwen" target="_blank" rel="noopener" class="btn btn-glass">🤗 Hugging
           Face</a>
-        <a href="https://modelscope.cn/models/Qwen/Qwen-Image" target="_blank" rel="noopener" class="btn btn-glass">🤖
+        <a href="https://modelscope.cn/models/Qwen" target="_blank" rel="noopener" class="btn btn-glass">🤖
           ModelScope</a>
 
       </div>
@@ -1180,43 +1219,54 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
         <summary>Full Technical Details (Repo Mirror)</summary>
         <div class="details-body repo-content">
           <div class="paper-info">
-            <span class="paper-title">Qwen-Image Technical Report</span>
-            <span class="paper-meta">Alibaba Cloud · arXiv:2508.02324 · 2025</span>
-            <p>Image generation foundation model in the Qwen series, with strong complex text rendering and precise
-              image
-              editing according to the official release.</p>
+            <span class="paper-title">Qwen-Image 2.0</span>
+            <span class="paper-meta">Alibaba Cloud · Released Feb 10, 2026 · 7B Parameters</span>
+            <p>Next-generation image generation foundation model with unified generation and editing capabilities. 
+              Professional typography rendering, native 2K resolution, and lighter architecture for faster inference.</p>
 
           </div>
 
           <h3>News & Updates</h3>
           <ul>
-            <li><strong>2025.08.04:</strong> Official technical report released.</li>
-            <li><strong>2025.08.04:</strong> Official Qwen-Image weights released on Hugging Face and ModelScope.</li>
-            <li><strong>2025.08.04:</strong> Official Qwen-Image blog post published by the Qwen team.</li>
+            <li><strong>2026.02.10:</strong> Qwen-Image 2.0 launched — 7B unified architecture for generation + editing.</li>
+            <li><strong>2026.02.10:</strong> Native 2K resolution support (2048×2048) introduced.</li>
+            <li><strong>2026.02.10:</strong> Achieved #1 ranking on AI Arena for both T2I and Image Editing.</li>
+            <li><strong>2025.12.31:</strong> Qwen-Image-2512 released (predecessor, 20B).</li>
+            <li><strong>2025.08.04:</strong> Original Qwen-Image technical report (arXiv:2508.02324).</li>
 
           </ul>
 
-          <h3>Showcase</h3>
-          <p>The official examples emphasize text rendering quality and instruction-following for both image generation
-            and editing.</p>
-
-          <img src="https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-Image/image2512/幻灯片5.JPG" class="gallery-item">
-
-          <h3>Deployment & Acceleration</h3>
+          <h3>Key Features</h3>
           <ul>
-            <li><strong>Diffusers:</strong> Official quick start uses the latest diffusers build.</li>
-            <li><strong>Aspect-ratio presets:</strong> The official example lists 1:1, 16:9, 9:16, 4:3, 3:4, 3:2, and
-              2:3 generation presets.</li>
-            <li><strong>Official links:</strong> Prefer the Hugging Face page, ModelScope page, and Qwen blog for the
-              latest release notes.</li>
-
+            <li><strong>Professional Typography:</strong> Up to 1,000-token prompts for infographics, slides, posters, and comics.</li>
+            <li><strong>Native 2K Resolution:</strong> 2048×2048 output with microscopic detail preservation.</li>
+            <li><strong>Unified Generation & Editing:</strong> Single model handles both tasks — improvements in generation directly benefit editing.</li>
+            <li><strong>Lighter Architecture:</strong> 7B parameters (vs predecessor 20B) for faster inference and more accessible deployment.</li>
+            <li><strong>Benchmark Leader:</strong> DPG-Bench 88.32 vs FLUX.1 (12B) 83.84.</li>
           </ul>
 
-          <h3>Prompt Enhance Tool</h3>
-          <pre><code>from tools.prompt_utils import rewrite
-prompt = rewrite("original prompt")</code></pre>
+          <h3>Online Experience</h3>
+          <p>Try Qwen-Image 2.0 immediately without local setup:</p>
+          <ul>
+            <li><a href="https://aiimageedit.ai/qwen-image-2" target="_blank">aiimageedit.ai/qwen-image-2</a> — Online playground</li>
+            <li><a href="https://chat.qwen.ai" target="_blank">chat.qwen.ai</a> — Qwen Chat with image generation</li>
+          </ul>
+
+          <h3>Local Deployment</h3>
+          <ul>
+            <li><strong>GitHub:</strong> <a href="https://github.com/QwenLM/Qwen-Image" target="_blank">QwenLM/Qwen-Image</a> — Latest README with 2.0 instructions</li>
+            <li><strong>Diffusers:</strong> Supported since day 0 via HuggingFace diffusers</li>
+            <li><strong>VRAM Management:</strong> Enable tiling for reduced VRAM usage (tiled=True, tile_size=128)</li>
+            <li><strong>Quantization:</strong> 4-bit support available for lower VRAM requirements</li>
+          </ul>
+
           <h3>Citation</h3>
-          <pre><code>@misc{wu2025qwenimagetechnicalreport, title={Qwen-Image Technical Report}, author={Chenfei Wu et al.}, year={2025}, eprint={2508.02324}}</code></pre>
+          <pre><code>@misc{wu2025qwenimagetechnicalreport, 
+  title={Qwen-Image Technical Report}, 
+  author={Chenfei Wu et al.}, 
+  year={2025}, 
+  eprint={2508.02324}
+}</code></pre>
         </div>
       </details>
     </div>

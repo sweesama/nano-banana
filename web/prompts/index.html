@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Prompt Recipes | Nano Banana</title>
   <meta name="description"
-    content="Free AI image editing prompts: copy-ready recipes for background replacement, character editing & local edits." />
+    content="Free AI image editing prompts: copy-ready recipes for Nano Banana, Qwen-Image 2.1, Hunyuan 3.1. Background replacement, character editing & multi-image fusion." />
   <meta name="keywords"
-    content="AI image editing prompts, Nano Banana prompts, background replacement, character editing, prompt recipes, parameters" />
+    content="AI image editing prompts, Nano Banana prompts, Qwen-Image 2.1 prompts, Hunyuan 3.1 prompts, background replacement, character editing, multi-image fusion, prompt recipes" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://www.nano-banana.live/prompts/" />
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
@@ -130,10 +130,44 @@
         </div>
       </div>
     </section>
+    <section class="section" id="advanced">
+      <h2>Advanced Prompts</h2>
+      <p class="lead">Unlock advanced capabilities of specific models. <strong>Hunyuan 3.1</strong> supports multi-image fusion and CoT reasoning. <strong>Qwen-Image 2.1</strong> excels at complex text rendering.</p>
+      <div class="grid">
+        <div class="card" style="border-color: rgba(99, 102, 241, 0.4);">
+          <h3>🔄 Multi-Image Fusion</h3>
+          <p><span style="color:#818cf8;font-size:0.75rem;">HUNYUAN 3.1 ONLY</span></p>
+          <p><code id="pa1">Apply the style of Image 2 to the subject in Image 1. Preserve the pose and facial features from Image 1 while adopting the color grading and atmosphere from Image 2.</code></p>
+          <p><small>Uses 2 input images · CoT reasoning enabled</small></p>
+          <p><a class="copy-btn" href="#" data-clip="pa1">Copy prompt</a></p>
+        </div>
+        <div class="card" style="border-color: rgba(99, 102, 241, 0.4);">
+          <h3>🧠 Reasoning-Based Editing</h3>
+          <p><span style="color:#818cf8;font-size:0.75rem;">HUNYUAN 3.1 ONLY</span></p>
+          <p><code id="pa2">Analyze the lighting direction in the original image, then add a glass sphere on the table that reflects the same lighting conditions and casts a physically accurate shadow.</code></p>
+          <p><small>Model analyzes first, then executes · No mask needed</small></p>
+          <p><a class="copy-btn" href="#" data-clip="pa2">Copy prompt</a></p>
+        </div>
+        <div class="card" style="border-color: rgba(16, 185, 129, 0.4);">
+          <h3>🔤 Complex Text Rendering</h3>
+          <p><span style="color:#10b981;font-size:0.75rem;">QWEN-IMAGE 2.1</span></p>
+          <p><code id="pa3">Add a neon sign on the building wall that reads "CAFE OPEN 24H" in Art Deco style typography. Match the perspective and lighting of the scene.</code></p>
+          <p><small>Strong text generation capability · Precise typography</small></p>
+          <p><a class="copy-btn" href="#" data-clip="pa3">Copy prompt</a></p>
+        </div>
+        <div class="card" style="border-color: rgba(16, 185, 129, 0.4);">
+          <h3>📐 Knowledge-Heavy Layout</h3>
+          <p><span style="color:#10b981;font-size:0.75rem;">QWEN-IMAGE 2.1 / GLM-IMAGE</span></p>
+          <p><code id="pa4">Convert this magazine layout into a scientific infographic about climate change. Include charts, data visualizations, and maintain the grid structure with proper alignment.</code></p>
+          <p><small>Structured output · Document understanding</small></p>
+          <p><a class="copy-btn" href="#" data-clip="pa4">Copy prompt</a></p>
+        </div>
+      </div>
+    </section>
     <section class="section" id="keywords">
       <h2>Keywords covered</h2>
       <p class="lead">text‑guided background replacement · local edits · identity/character consistency · mask‑guided
-        inpainting · scene preservation · subtle style change · product photo shadows</p>
+        inpainting · scene preservation · subtle style change · product photo shadows · multi-image fusion · CoT reasoning · complex text rendering</p>
     </section>
     <footer class="footer">
       <div class="footer-content">

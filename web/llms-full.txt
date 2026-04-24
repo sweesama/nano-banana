@@ -10,8 +10,11 @@ Help users quickly understand what the model is, how to run it, and how it compa
   - CTA: Try in LMArena (https://lmarena.ai/?chat-modality=image)
   - Cards linking to Benchmarks / Quickstart / Prompts
 - Benchmarks index: https://www.nano-banana.live/benchmarks/index.html
-  - Lists available benchmarks
-  - Each benchmark has fixed inputs and parameter sets
+  - **Artificial Analysis Leaderboards**: Full Top 10 rankings for Text-to-Image and Image Editing
+  - Real-time Elo scores, confidence intervals, pricing, and release dates
+  - Company favicon icons for all model creators
+  - Filter by: All, Current, Open Weights
+  - Data sourced from: https://artificialanalysis.ai/image/leaderboard/
 - Portrait Editing Benchmark: https://www.nano-banana.live/benchmarks/portrait-editing.html
   - Inputs to download, fixed params, and pipeline steps
   - A/B slider: left (FLUX Kontext) vs right (Nano Banana)

@@ -1,10 +1,384 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#0b0f14"/><meta name="color-scheme" content="dark"/><title>Nano Banana Benchmarks | Image Editing Comparisons | Mzu</title>  <meta name="description" content="Free AI image editing benchmarks: Nano Banana vs FLUX Kontext comparison. Download test images & reproduce results."/>
-<meta name="keywords" content="AI image editing benchmarks, Nano Banana, FLUX Kontext, portrait editing, background replacement, test images"/><link rel="canonical" href="https://www.nano-banana.live/benchmarks/"/><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com" crossorigin><meta property="og:title" content="Nano Banana Benchmarks | Mzu"/>  <meta property="og:description" content="Free AI image editing benchmarks: portrait editing, background replacement, local edits. Compare Nano Banana vs FLUX Kontext with downloadable test cases."/><meta property="og:image" content="https://www.nano-banana.live/og.svg"/><meta property="og:site_name" content="Nano Banana"/><meta name="twitter:card" content="summary_large_image"/><link rel="apple-touch-icon" href="/nano.png"/><link rel="icon" href="/favicon.png" type="image/png"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/><link rel="icon" type="image/x-icon" href="/favicon.ico"/><link rel="stylesheet" href="../styles.css"/><style>h1{font-size:clamp(34px,3.6vw,44px);line-height:1.25}</style><script type="application/ld+json">{
-  "@context":"https://schema.org",
-  "@type":"CollectionPage",
-  "name":"Nano Banana Benchmarks",
-  "url":"https://www.nano-banana.live/benchmarks/",
-  "inLanguage":"en",
-  "description":"Reproducible image editing benchmarks comparing Nano Banana with FLUX Kontext.",
-  "isPartOf":{"@type":"WebSite","name":"Nano Banana","url":"https://www.nano-banana.live/"}
-}</script></head><body><div class="container"><nav class="nav"><a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a><div class="nav-links"><a class="active" href="../benchmarks/index.html">Benchmarks</a><a href="../prompts/index.html">Prompts</a><a href="../guides/quickstart.html">Quickstart</a><a href="../faq.html">FAQ</a><a href="../about.html">About</a><a href="../blog.html">Blog</a></div></nav><div class="tags" role="navigation" aria-label="Quick jump"><a class="tag" href="#available">Available</a><a class="tag" href="#methodology">Methodology</a><a class="tag" href="#keywords">Keywords</a></div><section class="section"><h1>Nano Banana Benchmarks</h1>    <p class="lead">Free AI image editing benchmarks with fixed inputs and parameters for <strong>reproducible</strong> results. Download test images, compare Nano Banana vs FLUX Kontext, and follow our pipeline. We also publish failure cases for transparency.</p></section><section class="section" id="available"><h2>Available</h2><div class="grid"><div class="card"><h3>Portrait editing</h3><p>Character/face consistency, local edits.</p><a href="portrait-editing.html">Open →</a></div></div></section><section class="section" id="methodology"><h2>Methodology & limits</h2><p class="lead">Each benchmark includes original inputs, masks (if used), and fixed parameters (<code>seed</code>, <code>steps</code>, <code>guidance</code>, strength/scheduler when relevant) for apples‑to‑apples comparisons. Hardware, model version, and randomness can influence results; we therefore also publish <strong>failure cases</strong> and notes around tricky regions (hands/fingers, tiny accessories).</p></section><section class="section" id="keywords"><h2>Keywords covered</h2><p class="lead">text‑guided image editing · local edits · background replacement · inpainting/outpainting · character/identity consistency · scene preservation · FLUX Kontext vs Nano Banana</p></section><footer class="footer"><div class="footer-content"><div class="footer-section"><h4>Product</h4><ul><li><a href="./index.html">Benchmarks</a></li><li><a href="../prompts/index.html">Prompt Recipes</a></li><li><a href="../guides/quickstart.html">Quickstart Guide</a></li><li><a href="../faq.html">FAQ</a></li></ul></div><div class="footer-section"><h4>Resources</h4><ul><li><a href="../blog.html">Blog</a></li><li><a href="../about.html">About</a></li><li><a href="https://lmarena.ai/?chat-modality=image" target="_blank" rel="noopener">Try in LMArena</a></li></ul></div><div class="footer-section"><h4>Legal</h4><ul><li><a href="../privacy.html">Privacy Policy</a></li><li><a href="../terms.html">Terms of Service</a></li></ul></div><div class="footer-section"><h4>Connect</h4><ul><li><a href="https://twitter.com/intent/tweet?text=Nano%20Banana%20%E2%80%94%20Image%20Editing%20Benchmarks%20%26%20Quickstart&url=https%3A%2F%2Fwww.nano-banana.live%2F" target="_blank" rel="noopener">Share on X</a></li><li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.nano-banana.live%2F" target="_blank" rel="noopener">Share on LinkedIn</a></li></ul></div></div><div class="footer-bottom"><p> <span id="y"></span> Nano Banana — English‑first, static‑first. <a href="https://www.nano-banana.live/" target="_blank" rel="noopener">nano-banana.live</a></p></div></footer></div><script>document.getElementById('y').textContent=new Date().getFullYear()</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="theme-color" content="#0b0f14"/>
+  <meta name="color-scheme" content="dark"/>
+  <title>Nano Banana Benchmarks | Image Model Rankings | Mzu</title>
+  <meta name="description" content="AI image model rankings from Artificial Analysis. Text-to-Image and Image Editing leaderboards with Elo ratings, prices, and local deployment options."/>
+  <meta name="keywords" content="AI image model rankings, GPT Image 2, Nano Banana, HunyuanImage 3.0, Qwen Image, FLUX.2, Artificial Analysis, Elo leaderboard"/>
+  <link rel="canonical" href="https://www.nano-banana.live/benchmarks/"/>
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+  <meta property="og:title" content="Nano Banana Benchmarks | AI Model Rankings"/>
+  <meta property="og:description" content="AI image model rankings from Artificial Analysis. Text-to-Image and Image Editing leaderboards with Elo ratings."/>
+  <meta property="og:image" content="https://www.nano-banana.live/og.svg"/>
+  <meta property="og:site_name" content="Nano Banana"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <link rel="apple-touch-icon" href="/nano.png"/>
+  <link rel="icon" href="/favicon.png" type="image/png"/>
+  <link rel="stylesheet" href="../styles.css"/>
+  <style>
+    .leaderboard-table { width:100%; border-collapse:collapse; font-size:0.9rem; }
+    .leaderboard-table th { padding:14px 12px; text-align:left; font-weight:600; color:#9ca3af; font-size:0.8rem; border-bottom:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.4); }
+    .leaderboard-table td { padding:12px; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .leaderboard-table tbody tr:hover { background:rgba(255,255,255,0.03); }
+    .rank-1 { background:rgba(255,215,0,0.12) !important; border-left:3px solid #ffd700; }
+    .rank-2 { background:rgba(192,192,192,0.08) !important; }
+    .rank-3 { background:rgba(249,115,22,0.08) !important; }
+    .rank-open { background:rgba(34,197,94,0.06) !important; border-left:2px solid #22c55e; }
+    .creator-icon { width:16px; height:16px; border-radius:3px; display:inline-block; margin-right:8px; vertical-align:middle; object-fit:contain; background:#fff; }
+    .price-api { color:#f87171; font-size:0.8rem; }
+    .price-local { color:#4ade80; font-size:0.8rem; }
+    .open-tag { color:#4ade80; font-size:0.7rem; margin-left:4px; }
+    .star-tag { color:#fbbf24; font-size:0.7rem; margin-left:4px; }
+    .best-open-tag { background:#4ade80; color:#000; padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:600; margin-left:6px; }
+    .filter-btn { background:rgba(255,255,255,0.1); border:none; color:#fff; padding:6px 14px; border-radius:4px; font-size:0.8rem; cursor:pointer; margin-right:8px; }
+    .filter-btn.active { background:#10b981; color:#000; font-weight:600; }
+    .filter-btn.open { background:rgba(74,222,128,0.2); color:#4ade80; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a class="active" href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../about.html">About</a>
+        <a href="../blog.html">Blog</a>
+      </div>
+    </nav>
+    
+    <div class="tags" role="navigation" aria-label="Quick jump">
+      <a class="tag" href="#text-to-image">Text-to-Image</a>
+      <a class="tag" href="#image-editing">Image Editing</a>
+      <a class="tag" href="#open-weights">Open Weights</a>
+    </div>
+
+    <section class="section">
+      <h1 style="font-size:clamp(40px,4.5vw,56px);margin-bottom:12px;">Image Model Rankings</h1>
+      <p class="lead" style="max-width:750px;color:var(--text-muted);">Real-time leaderboard from <a href="https://artificialanalysis.ai/" target="_blank" rel="noopener">Artificial Analysis</a>. Blind user votes · Elo-rated · Updated daily.</p>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">🕐 Data refreshed: <strong>April 25, 2026</strong> · <a href="../guides/quickstart.html" style="color:var(--primary);">→ Deploy locally</a></p>
+    </section>
+
+    <!-- Text-to-Image Leaderboard -->
+    <section class="section" id="text-to-image">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+        <h2 style="margin:0;font-size:1.6rem;">Text-to-Image Leaderboard</h2>
+        <span style="background:#10b981;color:#000;padding:4px 10px;border-radius:4px;font-size:0.7rem;font-weight:700;">TOP 10</span>
+      </div>
+      <div style="background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:12px;overflow:hidden;">
+        <div style="background:rgba(0,0,0,0.3);padding:12px 16px;border-bottom:1px solid var(--glass-border);display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <span style="font-size:0.85rem;color:var(--text-muted);">Filter:</span>
+          <button class="filter-btn active">All models</button>
+          <button class="filter-btn">Current only</button>
+          <button class="filter-btn open">○ Open weights</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Δ</th>
+                <th>Creator</th>
+                <th>Model</th>
+                <th style="text-align:center;">Elo</th>
+                <th style="text-align:center;">95% CI</th>
+                <th style="text-align:center;">Samples</th>
+                <th style="text-align:center;">Released</th>
+                <th style="text-align:right;">API Pricing</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="rank-1">
+                <td style="font-weight:800;color:#ffd700;font-size:1.1rem;">1</td>
+                <td style="color:#9ca3af;">—</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=openai.com&sz=32" class="creator-icon" alt="OpenAI" onerror="this.style.background='#10a37f'">OpenAI</td>
+                <td style="font-weight:600;">GPT Image 2 (high)</td>
+                <td style="text-align:center;font-weight:700;color:#fff;font-size:1.05rem;">1,332</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-10/10</td>
+                <td style="text-align:center;">7,668</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Apr 2026</td>
+                <td style="text-align:right;" class="price-api">$211.0/1k imgs</td>
+              </tr>
+              <tr class="rank-2">
+                <td style="font-weight:800;color:#e5e7eb;font-size:1.1rem;">2</td>
+                <td style="color:#4ade80;">+3</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=openai.com&sz=32" class="creator-icon" alt="OpenAI" onerror="this.style.background='#10a37f'">OpenAI</td>
+                <td style="font-weight:600;">GPT Image 1.5 (high)</td>
+                <td style="text-align:center;font-weight:700;color:#fff;font-size:1.05rem;">1,270</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-10/10</td>
+                <td style="text-align:center;">4,951</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Dec 2025</td>
+                <td style="text-align:right;" class="price-api">$133.0/1k imgs</td>
+              </tr>
+              <tr class="rank-3">
+                <td style="font-weight:800;color:#fb923c;font-size:1.1rem;">3</td>
+                <td style="color:#ef4444;">-1</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=google.com&sz=32" class="creator-icon" alt="Google" onerror="this.style.background='#4285f4'">Google</td>
+                <td style="font-weight:600;">Nano Banana 2<span class="star-tag">★</span></td>
+                <td style="text-align:center;font-weight:700;color:#fff;font-size:1.05rem;">1,262</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-10/10</td>
+                <td style="text-align:center;">6,703</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Feb 2026</td>
+                <td style="text-align:right;" class="price-api">$67.0/1k imgs</td>
+              </tr>
+              <tr>
+                <td style="font-weight:700;color:#d1d5db;">4</td>
+                <td style="color:#9ca3af;">—</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=google.com&sz=32" class="creator-icon" alt="Google" onerror="this.style.background='#4285f4'">Google</td>
+                <td style="font-weight:600;">Nano Banana Pro</td>
+                <td style="text-align:center;font-weight:600;color:#fff;">1,216</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-10/10</td>
+                <td style="text-align:center;">4,215</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Nov 2025</td>
+                <td style="text-align:right;" class="price-api">$134.0/1k imgs</td>
+              </tr>
+              <tr>
+                <td style="font-weight:700;color:#d1d5db;">5</td>
+                <td style="color:#4ade80;">+1</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=blackforestlabs.ai&sz=32" class="creator-icon" alt="Black Forest" onerror="this.style.background='#8b5cf6'">Black Forest Labs</td>
+                <td style="font-weight:600;">FLUX.2 [max]</td>
+                <td style="text-align:center;font-weight:600;color:#fff;">1,204</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-10/10</td>
+                <td style="text-align:center;">4,195</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Dec 2025</td>
+                <td style="text-align:right;" class="price-api">$70.0/1k imgs</td>
+              </tr>
+              <tr>
+                <td style="font-weight:700;color:#d1d5db;">6</td>
+                <td style="color:#4ade80;">+6</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=seed.bytedance.com&sz=32" class="creator-icon" alt="ByteDance" onerror="this.style.background='#3b82f6'">ByteDance Seed</td>
+                <td style="font-weight:600;">Seedream 4.0</td>
+                <td style="text-align:center;font-weight:600;color:#fff;">1,202</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-9/9</td>
+                <td style="text-align:center;">10,266</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Sept 2025</td>
+                <td style="text-align:right;" class="price-api">$30.0/1k imgs</td>
+              </tr>
+              <tr>
+                <td style="font-weight:700;color:#d1d5db;">7</td>
+                <td style="color:#ef4444;">-1</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=blackforestlabs.ai&sz=32" class="creator-icon" alt="Black Forest" onerror="this.style.background='#8b5cf6'">Black Forest Labs</td>
+                <td style="font-weight:600;">FLUX.2 [pro]</td>
+                <td style="text-align:center;font-weight:600;color:#fff;">1,188</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-10/10</td>
+                <td style="text-align:center;">3,755</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Nov 2025</td>
+                <td style="text-align:right;" class="price-api">$30.0/1k imgs</td>
+              </tr>
+              <tr>
+                <td style="font-weight:700;color:#d1d5db;">8</td>
+                <td style="color:#4ade80;">+7</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=x.ai&sz=32" class="creator-icon" alt="xAI" onerror="this.style.background='#000'">xAI</td>
+                <td style="font-weight:600;">grok-imagine-image</td>
+                <td style="text-align:center;font-weight:600;color:#fff;">1,186</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-10/10</td>
+                <td style="text-align:center;">7,037</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Jan 2026</td>
+                <td style="text-align:right;" class="price-api">$20.0/1k imgs</td>
+              </tr>
+              <tr class="rank-open">
+                <td style="font-weight:700;color:#4ade80;">9</td>
+                <td style="color:#4ade80;">+7</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=blackforestlabs.ai&sz=32" class="creator-icon" alt="Black Forest" onerror="this.style.background='#8b5cf6'">Black Forest Labs</td>
+                <td style="font-weight:600;">FLUX.2 [flex]<span class="open-tag">○ Open Weights</span></td>
+                <td style="text-align:center;font-weight:600;color:#4ade80;">1,181</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-10/10</td>
+                <td style="text-align:center;">3,817</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Nov 2025</td>
+                <td style="text-align:right;" class="price-api">$60.0/1k imgs</td>
+              </tr>
+              <tr>
+                <td style="font-weight:700;color:#d1d5db;">10</td>
+                <td style="color:#4ade80;">+2</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=imagine.art&sz=32" class="creator-icon" alt="ImagineArt" onerror="this.style.background='#8b5cf6'">ImagineArt</td>
+                <td style="font-weight:600;">ImagineArt 2.0</td>
+                <td style="text-align:center;font-weight:600;color:#fff;">1,178</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-9/9</td>
+                <td style="text-align:center;">6,233</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Apr 2026</td>
+                <td style="text-align:right;" class="price-api">$30.0/1k imgs</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p style="color:var(--text-muted);font-size:0.85rem;margin-top:12px;">Top Open Weights: FLUX.2 [dev] Turbo (1,170), Qwen Image Max 2512 (1,164), FLUX.2 [dev] (1,163) · <a href="../guides/quickstart.html" style="color:var(--primary);">See local deployment guides →</a></p>
+    </section>
+
+    <!-- Image Editing Leaderboard -->
+    <section class="section" id="image-editing" style="margin-top:60px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+        <h2 style="margin:0;font-size:1.6rem;">Image Editing Leaderboard</h2>
+        <span style="background:#818cf8;color:#000;padding:4px 10px;border-radius:4px;font-size:0.7rem;font-weight:700;">TOP 10</span>
+      </div>
+      <div style="background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:12px;overflow:hidden;">
+        <div style="background:rgba(0,0,0,0.3);padding:12px 16px;border-bottom:1px solid var(--glass-border);display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <span style="font-size:0.85rem;color:var(--text-muted);">Filter:</span>
+          <button class="filter-btn active">All models</button>
+          <button class="filter-btn">Current only</button>
+          <button class="filter-btn open">○ Open weights</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Δ</th>
+                <th>Creator</th>
+                <th>Model</th>
+                <th style="text-align:center;">Elo</th>
+                <th style="text-align:center;">95% CI</th>
+                <th style="text-align:center;">Released</th>
+                <th style="text-align:right;">API/Local</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="rank-1">
+                <td style="font-weight:800;color:#ffd700;font-size:1.1rem;">1</td>
+                <td style="color:#9ca3af;">—</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=openai.com&sz=32" class="creator-icon" alt="OpenAI" onerror="this.style.background='#10a37f'">OpenAI</td>
+                <td style="font-weight:600;">GPT Image 1.5 (high)</td>
+                <td style="text-align:center;font-weight:700;color:#fff;font-size:1.05rem;">1,258</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-10/10</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">—</td>
+                <td style="text-align:right;" class="price-api">$133.0/1k</td>
+              </tr>
+              <tr class="rank-2">
+                <td style="font-weight:800;color:#e5e7eb;font-size:1.1rem;">2</td>
+                <td style="color:#9ca3af;">—</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=openai.com&sz=32" class="creator-icon" alt="OpenAI" onerror="this.style.background='#10a37f'">OpenAI</td>
+                <td style="font-weight:600;">GPT Image 2 (high)</td>
+                <td style="text-align:center;font-weight:700;color:#fff;font-size:1.05rem;">1,244</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-10/10</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Apr 2026</td>
+                <td style="text-align:right;" class="price-api">$211.0/1k</td>
+              </tr>
+              <tr class="rank-3">
+                <td style="font-weight:800;color:#fb923c;font-size:1.1rem;">3</td>
+                <td style="color:#9ca3af;">—</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=google.com&sz=32" class="creator-icon" alt="Google" onerror="this.style.background='#4285f4'">Google</td>
+                <td style="font-weight:600;">Nano Banana Pro</td>
+                <td style="text-align:center;font-weight:700;color:#fff;font-size:1.05rem;">1,241</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-10/10</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Nov 2025</td>
+                <td style="text-align:right;" class="price-api">$134.2/1k</td>
+              </tr>
+              <tr>
+                <td style="font-weight:700;color:#d1d5db;">4</td>
+                <td style="color:#9ca3af;">—</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=google.com&sz=32" class="creator-icon" alt="Google" onerror="this.style.background='#4285f4'">Google</td>
+                <td style="font-weight:600;">Nano Banana 2<span class="star-tag">★</span></td>
+                <td style="text-align:center;font-weight:600;color:#fff;">1,223</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-10/10</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Feb 2026</td>
+                <td style="text-align:right;" class="price-api">$67.0/1k</td>
+              </tr>
+              <tr class="rank-open">
+                <td style="font-weight:800;color:#4ade80;font-size:1.1rem;">5</td>
+                <td style="color:#9ca3af;">—</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=tencent.com&sz=32" class="creator-icon" alt="Tencent" onerror="this.style.background='#ec4899'">Tencent</td>
+                <td style="font-weight:600;">HunyuanImage 3.0 Instruct<span class="best-open-tag">Best Open</span></td>
+                <td style="text-align:center;font-weight:700;color:#4ade80;font-size:1.05rem;">1,219</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-10/10</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Mar 2026</td>
+                <td style="text-align:right;" class="price-local">Local ✓</td>
+              </tr>
+              <tr class="rank-open">
+                <td style="font-weight:700;color:#4ade80;">6</td>
+                <td style="color:#4ade80;">+1</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=tencent.com&sz=32" class="creator-icon" alt="Tencent" onerror="this.style.background='#ec4899'">Tencent</td>
+                <td style="font-weight:600;">HunyuanImage 3.1 Instruct<span class="open-tag">○ Open</span></td>
+                <td style="text-align:center;font-weight:600;color:#4ade80;">1,225</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-10/10</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Apr 2026</td>
+                <td style="text-align:right;" class="price-local">Local ✓</td>
+              </tr>
+              <tr class="rank-open">
+                <td style="font-weight:700;color:#4ade80;">7</td>
+                <td style="color:#4ade80;">+2</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=blackforestlabs.ai&sz=32" class="creator-icon" alt="Black Forest" onerror="this.style.background='#8b5cf6'">Black Forest Labs</td>
+                <td style="font-weight:600;">FLUX.2 [klein] 9B<span class="open-tag">○ Open</span></td>
+                <td style="text-align:center;font-weight:600;color:#4ade80;">1,159</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-10/10</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Jan 2026</td>
+                <td style="text-align:right;" class="price-local">Local ✓</td>
+              </tr>
+              <tr class="rank-open">
+                <td style="font-weight:700;color:#4ade80;">8</td>
+                <td style="color:#9ca3af;">—</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=alibaba.com&sz=32" class="creator-icon" alt="Alibaba" onerror="this.style.background='#f59e0b'">Alibaba</td>
+                <td style="font-weight:600;">Qwen Image Edit Plus 2511<span class="open-tag">○ Open</span></td>
+                <td style="text-align:center;font-weight:600;color:#4ade80;">1,150</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-10/10</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Mar 2026</td>
+                <td style="text-align:right;" class="price-local">Local ✓</td>
+              </tr>
+              <tr class="rank-open">
+                <td style="font-weight:700;color:#6ee7b7;">9</td>
+                <td style="color:#4ade80;">+3</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=alibaba.com&sz=32" class="creator-icon" alt="Alibaba" onerror="this.style.background='#f59e0b'">Alibaba</td>
+                <td style="font-weight:600;">Qwen Image Max 2512<span class="open-tag">○ Open</span></td>
+                <td style="text-align:center;font-weight:600;color:#6ee7b7;">1,147</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-11/11</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Apr 2026</td>
+                <td style="text-align:right;" class="price-local">Local ✓</td>
+              </tr>
+              <tr class="rank-open">
+                <td style="font-weight:700;color:#6ee7b7;">10</td>
+                <td style="color:#4ade80;">+1</td>
+                <td><img src="https://www.google.com/s2/favicons?domain=tencent.com&sz=32" class="creator-icon" alt="Tencent" onerror="this.style.background='#ec4899'">Tencent</td>
+                <td style="font-weight:600;">HunyuanImage 3.1<span class="open-tag">○ Open</span></td>
+                <td style="text-align:center;font-weight:600;color:#6ee7b7;">1,142</td>
+                <td style="text-align:center;color:#6b7280;font-size:0.85rem;">-12/12</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">Apr 2026</td>
+                <td style="text-align:right;" class="price-local">Local ✓</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p style="color:var(--text-muted);font-size:0.85rem;margin-top:12px;">Want to run these models locally? <a href="../guides/quickstart.html" style="color:var(--primary);">See deployment guides →</a></p>
+    </section>
+
+    <!-- Open Weights Section -->
+    <section class="section" id="open-weights" style="margin-top:60px;padding:28px;background:linear-gradient(135deg,rgba(34,197,94,0.08) 0%,rgba(34,197,94,0.02) 100%);border-radius:16px;border:1px solid rgba(34,197,94,0.2);">
+      <h2 style="margin-top:0;color:#4ade80;">Why Open Weights Rank Lower</h2>
+      <p style="color:#bbf7d0;margin-bottom:20px;">Closed-source leaders offer peak quality via cloud API. Open-weights models provide privacy, control, and cost efficiency at scale. Deploy locally with our guides:</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+        <div style="background:rgba(0,0,0,0.4);padding:18px;border-radius:12px;border:1px solid rgba(34,197,94,0.2);">
+          <h4 style="color:#4ade80;margin:0 0 8px;display:flex;align-items:center;gap:8px;"><span style="background:#4ade80;color:#000;padding:2px 8px;border-radius:4px;font-size:0.7rem;">#1 Open</span> Hunyuan 3.0</h4>
+          <p style="margin:0;color:#bbf7d0;font-size:0.9rem;">Best for editing · 1,219 Elo · Multi-image fusion · <a href="../guides/quickstart.html#hunyuan-image" style="color:#4ade80;">Quickstart →</a></p>
+        </div>
+        <div style="background:rgba(0,0,0,0.4);padding:18px;border-radius:12px;border:1px solid rgba(34,197,94,0.2);">
+          <h4 style="color:#4ade80;margin:0 0 8px;display:flex;align-items:center;gap:8px;"><span style="background:#4ade80;color:#000;padding:2px 8px;border-radius:4px;font-size:0.7rem;">#2 Open</span> Qwen-Image</h4>
+          <p style="margin:0;color:#bbf7d0;font-size:0.9rem;">Best for text · 1,147 Elo · Text rendering · <a href="../guides/quickstart.html#qwen" style="color:#4ade80;">Quickstart →</a></p>
+        </div>
+        <div style="background:rgba(0,0,0,0.4);padding:18px;border-radius:12px;border:1px solid rgba(34,197,94,0.2);">
+          <h4 style="color:#4ade80;margin:0 0 8px;display:flex;align-items:center;gap:8px;"><span style="background:#4ade80;color:#000;padding:2px 8px;border-radius:4px;font-size:0.7rem;">#3 Open</span> GLM-Image</h4>
+          <p style="margin:0;color:#bbf7d0;font-size:0.9rem;">Best balance · 1,159 Elo · 9B params · <a href="../guides/quickstart.html#glm-image" style="color:#4ade80;">Quickstart →</a></p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Rankings</h4>
+          <ul>
+            <li><a href="https://artificialanalysis.ai/image/leaderboard/text-to-image" target="_blank">AA Text-to-Image</a></li>
+            <li><a href="https://artificialanalysis.ai/image/leaderboard/editing" target="_blank">AA Image Editing</a></li>
+            <li><a href="../guides/quickstart.html">Deploy Locally</a></li>
+          </ul>
+        </div>
+      </div>
+      <p style="text-align:center;color:var(--text-muted);font-size:0.8rem;margin-top:20px;">Data from <a href="https://artificialanalysis.ai/" target="_blank">Artificial Analysis</a> · Updated April 25, 2026</p>
+    </footer>
+  </div>
+</body>
+</html>

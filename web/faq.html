@@ -10,7 +10,7 @@
   <meta name="description"
     content="FAQ about Nano Banana AI image editor: how it works, speed vs competitors, character consistency, and API availability." />
   <meta name="keywords"
-    content="Nano Banana FAQ, AI image editor, character consistency, FLUX Kontext comparison, API, benchmarks" />
+    content="Nano Banana FAQ, AI image editor, character consistency, FLUX Kontext comparison, ChatGPT Image 2 local, ChatGPT Image 2 offline, API, benchmarks" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://www.nano-banana.live/faq.html" />
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
@@ -141,6 +141,7 @@
       <a class="tag" href="#compare">Compared</a>
       <a class="tag" href="#license">Commercial</a>
       <a class="tag" href="#api">API</a>
+      <a class="tag" href="#chatgpt">ChatGPT Image 2</a>
       <a class="tag" href="#reproduce">Reproduce</a>
     </div>
 
@@ -159,6 +160,7 @@
         <a href="#compare">Compared to others</a>
         <a href="#license">Commercial use</a>
         <a href="#api">API</a>
+        <a href="#chatgpt">ChatGPT Image 2</a>
         <a href="#reproduce">Reproduce benchmarks</a>
       </div>
     </section>
@@ -209,6 +211,17 @@
           Consistency is Nano Banana's main strength over models like Flux. Our "Instruction Mode" preserves structural
           identity by default. For advanced consistency, check our <a href="./blog/top-prompt-recipes.html">Recipes</a>
           for "Outfit Change" workflows.
+        </div>
+      </details>
+
+      <details id="chatgpt">
+        <summary>Can ChatGPT Image 2 run locally?</summary>
+        <div>
+          <strong>No.</strong> ChatGPT Image 2 is a <em>closed-source, cloud-only</em> model from OpenAI. There are no
+          publicly available weights, which means it cannot be downloaded or run on your local hardware.<br><br>
+          If you want similar image generation quality that runs <strong>fully offline</strong>, we recommend checking
+          out open-source alternatives like <a href="./guides/quickstart.html#qwen-image">Qwen-Image 2.1</a> or
+          <a href="./guides/quickstart.html#hunyuan">HunyuanImage 3.0</a> in our Quickstart Guide.
         </div>
       </details>
 

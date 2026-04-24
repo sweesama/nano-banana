@@ -42,9 +42,17 @@ This site hosts the official **Nano Banana Client** documentation, reproducible 
 - **Model (Pro)**: Google Gemini 3.1 Flash Image / Gemini 3 Pro Image (Cloud).
 - **Model (Offline)**: Z-Image / Qwen-Image / GLM-Image / HunyuanImage 3.0 / SDXL Turbo (Local via Diffusers and related serving stacks).
 
-### 📈 Latest Updates (2026-04-08)
+### 📈 Latest Updates (2026-04-25)
 
-#### Quick Start Page — Major Content Refresh
+#### Benchmarks Page — Complete Rewrite
+- **Artificial Analysis Integration**: Full integration of AA Text-to-Image and Image Editing leaderboards with detailed Top 10 rankings.
+- **Real-time Data**: Elo scores, 95% confidence intervals, sample counts, release dates, and API pricing for all models.
+- **Company Logos**: Added favicon icons via Google favicon service for all model creators (OpenAI, Google, Black Forest Labs, ByteDance, xAI, Tencent, Alibaba, ImagineArt).
+- **Filter Buttons**: Added "All", "Current", "Open Weights" filter options.
+- **Data Accuracy**: All prices and rankings verified against AA official data (GPT Image 2: $211/1k, etc.).
+- **Quickstart Navigation**: Multiple entry points linking to local deployment guides.
+
+#### Quick Start Page — Major Content Refresh (2026-04-08)
 - **Nano Banana 2**: Replaced Nano Banana Pro with the newer Nano Banana 2 (Gemini 3.1 Flash Image) across the entire page. AA T2I #2 / Edit #3.
 - **HunyuanImage 3.0 Instruct**: Added as the 4th open-source model. 80B MoE, CoT reasoning, multi-image fusion. AA open-weight Edit #1 🏆.
 - **AA Rankings Updated**: All Artificial Analysis rankings refreshed to April 2026 data. Qwen-Image now open-weight T2I #2.

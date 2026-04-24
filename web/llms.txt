@@ -25,11 +25,22 @@ Nano Banana focuses on practical, reproducible image editing workflows and side-
 - [About](https://www.nano-banana.live/about.html): Site purpose and credits
 
 ## Offline Models (Local Deployment)
-| Model | Parameters | GPU Requirement | Best For |
-|-------|-----------|-----------------|----------|
-| GLM-Image | 9B | 24GB VRAM | Knowledge & Text Rendering |
-| Qwen-Image | 20B | 24GB VRAM | Photorealism |
-| Z-Image-Turbo | 6B | 16GB VRAM | Speed (8-step inference) |
+| Model | Parameters | GPU Requirement | Best For | AA Ranking |
+|-------|-----------|-----------------|----------|------------|
+| HunyuanImage 3.0 Instruct | 80B MoE | 48GB VRAM | Multi-image fusion & Editing | Edit #1 Open 🏆 |
+| GLM-Image | 9B | 24GB VRAM | Knowledge & Text Rendering | T2I #8 Open |
+| Qwen-Image | 20B | 24GB VRAM | Photorealism & Text rendering | T2I #2 Open |
+| Z-Image-Turbo | 6B | 16GB VRAM | Speed (8-step inference) | — |
+
+## Cloud Models (API Only)
+| Model | Provider | Best For | AA Ranking | Pricing |
+|-------|----------|----------|------------|---------|
+| GPT Image 2 | OpenAI | Highest quality editing | T2I #1 / Edit #2 | $211/1k images |
+| GPT Image 1.5 | OpenAI | Balanced quality/speed | T2I #2 / Edit #1 | $133/1k images |
+| Nano Banana 2 | Google | Fast generation | T2I #3 / Edit #4 | $67/1k images |
+| Nano Banana Pro | Google | Pro quality | T2I #4 | $134/1k images |
+| FLUX.2 [max] | Black Forest Labs | Quality generations | T2I #5 | $70/1k images |
+| Seedream 4.0 | ByteDance | Chinese aesthetics | T2I #6 | $30/1k images |
 
 ## Tech Stack
 - **Web**: Pure Static HTML5/CSS3 (Glassmorphism Design)
