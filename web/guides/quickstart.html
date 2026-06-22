@@ -18,9 +18,9 @@
   <!-- SEO Optimization -->
   <title>Run Nano Banana Locally | Local Install Guide</title>
   <meta name="description"
-    content="Run Nano Banana locally with Python scripts and offline models like HunyuanImage, Qwen-Image, GLM-Image, Z-Image. Complete local install guide with hardware requirements and copy-ready recipes." />
+    content="Run Nano Banana locally with Python scripts and offline models like HunyuanImage, Qwen-Image, GLM-Image, HiDream-O1-Image, Z-Image. Complete local install guide with hardware requirements and copy-ready recipes." />
   <meta name="keywords"
-    content="run nano banana locally, nano banana local install, nano banana self hosted, offline AI image editor, HunyuanImage 3.0" />
+    content="run nano banana locally, nano banana local install, nano banana self hosted, offline AI image editor, HunyuanImage 3.0, HiDream-O1-Image, HiDream.ai" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://www.nano-banana.live/guides/quickstart.html" />
 
@@ -488,7 +488,7 @@
       <div class="overview-top">
         <div>
           <h3>Quick Model Overview</h3>
-          <p>Five common routes. Closed models are cloud-only; open models can be self-hosted.</p>
+          <p>Common routes across closed cloud APIs and open, self-hostable models.</p>
         </div>
         <div class="overview-actions">
           <a href="https://artificialanalysis.ai/image/leaderboard/text-to-image" target="_blank" rel="noopener"
@@ -564,6 +564,15 @@
           <p class="overview-card-desc">80B MoE with CoT reasoning and multi-image editing. Can run locally.</p>
           <div class="overview-card-meta">AA open-weight Apr 2026: <strong style="color:#fff;">Edit #1</strong> 🏆</div>
         </div>
+
+        <div class="overview-card">
+          <div class="overview-card-header">
+            <h4 class="overview-card-title">HiDream-O1-Image</h4>
+            <span class="badge badge-primary">Open</span>
+          </div>
+          <p class="overview-card-desc">8B pixel-level unified Transformer (no VAE). MIT license. Can run locally.</p>
+          <div class="overview-card-meta">AA open-weight T2I <strong style="color:#fff;">#8</strong> · leading open T2I model</div>
+        </div>
       </div>
 
       <p class="overview-note">
@@ -633,6 +642,13 @@
             <td>CoT reasoning, intelligent editing, multi-image fusion (up to 3 inputs)</td>
             <td>48GB+</td>
             <td>AA open-weight Apr 2026: Edit #1 🏆 · Tencent Community License</td>
+          </tr>
+          <tr>
+            <td>HiDream-O1-Image</td>
+            <td><span class="badge badge-primary">Open</span></td>
+            <td>Long-text rendering, instruction editing, subject-driven personalization, storyboards</td>
+            <td>24GB+</td>
+            <td>AA open-weight T2I #8 · leading open T2I model · MIT License</td>
           </tr>
         </tbody>
       </table>
@@ -1271,7 +1287,143 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
       </details>
     </div>
 
-    <!-- 5. Z-IMAGE TURBO -->
+    <!-- 5. HIDREAM-O1-IMAGE -->
+    <div id="hidream-o1-image" class="card" style="border-top: 1px solid rgba(34, 197, 94, 0.3);">
+      <div class="model-header">
+        <h2 class="model-title">HiDream-O1-Image</h2>
+        <div class="badges"><span class="badge badge-primary">Open</span> <span class="badge badge-gray">8B Unified</span>
+          <span class="badge badge-gray">MIT License</span> <span class="badge badge-gray">2026-05-08</span></div>
+      </div>
+      <p><strong>HiDream-O1-Image</strong> by <strong>HiDream.ai (智象未来)</strong> — an 8B natively-unified image
+        foundation model built on a <strong>Pixel-Level Unified Transformer (UiT)</strong>: one end-to-end model on raw
+        pixels with <strong>no VAE and no separate text encoder</strong>. The distilled <strong>Dev-2604</strong> variant
+        debuted at <strong>#8 on the Artificial Analysis Text-to-Image Arena</strong>, positioned as the leading open-weights
+        text-to-image model. Despite only 8B parameters, it reaches parity with or surpasses much larger open DiTs and
+        leading closed-source models, with native synthesis up to <strong>2,048 × 2,048</strong>.</p>
+
+      <div class="hardware-specs">
+        <div class="spec-item"><span class="dot dot-green"></span> <strong>Recommended:</strong> RTX 4090 / A100 (24GB+)
+        </div>
+        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Note:</strong> A CUDA-capable GPU is required;
+          flash-attn strongly recommended. The optional Prompt Agent (Gemma-4-31B-it) can be offloaded to an external API
+          to save VRAM.</div>
+      </div>
+
+      <div style="display:flex; gap:16px; margin:20px 0; flex-wrap: wrap;">
+        <a href="https://huggingface.co/spaces/HiDream-ai/HiDream-O1-Image" target="_blank" rel="noopener" class="btn btn-primary">🚀 Try Online</a>
+        <a href="https://huggingface.co/HiDream-ai/HiDream-O1-Image" target="_blank" rel="noopener" class="btn btn-glass">🤗 Hugging Face</a>
+        <a href="https://github.com/HiDream-ai/HiDream-O1-Image" target="_blank" rel="noopener" class="btn btn-glass">💻 GitHub</a>
+      </div>
+
+      <details>
+        <summary>Full Technical Details (Repo Mirror)</summary>
+        <div class="details-body repo-content">
+          <div class="paper-info">
+            <span class="paper-title">HiDream-O1-Image: A Natively Unified Image Generative Foundation Model with
+              Pixel-level Unified Transformer</span>
+            <span class="paper-meta">HiDream.ai · arXiv:2605.11061 · 2026 · 8B Parameters</span>
+            <p>One end-to-end model on raw pixels — no VAE, no disjoint text encoder.</p>
+          </div>
+
+          <h3>Project Updates</h3>
+          <ul>
+            <li><strong>2026.05.08:</strong> Open-sourced HiDream-O1-Image (8B) — both undistilled (full) and distilled
+              (Dev) variants, plus the Reasoning-Driven Prompt Agent.</li>
+            <li><strong>2026.05.14:</strong> Open-sourced HiDream-O1-Image-Dev-2604 with its prompt refiner, tailored for
+              text-to-image.</li>
+            <li><strong>2026.05:</strong> Dev-2604 debuts at #8 in the Artificial Analysis Text-to-Image Arena — leading
+              open-weights T2I model.</li>
+          </ul>
+
+          <h3>Key Features</h3>
+          <ul>
+            <li><strong>Pixel-Level Unified Transformer:</strong> One end-to-end model on raw pixels, no VAE, no disjoint
+              text encoder.</li>
+            <li><strong>One Model, Many Tasks:</strong> Text-to-image, long-text rendering, instruction editing,
+              subject-driven personalization, and storyboard generation in a single architecture.</li>
+            <li><strong>Reasoning-Driven Prompt Agent:</strong> Built-in "thinking" agent that resolves implicit
+              knowledge, layout, and text rendering before generation.</li>
+            <li><strong>Native High Resolution:</strong> Direct synthesis up to 2,048 × 2,048 with sharp detail.</li>
+            <li><strong>Efficiency at 8B Scale:</strong> Matches or surpasses larger open DiTs and leading closed-source
+              models.</li>
+          </ul>
+
+          <h3>Model Variants</h3>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>Type</th>
+                  <th>Best For</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>HiDream-O1-Image</td>
+                  <td>Full (undistilled)</td>
+                  <td>Highest quality; recommended for editing tasks</td>
+                </tr>
+                <tr>
+                  <td>HiDream-O1-Image-Dev</td>
+                  <td>Distilled</td>
+                  <td>Faster inference</td>
+                </tr>
+                <tr>
+                  <td>HiDream-O1-Image-Dev-2604</td>
+                  <td>Distilled (latest)</td>
+                  <td>Text-to-image; AA Arena #8 open-weights</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Installation</h3>
+          <pre><code>git clone https://github.com/HiDream-ai/HiDream-O1-Image.git
+cd HiDream-O1-Image
+pip install -r requirements.txt
+# flash-attn is strongly recommended. Without it, set "use_flash_attn": False
+# in models/pipeline.py (line ~341) or inference will fail to import the kernel.</code></pre>
+
+          <h3>Quick Start: Text-to-Image</h3>
+          <pre><code># Undistilled full model (best quality)
+python inference.py --model_type full --prompt "A serene mountain lake at sunset, cinematic lighting"
+
+# Distilled dev model (faster)
+python inference.py --model_type dev --prompt "A serene mountain lake at sunset, cinematic lighting"</code></pre>
+
+          <h3>Reasoning-Driven Prompt Agent (optional)</h3>
+          <pre><code># Rewrites a raw instruction into a self-contained English prompt.
+# Backend A: local Gemma-4-31B-it   Backend B: external OpenAI-compatible API
+python prompt_agent.py --backend api --instruction "做一张猫咪生日party的海报，标题写HAPPY BIRTHDAY"
+# Feed the returned "prompt" field into inference.py for best results.</code></pre>
+
+          <h3>Web Demo</h3>
+          <pre><code>python app.py   # launches the local Gradio server</code></pre>
+
+          <div class="highlight-box">
+            <strong>Note:</strong> The article's headline model <strong>HiDream-O1-Image-1.5</strong> (AA Text-to-Image
+            global #2 / China #1, 1265 ELO) is a <strong>commercial closed-source</strong> variant available via
+            <a href="https://vivago.ai/" target="_blank" rel="noopener">vivago.ai</a>. The open-weights
+            <strong>HiDream-O1-Image</strong> documented here is what you can self-host under the MIT License.
+          </div>
+
+          <h3>License</h3>
+          <p>The code and the HiDream-O1-Image models are released under the <strong>MIT License</strong> — free for
+            personal and commercial use.</p>
+
+          <h3>Citation</h3>
+          <pre><code>@article{hidreamolimage,
+  title={HiDream-O1-Image: A Natively Unified Image Generative Foundation Model with Pixel-level Unified Transformer},
+  author={Cai, Qi and Chen, Jingwen and Gao, Chengmin and others},
+  journal={arXiv preprint arXiv:2605.11061},
+  year={2026}
+}</code></pre>
+        </div>
+      </details>
+    </div>
+
+    <!-- 6. Z-IMAGE TURBO -->
     <div id="z-image" class="card" style="border-top: 1px solid rgba(139, 92, 246, 0.3);">
       <div class="model-header">
         <h2 class="model-title">Z-Image Turbo</h2>

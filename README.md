@@ -40,11 +40,19 @@ This site hosts the official **Nano Banana Client** documentation, reproducible 
 ### 🛠 Tech Stack
 - **Web**: Pure Static HTML5/CSS3 (Glassmorphism Design).
 - **Model (Pro)**: Google Gemini 3.1 Flash Image / Gemini 3 Pro Image (Cloud).
-- **Model (Offline)**: Z-Image / Qwen-Image / GLM-Image / HunyuanImage 3.0 / SDXL Turbo (Local via Diffusers and related serving stacks).
+- **Model (Offline)**: Z-Image / Qwen-Image / GLM-Image / HunyuanImage 3.0 / HiDream-O1-Image / SDXL Turbo (Local via Diffusers and related serving stacks).
 
-### 📈 Latest Updates (2026-04-25)
+### 📈 Latest Updates (2026-06-22)
 
-#### Benchmarks Page — Complete Rewrite
+#### Quick Start — Added HiDream-O1-Image (Open Source)
+- **New Model**: Added HiDream.ai (智象未来) **HiDream-O1-Image** (8B) to the Quick Start local-deployment guides.
+- **Architecture**: Pixel-Level Unified Transformer (UiT) — no VAE, no separate text encoder; native 2048×2048.
+- **Open Weights**: MIT License, AA Text-to-Image Arena open-weights **#8** (Dev-2604), leading open T2I model.
+- **Docs**: Full card with installation, text-to-image, Prompt Agent, and web demo commands, plus overview card + summary table rows.
+- **Note**: Clarified that the headline commercial **HiDream-O1-Image-1.5** (AA global #2 / China #1, 1265 ELO) is closed-source via vivago.ai, distinct from the open-weights model.
+- **SEO**: Updated quickstart meta description and keywords.
+
+#### Benchmarks Page — Complete Rewrite (2026-04-25)
 - **Artificial Analysis Integration**: Full integration of AA Text-to-Image and Image Editing leaderboards with detailed Top 10 rankings.
 - **Real-time Data**: Elo scores, 95% confidence intervals, sample counts, release dates, and API pricing for all models.
 - **Company Logos**: Added favicon icons via Google favicon service for all model creators (OpenAI, Google, Black Forest Labs, ByteDance, xAI, Tencent, Alibaba, ImagineArt).

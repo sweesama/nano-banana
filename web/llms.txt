@@ -28,7 +28,8 @@ Nano Banana focuses on practical, reproducible image editing workflows and side-
 | Model | Parameters | GPU Requirement | Best For | AA Ranking |
 |-------|-----------|-----------------|----------|------------|
 | HunyuanImage 3.0 Instruct | 80B MoE | 48GB VRAM | Multi-image fusion & Editing | Edit #1 Open 🏆 |
-| GLM-Image | 9B | 24GB VRAM | Knowledge & Text Rendering | T2I #8 Open |
+| HiDream-O1-Image | 8B | 24GB VRAM | Long-text rendering, editing, storyboards (MIT) | T2I #8 Open |
+| GLM-Image | 9B | 24GB VRAM | Knowledge & Text Rendering | — |
 | Qwen-Image | 20B | 24GB VRAM | Photorealism & Text rendering | T2I #2 Open |
 | Z-Image-Turbo | 6B | 16GB VRAM | Speed (8-step inference) | — |
 
