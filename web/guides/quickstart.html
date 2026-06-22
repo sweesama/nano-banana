@@ -1301,18 +1301,50 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
         text-to-image model. Despite only 8B parameters, it reaches parity with or surpasses much larger open DiTs and
         leading closed-source models, with native synthesis up to <strong>2,048 × 2,048</strong>.</p>
 
+      <div class="card-grid two-col" style="margin: 20px 0;">
+        <div class="comparison-card open" style="border-color: rgba(74,222,128,0.4);">
+          <h3 style="margin:0 0 8px 0; color:#4ade80;">✅ Open-Source — HiDream-O1-Image (8B)</h3>
+          <p style="margin:0 0 12px 0; color:var(--text-secondary);"><strong>MIT licensed</strong> and fully self-hostable.
+            Ranked <strong>#8 open-weights</strong> on the AA Text-to-Image Arena — the leading open T2I model. This is the
+            version the install guide below covers.</p>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="https://huggingface.co/spaces/HiDream-ai/HiDream-O1-Image" target="_blank" rel="noopener" class="btn btn-primary">🚀 Try Online</a>
+            <a href="https://huggingface.co/HiDream-ai/HiDream-O1-Image" target="_blank" rel="noopener" class="btn btn-glass">🤗 Hugging Face</a>
+            <a href="https://github.com/HiDream-ai/HiDream-O1-Image" target="_blank" rel="noopener" class="btn btn-glass">💻 GitHub</a>
+          </div>
+        </div>
+        <div class="comparison-card" style="border-color: rgba(251,191,36,0.4);">
+          <h3 style="margin:0 0 8px 0; color:#fbbf24;">⭐ Commercial — HiDream-O1-Image-1.5</h3>
+          <p style="margin:0 0 12px 0; color:var(--text-secondary);">Closed-source flagship. Ranked <strong>#2 globally / #1 in China</strong>
+            on the AA Text-to-Image leaderboard (<strong>1265 ELO</strong>), ahead of Google Nano Banana 2 and ByteDance
+            Seedream 4.0. Cloud / online access only — not self-hostable.</p>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="https://vivago.ai/" target="_blank" rel="noopener" class="btn btn-glass">🌐 Try on vivago.ai</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-stack" aria-label="HiDream-O1-Image visual examples">
+        <div>
+          <img class="gallery-item" src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/HiDream/general.webp" alt="HiDream-O1-Image general generation examples" loading="lazy" />
+          <div class="gallery-caption">General generation: photoreal scenes, stylized visuals, and high-resolution native synthesis.</div>
+        </div>
+        <div>
+          <img class="gallery-item" src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/HiDream/text-layout.webp" alt="HiDream-O1-Image text rendering and layout examples" loading="lazy" />
+          <div class="gallery-caption">Text and layout: long-text rendering, posters, typography, and structured composition.</div>
+        </div>
+        <div>
+          <img class="gallery-item" src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/HiDream/IP_2.jpg" alt="HiDream-O1-Image IP and character consistency examples" loading="lazy" />
+          <div class="gallery-caption">IP and characters: subject-driven personalization and consistent visual identity.</div>
+        </div>
+      </div>
+
       <div class="hardware-specs">
         <div class="spec-item"><span class="dot dot-green"></span> <strong>Recommended:</strong> RTX 4090 / A100 (24GB+)
         </div>
         <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Note:</strong> A CUDA-capable GPU is required;
           flash-attn strongly recommended. The optional Prompt Agent (Gemma-4-31B-it) can be offloaded to an external API
           to save VRAM.</div>
-      </div>
-
-      <div style="display:flex; gap:16px; margin:20px 0; flex-wrap: wrap;">
-        <a href="https://huggingface.co/spaces/HiDream-ai/HiDream-O1-Image" target="_blank" rel="noopener" class="btn btn-primary">🚀 Try Online</a>
-        <a href="https://huggingface.co/HiDream-ai/HiDream-O1-Image" target="_blank" rel="noopener" class="btn btn-glass">🤗 Hugging Face</a>
-        <a href="https://github.com/HiDream-ai/HiDream-O1-Image" target="_blank" rel="noopener" class="btn btn-glass">💻 GitHub</a>
       </div>
 
       <details>
@@ -1400,13 +1432,6 @@ python prompt_agent.py --backend api --instruction "做一张猫咪生日party�
 
           <h3>Web Demo</h3>
           <pre><code>python app.py   # launches the local Gradio server</code></pre>
-
-          <div class="highlight-box">
-            <strong>Note:</strong> The article's headline model <strong>HiDream-O1-Image-1.5</strong> (AA Text-to-Image
-            global #2 / China #1, 1265 ELO) is a <strong>commercial closed-source</strong> variant available via
-            <a href="https://vivago.ai/" target="_blank" rel="noopener">vivago.ai</a>. The open-weights
-            <strong>HiDream-O1-Image</strong> documented here is what you can self-host under the MIT License.
-          </div>
 
           <h3>License</h3>
           <p>The code and the HiDream-O1-Image models are released under the <strong>MIT License</strong> — free for
