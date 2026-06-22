@@ -19,9 +19,14 @@ Help users quickly understand what the model is, how to run it, and how it compa
   - Inputs to download, fixed params, and pipeline steps
   - A/B slider: left (FLUX Kontext) vs right (Nano Banana)
 - Quickstart: https://www.nano-banana.live/guides/quickstart.html
-  - Route A: Google Colab (no setup)
-  - Route B: Local (full control)
-  - Copy buttons for prompt/params/CLI
+  - Preserves the main local-install URL and H1 for SEO stability
+  - Adds fast route-selection links for cloud API, open editing, open T2I, text rendering, and fast local generation
+  - Adds featured open-model visual previews for HiDream-O1-Image, HunyuanImage 3.0, and Qwen-Image
+  - Includes offline model overview, hardware notes, galleries, and setup commands
+- HiDream-O1-Image Guide: https://www.nano-banana.live/guides/hidream-o1-image.html
+  - Dedicated long-tail SEO page for HiDream-O1-Image local install and open-source status
+  - Distinguishes MIT open-source HiDream-O1-Image 8B from closed commercial HiDream-O1-Image-1.5
+  - Includes visual examples, hardware planning, official repository links, setup outline, and model selection guidance
 - Prompts: https://www.nano-banana.live/prompts/index.html
   - Copy‑ready prompt recipes with suggested parameters
 - FAQ: https://www.nano-banana.live/faq.html
@@ -45,7 +50,8 @@ Help users quickly understand what the model is, how to run it, and how it compa
 ## Update cadence
 - Benchmarks: updated when new tasks/inputs are verified
 - Prompts: incremental additions
-- Quickstart: updated after tooling or notebooks change
+- Quickstart: updated after tooling, model availability, UX entry-point changes, or notebooks change
+- Model guide pages: added for high-value long-tail SEO terms when a model has enough search and comparison value
 
 ## Contact
 - Use the About page for ownership/credits; no newsletter or comments for MVP.

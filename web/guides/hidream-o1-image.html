@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P0QMF67972"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-P0QMF67972');
+  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b0f14" />
+  <meta name="color-scheme" content="dark" />
+
+  <title>HiDream-O1-Image Local Install Guide | Open Source AI Image Model</title>
+  <meta name="description" content="HiDream-O1-Image local install guide. Learn the difference between the MIT open-source 8B model and commercial HiDream-O1-Image-1.5, with hardware requirements, examples, and setup links." />
+  <meta name="keywords" content="HiDream-O1-Image, HiDream-O1-Image local install, HiDream open source, HiDream.ai, open source AI image model, MIT image generation model, Nano Banana local alternative" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.nano-banana.live/guides/hidream-o1-image.html" />
+  <meta property="og:title" content="HiDream-O1-Image Local Install Guide" />
+  <meta property="og:description" content="A practical guide to the open-source HiDream-O1-Image model, its commercial variant, local deployment path, and visual examples." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://www.nano-banana.live/guides/hidream-o1-image.html" />
+  <meta property="og:image" content="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/HiDream/general.webp" />
+
+  <link rel="icon" href="../favicon.png" type="image/png" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .hero-section {
+      text-align: center;
+      padding: 72px 0 44px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.12) 0%, transparent 55%);
+      margin-bottom: 34px;
+    }
+
+    .hero-title {
+      font-size: clamp(42px, 5vw, 68px);
+      line-height: 1.05;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, #fff 0%, #86efac 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      max-width: 850px;
+      margin: 0 auto 26px;
+      color: var(--text-muted);
+      font-size: 1.12rem;
+      line-height: 1.8;
+    }
+
+    .badge-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 26px;
+    }
+
+    .content-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 22px;
+      padding: 30px;
+      margin: 26px 0;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .mini-card {
+      background: rgba(0, 0, 0, 0.28);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .mini-card h3 {
+      margin-bottom: 8px;
+    }
+
+    .mini-card p,
+    .content-card li {
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+
+    .gallery-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      margin-top: 22px;
+    }
+
+    .gallery-stack img {
+      width: 100%;
+      height: auto;
+      border-radius: 18px;
+      border: 1px solid var(--glass-border);
+      background: #000;
+      display: block;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      margin-top: 18px;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 15px;
+      border-bottom: 1px solid var(--glass-border);
+      text-align: left;
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+
+    .data-table th {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    pre {
+      overflow-x: auto;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 18px;
+      color: #dbeafe;
+    }
+
+    @media (max-width: 820px) {
+      .two-col,
+      .three-col {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html" class="logo"><img src="../favicon.png" alt="Nano Banana" width="24" height="24">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="quickstart.html" class="active">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../about.html">About</a>
+        <a href="../blog.html">Blog</a>
+      </div>
+    </nav>
+
+    <section class="hero-section">
+      <h1 class="hero-title">HiDream-O1-Image Local Install Guide</h1>
+      <p class="hero-subtitle">HiDream-O1-Image is an 8B open-source image foundation model from HiDream.ai. This page explains what can run locally, what is commercial-only, which hardware you need, and when it is a better Nano Banana local alternative.</p>
+      <div class="badge-row">
+        <span class="badge badge-primary">MIT Open Weights</span>
+        <span class="badge badge-gray">8B Unified Model</span>
+        <span class="badge badge-gray">No VAE</span>
+        <span class="badge badge-gray">Native 2048×2048</span>
+      </div>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <a href="#local-install" class="btn btn-primary">Start Local Install</a>
+        <a href="quickstart.html#hidream-o1-image" class="btn btn-glass">View in Quick Start</a>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <h2>Open Source vs Commercial HiDream</h2>
+      <div class="two-col">
+        <div class="mini-card">
+          <h3 style="color:#4ade80;">Open-source HiDream-O1-Image</h3>
+          <p>This is the 8B MIT-licensed version you can self-host. It is the model covered by the install steps and repository links on this page.</p>
+          <ul>
+            <li>MIT license</li>
+            <li>Open weights on Hugging Face</li>
+            <li>Good route for local text-to-image research</li>
+            <li>Requires a CUDA GPU for practical use</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h3 style="color:#fbbf24;">Commercial HiDream-O1-Image-1.5</h3>
+          <p>This is the closed-source flagship model reported on the commercial leaderboard. It is cloud-only and should not be described as locally runnable.</p>
+          <ul>
+            <li>Closed-source commercial model</li>
+            <li>Reported AA global #2 / China #1 with 1265 ELO</li>
+            <li>Available through online product routes such as vivago.ai</li>
+            <li>Not a self-hosted local install target</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <h2>Why HiDream-O1-Image Matters</h2>
+      <div class="three-col">
+        <div class="mini-card">
+          <h3>Pixel-level UiT</h3>
+          <p>The model is built as a natively unified Transformer over raw pixels, instead of stitching together a separate VAE and text encoder pipeline.</p>
+        </div>
+        <div class="mini-card">
+          <h3>Open T2I Leader</h3>
+          <p>The distilled Dev-2604 variant is positioned as a leading open-weights text-to-image model on Artificial Analysis.</p>
+        </div>
+        <div class="mini-card">
+          <h3>Native 2K Output</h3>
+          <p>HiDream targets high-resolution synthesis up to 2,048 × 2,048, which makes it useful for posters, scenes, and detailed compositions.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <h2>Visual Examples</h2>
+      <p>These examples show the type of output categories users should evaluate before committing GPU time to a local setup.</p>
+      <div class="gallery-stack">
+        <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/HiDream/general.webp" alt="HiDream-O1-Image general generation examples" loading="lazy" />
+        <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/HiDream/text-layout.webp" alt="HiDream-O1-Image text and layout examples" loading="lazy" />
+        <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/HiDream/IP_2.jpg" alt="HiDream-O1-Image IP and character consistency examples" loading="lazy" />
+      </div>
+    </section>
+
+    <section class="content-card" id="local-install">
+      <h2>Local Install Path</h2>
+      <p>Use the official repositories first. Treat this as the safe starting point before building your own app around the model.</p>
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>What to Do</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Open the official Hugging Face model page and read the current requirements.</td>
+              <td>Model repos can change faster than blog posts, especially around memory optimization.</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Prepare a CUDA machine with 24GB+ VRAM for practical testing.</td>
+              <td>The model is open, but it is not lightweight like a normal desktop app.</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Use the official GitHub examples before integrating custom prompts or serving APIs.</td>
+              <td>This reduces debugging noise and helps separate environment problems from prompt problems.</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Only add the optional Prompt Agent after base generation works.</td>
+              <td>The Prompt Agent improves reasoning and layout planning, but adds extra runtime complexity.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;">
+        <a href="https://huggingface.co/HiDream-ai/HiDream-O1-Image" target="_blank" rel="noopener" class="btn btn-primary">Hugging Face</a>
+        <a href="https://github.com/HiDream-ai/HiDream-O1-Image" target="_blank" rel="noopener" class="btn btn-glass">GitHub</a>
+        <a href="https://huggingface.co/spaces/HiDream-ai/HiDream-O1-Image" target="_blank" rel="noopener" class="btn btn-glass">Online Demo</a>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <h2>Minimal Setup Outline</h2>
+      <p>This is a planning outline, not a replacement for the official README. Check the official repository before running commands.</p>
+      <pre><code>git clone https://github.com/HiDream-ai/HiDream-O1-Image.git
+cd HiDream-O1-Image
+
+# Create an isolated Python environment, then install the repository requirements.
+# Use the official README for the latest CUDA, torch, flash-attn, and model download notes.
+
+python app.py</code></pre>
+    </section>
+
+    <section class="content-card">
+      <h2>When to Choose HiDream Instead of Other Local Models</h2>
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Use Case</th>
+              <th>Better Route</th>
+              <th>Simple Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Open-source text-to-image exploration</td>
+              <td>HiDream-O1-Image</td>
+              <td>Strong open-weight T2I position with a modern unified architecture.</td>
+            </tr>
+            <tr>
+              <td>Heavy image editing and multi-image reasoning</td>
+              <td>HunyuanImage 3.0</td>
+              <td>Better fit when the task is editing-focused and you have enough GPU memory.</td>
+            </tr>
+            <tr>
+              <td>Typography-heavy poster or UI images</td>
+              <td>Qwen-Image</td>
+              <td>Qwen remains a strong route for text rendering and structured layouts.</td>
+            </tr>
+            <tr>
+              <td>No GPU, simple automation</td>
+              <td>Nano Banana cloud client</td>
+              <td>The Python client can run on CPU because the image model runs in the cloud.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <h2>FAQ</h2>
+      <h3>Is HiDream-O1-Image open source?</h3>
+      <p>Yes, the 8B HiDream-O1-Image model is released as open weights under the MIT license. The commercial HiDream-O1-Image-1.5 model is different and should be treated as closed-source.</p>
+      <h3>Can it run on a normal laptop?</h3>
+      <p>Not realistically. It is open-source, but practical inference still needs a CUDA GPU. For most users, 24GB+ VRAM is the safer planning number.</p>
+      <h3>Is this the same as Nano Banana?</h3>
+      <p>No. Nano Banana refers to the Google/Gemini image route in this site. HiDream-O1-Image is listed as a local open-source alternative.</p>
+    </section>
+
+    <footer>
+      <p>Need the full comparison? Start from the <a href="quickstart.html">Nano Banana local quickstart</a> or check the <a href="../benchmarks/index.html">benchmarks page</a>.</p>
+    </footer>
+  </div>
+</body>
+
+</html>

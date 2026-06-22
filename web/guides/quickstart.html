@@ -457,6 +457,72 @@
     .summary-table .data-table tr td:last-child {
       color: #cfd6e4;
     }
+
+    .decision-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 20px 0 28px;
+    }
+
+    .decision-link {
+      display: block;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.025);
+      color: #fff;
+      text-decoration: none;
+      line-height: 1.45;
+    }
+
+    .decision-link span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.88em;
+      margin-top: 4px;
+    }
+
+    .featured-model-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .featured-model-card {
+      overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid var(--glass-border);
+      background: rgba(0, 0, 0, 0.35);
+      text-decoration: none;
+    }
+
+    .featured-model-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .featured-model-card div {
+      padding: 14px;
+      color: #fff;
+    }
+
+    .featured-model-card span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.9em;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 760px) {
+      .featured-model-strip {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 
@@ -485,6 +551,46 @@
     </div>
 
     <div class="overview-panel">
+      <div class="overview-top">
+        <div>
+          <h3>Choose the Right Route Fast</h3>
+          <p>If you only want the practical answer, start here. These links jump to the safest matching section without changing this page's SEO structure.</p>
+        </div>
+      </div>
+
+      <div class="decision-grid">
+        <a class="decision-link" href="#route-a-pro-client">Cloud API on CPU<span>Best if you do not own a GPU.</span></a>
+        <a class="decision-link" href="#hunyuanimage-3-instruct">Best open editing model<span>HunyuanImage 3.0, but heavy VRAM.</span></a>
+        <a class="decision-link" href="#hidream-o1-image">Best open T2I newcomer<span>HiDream-O1-Image, MIT, 8B UiT.</span></a>
+        <a class="decision-link" href="#qwen-image">Best text rendering route<span>Qwen-Image for typography-heavy work.</span></a>
+        <a class="decision-link" href="#z-image">Fast local generation<span>Z-Image Turbo for efficient local runs.</span></a>
+        <a class="decision-link" href="hidream-o1-image.html">HiDream full guide<span>Dedicated install and comparison page.</span></a>
+      </div>
+
+      <div class="overview-top">
+        <div>
+          <h3>Featured Open Models with Visual Examples</h3>
+          <p>Use this preview if you want to quickly judge whether the page is worth reading before going into setup commands.</p>
+        </div>
+      </div>
+
+      <div class="featured-model-strip">
+        <a class="featured-model-card" href="#hidream-o1-image">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/HiDream/general.webp" alt="HiDream-O1-Image visual examples" loading="lazy" />
+          <div>HiDream-O1-Image<span>8B MIT open model, native 2048px generation.</span></div>
+        </a>
+        <a class="featured-model-card" href="#hunyuanimage-3-instruct">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/d9c4f6f7f800a9b4c905.png" alt="HunyuanImage 3.0 visual example" loading="lazy" />
+          <div>HunyuanImage 3.0<span>Open-weight editing leader, 80B MoE.</span></div>
+        </a>
+        <a class="featured-model-card" href="#qwen-image">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Qwen%20image%202.0/qwen-image-2-cover.webp" alt="Qwen-Image visual example" loading="lazy" />
+          <div>Qwen-Image<span>Strong layout and text rendering route.</span></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="overview-panel" style="margin-top: 24px;">
       <div class="overview-top">
         <div>
           <h3>Quick Model Overview</h3>

@@ -42,7 +42,13 @@ This site hosts the official **Nano Banana Client** documentation, reproducible 
 - **Model (Pro)**: Google Gemini 3.1 Flash Image / Gemini 3 Pro Image (Cloud).
 - **Model (Offline)**: Z-Image / Qwen-Image / GLM-Image / HunyuanImage 3.0 / HiDream-O1-Image / SDXL Turbo (Local via Diffusers and related serving stacks).
 
-### 📈 Latest Updates (2026-06-22)
+### 📈 Latest Updates (2026-06-23)
+
+#### SEO UX Phase 1 & 2 — Quickstart Entry Points + HiDream Long-tail Page
+- **Phase 1**: Added a low-risk "Choose the Right Route Fast" section to Quick Start without changing the existing URL, H1, or core SEO target.
+- **Featured Previews**: Added visual preview cards for HiDream-O1-Image, HunyuanImage 3.0, and Qwen-Image so users can judge model quality before reading setup details.
+- **Phase 2**: Created `/guides/hidream-o1-image.html` as a dedicated long-tail SEO page for HiDream local install, open-source status, hardware planning, and model comparisons.
+- **Indexing**: Updated sitemap and LLM summary files so crawlers can discover the new HiDream guide.
 
 #### Quick Start — Added HiDream-O1-Image (Open Source)
 - **New Model**: Added HiDream.ai (智象未来) **HiDream-O1-Image** (8B) to the Quick Start local-deployment guides.
