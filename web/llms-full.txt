@@ -20,9 +20,14 @@ Help users quickly understand what the model is, how to run it, and how it compa
   - A/B slider: left (FLUX Kontext) vs right (Nano Banana)
 - Quickstart: https://www.nano-banana.live/guides/quickstart.html
   - Preserves the main local-install URL and H1 for SEO stability
-  - Adds fast route-selection links for cloud API, open editing, open T2I, text rendering, and fast local generation
+  - Adds fast route-selection links for cloud API, no-GPU cloud options, open editing, open T2I, text rendering, and fast local generation
   - Adds featured open-model visual previews for HiDream-O1-Image, HunyuanImage 3.0, and Qwen-Image
+  - Includes a "No GPU? Run in the cloud" callout and contextual prompt in the Nano Banana 2 section
   - Includes offline model overview, hardware notes, galleries, and setup commands
+- Run Without a GPU: https://www.nano-banana.live/blog/run-without-gpu.html
+  - Targets the site's most common search intent (no-GPU / local alternatives)
+  - Compares Nano Banana 2 API, RunPod/Vast.ai cloud GPU rentals, and lightweight local models
+  - Includes a decision table and disclosure for affiliate/referral links
 - HiDream-O1-Image Guide: https://www.nano-banana.live/guides/hidream-o1-image.html
   - Dedicated long-tail SEO page for HiDream-O1-Image local install and open-source status
   - Distinguishes MIT open-source HiDream-O1-Image 8B from closed commercial HiDream-O1-Image-1.5

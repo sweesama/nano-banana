@@ -30,6 +30,7 @@ This site hosts the official **Nano Banana Client** documentation, reproducible 
   - **Route B (Offline)**: Z-Image / Qwen-Image / GLM-Image (GPU requirements vary by model).
 - **Blog & Tutorials `/blog`**:
   - `/blog/how-to-run-locally.html`: The definitive guide to the Client.
+  - `/blog/run-without-gpu.html`: Cloud GPU and budget options for users without a local GPU.
   - `/blog/hardware-requirements.html`: VRAM Analysis (Client vs Offline).
   - `/blog/troubleshooting-install.html`: Fixing API/Proxy issues.
   - `/blog/top-prompt-recipes.html`: Gemini instruction recipes.
@@ -43,6 +44,13 @@ This site hosts the official **Nano Banana Client** documentation, reproducible 
 - **Model (Offline)**: Z-Image / Qwen-Image / GLM-Image / HunyuanImage 3.0 / HiDream-O1-Image / SDXL Turbo (Local via Diffusers and related serving stacks).
 
 ### 📈 Latest Updates (2026-06-23)
+
+#### Phase 3 — Soft Monetization: No-GPU Guide + Cloud GPU Recommendations
+- **New page**: Created `/blog/run-without-gpu.html` to answer the site's most common search intent ("nano banana local" / "no GPU").
+- **Quick Start integration**: Added a low-risk "No GPU? Run in the cloud" decision link and a contextual callout above the model cards, plus a soft prompt in the Nano Banana 2 section pointing to the new guide.
+- **Monetization strategy**: Recommend RunPod (referral) and Vast.ai (referral) as cloud GPU options, with a disclosure note. The existing `/guides/cloud-deployment.html` is ready for a real RunPod referral link once the account is set up.
+- **Affiliate plan**: Documented RunPod and Amazon Associates registration steps. RunPod is the first priority because the site already teaches users to deploy on it.
+- **Indexing**: Updated `sitemap.xml`, `blog.html`, and this README to surface the new page.
 
 #### SEO UX Phase 1 & 2 — Quickstart Entry Points + HiDream Long-tail Page
 - **Phase 1**: Added a low-risk "Choose the Right Route Fast" section to Quick Start without changing the existing URL, H1, or core SEO target.

@@ -17,6 +17,7 @@ Nano Banana focuses on practical, reproducible image editing workflows and side-
 
 ## Blog & Tutorials
 - [How to Run Nano Banana Locally](https://www.nano-banana.live/blog/how-to-run-locally.html): Client vs Offline guide
+- [Run Without a GPU](https://www.nano-banana.live/blog/run-without-gpu.html): Cloud GPU rentals and budget options for users without local hardware
 - [Hardware Requirements](https://www.nano-banana.live/blog/hardware-requirements.html): VRAM Analysis (Client vs Offline)
 - [Troubleshooting Install](https://www.nano-banana.live/blog/troubleshooting-install.html): API/Proxy error fixes
 - [Top Prompt Recipes](https://www.nano-banana.live/blog/top-prompt-recipes.html): Gemini instruction recipes

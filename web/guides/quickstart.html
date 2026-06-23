@@ -560,6 +560,7 @@
 
       <div class="decision-grid">
         <a class="decision-link" href="#route-a-pro-client">Cloud API on CPU<span>Best if you do not own a GPU.</span></a>
+        <a class="decision-link" href="../blog/run-without-gpu.html">No GPU? Run in cloud<span>Rent an A100 for $0.40/hour instead of buying hardware.</span></a>
         <a class="decision-link" href="#hunyuanimage-3-instruct">Best open editing model<span>HunyuanImage 3.0, but heavy VRAM.</span></a>
         <a class="decision-link" href="#hidream-o1-image">Best open T2I newcomer<span>HiDream-O1-Image, MIT, 8B UiT.</span></a>
         <a class="decision-link" href="#qwen-image">Best text rendering route<span>Qwen-Image for typography-heavy work.</span></a>
@@ -764,7 +765,7 @@
 
     <!-- Important Notice -->
     <div
-      style="background: linear-gradient(135deg, rgba(248, 113, 113, 0.15) 0%, rgba(251, 191, 36, 0.1) 100%); border: 1px solid rgba(248, 113, 113, 0.4); border-radius: 16px; padding: 24px; margin-bottom: 40px;">
+      style="background: linear-gradient(135deg, rgba(248, 113, 113, 0.15) 0%, rgba(251, 191, 36, 0.1) 100%); border: 1px solid rgba(248, 113, 113, 0.4); border-radius: 16px; padding: 24px; margin-bottom: 24px;">
       <h3 style="color: #f87171; margin: 0 0 12px 0; font-size: 1.2rem;">⚠️ Important: Nano Banana is Closed-Source</h3>
       <p style="margin: 0; color: var(--text-muted); line-height: 1.7;">
         <strong style="color: #fff;">Nano Banana 2 (Gemini 3.1 Flash Image) is a closed-source cloud API</strong> and <strong
@@ -775,6 +776,18 @@
         we provide detailed guides for <strong>HunyuanImage 3.0</strong>, <strong>GLM-Image</strong>, <strong>Qwen-Image</strong>, and
         <strong>Z-Image</strong>, all of which can run locally with the right GPU and software stack.
 
+      </p>
+    </div>
+
+    <!-- No GPU? Run in the cloud instead -->
+    <div
+      style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(34, 197, 94, 0.08) 100%); border: 1px solid rgba(59, 130, 246, 0.35); border-radius: 16px; padding: 24px; margin-bottom: 40px;">
+      <h3 style="color: #60a5fa; margin: 0 0 12px 0; font-size: 1.2rem;">💡 No GPU? You Can Still Run Open Models</h3>
+      <p style="margin: 0 0 14px 0; color: var(--text-muted); line-height: 1.7;">
+        Most of the open-source models above need <strong style="color: #fff;">16GB–48GB of VRAM</strong>. If you don't have a high-end workstation, you can rent a cloud GPU by the hour and run them exactly as if they were local.
+      </p>
+      <p style="margin: 0; color: var(--text-muted); line-height: 1.7;">
+        See our <a href="../blog/run-without-gpu.html" style="color: #60a5fa; font-weight: 600; text-decoration: underline;">Run Without a GPU guide</a> for a step-by-step comparison of cloud providers, hourly costs, and which model fits each budget.
       </p>
     </div>
 
@@ -796,6 +809,12 @@ from google import genai
 client = genai.Client(api_key="YOUR_KEY")</code></pre>
       </div>
       <a href="https://aistudio.google.com/" target="_blank" class="btn btn-primary">Launch AI Studio</a>
+
+      <div style="background: rgba(96, 165, 250, 0.08); border-left: 3px solid #60a5fa; padding: 14px 16px; border-radius: 0 8px 8px 0; margin-top: 24px;">
+        <p style="margin: 0; font-size: 0.9em; color: #dbeafe;">
+          <strong>Prefer open models?</strong> If you don't have 24GB+ VRAM, you can still run Hunyuan, Qwen, or HiDream on a rented cloud GPU. See <a href="../blog/run-without-gpu.html" style="color: #60a5fa; text-decoration: underline; font-weight: bold;">Run Without a GPU →</a>
+        </p>
+      </div>
     </div>
 
     <!-- 2. CHATGPT IMAGE 2 -->
