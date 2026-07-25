@@ -18,11 +18,11 @@
   <meta name="color-scheme" content="dark" />
 
   <!-- SEO Optimization -->
-  <title>Run Nano Banana Locally | Local Install Guide</title>
+  <title>Run Nano Banana Locally | Qwen-Image 3.0, FLUX 3 & Local Install Guide</title>
   <meta name="description"
-    content="Run Nano Banana locally with Python scripts and offline models like HunyuanImage, Qwen-Image, GLM-Image, HiDream-O1-Image, Z-Image. Complete local install guide with hardware requirements and copy-ready recipes." />
+    content="Compare Nano Banana with Qwen-Image 3.0, FLUX 3, Qwen-Image 2.0, HunyuanImage, GLM-Image, HiDream-O1-Image, and Z-Image. Explore hosted Early Access multimodal models, Qwen's dense text layouts, and local alternatives." />
   <meta name="keywords"
-    content="run nano banana locally, nano banana local install, nano banana self hosted, offline AI image editor, HunyuanImage 3.0, HiDream-O1-Image, HiDream.ai" />
+    content="run nano banana locally, nano banana local install, nano banana self hosted, FLUX 3, FLUX 3 image, FLUX 3 video, FLUX 3 audio, FLUX 3 early access, FLUX 3 open weights, Qwen-Image 3.0, Qwen Image 3.0, Qwen-Image 3.0 examples, Qwen-Image 3.0 4.5K token, Qwen-Image 2.0, offline AI image editor, HunyuanImage 3.0, HiDream-O1-Image, HiDream.ai" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://www.nano-banana.live/guides/quickstart.html" />
 
@@ -97,6 +97,30 @@
       margin-top: 12px;
       font-size: 0.9em;
       font-style: italic;
+    }
+
+    .gallery-comparison {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      align-items: start;
+    }
+
+    .gallery-comparison .gallery-item {
+      margin: 0;
+    }
+
+    .comparison-label {
+      text-align: center;
+      color: #fff;
+      font-size: 0.85em;
+      margin: 0 0 8px;
+    }
+
+    @media (max-width: 760px) {
+      .gallery-comparison {
+        grid-template-columns: 1fr;
+      }
     }
 
     .table-wrapper {
@@ -462,20 +486,36 @@
 
     .decision-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
       margin: 20px 0 28px;
     }
 
     .decision-link {
-      display: block;
+      display: flex;
+      min-height: 106px;
+      flex-direction: column;
+      justify-content: flex-start;
       padding: 14px 16px;
       border-radius: 14px;
       border: 1px solid var(--glass-border);
-      background: rgba(255, 255, 255, 0.025);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
       color: #fff;
       text-decoration: none;
       line-height: 1.45;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .decision-link:hover {
+      transform: translateY(-2px);
+      border-color: var(--glass-border-hover);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.025));
+    }
+
+    .decision-link:focus-visible,
+    .featured-model-card:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 3px;
     }
 
     .decision-link span {
@@ -487,17 +527,27 @@
 
     .featured-model-strip {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 16px;
       margin-top: 18px;
     }
 
     .featured-model-card {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
       overflow: hidden;
       border-radius: 16px;
       border: 1px solid var(--glass-border);
       background: rgba(0, 0, 0, 0.35);
       text-decoration: none;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .featured-model-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--glass-border-hover);
+      background: rgba(0, 0, 0, 0.5);
     }
 
     .featured-model-card img {
@@ -509,8 +559,10 @@
     }
 
     .featured-model-card div {
+      flex: 1;
       padding: 14px;
       color: #fff;
+      line-height: 1.4;
     }
 
     .featured-model-card span {
@@ -520,7 +572,35 @@
       margin-top: 4px;
     }
 
+    .card[id] {
+      scroll-margin-top: 24px;
+    }
+
+    .anchor-target-highlight {
+      animation: anchor-target-highlight 1.4s ease-out;
+    }
+
+    @keyframes anchor-target-highlight {
+      0% {
+        box-shadow: 0 0 0 2px rgba(192, 235, 117, 0.65), 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+      }
+      100% {
+        box-shadow: none;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .decision-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .featured-model-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
     @media (max-width: 760px) {
+      .decision-grid,
       .featured-model-strip {
         grid-template-columns: 1fr;
       }
@@ -565,15 +645,17 @@
         <a class="decision-link" href="../blog/run-without-gpu.html">No GPU? Run in cloud<span>Rent an A100 for $0.40/hour instead of buying hardware.</span></a>
         <a class="decision-link" href="#hunyuanimage-3-instruct">Best open editing model<span>HunyuanImage 3.0, but heavy VRAM.</span></a>
         <a class="decision-link" href="#hidream-o1-image">Best open T2I newcomer<span>HiDream-O1-Image, MIT, 8B UiT.</span></a>
-        <a class="decision-link" href="#qwen-image">Best text rendering route<span>Qwen-Image for typography-heavy work.</span></a>
+        <a class="decision-link" href="#flux-3">Latest multimodal preview<span>FLUX 3 for image, video, audio, and action-aware generation.</span></a>
+        <a class="decision-link" href="#qwen-image-3">Best dense-layout route<span>Qwen-Image 3.0 for long prompts and information-rich images.</span></a>
+        <a class="decision-link" href="#qwen-image">Best local text-rendering route<span>Qwen-Image 2.0 for local typography-heavy work.</span></a>
         <a class="decision-link" href="#z-image">Fast local generation<span>Z-Image Turbo for efficient local runs.</span></a>
         <a class="decision-link" href="hidream-o1-image.html">HiDream full guide<span>Dedicated install and comparison page.</span></a>
       </div>
 
       <div class="overview-top">
         <div>
-          <h3>Featured Open Models with Visual Examples</h3>
-          <p>Use this preview if you want to quickly judge whether the page is worth reading before going into setup commands.</p>
+          <h3>Featured Models with Visual Examples</h3>
+          <p>Use this preview to compare hosted-only releases with open models before going into setup commands.</p>
         </div>
       </div>
 
@@ -586,9 +668,13 @@
           <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/d9c4f6f7f800a9b4c905.png" alt="HunyuanImage 3.0 visual example" loading="lazy" />
           <div>HunyuanImage 3.0<span>Open-weight editing leader, 80B MoE.</span></div>
         </a>
+        <a class="featured-model-card" href="#qwen-image-3">
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_1.webp" alt="Qwen-Image 3.0 dense knowledge infographic examples" loading="lazy" />
+          <div>Qwen-Image 3.0<span>4.5K-token prompts, dense layouts, and 10px text rendering.</span></div>
+        </a>
         <a class="featured-model-card" href="#qwen-image">
-          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Qwen%20image%202.0/qwen-image-2-cover.webp" alt="Qwen-Image visual example" loading="lazy" />
-          <div>Qwen-Image<span>Strong layout and text rendering route.</span></div>
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Qwen%20image%202.0/qwen-image-2-cover.webp" alt="Qwen-Image 2.0 visual example" loading="lazy" />
+          <div>Qwen-Image 2.0<span>Open local route for typography-heavy work.</span></div>
         </a>
       </div>
     </div>
@@ -639,7 +725,25 @@
 
         <div class="overview-card">
           <div class="overview-card-header">
-            <h4 class="overview-card-title">Qwen-Image</h4>
+            <h4 class="overview-card-title">FLUX 3</h4>
+            <span class="badge badge-gray">Early Access</span>
+          </div>
+          <p class="overview-card-desc">Multimodal image, video, and audio foundation model with action-aware research.</p>
+          <div class="overview-card-meta">Image access coming soon · no public weights or local deployment yet</div>
+        </div>
+
+        <div class="overview-card">
+          <div class="overview-card-header">
+            <h4 class="overview-card-title">Qwen-Image 3.0</h4>
+            <span class="badge badge-gray">Hosted Only</span>
+          </div>
+          <p class="overview-card-desc">4.5K-token prompts, dense knowledge layouts, 10px text, and complex UI generation.</p>
+          <div class="overview-card-meta">Official examples available · weights and local deployment not released</div>
+        </div>
+
+        <div class="overview-card">
+          <div class="overview-card-header">
+            <h4 class="overview-card-title">Qwen-Image 2.0</h4>
             <span class="badge badge-primary">Open</span>
           </div>
           <p class="overview-card-desc">Strong text rendering and editing. Can run locally.</p>
@@ -725,7 +829,21 @@
             <td>Cloud only · cannot run locally</td>
           </tr>
           <tr>
-            <td>Qwen-Image</td>
+            <td>FLUX 3</td>
+            <td><span class="badge badge-gray">Early Access</span></td>
+            <td>Multimodal image, video, audio, and action-aware generation</td>
+            <td>—</td>
+            <td>Image access coming soon · private/API access and future open-weight FLUX 3 Dev roadmap</td>
+          </tr>
+          <tr>
+            <td>Qwen-Image 3.0</td>
+            <td><span class="badge badge-gray">Hosted Only</span></td>
+            <td>Dense layouts, 4.5K-token prompts, 10px text, and complex UI</td>
+            <td>—</td>
+            <td>Cloud preview · official weights and local deployment not released</td>
+          </tr>
+          <tr>
+            <td>Qwen-Image 2.0</td>
             <td><span class="badge badge-primary">Open</span></td>
             <td>Complex text rendering and precise image editing</td>
             <td>24GB+</td>
@@ -1320,7 +1438,238 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
       </details>
     </div>
 
-    <!-- 4. QWEN-IMAGE 2.0 -->
+    <!-- 4. FLUX 3 -->
+    <div id="flux-3" class="card" style="border-top: 1px solid rgba(139, 92, 246, 0.55);">
+      <div class="model-header">
+        <h2 class="model-title">FLUX 3</h2>
+        <div class="badges"><span class="badge badge-gray">Early Access</span> <span class="badge badge-gray">Multimodal</span>
+          <span class="badge badge-gray">2026-07-23</span></div>
+      </div>
+      <p><strong>FLUX 3</strong> is Black Forest Labs' new multimodal foundation model. It jointly learns from images, video,
+        and audio in one architecture, aiming to understand the shared structure of the physical and digital world rather than
+        treating each modality as an isolated task.</p>
+
+      <div class="hardware-specs">
+        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Access:</strong> Early Access through Black Forest Labs; FLUX 3 Image access is planned for the coming weeks.
+        </div>
+        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Video:</strong> Up to 20 seconds with native audio, including text-to-video, image-to-video, video-to-video, keyframes, multilingual dialogue, and clip chaining.
+        </div>
+        <div class="spec-item"><span class="dot dot-red"></span> <strong>Local status:</strong> Public weights and local deployment are not available yet. The launch plan mentions private/API access first and a future open-weight FLUX 3 Dev release.
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        <strong>How to read this entry:</strong> FLUX 3 is included as a current model watchlist item, not as a local install guide or confirmed benchmark result. Black Forest Labs describes the early evaluations as preliminary and expects further improvements during Early Access.
+      </div>
+
+      <div class="gallery-stack">
+        <div>
+          <img src="https://cdn.sanity.io/images/2gpum2i6/production/67e6dbce8f40db2163330184d35c8dfe4d80bb32-3400x3659.png?fm=webp&fit=max&w=1200&q=72" class="gallery-item"
+            loading="lazy" decoding="async" width="1200" height="1291" alt="FLUX 3 multimodal capability overview showing image, video, audio, and action prediction applications">
+          <p class="gallery-caption">Official capability overview: FLUX 3 is presented as one multimodal foundation spanning image, video, audio, and action prediction. Served through the official Black Forest Labs CDN with automatic format optimization.</p>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:16px; margin:20px 0; flex-wrap: wrap;">
+        <a href="https://bfl.ai/blog/flux-3" target="_blank" rel="noopener" class="btn btn-primary">📖 Official FLUX 3 Announcement</a>
+        <a href="https://bfl.ai/" target="_blank" rel="noopener" class="btn btn-glass">🖤 Black Forest Labs</a>
+      </div>
+
+      <details>
+        <summary>Capabilities, Release Plan, and Local Status</summary>
+        <div class="details-body repo-content">
+          <div class="paper-info">
+            <span class="paper-title">FLUX 3 — Real World Models: Towards Multimodal Flow Models as the Backbone of Visual Intelligence</span>
+            <span class="paper-meta">Black Forest Labs · Announced July 23, 2026 · Early Access</span>
+            <p>FLUX 3 is designed as one shared multimodal flow-matching foundation for content creation, perception, action prediction, and future physical-AI workflows.</p>
+          </div>
+
+          <h3>Highlighted Capabilities</h3>
+          <ul>
+            <li><strong>Video with audio:</strong> Generates video clips up to 20 seconds with native audio generation.</li>
+            <li><strong>Reference-guided generation:</strong> Supports image-to-video, video-to-video, visual references, keyframes, and audio/video continuation.</li>
+            <li><strong>Multilingual and stylistic range:</strong> Handles multilingual dialogue, animation, cinematics, candid footage, and varied aspect ratios.</li>
+            <li><strong>Image generation and editing:</strong> The official announcement says complex prompt following and multilingual text rendering have improved over earlier FLUX generations.</li>
+            <li><strong>Action-aware research:</strong> The same backbone is being explored for action prediction and robotics partnerships such as FLUX-mimic.</li>
+          </ul>
+
+          <h3>Release Plan</h3>
+          <ul>
+            <li><strong>FLUX 3 Video:</strong> Video and audio generation/editing through APIs and private weight access after Early Access.</li>
+            <li><strong>FLUX 3 Image:</strong> Image synthesis and editing through APIs and private weight access; image Early Access is expected in the following weeks.</li>
+            <li><strong>FLUX 3 Dev:</strong> Black Forest Labs lists future open-weight access to a multimodal backbone for content creation and action prediction.</li>
+          </ul>
+
+          <h3>Benchmark Caution</h3>
+          <p>The official comparisons against other video models are preliminary, use an evolving model and evaluation harness, and should not be treated as a stable leaderboard ranking. We will add reproducible results only after public access and fixed evaluation details are available.</p>
+
+          <h3>Official Source</h3>
+          <p><a href="https://bfl.ai/blog/flux-3" target="_blank" rel="noopener">Read the Black Forest Labs FLUX 3 announcement</a> for the current Early Access status, capability descriptions, evaluations, and launch plan.</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- 5. QWEN-IMAGE 3.0 -->
+    <div id="qwen-image-3" class="card" style="border-top: 1px solid rgba(251, 191, 36, 0.45);">
+      <div class="model-header">
+        <h2 class="model-title">Qwen-Image 3.0</h2>
+        <div class="badges"><span class="badge badge-gray">Hosted Only</span> <span class="badge badge-gray">4.5K Tokens</span>
+          <span class="badge badge-gray">2026-07-21</span></div>
+      </div>
+      <p><strong>Qwen-Image 3.0</strong> is Alibaba's third-generation image foundation model. The official release focuses on
+        <strong>rich content</strong>, <strong>authentic details</strong>, and <strong>deep knowledge</strong>: it accepts prompts up to
+        <strong>4.5K tokens</strong>, renders text as small as <strong>10px</strong>, supports 12 languages, and targets dense
+        layouts such as knowledge graphics, newspapers, academic pages, storyboards, and layered UI mockups.</p>
+
+      <div class="hardware-specs">
+        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Access:</strong> Hosted experience through Qwen Chat; no official downloadable weights yet.
+        </div>
+        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Best for:</strong> Information-rich images, long prompts, multilingual typography, small text, and complex interfaces.
+        </div>
+        <div class="spec-item"><span class="dot dot-red"></span> <strong>Local status:</strong> Official parameter count, license, model card, and local deployment instructions have not been released.
+        </div>
+      </div>
+
+      <div class="gallery-stack">
+        <div>
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_1.webp" class="gallery-item"
+            loading="lazy" alt="Qwen-Image 3.0 multi-panel knowledge infographic with mathematics, biology, medicine, and business diagrams">
+          <p class="gallery-caption">Rich content in one pass: nine knowledge panels combine diagrams, formulas, comics, and multilingual labels.</p>
+        </div>
+        <div>
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_2.webp" class="gallery-item"
+            loading="lazy" alt="Qwen-Image 3.0 nested Qwen chat and coffee-making interface mockup">
+          <p class="gallery-caption">Vertical composition and nested interfaces: a Qwen conversation contains a structured coffee-making guide.</p>
+        </div>
+        <div>
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_3.webp" class="gallery-item"
+            loading="lazy" alt="Qwen-Image 3.0 whale shark educational infographic in Chinese">
+          <p class="gallery-caption">Knowledge-rich infographic: long Chinese text, classification details, diagrams, maps, and scale references stay organized.</p>
+        </div>
+        <div>
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_4.webp" class="gallery-item"
+            loading="lazy" alt="Qwen-Image 3.0 academic mathematics page with formulas and theorem text">
+          <p class="gallery-caption">Small-text precision: dense mathematical prose, LaTeX formulas, superscripts, subscripts, and theorem notation.</p>
+        </div>
+        <div>
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_5.webp" class="gallery-item"
+            loading="lazy" alt="Qwen-Image 3.0 newspaper front page about the model release">
+          <p class="gallery-caption">A realistic newspaper page demonstrates dense typography, editorial hierarchy, and practical production layouts.</p>
+        </div>
+        <div>
+          <div class="gallery-comparison">
+            <div>
+              <p class="comparison-label">Original page</p>
+              <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_6a.webp" class="gallery-item"
+                loading="lazy" alt="Original historical travel book page with route map and Chinese text">
+            </div>
+            <div>
+              <p class="comparison-label">Edited with handwritten annotations</p>
+              <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_6b.webp" class="gallery-item"
+                loading="lazy" alt="Qwen-Image 3.0 edited historical travel book page with red handwritten analysis and route annotations">
+            </div>
+          </div>
+          <p class="gallery-caption">Image editing example: Qwen-Image 3.0 adds natural red handwritten annotations, underlines, circles, arrows, and route analysis while preserving the original page.</p>
+        </div>
+        <div>
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_7.webp" class="gallery-item"
+            loading="lazy" alt="Qwen-Image 3.0 multilingual interface and information design example">
+          <p class="gallery-caption">World knowledge and interface rendering: a structured visual design with multilingual content and UI-like composition.</p>
+        </div>
+        <div>
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_8.webp" class="gallery-item"
+            loading="lazy" alt="Qwen-Image 3.0 detailed portrait and visual texture example">
+          <p class="gallery-caption">Authentic details: portrait, hair, skin, and material textures rendered with fine-grained visual detail.</p>
+        </div>
+        <div>
+          <div class="gallery-comparison">
+            <div>
+              <p class="comparison-label">Damaged painting</p>
+              <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_9a.webp" class="gallery-item"
+                loading="lazy" alt="Damaged traditional Chinese painting before Qwen-Image 3.0 restoration">
+            </div>
+            <div>
+              <p class="comparison-label">Restored painting</p>
+              <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_9b.webp" class="gallery-item"
+                loading="lazy" alt="Qwen-Image 3.0 restored traditional Chinese painting with preserved ink style and brushwork">
+            </div>
+          </div>
+          <p class="gallery-caption">Restoration example: missing and damaged areas are repaired while the original ink gradients, brushwork, composition, and traditional painting style are preserved.</p>
+        </div>
+        <div>
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_10.webp" class="gallery-item"
+            loading="lazy" alt="Qwen-Image 3.0 Japanese manga page with cinematic panels and precise text">
+          <p class="gallery-caption">Style and layout knowledge: a manga-style page combines cinematic panels, speech bubbles, Japanese typography, and consistent characters.</p>
+        </div>
+        <div>
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_11.webp" class="gallery-item"
+            loading="lazy" alt="Qwen-Image 3.0 realistic Python IDE and machine learning interface">
+          <p class="gallery-caption">World knowledge applied to UI: a realistic development environment includes code, project structure, warnings, and console output.</p>
+        </div>
+        <div>
+          <div class="gallery-comparison">
+            <div>
+              <p class="comparison-label">Original insect photograph</p>
+              <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_12a.webp" class="gallery-item"
+                loading="lazy" alt="Original damselfly photograph used as the source image">
+            </div>
+            <div>
+              <p class="comparison-label">Scientific information graphic</p>
+              <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_12b.webp" class="gallery-item"
+                loading="lazy" alt="Qwen-Image 3.0 scientific insect plate with taxonomy, annotations, close-up details, and scale bar">
+            </div>
+          </div>
+          <p class="gallery-caption">Knowledge expansion example: the source insect photograph becomes a publication-style scientific plate with taxonomy, morphology labels, close-up details, habitat notes, and scale references.</p>
+        </div>
+        <div>
+          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_13.webp" class="gallery-item"
+            loading="lazy" alt="Qwen-Image 3.0 Korean fashion collection infographic with dress guide and styling examples">
+          <p class="gallery-caption">Multilingual production design: a Korean fashion collection page combines a title, garment guide, color palette, quotes, and coordinated lifestyle scenes.</p>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:16px; margin:20px 0; flex-wrap: wrap;">
+        <a href="https://chat.qwen.ai/?inputFeature=t2i" target="_blank" rel="noopener" class="btn btn-primary">🚀 Try Qwen Chat</a>
+        <a href="https://qwen.ai/blog?id=qwen-image-3.0" target="_blank" rel="noopener" class="btn btn-glass">📖 Official Blog</a>
+        <a href="https://www.alibabacloud.com/blog/qwen-image-3-0-rich-content-authentic-details-deep-knowledge_603385" target="_blank" rel="noopener" class="btn btn-glass">☁️ English Release</a>
+      </div>
+
+      <details>
+        <summary>Full Introduction and Release Status</summary>
+        <div class="details-body repo-content">
+          <div class="paper-info">
+            <span class="paper-title">Qwen-Image 3.0: Rich Content, Authentic Details, Deep Knowledge</span>
+            <span class="paper-meta">Alibaba / Qwen Team · Released July 21, 2026 · Hosted preview</span>
+            <p>The third-generation Qwen-Image release moves from attractive images toward practical, information-rich visual production.</p>
+          </div>
+
+          <h3>Key Features</h3>
+          <ul>
+            <li><strong>Rich Content:</strong> Up to 4.5K-token instructions for newspapers, storyboards, exam papers, complex diagrams, and nine-panel knowledge graphics.</li>
+            <li><strong>Authentic Details:</strong> Official examples emphasize approximately 10px text, formulas, annotations, pores, hair strands, and realistic material textures.</li>
+            <li><strong>Deep Knowledge:</strong> Native rendering across 12 languages, multiple fonts, 100+ artistic styles, and realistic web, game, and livestream interfaces.</li>
+            <li><strong>Spatial Composition:</strong> Supports side-by-side content expansion and nested picture-in-picture interfaces in one generated image.</li>
+          </ul>
+
+          <h3>Official Release Status</h3>
+          <p>Qwen-Image 3.0 is currently documented through the official announcement and available as a hosted experience. As of this page update, the official Qwen repositories and model hubs do not provide downloadable 3.0 weights, a confirmed license, a model card, parameter count, benchmark table, or local deployment instructions.</p>
+          <div class="highlight-box">
+            <strong>Local alternative:</strong> If you need to run Qwen locally, use the Qwen-Image 2.0 section below. Do not treat Qwen-Image 3.0 as an open-weight local model until the official release pages publish the required files and license.
+          </div>
+
+          <h3>Official Sources</h3>
+          <ul>
+            <li><a href="https://qwen.ai/blog?id=qwen-image-3.0" target="_blank" rel="noopener">Qwen official announcement</a></li>
+            <li><a href="https://www.alibabacloud.com/blog/qwen-image-3-0-rich-content-authentic-details-deep-knowledge_603385" target="_blank" rel="noopener">Alibaba Cloud Community English version</a></li>
+            <li><a href="https://chat.qwen.ai/?inputFeature=t2i" target="_blank" rel="noopener">Qwen Chat image generation</a></li>
+          </ul>
+
+          <p class="gallery-caption">Images: Qwen-Image 3.0 official announcement examples, mirrored to this site's Cloudflare R2 CDN for efficient delivery.</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- 5. QWEN-IMAGE 2.0 -->
     <div id="qwen-image" class="card" class="gradient-qwen" style="border-top: 1px solid rgba(255, 165, 0, 0.3);">
       <div class="model-header">
         <h2 class="model-title">Qwen-Image 2.0</h2>
@@ -1716,6 +2065,39 @@ python prompt_agent.py --backend api --instruction "做一张猫咪生日party�
       </div>
     </div>
   </footer>
+
+  <script>
+    (() => {
+      const scrollToHashTarget = (hash, updateHistory = false) => {
+        if (!hash || hash === '#') return;
+        const target = document.getElementById(hash.slice(1));
+        if (!target) return;
+
+        if (updateHistory) {
+          history.pushState(null, '', hash);
+        }
+
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        target.classList.remove('anchor-target-highlight');
+        window.setTimeout(() => target.classList.add('anchor-target-highlight'), 40);
+      };
+
+      document.querySelectorAll('a[href^="#"]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+          const hash = link.getAttribute('href');
+          if (!document.getElementById(hash.slice(1))) return;
+          event.preventDefault();
+          scrollToHashTarget(hash, true);
+        });
+      });
+
+      window.addEventListener('load', () => {
+        if (window.location.hash) {
+          window.setTimeout(() => scrollToHashTarget(window.location.hash), 80);
+        }
+      });
+    })();
+  </script>
 </body>
 
 </html>

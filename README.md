@@ -43,7 +43,23 @@ This site hosts the official **Nano Banana Client** documentation, reproducible 
 - **Model (Pro)**: Google Gemini 3.1 Flash Image / Gemini 3 Pro Image (Cloud).
 - **Model (Offline)**: Z-Image / Qwen-Image / GLM-Image / HunyuanImage 3.0 / HiDream-O1-Image / SDXL Turbo (Local via Diffusers and related serving stacks).
 
-### 📈 Latest Updates (2026-06-23)
+### 📈 Latest Updates (2026-07-25)
+
+#### FLUX 3 Early Access QuickStart Watchlist
+- **Model coverage**: Added FLUX 3 to the QuickStart SEO metadata, route shortcuts, model overview, comparison table, and detailed announcement card.
+- **Accurate status**: Marked FLUX 3 as Early Access and multimodal; documented image, video, audio, and action-aware capabilities without claiming public weights or local deployment.
+- **Release caveat**: Linked the official Black Forest Labs announcement and recorded the FLUX 3 Image coming-soon status, private/API access, preliminary evaluations, and future open-weight FLUX 3 Dev roadmap.
+- **Benchmark policy**: Did not add FLUX 3 to reproducible benchmark rankings until public access and fixed evaluation details are available.
+- **Open-weight check**: Rechecked the official model page on July 25, 2026; FLUX 3 Dev open weights are announced but not released, while FLUX 3 Image remains marked as coming soon.
+- **Official preview asset**: Added only the final FLUX 3 capability overview image through the official Sanity CDN, resized to 1200px and forced to WebP rather than copying the 16MB original PNG into R2.
+
+#### Qwen-Image 3.0 QuickStart SEO and R2 Gallery
+- **QuickStart SEO**: Added Qwen-Image 3.0 keywords, description text, route shortcut, featured preview card, model overview card, and comparison-table row.
+- **Hosted-only status**: Documented the official 4.5K-token, dense-layout, 10px text, multilingual, and complex-UI capabilities without claiming downloadable weights or local deployment.
+- **Official examples**: Added all 16 Qwen-Image 3.0 announcement examples mirrored to the project's Cloudflare R2 CDN as compressed WebP assets under `qwen-image-3/`, including the 6A/6B handwritten-annotation comparison, 9A/9B painting-restoration comparison, and 12A/12B source-photo-to-scientific-plate comparison.
+- **Local alternative**: Kept Qwen-Image 2.0 as the open-weight local route and linked users to its existing setup section.
+- **UX refinement**: Added reliable in-page anchor scrolling with target highlighting and balanced the route/featured card grids for desktop, tablet, and mobile layouts.
+- **Indexing**: Updated the QuickStart page metadata, sitemap last-modified date, and this changelog.
 
 #### Phase 3 — Soft Monetization: No-GPU Guide + Cloud GPU Recommendations
 - **New page**: Created `/blog/run-without-gpu.html` to answer the site's most common search intent ("nano banana local" / "no GPU").
