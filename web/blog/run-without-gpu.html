@@ -25,6 +25,7 @@
 
   <link rel="icon" href="../favicon.png" type="image/png" />
   <link rel="stylesheet" href="../styles.css" />
+  <script src="../analytics.js" defer></script>
   <style>
     body {
       background-image: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
@@ -172,7 +173,7 @@
               <li>RAM: 4GB+</li>
               <li>Cost: free tier, then usage-based</li>
             </ul>
-            <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="btn btn-primary">Get API Key →</a>
+            <a href="https://aistudio.google.com/" target="_blank" rel="noopener" class="btn btn-primary" data-track="aistudio_cta">Get API Key →</a>
           </div>
 
           <div class="route-card">
@@ -184,7 +185,8 @@
               <li>Vast.ai: RTX 4090 ≈ $0.30/hour</li>
               <li>Best for: Hunyuan, Qwen, HiDream</li>
             </ul>
-            <a href="../guides/cloud-deployment.html" class="btn btn-primary">Cloud Deployment Guide →</a>
+            <a href="https://runpod.io?ref=jcni0c53" target="_blank" rel="noopener" class="btn btn-primary" data-track="runpod_signup">Open RunPod →</a>
+            <a href="../guides/cloud-deployment.html" class="btn btn-glass">Deployment Guide →</a>
           </div>
 
           <div class="route-card">
@@ -269,7 +271,8 @@
         <div class="highlight-box">
           <h3>Start with the Lowest Risk</h3>
           <p>If you already know you want open-source models and don't have a GPU, the fastest path is to rent an A100 on RunPod for an hour, follow our deployment guide, and try it. If you like it, keep using cloud. If not, you're only out a few dollars.</p>
-          <a href="../guides/cloud-deployment.html" class="btn btn-primary">Try RunPod A100 for $0.40/hour →</a>
+          <a href="https://runpod.io?ref=jcni0c53" target="_blank" rel="noopener" class="btn btn-primary" data-track="runpod_signup">Try RunPod A100 →</a>
+          <p style="margin-top:12px;font-size:0.85em;color:var(--text-muted);">This is our RunPod referral link. New users can use it to create an account and try a cloud GPU; qualifying usage may support this site at no extra cost.</p>
         </div>
 
         <p class="disclosure"><strong>Disclosure:</strong> This guide contains referral links to cloud GPU providers. When you sign up through these links and spend money, we may earn a small commission at no extra cost to you. We only recommend services we actually use for our own workflows.</p>

@@ -1,66 +1,58 @@
 import os
-import time
+from pathlib import Path
+
 from google import genai
-from google.genai import types
 from PIL import Image
 
 # -----------------------------------------------------------------------------
-# Nano Banana (Gemini 2.5/3.0) - Local Python Runner
+# Nano Banana (Gemini 3.1 Flash Image) - Local API Client
 # -----------------------------------------------------------------------------
-# This script enables you to run "Nano Banana" image editing tasks from your
-# local environment using the official Google GenAI SDK.
+# This script sends an image and an editing instruction to Google's hosted
+# Gemini image model. The model itself does not run on the local machine.
 #
 # Prerequisites:
 # 1. pip install google-genai pillow
-# 2. Set GOOGLE_API_KEY environment variable
+# 2. Set GOOGLE_API_KEY or GEMINI_API_KEY environment variable
 # -----------------------------------------------------------------------------
 
 def edit_image(input_path, prompt, output_path="output.png"):
-    """
-    Edits an image using Gemini's image editing capabilities.
-    """
-    client = genai.Client(api_key=os.environ["GOOGLE_API_KEY"])
+    """Edit a local image through Google's hosted Nano Banana API."""
+    api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise RuntimeError("Set GOOGLE_API_KEY or GEMINI_API_KEY before running this script.")
+
+    input_file = Path(input_path)
+    if not input_file.is_file():
+        raise FileNotFoundError(f"Input image not found: {input_path}")
 
     print(f"[*] Loading image: {input_path}")
-    try:
-        image = Image.open(input_path)
-    except FileNotFoundError:
-        print(f"[!] Error: File not found at {input_path}")
-        return
-
-    print(f"[*] Sending to Nano Banana (Gemini)...")
+    image = Image.open(input_file)
+    print("[*] Sending image to Nano Banana (Gemini 3.1 Flash Image)...")
     print(f"    Prompt: {prompt}")
 
-    # Nano Banana is powered by the Gemini Image models (e.g., imagen-3.0)
     try:
-        response = client.models.generate_images(
-            model='imagen-3.0-generate-002',
-            prompt=prompt,
-            config=types.GenerateImagesConfig(
-                number_of_images=1,
-                include_rai_reason=True,
-                output_mime_type='image/png'
-            )
+        client = genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model="gemini-3.1-flash-image",
+            contents=[prompt, image],
         )
-        
-        if response.generated_images:
-            saved_file = response.generated_images[0].image.save(output_path)
-            print(f"[+] Success! Edited image saved to: {output_path}")
-        else:
-            print("[!] No image verified. Check safety filters or prompt.")
 
+        for part in response.candidates[0].content.parts:
+            if part.text:
+                print(part.text)
+            elif part.inline_data:
+                edited_image = part.as_image()
+                edited_image.save(output_path)
+                print(f"[+] Success! Edited image saved to: {output_path}")
+                return
+
+        print("[!] No image returned. Check the prompt and safety filters.")
     except Exception as e:
         print(f"[!] API Error: {e}")
 
 if __name__ == "__main__":
-    # Example Usage
-    # Ensure you have a 'reference.jpg' in this folder
-    if not os.path.exists("reference.jpg"):
-        # Create a dummy file for the script to not crash if run blindly
-        Image.new('RGB', (100, 100), color='red').save("reference.jpg")
-    
     edit_image(
         input_path="reference.jpg",
-        prompt="Replace background with a neon cyberpunk city, preserve subject lighting",
-        output_path="nano_edit_result.png"
+        prompt="Replace the background with a neon cyberpunk city while preserving the subject's lighting and pose.",
+        output_path="nano_edit_result.png",
     )

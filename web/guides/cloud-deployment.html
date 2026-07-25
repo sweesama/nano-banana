@@ -17,7 +17,7 @@
   <meta name="color-scheme" content="dark" />
   <title>Run Hunyuan 3.0 Without a GPU | Cloud Deployment Guide</title>
   <meta name="description"
-    content="Full tutorial on how to rent an A100 cloud GPU on RunPod to deploy running heavy AI image models like Hunyuan 3.0 and Nano Banana for only $0.40/hour." />
+    content="Full tutorial on how to rent an A100 cloud GPU on RunPod to deploy heavy open-weight image models such as HunyuanImage 3.0 for short-term experiments." />
   <meta name="keywords"
     content="run hunyuan 3.0 on cloud, runpod deployment, rent cloud gpu for stable diffusion, nano banana cloud setup, A100 per hour" />
   <meta name="robots" content="index, follow" />
@@ -25,6 +25,7 @@
 
   <link rel="icon" href="../favicon.png" type="image/png" />
   <link rel="stylesheet" href="../styles.css" />
+  <script src="../analytics.js" defer></script>
   
   <style>
     .tutorial-step {
@@ -93,7 +94,7 @@
       </div>
 
       <h2>The Solution: Cloud GPU Sandboxes</h2>
-      <p>Instead of investing thousands in hardware that depreciates rapidly, AI researchers and e-commerce studios rent "Cloud GPUs" by the hour. You spin up the virtual machine, load Nano Banana / ComfyUI, generate your images, and turn it off. You only pay for the exact minutes you use.</p>
+      <p>Instead of investing thousands in hardware that depreciates rapidly, AI researchers and e-commerce studios rent "Cloud GPUs" by the hour. You spin up the virtual machine, load an open-weight model such as HunyuanImage 3.0 through its official repository or ComfyUI, generate your images, and turn it off. You only pay for the exact minutes you use.</p>
 
       <table class="cost-table">
         <thead>
@@ -125,7 +126,7 @@
       <div class="tutorial-step">
         <h3 style="margin-top: 0;"><span class="step-number">1</span> Create a RunPod Account</h3>
         <p>RunPod is currently the cheapest and most reliable provider for AI-ready containers. They offer heavily discounted "Secure Cloud" instances.</p>
-        <p>👉 <strong><a href="https://runpod.io/?ref=YOUR_RUNPOD_LINK" target="_blank" rel="noopener" style="color: #60a5fa; font-weight: 600; text-decoration: underline;">Click here to sign up for RunPod</a></strong> to access the lowest spot pricing.</p>
+        <p>👉 <strong><a href="https://runpod.io?ref=jcni0c53" target="_blank" rel="noopener" style="color: #60a5fa; font-weight: 600; text-decoration: underline;" data-track="runpod_signup">Open the official RunPod entry</a></strong> to create your account and access current spot pricing. This referral link may support the site at no extra cost to new users.</p>
       </div>
 
       <div class="tutorial-step">
@@ -140,19 +141,13 @@
       </div>
 
       <div class="tutorial-step">
-        <h3 style="margin-top: 0;"><span class="step-number">3</span> Connect & Install Nano Banana</h3>
-        <p>Click "Connect" on your running Pod to open the Web Terminal or Jupyter Notebook.</p>
+        <h3 style="margin-top: 0;"><span class="step-number">3</span> Connect & Install an Open Model</h3>
+        <p>Click "Connect" on your running Pod to open the Web Terminal or Jupyter Notebook. For HunyuanImage 3.0, use the official repository and follow its current README instructions.</p>
         <div style="background: rgba(0,0,0,0.4); padding: 16px; border-radius: 8px; margin: 16px 0;">
-          <pre style="margin:0; font-size: 0.9em; tab-size: 4;"><code># Clone our local installer
-git clone https://github.com/nano-banana/nano-banana.git
-cd nano-banana
-
-# Install dependencies (they install in seconds on cloud bandwidth)
-pip install -r requirements.txt
-
-# Launch your API or WebUI
-python launch.py</code></pre>
+          <pre style="margin:0; font-size: 0.9em; tab-size: 4;"><code>git clone https://github.com/Tencent-Hunyuan/HunyuanImage-3.0.git
+cd HunyuanImage-3.0</code></pre>
         </div>
+        <p><a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener" data-track="hunyuan_repo_cta">Open the official HunyuanImage repository →</a></p>
       </div>
 
       <div class="tutorial-step">
@@ -181,7 +176,7 @@ python launch.py</code></pre>
         </div>
       </div>
       <div class="footer-bottom">
-        <p> 2026 Nano Banana — English‑first, static‑first. <a href="https://www.nano-banana.live/" target="_blank">nano-banana.live</a></p>
+        <p> 2026 Nano Banana — English‑first, static‑first. <a href="https://www.nano-banana.live/" target="_blank" rel="noopener">nano-banana.live</a></p>
       </div>
     </footer>
   </div>

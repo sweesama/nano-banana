@@ -12,6 +12,7 @@
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://www.nano-banana.live/blog/how-to-run-locally.html" />
     <link rel="stylesheet" href="../styles.css" />
+    <script src="../analytics.js" defer></script>
     <style>
         body {
             background-image: radial-gradient(circle at 50% 0%, rgba(192, 235, 117, 0.05) 0%, transparent 50%);
@@ -62,7 +63,7 @@
                 <h2>Step 1: Get Your API Key</h2>
                 <p>Since the logic happens in the cloud, you need a key to unlock it.</p>
                 <ol>
-                    <li>Visit <a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a>.</li>
+                    <li>Visit <a href="https://aistudio.google.com/" target="_blank" rel="noopener" data-track="aistudio_cta">Google AI Studio</a>.</li>
                     <li>Click "Get API Key".</li>
                     <li>Copy it to a safe place.</li>
                 </ol>
@@ -91,11 +92,20 @@ source venv/bin/activate</code></pre>
 from google import genai
 from PIL import Image
 
-# Recommended: set GOOGLE_API_KEY or GEMINI_API_KEY in your shell first
-client = genai.Client(api_key=os.environ["GOOGLE_API_KEY"])
+api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+client = genai.Client(api_key=api_key)
+image = Image.open("reference.jpg")
 
-print("Connecting to Nano Banana Pro (Cloud)...")
-# Your logic here...
+response = client.models.generate_content(
+    model="gemini-3.1-flash-image",
+    contents=["Replace the background with a neon cyberpunk city while preserving the subject's lighting and pose.", image],
+)
+
+for part in response.candidates[0].content.parts:
+    if part.text:
+        print(part.text)
+    elif part.inline_data:
+        part.as_image().save("nano_edit_result.png")
 </code></pre>
 
                 <h2>What About ChatGPT Image 2?</h2>

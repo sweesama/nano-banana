@@ -21,6 +21,7 @@
   <link rel="apple-touch-icon" href="/nano.png"/>
   <link rel="icon" href="/favicon.png" type="image/png"/>
   <link rel="stylesheet" href="../styles.css"/>
+  <script src="../analytics.js" defer></script>
   <style>
     .leaderboard-table { width:100%; border-collapse:collapse; font-size:0.9rem; }
     .leaderboard-table th { padding:14px 12px; text-align:left; font-weight:600; color:#9ca3af; font-size:0.8rem; border-bottom:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.4); }
@@ -63,7 +64,7 @@
 
     <section class="section">
       <h1 style="font-size:clamp(40px,4.5vw,56px);margin-bottom:12px;">Image Model Rankings</h1>
-      <p class="lead" style="max-width:750px;color:var(--text-muted);">Real-time leaderboard from <a href="https://artificialanalysis.ai/" target="_blank" rel="noopener">Artificial Analysis</a>. Blind user votes · Elo-rated · Updated daily.</p>
+      <p class="lead" style="max-width:750px;color:var(--text-muted);">Static leaderboard snapshot sourced from <a href="https://artificialanalysis.ai/" target="_blank" rel="noopener">Artificial Analysis</a>. Blind user votes · Elo-rated · Snapshot date shown below.</p>
       <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">🕐 Data refreshed: <strong>April 25, 2026</strong> · <a href="../guides/quickstart.html" style="color:var(--primary);">→ Deploy locally</a></p>
     </section>
 
@@ -373,13 +374,13 @@
         <div class="footer-section">
           <h4>Rankings</h4>
           <ul>
-            <li><a href="https://artificialanalysis.ai/image/leaderboard/text-to-image" target="_blank">AA Text-to-Image</a></li>
-            <li><a href="https://artificialanalysis.ai/image/leaderboard/editing" target="_blank">AA Image Editing</a></li>
+            <li><a href="https://artificialanalysis.ai/image/leaderboard/text-to-image" target="_blank" rel="noopener">AA Text-to-Image</a></li>
+            <li><a href="https://artificialanalysis.ai/image/leaderboard/editing" target="_blank" rel="noopener">AA Image Editing</a></li>
             <li><a href="../guides/quickstart.html">Deploy Locally</a></li>
           </ul>
         </div>
       </div>
-      <p style="text-align:center;color:var(--text-muted);font-size:0.8rem;margin-top:20px;">Data from <a href="https://artificialanalysis.ai/" target="_blank">Artificial Analysis</a> · Updated April 25, 2026</p>
+      <p style="text-align:center;color:var(--text-muted);font-size:0.8rem;margin-top:20px;">Data from <a href="https://artificialanalysis.ai/" target="_blank" rel="noopener">Artificial Analysis</a> · Updated April 25, 2026</p>
     </footer>
   </div>
 </body>

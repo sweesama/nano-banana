@@ -45,6 +45,21 @@ This site hosts the official **Nano Banana Client** documentation, reproducible 
 
 ### 📈 Latest Updates (2026-07-25)
 
+#### RunPod Monetization Route
+- **Primary choice**: RunPod best matches the site's Quickstart audience because the existing content teaches cloud A100 deployment for users without local VRAM.
+- **Timing**: Start now with the standard referral route; RunPod credits are earned from qualifying new users' spend, while cash affiliate status requires an invitation after 25 paying referrals.
+- **Current implementation**: The owner-provided RunPod referral URL is now connected to the main cloud GPU CTAs, with GA4 `runpod_signup` tracking and visible referral disclosure.
+- **Alternatives**: Vast.ai is a later option for advanced SSH/spot-market users; Hugging Face Spaces is a hosting platform, not the primary monetization route for this site.
+
+#### Traffic-first Integrity and Measurement Fixes
+- **Homepage SEO preserved**: Kept the local-install search intent while changing the main question-style title to `Local AI Image Editor?` and clarifying that Nano Banana uses a cloud API while open-weight alternatives run locally.
+- **API example corrected**: Updated `code/nano_api.py` to call the hosted `gemini-3.1-flash-image` model for real image editing instead of calling Imagen generation without using the input image.
+- **Deployment truthfulness**: Replaced the unverified Nano Banana clone/launch commands with the official HunyuanImage repository and its current README workflow.
+- **Navigation and accessibility**: Fixed QuickStart/FAQ anchor targets, added missing image `alt` text, and completed external-link `noopener` coverage for the touched pages.
+- **Measurement**: Added shared `web/analytics.js` tracking for key API, QuickStart, LMArena, RunPod, and model-repository CTA clicks on the main traffic pages.
+- **Benchmark labeling**: Changed the benchmark page from a real-time/daily claim to an explicit static snapshot label.
+- **IndexNow status**: No fake key or speculative submission endpoint was added; configuration remains pending a real IndexNow key and deployment decision.
+
 #### FLUX 3 Early Access QuickStart Watchlist
 - **Model coverage**: Added FLUX 3 to the QuickStart SEO metadata, route shortcuts, model overview, comparison table, and detailed announcement card.
 - **Accurate status**: Marked FLUX 3 as Early Access and multimodal; documented image, video, audio, and action-aware capabilities without claiming public weights or local deployment.
