@@ -51,13 +51,24 @@ This site hosts the official **Nano Banana Client** documentation, reproducible 
 - **Current implementation**: The owner-provided RunPod referral URL is now connected to the main cloud GPU CTAs, with GA4 `runpod_signup` tracking and visible referral disclosure.
 - **Alternatives**: Vast.ai is a later option for advanced SSH/spot-market users; Hugging Face Spaces is a hosting platform, not the primary monetization route for this site.
 
+#### Automated Benchmark and Blog Operations
+- **Benchmark source**: `scripts/sync-benchmarks.js` calls Artificial Analysis's free server-side media endpoints for Text-to-Image and Image Editing. The API key is never sent to the browser.
+- **Benchmark schedule**: `.github/workflows/sync-benchmarks.yml` runs daily at 00:30 UTC and commits a new static HTML snapshot only when the API response passes validation. Create a free key at [Artificial Analysis API key management](https://artificialanalysis.ai/api-key-management-redirect), then add it in GitHub repository `Settings → Secrets and variables → Actions` as `AA_API_KEY`.
+- **Free-tier limitation**: The free media endpoint provides model identity, Elo, and confidence interval. Fields not returned by that endpoint are shown as `—` rather than guessed.
+- **Blog schedule**: `.github/workflows/weekly-blog.yml` runs three times weekly and consumes one curated item from `web/blog/queue.json` per run, targeting three high-quality English articles per week. The queue is a long-term content library organized across API tutorials, local models, cloud GPUs, prompting, benchmarks, troubleshooting, and workflows; the initial library contains dozens of specific articles rather than only six posts.
+- **SEO research**: `web/blog/seo-research.json` stores English keyword clusters, related terms, search intent, evidence URLs, and preferred internal links. Exact monthly search volume is not claimed without Search Console, Google Ads Keyword Planner, or a licensed SEO data source.
+- **Blog model**: `web/blog/scripts/generate-article.js` uses NVIDIA NIM's OpenAI-compatible API with `deepseek-ai/deepseek-v4-pro` as the quality-first primary writer, `qwen/qwen3.5-122b-a10b` second, and `nvidia/nemotron-3-super-120b-a12b` as the final fallback. DeepSeek V4 Flash is not used as the primary writer. The SEO workflow now requires a researched primary term in the title, at least two researched internal links, direct search-intent coverage, and Article JSON-LD. Create a key at [NVIDIA Build](https://build.nvidia.com/), then add it in GitHub repository `Settings → Secrets and variables → Actions` as `NVIDIA_API_KEY`.
+- **Blog quality gate**: Generated content is sanitized to an allowlist of HTML tags, checked for title/description length, headings, lists, links, minimum word count, dangerous tags, duplicate slugs, and common AI filler phrases. Articles below 75/100 are not published.
+- **Blog rollback**: If article, index, or sitemap updates fail, the generator restores all previous files and exits non-zero; the workflow therefore does not commit a partial article.
+- **Content policy**: The queue contains selected topics and source URLs. The generator must distinguish cloud APIs from local models and must not invent rankings, prices, release status, or hardware requirements.
+
 #### Traffic-first Integrity and Measurement Fixes
 - **Homepage SEO preserved**: Kept the local-install search intent while changing the main question-style title to `Local AI Image Editor?` and clarifying that Nano Banana uses a cloud API while open-weight alternatives run locally.
 - **API example corrected**: Updated `code/nano_api.py` to call the hosted `gemini-3.1-flash-image` model for real image editing instead of calling Imagen generation without using the input image.
 - **Deployment truthfulness**: Replaced the unverified Nano Banana clone/launch commands with the official HunyuanImage repository and its current README workflow.
 - **Navigation and accessibility**: Fixed QuickStart/FAQ anchor targets, added missing image `alt` text, and completed external-link `noopener` coverage for the touched pages.
 - **Measurement**: Added shared `web/analytics.js` tracking for key API, QuickStart, LMArena, RunPod, and model-repository CTA clicks on the main traffic pages.
-- **Benchmark labeling**: Changed the benchmark page from a real-time/daily claim to an explicit static snapshot label.
+- **Benchmark labeling**: Changed the benchmark page from a real-time/daily claim to an automated static snapshot label; the scheduled sync updates it when the upstream API succeeds.
 - **IndexNow status**: No fake key or speculative submission endpoint was added; configuration remains pending a real IndexNow key and deployment decision.
 
 #### FLUX 3 Early Access QuickStart Watchlist

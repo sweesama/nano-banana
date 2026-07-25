@@ -1,0 +1,8 @@
+{
+  "name": "nano-banana-blog-generator",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "openai": "^4.104.0"
+  }
+}

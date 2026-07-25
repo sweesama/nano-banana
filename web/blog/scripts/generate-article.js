@@ -1,0 +1,314 @@
+import OpenAI from 'openai';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const BLOG_DIR = path.resolve(__dirname, '..');
+const WEB_DIR = path.resolve(BLOG_DIR, '..');
+const ROOT_DIR = path.resolve(WEB_DIR, '..');
+const QUEUE_PATH = path.join(BLOG_DIR, 'queue.json');
+const ARTICLES_PATH = path.join(BLOG_DIR, 'articles.json');
+const SEO_RESEARCH_PATH = path.join(BLOG_DIR, 'seo-research.json');
+const BLOG_INDEX_PATH = path.join(WEB_DIR, 'blog.html');
+const SITEMAP_PATH = path.join(WEB_DIR, 'sitemap.xml');
+const API_KEY = process.env.NVIDIA_API_KEY;
+const MODELS = [
+  process.env.BLOG_MODEL_PRIMARY || 'deepseek-ai/deepseek-v4-pro',
+  process.env.BLOG_MODEL_FALLBACK || 'qwen/qwen3.5-122b-a10b',
+  process.env.BLOG_MODEL_LAST_RESORT || 'nvidia/nemotron-3-super-120b-a12b',
+];
+const DEPTHS = { brief: [450, 700], standard: [700, 1100], deep: [1100, 1600] };
+const BANNED_PHRASES = ['in today\'s rapidly evolving', 'game-changer', 'seamlessly', 'revolutionize', 'it is worth noting', 'delve into', 'unlock the power'];
+const ALLOWED_TAGS = new Set(['p', 'h2', 'h3', 'ul', 'ol', 'li', 'pre', 'code', 'strong', 'em', 'blockquote', 'a', 'br']);
+
+if (!API_KEY) {
+  console.error('Missing NVIDIA_API_KEY.');
+  process.exit(1);
+}
+
+const ai = new OpenAI({ apiKey: API_KEY, baseURL: 'https://integrate.api.nvidia.com/v1' });
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function readJson(filePath) {
+  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+}
+
+function findSeoCluster(item, research) {
+  const cluster = research.clusters.find(entry => entry.categories.includes(item.category));
+  if (!cluster) throw new Error(`No SEO research cluster matches category: ${item.category}`);
+  return cluster;
+}
+
+function writeJson(filePath, value) {
+  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
+}
+
+function parseJson(text) {
+  const cleaned = text.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
+  const start = cleaned.indexOf('{');
+  const end = cleaned.lastIndexOf('}');
+  if (start < 0 || end < start) throw new Error('Model did not return a JSON object.');
+  return JSON.parse(cleaned.slice(start, end + 1));
+}
+
+function sanitizeHtml(input) {
+  return String(input || '')
+    .replace(/<!--([\s\S]*?)-->/g, '')
+    .replace(/<(script|style|iframe|object|embed|form|input|button)[^>]*>[\s\S]*?<\/\1>/gi, '')
+    .replace(/<\/?([a-z0-9-]+)([^>]*)>/gi, (full, tag, attrs) => {
+      const lower = tag.toLowerCase();
+      if (!ALLOWED_TAGS.has(lower)) return '';
+      if (lower === 'a') {
+        const href = attrs.match(/href\s*=\s*["']([^"']+)["']/i)?.[1] || '#';
+        const safeHref = /^(https?:\/\/|\/|\.\.\/|#)/i.test(href) ? href : '#';
+        const external = /^https?:\/\//i.test(safeHref);
+        return `<a href="${escapeHtml(safeHref)}"${external ? ' target="_blank" rel="noopener"' : ''}>`;
+      }
+      if (lower === 'br') return '<br>';
+      return full.startsWith('</') ? `</${lower}>` : `<${lower}>`;
+    })
+    .trim();
+}
+
+function countWords(value) {
+  return String(value).replace(/<[^>]+>/g, ' ').trim().split(/\s+/).filter(Boolean).length;
+}
+
+function scoreArticle(article, item, cluster) {
+  const text = `${article.title} ${article.description} ${article.content}`.toLowerCase();
+  const [minWords] = DEPTHS[item.depth] || DEPTHS.standard;
+  const primaryTermInTitle = cluster.primaryTerms.some(term => article.title.toLowerCase().includes(term.toLowerCase()));
+  const primaryTermInBody = cluster.primaryTerms.some(term => article.content.toLowerCase().includes(term.toLowerCase()));
+  const internalLinkCount = (article.content.match(/href=["'](?:\.\.\/|\/|https:\/\/www\.nano-banana\.live)/gi) || []).length;
+  let score = 0;
+  if (article.title.length >= 35 && article.title.length <= 70) score += 15;
+  if (article.description.length >= 100 && article.description.length <= 170) score += 10;
+  if (countWords(article.content) >= minWords) score += 20;
+  if ((article.content.match(/<h2>/g) || []).length >= 2) score += 15;
+  if ((article.content.match(/<a /g) || []).length >= 2) score += 10;
+  if ((article.content.match(/<li>/g) || []).length >= 3) score += 10;
+  if (primaryTermInTitle) score += 10;
+  if (primaryTermInBody) score += 5;
+  if (internalLinkCount >= 2) score += 5;
+  score += 15;
+  if (!BANNED_PHRASES.some(phrase => text.includes(phrase))) score += 5;
+  return Math.min(score, 100);
+}
+
+function validateArticle(article, item, cluster) {
+  const required = ['title', 'description', 'content'];
+  for (const field of required) {
+    if (typeof article[field] !== 'string' || !article[field].trim()) throw new Error(`Missing article field: ${field}`);
+  }
+  if (article.title.length > 80) throw new Error('Title is too long.');
+  if (article.description.length > 180) throw new Error('Description is too long.');
+  if (/<(script|iframe|object|embed|form)\b/i.test(article.content)) throw new Error('Unsafe HTML detected.');
+  if (!cluster.primaryTerms.some(term => article.title.toLowerCase().includes(term.toLowerCase()))) throw new Error('Title does not contain a researched primary keyword.');
+  if (cluster.internalLinks.filter(url => article.content.includes(url)).length < 2) throw new Error('Article does not contain at least two researched internal links.');
+}
+
+async function fetchSourceNotes(urls) {
+  const notes = await Promise.all(urls.map(async url => {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+      const response = await fetch(url, { headers: { accept: 'text/html,application/json' }, signal: controller.signal });
+      clearTimeout(timeout);
+      if (!response.ok) return `${url}: source unavailable (HTTP ${response.status})`;
+      const raw = await response.text();
+      const text = raw.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/gi, ' ').replace(/\s+/g, ' ').trim();
+      return `${url}: ${text.slice(0, 6000)}`;
+    } catch (error) {
+      return `${url}: source unavailable (${error.message})`;
+    }
+  }));
+  return notes.join('\n\n');
+}
+
+function promptFor(item, existingArticles, sourceNotes, cluster) {
+  const [minWords, maxWords] = DEPTHS[item.depth] || DEPTHS.standard;
+  const existingTitles = existingArticles.map(article => article.title).join(' | ');
+  return `You write an accurate English-first technical article for Nano Banana, a site about Gemini image APIs and open-weight local image models.
+
+Topic keyword: ${item.keyword}
+Category: ${item.category}
+Target length: ${minWords}-${maxWords} words
+Required sources: ${item.sourceUrls.join(', ')}
+Primary SEO terms: ${cluster.primaryTerms.join(', ')}
+Related SEO terms: ${cluster.relatedTerms.join(', ')}
+Search intent: ${cluster.intent}
+Preferred internal links: ${cluster.internalLinks.join(', ')}
+Source notes fetched at generation time:
+${sourceNotes}
+Existing article titles to avoid repeating: ${existingTitles}
+
+Return JSON only with exactly these fields:
+{"title":"...","description":"...","content":"..."}
+
+Content rules:
+- Return article body HTML only, without h1, html, head, body, style, script, or markdown fences.
+- Use h2, h3, p, ul, ol, li, pre, code, strong, em, blockquote, and a tags only.
+- Include at least two h2 headings, one practical list, and concrete steps or comparisons.
+- Put one natural primary SEO term in the title and use related terms only where they help the reader.
+- Answer the search intent directly in the opening paragraph; never stuff keywords or write a generic introduction.
+- Include at least two links from the preferred internal-link list with descriptive anchor text.
+- Link every required source URL in a final Sources section and cite claims near the relevant discussion.
+- Never invent benchmark scores, model release status, API prices, hardware requirements, or product features. If a source does not confirm a detail, say that it is unknown.
+- Clearly distinguish cloud APIs from local open-weight models.
+- Mention Nano Banana naturally only when relevant. Do not keyword-stuff.
+- Avoid generic AI phrases such as “game-changer”, “seamlessly”, “delve into”, and “unlock the power”.
+- Do not claim first-hand testing unless the source or site content explicitly supports it.
+- Write for a technically curious beginner and keep the advice actionable.`;
+}
+
+async function generateArticle(item, existingArticles, cluster) {
+  const sourceNotes = await fetchSourceNotes(item.sourceUrls);
+  let lastError;
+  for (const model of MODELS) {
+    try {
+      const response = await ai.chat.completions.create({
+        model,
+        temperature: 0.45,
+        max_tokens: 7000,
+        response_format: { type: 'json_object' },
+        messages: [
+          { role: 'system', content: 'You produce precise, source-aware technical HTML articles. Output valid JSON only.' },
+          { role: 'user', content: promptFor(item, existingArticles, sourceNotes, cluster) }
+        ],
+      });
+      return parseJson(response.choices?.[0]?.message?.content || '');
+    } catch (error) {
+      lastError = error;
+      console.warn(`Model ${model} failed: ${error.message}`);
+    }
+  }
+  throw lastError || new Error('All configured models failed.');
+}
+
+function buildArticleHtml(article, item, date) {
+  const sources = item.sourceUrls.map(url => `<li><a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(url)}</a></li>`).join('');
+  const schema = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.description,
+    datePublished: date,
+    dateModified: date,
+    author: { '@type': 'Organization', name: 'Nano Banana' },
+    publisher: { '@type': 'Organization', name: 'Nano Banana' },
+    mainEntityOfPage: `https://www.nano-banana.live/blog/${item.slug}.html`,
+    isPartOf: { '@type': 'Blog', name: 'Nano Banana Blog', url: 'https://www.nano-banana.live/blog.html' },
+  }).replace(/</g, '\\u003c');
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>${escapeHtml(article.title)} | Nano Banana</title>
+  <meta name="description" content="${escapeHtml(article.description)}">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/${escapeHtml(item.slug)}.html">
+  <script type="application/ld+json">${schema}</script>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <article class="article-container">
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">${escapeHtml(item.category)} • ${escapeHtml(date)}</div>
+        <h1>${escapeHtml(article.title)}</h1>
+        <p class="lead" style="margin:20px auto;">${escapeHtml(article.description)}</p>
+      </header>
+      <div class="article-content">
+        ${article.content}
+        <h2>Sources</h2>
+        <ul>${sources}</ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>
+`;
+}
+
+function updateBlogIndex(article, item, date) {
+  const html = fs.readFileSync(BLOG_INDEX_PATH, 'utf8').replace(/\r\n/g, '\n');
+  const marker = '      </div>\n    </section>\n\n    <footer';
+  const card = `        <a href="./blog/${escapeHtml(item.slug)}.html" class="card article-card"><div class="article-image bg-gradient-4" style="display:flex;align-items:center;justify-content:center;"><span style="font-size:40px;">${escapeHtml(item.emoji)}</span></div><div class="article-meta">${escapeHtml(item.category)} • ${escapeHtml(date)}</div><h3>${escapeHtml(article.title)}</h3><p>${escapeHtml(article.description)}</p></a>\n\n`;
+  if (!html.includes(marker)) throw new Error('Blog index insertion point not found.');
+  return html.replace(marker, `${card}      </div>\n    </section>\n\n    <footer`);
+}
+
+function updateSitemap(slug, date) {
+  const sitemap = fs.readFileSync(SITEMAP_PATH, 'utf8');
+  const entry = `  <url>\n    <loc>https://www.nano-banana.live/blog/${slug}.html</loc>\n    <lastmod>${date}</lastmod>\n  </url>\n`;
+  if (sitemap.includes(`/blog/${slug}.html`)) return sitemap.replace(new RegExp(`(<loc>https://www\\.nano-banana\\.live/blog/${slug}\\.html<\\/loc>\\s*<lastmod>).*?(<\\/lastmod>)`), `$1${date}$2`);
+  return sitemap.replace('</urlset>', `${entry}</urlset>`);
+}
+
+async function main() {
+  const queue = readJson(QUEUE_PATH);
+  const articles = readJson(ARTICLES_PATH);
+  const seoResearch = readJson(SEO_RESEARCH_PATH);
+  const existingSlugs = new Set(articles.map(article => article.slug));
+  const item = queue.find(entry => entry.status === 'pending' && !existingSlugs.has(entry.slug));
+  if (!item) {
+    console.log('No pending blog keyword.');
+    return;
+  }
+  const date = new Date().toISOString().slice(0, 10);
+  const cluster = findSeoCluster(item, seoResearch);
+  const article = await generateArticle(item, articles, cluster);
+  article.content = sanitizeHtml(article.content);
+  validateArticle(article, item, cluster);
+  const score = scoreArticle(article, item, cluster);
+  if (score < 75) throw new Error(`Quality score ${score}/100 is below the 75-point publishing threshold.`);
+  const htmlPath = path.join(BLOG_DIR, `${item.slug}.html`);
+  if (fs.existsSync(htmlPath)) throw new Error(`Article already exists: ${item.slug}.html`);
+  const backups = {
+    articles: fs.readFileSync(ARTICLES_PATH, 'utf8'),
+    queue: fs.readFileSync(QUEUE_PATH, 'utf8'),
+    blog: fs.readFileSync(BLOG_INDEX_PATH, 'utf8'),
+    sitemap: fs.readFileSync(SITEMAP_PATH, 'utf8'),
+  };
+  try {
+    fs.writeFileSync(htmlPath, buildArticleHtml(article, item, date), 'utf8');
+    articles.push({ slug: item.slug, publishDate: date, title: article.title, description: article.description, category: item.category, emoji: item.emoji, keyword: item.keyword, qualityScore: score, sourceUrls: item.sourceUrls });
+    item.status = 'done';
+    item.qualityScore = score;
+    writeJson(ARTICLES_PATH, articles);
+    writeJson(QUEUE_PATH, queue);
+    fs.writeFileSync(BLOG_INDEX_PATH, updateBlogIndex(article, item, date), 'utf8');
+    fs.writeFileSync(SITEMAP_PATH, updateSitemap(item.slug, date), 'utf8');
+    console.log(`Published ${item.slug}.html with quality score ${score}/100.`);
+  } catch (error) {
+    fs.writeFileSync(ARTICLES_PATH, backups.articles, 'utf8');
+    fs.writeFileSync(QUEUE_PATH, backups.queue, 'utf8');
+    fs.writeFileSync(BLOG_INDEX_PATH, backups.blog, 'utf8');
+    fs.writeFileSync(SITEMAP_PATH, backups.sitemap, 'utf8');
+    if (fs.existsSync(htmlPath)) fs.unlinkSync(htmlPath);
+    throw error;
+  }
+}
+
+main().catch(error => {
+  console.error(error.message);
+  process.exit(1);
+});

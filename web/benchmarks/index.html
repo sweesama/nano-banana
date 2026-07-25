@@ -64,8 +64,8 @@
 
     <section class="section">
       <h1 style="font-size:clamp(40px,4.5vw,56px);margin-bottom:12px;">Image Model Rankings</h1>
-      <p class="lead" style="max-width:750px;color:var(--text-muted);">Static leaderboard snapshot sourced from <a href="https://artificialanalysis.ai/" target="_blank" rel="noopener">Artificial Analysis</a>. Blind user votes · Elo-rated · Snapshot date shown below.</p>
-      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">🕐 Data refreshed: <strong>April 25, 2026</strong> · <a href="../guides/quickstart.html" style="color:var(--primary);">→ Deploy locally</a></p>
+      <p class="lead" style="max-width:750px;color:var(--text-muted);">Automated leaderboard snapshot sourced from <a href="https://artificialanalysis.ai/" target="_blank" rel="noopener">Artificial Analysis</a>. Blind user votes · Elo-rated · The snapshot is refreshed automatically when the scheduled sync succeeds.</p>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">🕐 Data refreshed: <strong>Awaiting first scheduled sync</strong> · <a href="../guides/quickstart.html" style="color:var(--primary);">→ Deploy locally</a></p>
     </section>
 
     <!-- Text-to-Image Leaderboard -->
@@ -211,7 +211,7 @@
           </table>
         </div>
       </div>
-      <p style="color:var(--text-muted);font-size:0.85rem;margin-top:12px;">Top Open Weights: FLUX.2 [dev] Turbo (1,170), Qwen Image Max 2512 (1,164), FLUX.2 [dev] (1,163) · <a href="../guides/quickstart.html" style="color:var(--primary);">See local deployment guides →</a></p>
+      <p style="color:var(--text-muted);font-size:0.85rem;margin-top:12px;">The free Artificial Analysis media endpoint provides model identity, creator, Elo, and confidence interval. Open-weight deployment guidance is maintained separately in the <a href="../guides/quickstart.html" style="color:var(--primary);">local deployment guides →</a></p>
     </section>
 
     <!-- Image Editing Leaderboard -->
@@ -351,22 +351,9 @@
 
     <!-- Open Weights Section -->
     <section class="section" id="open-weights" style="margin-top:60px;padding:28px;background:linear-gradient(135deg,rgba(34,197,94,0.08) 0%,rgba(34,197,94,0.02) 100%);border-radius:16px;border:1px solid rgba(34,197,94,0.2);">
-      <h2 style="margin-top:0;color:#4ade80;">Why Open Weights Rank Lower</h2>
-      <p style="color:#bbf7d0;margin-bottom:20px;">Closed-source leaders offer peak quality via cloud API. Open-weights models provide privacy, control, and cost efficiency at scale. Deploy locally with our guides:</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
-        <div style="background:rgba(0,0,0,0.4);padding:18px;border-radius:12px;border:1px solid rgba(34,197,94,0.2);">
-          <h4 style="color:#4ade80;margin:0 0 8px;display:flex;align-items:center;gap:8px;"><span style="background:#4ade80;color:#000;padding:2px 8px;border-radius:4px;font-size:0.7rem;">#1 Open</span> Hunyuan 3.0</h4>
-          <p style="margin:0;color:#bbf7d0;font-size:0.9rem;">Best for editing · 1,219 Elo · Multi-image fusion · <a href="../guides/quickstart.html#hunyuan-image" style="color:#4ade80;">Quickstart →</a></p>
-        </div>
-        <div style="background:rgba(0,0,0,0.4);padding:18px;border-radius:12px;border:1px solid rgba(34,197,94,0.2);">
-          <h4 style="color:#4ade80;margin:0 0 8px;display:flex;align-items:center;gap:8px;"><span style="background:#4ade80;color:#000;padding:2px 8px;border-radius:4px;font-size:0.7rem;">#2 Open</span> Qwen-Image</h4>
-          <p style="margin:0;color:#bbf7d0;font-size:0.9rem;">Best for text · 1,147 Elo · Text rendering · <a href="../guides/quickstart.html#qwen" style="color:#4ade80;">Quickstart →</a></p>
-        </div>
-        <div style="background:rgba(0,0,0,0.4);padding:18px;border-radius:12px;border:1px solid rgba(34,197,94,0.2);">
-          <h4 style="color:#4ade80;margin:0 0 8px;display:flex;align-items:center;gap:8px;"><span style="background:#4ade80;color:#000;padding:2px 8px;border-radius:4px;font-size:0.7rem;">#3 Open</span> GLM-Image</h4>
-          <p style="margin:0;color:#bbf7d0;font-size:0.9rem;">Best balance · 1,159 Elo · 9B params · <a href="../guides/quickstart.html#glm-image" style="color:#4ade80;">Quickstart →</a></p>
-        </div>
-      </div>
+      <h2 style="margin-top:0;color:#4ade80;">Cloud APIs vs Open Weights</h2>
+      <p style="color:#bbf7d0;margin-bottom:20px;">Closed-source leaders offer peak quality through cloud APIs. Open-weight models provide privacy, control, and cost efficiency at scale. The automated free snapshot does not infer whether a model is open-weight when the API does not provide that field.</p>
+      <a href="../guides/quickstart.html" class="btn btn-primary">Explore Local Deployment Guides →</a>
     </section>
 
     <footer class="footer">
@@ -380,7 +367,7 @@
           </ul>
         </div>
       </div>
-      <p style="text-align:center;color:var(--text-muted);font-size:0.8rem;margin-top:20px;">Data from <a href="https://artificialanalysis.ai/" target="_blank" rel="noopener">Artificial Analysis</a> · Updated April 25, 2026</p>
+      <p style="text-align:center;color:var(--text-muted);font-size:0.8rem;margin-top:20px;">Data from <a href="https://artificialanalysis.ai/" target="_blank" rel="noopener">Artificial Analysis</a> · Updated after successful scheduled sync</p>
     </footer>
   </div>
 </body>

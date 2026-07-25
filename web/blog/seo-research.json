@@ -1,0 +1,80 @@
+{
+  "language": "en",
+  "methodology": {
+    "purpose": "Qualitative English SEO research for Nano Banana blog topics.",
+    "limitations": [
+      "Search result presence and official documentation confirm search intent but do not equal monthly search volume.",
+      "Exact volume and difficulty require Google Search Console, Google Ads Keyword Planner, or a licensed SEO data source.",
+      "Priority combines search intent, relevance to Nano Banana, source quality, and internal-link opportunity."
+    ],
+    "evidenceTypes": [
+      "official documentation exists",
+      "search results contain direct how-to questions",
+      "search results contain comparison pages",
+      "search results contain troubleshooting intent",
+      "Nano Banana has a relevant internal page"
+    ]
+  },
+  "clusters": [
+    {
+      "id": "api",
+      "categories": ["API Tutorial", "API Guide"],
+      "priority": "high",
+      "intent": "learn and implement",
+      "primaryTerms": ["Gemini image API", "Gemini image editing API", "Gemini image API Python"],
+      "relatedTerms": ["edit images with Gemini", "Gemini image API example", "Gemini image API aspect ratio", "Gemini image API errors", "Gemini API environment variables"],
+      "evidenceUrls": ["https://ai.google.dev/gemini-api/docs/image-generation", "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/gemini-edit-images"],
+      "internalLinks": ["https://www.nano-banana.live/blog/how-to-run-locally.html", "https://www.nano-banana.live/guides/quickstart.html", "https://www.nano-banana.live/faq.html"]
+    },
+    {
+      "id": "local-models",
+      "categories": ["Local Models"],
+      "priority": "high",
+      "intent": "compare, choose, and install",
+      "primaryTerms": ["local AI image model", "AI image model VRAM requirements", "HunyuanImage local", "Qwen Image local"],
+      "relatedTerms": ["HunyuanImage 3.0 VRAM", "Qwen Image VRAM", "FLUX local installation", "open weights image models", "Diffusers image model installation"],
+      "evidenceUrls": ["https://huggingface.co/tencent/HunyuanImage-3.0-Instruct", "https://huggingface.co/Qwen/Qwen-Image-Edit-2511", "https://huggingface.co/docs/diffusers/index"],
+      "internalLinks": ["https://www.nano-banana.live/guides/quickstart.html", "https://www.nano-banana.live/blog/hardware-requirements.html", "https://www.nano-banana.live/benchmarks/"]
+    },
+    {
+      "id": "cloud-gpu",
+      "categories": ["Cloud GPU"],
+      "priority": "medium",
+      "intent": "compare cost, setup, and reliability",
+      "primaryTerms": ["cloud GPU for AI image generation", "RunPod AI image generation", "RunPod vs Vast.ai"],
+      "relatedTerms": ["rent GPU for AI image generation", "RunPod GPU pricing", "Vast.ai GPU pricing", "cloud GPU security", "stop cloud GPU charges"],
+      "evidenceUrls": ["https://www.runpod.io/gpu-instance/pricing", "https://vast.ai/pricing", "https://www.nano-banana.live/guides/cloud-deployment.html"],
+      "internalLinks": ["https://www.nano-banana.live/guides/cloud-deployment.html", "https://www.nano-banana.live/blog/run-without-gpu.html", "https://www.nano-banana.live/guides/quickstart.html"]
+    },
+    {
+      "id": "prompting",
+      "categories": ["Prompting"],
+      "priority": "high",
+      "intent": "solve a visual editing problem",
+      "primaryTerms": ["AI image editing prompts", "background replacement prompt", "preserve identity AI image edit"],
+      "relatedTerms": ["AI image prompt for text and logos", "product image editing prompt", "keep face unchanged AI edit", "AI image prompt recipes"],
+      "evidenceUrls": ["https://ai.google.dev/gemini-api/docs/image-generation", "https://www.nano-banana.live/prompts/"],
+      "internalLinks": ["https://www.nano-banana.live/prompts/", "https://www.nano-banana.live/blog/top-prompt-recipes.html", "https://www.nano-banana.live/faq.html"]
+    },
+    {
+      "id": "benchmarks",
+      "categories": ["Benchmarks"],
+      "priority": "high",
+      "intent": "understand and compare quality data",
+      "primaryTerms": ["AI image model benchmark", "Artificial Analysis image leaderboard", "image model Elo score"],
+      "relatedTerms": ["AI image leaderboard confidence interval", "image model price per 1000 images", "how AI image rankings work", "Elo score image quality"],
+      "evidenceUrls": ["https://artificialanalysis.ai/image/leaderboard/text-to-image", "https://artificialanalysis.ai/image/leaderboard/editing", "https://artificialanalysis.ai/image/methodology"],
+      "internalLinks": ["https://www.nano-banana.live/benchmarks/", "https://www.nano-banana.live/guides/quickstart.html"]
+    },
+    {
+      "id": "workflows",
+      "categories": ["Troubleshooting", "Workflows", "Comparisons"],
+      "priority": "medium",
+      "intent": "complete a task and fix a failure",
+      "primaryTerms": ["AI image editing workflow", "AI image API vs local model", "fix AI image API errors"],
+      "relatedTerms": ["batch AI image editing", "AI image output formats", "Python image API proxy error", "cloud vs local AI image generator"],
+      "evidenceUrls": ["https://www.nano-banana.live/blog/troubleshooting-install.html", "https://www.nano-banana.live/blog/top-prompt-recipes.html", "https://www.nano-banana.live/faq.html"],
+      "internalLinks": ["https://www.nano-banana.live/blog/troubleshooting-install.html", "https://www.nano-banana.live/prompts/", "https://www.nano-banana.live/guides/quickstart.html"]
+    }
+  ]
+}
