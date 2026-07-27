@@ -50,10 +50,12 @@ function creatorDomain(creator) {
 function creatorCell(creator) {
   const safeCreator = escapeHtml(creator || 'Unknown');
   const domain = creatorDomain(creator);
+  const initials = (creator || 'Unknown').split(/\s+/).map(part => part[0]).join('').slice(0, 2).toUpperCase();
+  const fallback = `<span class="creator-fallback" aria-hidden="true"${domain ? ' style="display:none"' : ''}>${escapeHtml(initials)}</span>`;
   const icon = domain
-    ? `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=32" class="creator-icon" alt="${safeCreator}" onerror="this.style.display='none'">`
+    ? `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=32" class="creator-icon" alt="${safeCreator}" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">`
     : '';
-  return `${icon}${safeCreator}`;
+  return `${icon}${fallback}${safeCreator}`;
 }
 
 function rowClass(rank) {
@@ -61,6 +63,20 @@ function rowClass(rank) {
   if (rank === 2) return 'rank-2';
   if (rank === 3) return 'rank-3';
   return '';
+}
+
+function formatSamples(value) {
+  return Number.isFinite(Number(value)) ? Number(value).toLocaleString() : '—';
+}
+
+function formatReleaseDate(value) {
+  if (!value) return '—';
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? escapeHtml(value) : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+}
+
+function formatPrice(value) {
+  return Number.isFinite(Number(value)) ? `$${Number(value).toFixed(1)}/1k imgs` : '—';
 }
 
 function textRows(data) {
@@ -74,9 +90,9 @@ function textRows(data) {
                 <td style="font-weight:600;">${escapeHtml(item.name)}</td>
                 <td style="text-align:center;font-weight:${rank <= 3 ? 700 : 600};color:#fff;font-size:1.05rem;">${Number(item.elo).toLocaleString()}</td>
                 <td style="text-align:center;color:#6b7280;font-size:0.85rem;">${formatCi(item.ci_95)}</td>
-                <td style="text-align:center;color:#9ca3af;">—</td>
-                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">—</td>
-                <td style="text-align:right;color:#9ca3af;font-size:0.8rem;">—</td>
+                <td style="text-align:center;color:#9ca3af;">${formatSamples(item.samples)}</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">${formatReleaseDate(item.release_date)}</td>
+                <td style="text-align:right;color:#9ca3af;font-size:0.8rem;">${formatPrice(item.price_per_1k_images)}</td>
               </tr>`;
   }).join('\n');
 }
@@ -92,8 +108,9 @@ function editingRows(data) {
                 <td style="font-weight:600;">${escapeHtml(item.name)}</td>
                 <td style="text-align:center;font-weight:${rank <= 3 ? 700 : 600};color:${rank <= 3 ? '#fff' : '#4ade80'};font-size:1.05rem;">${Number(item.elo).toLocaleString()}</td>
                 <td style="text-align:center;color:#6b7280;font-size:0.85rem;">${formatCi(item.ci_95)}</td>
-                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">—</td>
-                <td style="text-align:right;color:#9ca3af;font-size:0.8rem;">—</td>
+                <td style="text-align:center;color:#9ca3af;">${formatSamples(item.samples)}</td>
+                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">${formatReleaseDate(item.release_date)}</td>
+                <td style="text-align:right;color:#9ca3af;font-size:0.8rem;">${formatPrice(item.price_per_1k_images)}</td>
               </tr>`;
   }).join('\n');
 }
@@ -108,13 +125,28 @@ function replaceTbody(html, sectionId, rows) {
 }
 
 async function fetchLeaderboard(endpoint) {
-  const response = await fetch(`${API_BASE}/${endpoint}/models/free`, {
-    headers: { 'x-api-key': API_KEY, accept: 'application/json' },
-  });
-  if (!response.ok) throw new Error(`${endpoint} request failed with HTTP ${response.status}`);
-  const payload = await response.json();
-  if (!Array.isArray(payload.data) || payload.data.length === 0) throw new Error(`${endpoint} returned no models`);
-  return payload.data.slice(0, 10);
+  const requestedTier = process.env.AA_API_TIER || 'auto';
+  const paths = requestedTier === 'free'
+    ? [`${API_BASE}/${endpoint}/models/free`]
+    : [`${API_BASE}/${endpoint}/models`, `${API_BASE}/${endpoint}/models/free`];
+  let lastError;
+  for (const url of paths) {
+    try {
+      const response = await fetch(url, { headers: { 'x-api-key': API_KEY, accept: 'application/json' } });
+      if (!response.ok) {
+        lastError = new Error(`${url} request failed with HTTP ${response.status}`);
+        if (response.status === 401 || response.status === 403) continue;
+        throw lastError;
+      }
+      const payload = await response.json();
+      if (!Array.isArray(payload.data) || payload.data.length === 0) throw new Error(`${url} returned no models`);
+      console.log(`${endpoint}: using ${payload.tier || (url.endsWith('/free') ? 'free' : 'pro')} response`);
+      return payload.data.slice(0, 10);
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw lastError || new Error(`${endpoint} returned no usable response`);
 }
 
 async function main() {
@@ -129,6 +161,7 @@ async function main() {
   html = html.replace(/Static leaderboard snapshot sourced from/g, 'Automated leaderboard snapshot sourced from');
   html = html.replace(/Snapshot date shown below\./g, 'The snapshot is refreshed automatically when the scheduled sync succeeds.');
   html = html.replace(/Data refreshed: <strong>.*?<\/strong>/, `Data refreshed: <strong>${refreshed}</strong>`);
+  html = html.replace(/<th style="text-align:center;">Released<\/th>\s*<th style="text-align:right;">API Pricing<\/th>/, '<th style="text-align:center;">Released</th>\n                <th style="text-align:right;">API Pricing</th>');
   html = html.replace(/Updated April \d{1,2}, \d{4}/, `Updated ${refreshed}`);
   fs.writeFileSync(HTML_PATH, html, 'utf8');
   console.log(`Updated ${textToImage.length} text-to-image and ${imageEditing.length} image-editing models.`);
