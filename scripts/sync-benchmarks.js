@@ -34,7 +34,7 @@ function creatorDomain(creator) {
     'Black Forest': 'blackforestlabs.ai',
     ByteDance: 'seed.bytedance.com',
     Bytedance: 'seed.bytedance.com',
-    Reve: 'reve-art.com',
+    Reve: 'app.reve.com',
     Sourceful: 'riverflow.ai',
     Tencent: 'tencent.com',
     Alibaba: 'alibaba.com',
@@ -51,11 +51,11 @@ function creatorCell(creator) {
   const safeCreator = escapeHtml(creator || 'Unknown');
   const domain = creatorDomain(creator);
   const initials = (creator || 'Unknown').split(/\s+/).map(part => part[0]).join('').slice(0, 2).toUpperCase();
-  const fallback = `<span class="creator-fallback" aria-hidden="true"${domain ? ' style="display:none"' : ''}>${escapeHtml(initials)}</span>`;
+  const fallback = `<span class="creator-fallback" aria-hidden="true">${escapeHtml(initials)}</span>`;
   const icon = domain
-    ? `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=32" class="creator-icon" alt="${safeCreator}" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">`
+    ? `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=32" class="creator-icon" alt="${safeCreator}" onload="if (this.naturalWidth >= 20) this.previousElementSibling.style.display='none'; else this.style.display='none'" onerror="this.style.display='none'">`
     : '';
-  return `${icon}${fallback}${safeCreator}`;
+  return `${fallback}${icon}${safeCreator}`;
 }
 
 function rowClass(rank) {
@@ -90,9 +90,9 @@ function textRows(data) {
                 <td style="font-weight:600;">${escapeHtml(item.name)}</td>
                 <td style="text-align:center;font-weight:${rank <= 3 ? 700 : 600};color:#fff;font-size:1.05rem;">${Number(item.elo).toLocaleString()}</td>
                 <td style="text-align:center;color:#6b7280;font-size:0.85rem;">${formatCi(item.ci_95)}</td>
-                <td style="text-align:center;color:#9ca3af;">${formatSamples(item.samples)}</td>
-                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">${formatReleaseDate(item.release_date)}</td>
-                <td style="text-align:right;color:#9ca3af;font-size:0.8rem;">${formatPrice(item.price_per_1k_images)}</td>
+                <td data-field="samples" style="text-align:center;color:#9ca3af;">${formatSamples(item.samples)}</td>
+                <td data-field="release_date" style="text-align:center;color:#9ca3af;font-size:0.85rem;">${formatReleaseDate(item.release_date)}</td>
+                <td data-field="price_per_1k_images" style="text-align:right;color:#9ca3af;font-size:0.8rem;">${formatPrice(item.price_per_1k_images)}</td>
               </tr>`;
   }).join('\n');
 }
@@ -108,9 +108,9 @@ function editingRows(data) {
                 <td style="font-weight:600;">${escapeHtml(item.name)}</td>
                 <td style="text-align:center;font-weight:${rank <= 3 ? 700 : 600};color:${rank <= 3 ? '#fff' : '#4ade80'};font-size:1.05rem;">${Number(item.elo).toLocaleString()}</td>
                 <td style="text-align:center;color:#6b7280;font-size:0.85rem;">${formatCi(item.ci_95)}</td>
-                <td style="text-align:center;color:#9ca3af;">${formatSamples(item.samples)}</td>
-                <td style="text-align:center;color:#9ca3af;font-size:0.85rem;">${formatReleaseDate(item.release_date)}</td>
-                <td style="text-align:right;color:#9ca3af;font-size:0.8rem;">${formatPrice(item.price_per_1k_images)}</td>
+                <td data-field="samples" style="text-align:center;color:#9ca3af;">${formatSamples(item.samples)}</td>
+                <td data-field="release_date" style="text-align:center;color:#9ca3af;font-size:0.85rem;">${formatReleaseDate(item.release_date)}</td>
+                <td data-field="price_per_1k_images" style="text-align:right;color:#9ca3af;font-size:0.8rem;">${formatPrice(item.price_per_1k_images)}</td>
               </tr>`;
   }).join('\n');
 }
@@ -122,6 +122,18 @@ function replaceTbody(html, sectionId, rows) {
   const tbodyEnd = html.indexOf('</tbody>', tbodyStart);
   if (tbodyStart < 0 || tbodyEnd < 0) throw new Error(`Table body not found: ${sectionId}`);
   return `${html.slice(0, tbodyStart)}<tbody>\n${rows}\n            ${html.slice(tbodyEnd)}`;
+}
+
+function setFieldVisibility(html, sectionId, field, visible) {
+  const sectionStart = html.indexOf(`id="${sectionId}"`);
+  const sectionEnd = html.indexOf('</section>', sectionStart);
+  if (sectionStart < 0 || sectionEnd < 0) throw new Error(`Section not found: ${sectionId}`);
+  const section = html.slice(sectionStart, sectionEnd);
+  const updated = section.replace(new RegExp(`<([a-z]+)([^>]*data-field="${field}"[^>]*)>`, 'gi'), (match, tag, attributes) => {
+    const withoutHidden = attributes.replace(/\shidden(?:="hidden")?/gi, '');
+    return `<${tag}${visible ? withoutHidden : `${withoutHidden} hidden`}>`;
+  });
+  return `${html.slice(0, sectionStart)}${updated}${html.slice(sectionEnd)}`;
 }
 
 async function fetchLeaderboard(endpoint) {
@@ -158,6 +170,12 @@ async function main() {
   let html = fs.readFileSync(HTML_PATH, 'utf8');
   html = replaceTbody(html, 'text-to-image', textRows(textToImage));
   html = replaceTbody(html, 'image-editing', editingRows(imageEditing));
+  for (const field of ['samples', 'release_date', 'price_per_1k_images']) {
+    const available = textToImage.some(item => item[field] !== null && item[field] !== undefined && item[field] !== '')
+      || imageEditing.some(item => item[field] !== null && item[field] !== undefined && item[field] !== '');
+    html = setFieldVisibility(html, 'text-to-image', field, available);
+    html = setFieldVisibility(html, 'image-editing', field, available);
+  }
   html = html.replace(/Static leaderboard snapshot sourced from/g, 'Automated leaderboard snapshot sourced from');
   html = html.replace(/Snapshot date shown below\./g, 'The snapshot is refreshed automatically when the scheduled sync succeeds.');
   html = html.replace(/Data refreshed: <strong>.*?<\/strong>/, `Data refreshed: <strong>${refreshed}</strong>`);
