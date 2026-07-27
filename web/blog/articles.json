@@ -38,5 +38,19 @@
     "description": "Instruction-mode recipes for background replacement, restoration, and precise edits.",
     "category": "Recipes",
     "emoji": "✨"
+  },
+  {
+    "slug": "run-ai-image-models-without-gpu",
+    "publishDate": "2026-07-27",
+    "title": "cloud GPU for AI image generation: RunPod vs Vast.ai cost and setup",
+    "description": "Compare cloud GPU providers for running AI image models without a local GPU, covering pricing, ease of use, reliability, and step‑by‑step deployment of Hunyuan 3.0 on RunPod.",
+    "category": "Cloud GPU",
+    "emoji": "☁️",
+    "keyword": "how to run AI image models without a GPU",
+    "qualityScore": 90,
+    "sourceUrls": [
+      "https://www.nano-banana.live/blog/run-without-gpu.html",
+      "https://www.nano-banana.live/guides/cloud-deployment.html"
+    ]
   }
 ]

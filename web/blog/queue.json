@@ -5,11 +5,12 @@
     "category": "Cloud GPU",
     "emoji": "☁️",
     "depth": "standard",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://www.nano-banana.live/blog/run-without-gpu.html",
       "https://www.nano-banana.live/guides/cloud-deployment.html"
-    ]
+    ],
+    "qualityScore": 90
   },
   {
     "keyword": "Nano Banana API image editing with Python",
