@@ -52,5 +52,19 @@
       "https://www.nano-banana.live/blog/run-without-gpu.html",
       "https://www.nano-banana.live/guides/cloud-deployment.html"
     ]
+  },
+  {
+    "slug": "nano-banana-api-image-editing-python",
+    "publishDate": "2026-07-29",
+    "title": "Gemini image API: Editing Images with Python using Nano Banana",
+    "description": "Step‑by‑step guide to edit images with the Gemini image API using Python and the Nano Banana client, including setup, code examples, and troubleshooting.",
+    "category": "API Tutorial",
+    "emoji": "🐍",
+    "keyword": "Nano Banana API image editing with Python",
+    "qualityScore": 100,
+    "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/image-generation",
+      "https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py"
+    ]
   }
 ]

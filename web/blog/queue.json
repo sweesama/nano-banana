@@ -18,11 +18,12 @@
     "category": "API Tutorial",
     "emoji": "🐍",
     "depth": "deep",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py"
-    ]
+    ],
+    "qualityScore": 100
   },
   {
     "keyword": "HunyuanImage local deployment requirements",
