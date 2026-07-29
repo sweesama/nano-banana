@@ -37,7 +37,7 @@ jobs:
         run: |
           git config user.name "Nano Banana Blog Bot"
           git config user.email "bot@nano-banana.live"
-          git add web/blog web/sitemap.xml
+          git add web/blog.html web/blog web/sitemap.xml
           if git diff --staged --quiet; then
             echo "No article changes detected."
           else

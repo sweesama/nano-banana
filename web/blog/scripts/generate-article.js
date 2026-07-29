@@ -75,6 +75,13 @@ function sanitizeHtml(input) {
     .trim();
 }
 
+function formatDisplayDate(isoDate) {
+  const date = new Date(`${isoDate}T00:00:00Z`);
+  return Number.isNaN(date.getTime())
+    ? isoDate
+    : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+}
+
 function countWords(value) {
   return String(value).replace(/<[^>]+>/g, ' ').trim().split(/\s+/).filter(Boolean).length;
 }
@@ -130,7 +137,7 @@ async function fetchSourceNotes(urls) {
   return notes.join('\n\n');
 }
 
-function promptFor(item, existingArticles, sourceNotes, cluster) {
+function promptFor(item, existingArticles, sourceNotes, cluster, requiredTerm) {
   const [minWords, maxWords] = DEPTHS[item.depth] || DEPTHS.standard;
   const existingTitles = existingArticles.map(article => article.title).join(' | ');
   return `You write an accurate English-first technical article for Nano Banana, a site about Gemini image APIs and open-weight local image models.
@@ -140,6 +147,7 @@ Category: ${item.category}
 Target length: ${minWords}-${maxWords} words
 Required sources: ${item.sourceUrls.join(', ')}
 Primary SEO terms: ${cluster.primaryTerms.join(', ')}
+Required title phrase (must appear verbatim, case-insensitive, in the title): "${requiredTerm}"
 Related SEO terms: ${cluster.relatedTerms.join(', ')}
 Search intent: ${cluster.intent}
 Preferred internal links: ${cluster.internalLinks.join(', ')}
@@ -154,7 +162,7 @@ Content rules:
 - Return article body HTML only, without h1, html, head, body, style, script, or markdown fences.
 - Use h2, h3, p, ul, ol, li, pre, code, strong, em, blockquote, and a tags only.
 - Include at least two h2 headings, one practical list, and concrete steps or comparisons.
-- Put one natural primary SEO term in the title and use related terms only where they help the reader.
+- The title MUST contain the required title phrase above, word-for-word (case-insensitive), and use related terms only where they help the reader.
 - Answer the search intent directly in the opening paragraph; never stuff keywords or write a generic introduction.
 - Include at least two links from the preferred internal-link list with descriptive anchor text.
 - Link every required source URL in a final Sources section and cite claims near the relevant discussion.
@@ -168,8 +176,10 @@ Content rules:
 
 async function generateArticle(item, existingArticles, cluster) {
   const sourceNotes = await fetchSourceNotes(item.sourceUrls);
+  const requiredTerm = cluster.primaryTerms[0];
   let lastError;
   for (const model of MODELS) {
+    let article;
     try {
       const response = await ai.chat.completions.create({
         model,
@@ -178,16 +188,26 @@ async function generateArticle(item, existingArticles, cluster) {
         response_format: { type: 'json_object' },
         messages: [
           { role: 'system', content: 'You produce precise, source-aware technical HTML articles. Output valid JSON only.' },
-          { role: 'user', content: promptFor(item, existingArticles, sourceNotes, cluster) }
+          { role: 'user', content: promptFor(item, existingArticles, sourceNotes, cluster, requiredTerm) }
         ],
       });
-      return parseJson(response.choices?.[0]?.message?.content || '');
+      article = parseJson(response.choices?.[0]?.message?.content || '');
     } catch (error) {
       lastError = error;
-      console.warn(`Model ${model} failed: ${error.message}`);
+      console.warn(`Model ${model} failed to respond: ${error.message}`);
+      continue;
     }
+    try {
+      article.content = sanitizeHtml(article.content);
+      validateArticle(article, item, cluster);
+    } catch (error) {
+      lastError = error;
+      console.warn(`Model ${model} produced invalid content: ${error.message}`);
+      continue;
+    }
+    return article;
   }
-  throw lastError || new Error('All configured models failed.');
+  throw lastError || new Error('All configured models failed to produce a valid article.');
 }
 
 function buildArticleHtml(article, item, date) {
@@ -231,7 +251,7 @@ function buildArticleHtml(article, item, date) {
     </nav>
     <article class="article-container">
       <header class="article-header">
-        <div class="meta" style="justify-content:center;display:flex;">${escapeHtml(item.category)} • ${escapeHtml(date)}</div>
+        <div class="meta" style="justify-content:center;display:flex;">${escapeHtml(item.category)} • ${escapeHtml(formatDisplayDate(date))}</div>
         <h1>${escapeHtml(article.title)}</h1>
         <p class="lead" style="margin:20px auto;">${escapeHtml(article.description)}</p>
       </header>
@@ -251,7 +271,7 @@ function buildArticleHtml(article, item, date) {
 function updateBlogIndex(article, item, date) {
   const html = fs.readFileSync(BLOG_INDEX_PATH, 'utf8').replace(/\r\n/g, '\n');
   const marker = '      </div>\n    </section>\n\n    <footer';
-  const card = `        <a href="./blog/${escapeHtml(item.slug)}.html" class="card article-card"><div class="article-image bg-gradient-4" style="display:flex;align-items:center;justify-content:center;"><span style="font-size:40px;">${escapeHtml(item.emoji)}</span></div><div class="article-meta">${escapeHtml(item.category)} • ${escapeHtml(date)}</div><h3>${escapeHtml(article.title)}</h3><p>${escapeHtml(article.description)}</p></a>\n\n`;
+  const card = `        <a href="./blog/${escapeHtml(item.slug)}.html" class="card article-card"><div class="article-image bg-gradient-4" style="display:flex;align-items:center;justify-content:center;"><span style="font-size:40px;">${escapeHtml(item.emoji)}</span></div><div class="article-meta">${escapeHtml(item.category)} • ${escapeHtml(formatDisplayDate(date))}</div><h3>${escapeHtml(article.title)}</h3><p>${escapeHtml(article.description)}</p></a>\n\n`;
   if (!html.includes(marker)) throw new Error('Blog index insertion point not found.');
   return html.replace(marker, `${card}      </div>\n    </section>\n\n    <footer`);
 }
@@ -276,8 +296,6 @@ async function main() {
   const date = new Date().toISOString().slice(0, 10);
   const cluster = findSeoCluster(item, seoResearch);
   const article = await generateArticle(item, articles, cluster);
-  article.content = sanitizeHtml(article.content);
-  validateArticle(article, item, cluster);
   const score = scoreArticle(article, item, cluster);
   if (score < 75) throw new Error(`Quality score ${score}/100 is below the 75-point publishing threshold.`);
   const htmlPath = path.join(BLOG_DIR, `${item.slug}.html`);
