@@ -64,7 +64,9 @@ function sanitizeHtml(input) {
       const lower = tag.toLowerCase();
       if (!ALLOWED_TAGS.has(lower)) return '';
       if (lower === 'a') {
-        const href = attrs.match(/href\s*=\s*["']([^"']+)["']/i)?.[1] || '#';
+        const hrefMatch = attrs.match(/href\s*=\s*["']([^"']+)["']/i);
+        if (hrefMatch && hrefMatch[1] === '#') return '</a>';
+        const href = hrefMatch ? hrefMatch[1] : '#';
         const safeHref = /^(https?:\/\/|\/|\.\.\/|#)/i.test(href) ? href : '#';
         const external = /^https?:\/\//i.test(safeHref);
         return `<a href="${escapeHtml(safeHref)}"${external ? ' target="_blank" rel="noopener"' : ''}>`;
@@ -165,7 +167,8 @@ Content rules:
 - The title MUST contain the required title phrase above, word-for-word (case-insensitive), and use related terms only where they help the reader.
 - Answer the search intent directly in the opening paragraph; never stuff keywords or write a generic introduction.
 - Include at least two links from the preferred internal-link list with descriptive anchor text.
-- Link every required source URL in a final Sources section and cite claims near the relevant discussion.
+- Cite claims by linking to source URLs near the relevant discussion. Do not add a Sources section — the publishing script generates one automatically.
+- Always close every HTML tag properly. Close <a> tags with </a>, never use <a href="#"> as a closing tag.
 - Never invent benchmark scores, model release status, API prices, hardware requirements, or product features. If a source does not confirm a detail, say that it is unknown.
 - Clearly distinguish cloud APIs from local open-weight models.
 - Mention Nano Banana naturally only when relevant. Do not keyword-stuff.
@@ -250,6 +253,7 @@ function buildArticleHtml(article, item, date) {
       </div>
     </nav>
     <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
       <header class="article-header">
         <div class="meta" style="justify-content:center;display:flex;">${escapeHtml(item.category)} • ${escapeHtml(formatDisplayDate(date))}</div>
         <h1>${escapeHtml(article.title)}</h1>
@@ -270,10 +274,11 @@ function buildArticleHtml(article, item, date) {
 
 function updateBlogIndex(article, item, date) {
   const html = fs.readFileSync(BLOG_INDEX_PATH, 'utf8').replace(/\r\n/g, '\n');
-  const marker = '      </div>\n    </section>\n\n    <footer';
-  const card = `        <a href="./blog/${escapeHtml(item.slug)}.html" class="card article-card"><div class="article-image bg-gradient-4" style="display:flex;align-items:center;justify-content:center;"><span style="font-size:40px;">${escapeHtml(item.emoji)}</span></div><div class="article-meta">${escapeHtml(item.category)} • ${escapeHtml(formatDisplayDate(date))}</div><h3>${escapeHtml(article.title)}</h3><p>${escapeHtml(article.description)}</p></a>\n\n`;
-  if (!html.includes(marker)) throw new Error('Blog index insertion point not found.');
-  return html.replace(marker, `${card}      </div>\n    </section>\n\n    <footer`);
+  const gridStart = html.indexOf('<div class="grid"');
+  if (gridStart === -1) throw new Error('Blog index grid container not found.');
+  const rowEnd = html.indexOf('>', gridStart) + 1;
+  const card = `\n        <a href="./blog/${escapeHtml(item.slug)}.html" class="card article-card"><div class="article-image bg-gradient-4" style="display:flex;align-items:center;justify-content:center;"><span style="font-size:40px;">${escapeHtml(item.emoji)}</span></div><div class="article-meta">${escapeHtml(item.category)} • ${escapeHtml(formatDisplayDate(date))}</div><h3>${escapeHtml(article.title)}</h3><p>${escapeHtml(article.description)}</p></a>`;
+  return html.slice(0, rowEnd) + card + html.slice(rowEnd);
 }
 
 function updateSitemap(slug, date) {

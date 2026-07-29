@@ -24,6 +24,7 @@
       </div>
     </nav>
     <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
       <header class="article-header">
         <div class="meta" style="justify-content:center;display:flex;">Cloud GPU • Jul 27, 2026</div>
         <h1>cloud GPU for AI image generation: RunPod vs Vast.ai cost and setup</h1>
@@ -31,16 +32,16 @@
       </header>
       <div class="article-content">
         <h2>Comparing Cloud GPU Options for AI Image Generation</h2>
-<p>If you want to run AI image models without buying a GPU, the main decision is which cloud GPU service to use, how much it will cost, how easy it is to set up, and how reliable it is for repeated work. The <a href="https://www.nano-banana.live/blog/run-without-gpu.html" target="_blank" rel="noopener">run‑without‑GPU guide<a href="#"> notes that Nano Banana 2, the cloud API built on Gemini image models, needs no GPU at all—you only call an API from any computer. For open‑source models such as Hunyuan 3.0, Qwen‑Image 2.0 or HiDream‑O1‑Image, you do need GPU memory, which you can obtain by renting a cloud instance.</p>
+<p>If you want to run AI image models without buying a GPU, the main decision is which cloud GPU service to use, how much it will cost, how easy it is to set up, and how reliable it is for repeated work. The <a href="https://www.nano-banana.live/blog/run-without-gpu.html" target="_blank" rel="noopener">run‑without‑GPU guide</a> notes that Nano Banana 2, the cloud API built on Gemini image models, needs no GPU at all—you only call an API from any computer. For open‑source models such as Hunyuan 3.0, Qwen‑Image 2.0 or HiDream‑O1‑Image, you do need GPU memory, which you can obtain by renting a cloud instance.</p>
 <h2>Cost and Setup Comparison: RunPod vs Vast.ai</h2>
 <p>Both providers offer GPU instances that can be started and stopped on demand, so you only pay for the time the GPU is running.</p>
 <ul>
-<li><strong>RunPod</strong> – recommended for beginners. The <a href="https://www.nano-banana.live/blog/run-without-gpu.html" target="_blank" rel="noopener">run‑without‑GPU guide<a href="#"> lists an A100 80GB instance at roughly <code>$0.40/hour</code>. RunPod provides pre‑built PyTorch or ComfyUI templates, so you can launch a pod with a few clicks and avoid manual driver installation.</li>
+<li><strong>RunPod</strong> – recommended for beginners. The <a href="https://www.nano-banana.live/blog/run-without-gpu.html" target="_blank" rel="noopener">run‑without‑GPU guide</a> lists an A100 80GB instance at roughly <code>$0.40/hour</code>. RunPod provides pre‑built PyTorch or ComfyUI templates, so you can launch a pod with a few clicks and avoid manual driver installation.</li>
 <li><strong>Vast.ai</strong> – aimed at users comfortable with SSH and spot markets. The same guide cites an RTX 4090 (24GB) at about <code>$0.30/hour</code> when using spot pricing. You must select an image, configure storage, and connect via SSH or the web terminal.</li>
 </ul>
 <p>In terms of reliability, RunPod’s “Secure Cloud” instances are described as heavily discounted and stable for AI workloads, while Vast.ai’s spot prices fluctuate with demand, which can lead to occasional interruptions if the instance is reclaimed.</p>
 <h2>Step‑by‑Step: Deploying Hunyuan 3.0 on RunPod</h2>
-<p>The <a href="https://www.nano-banana.live/guides/cloud-deployment.html" target="_blank" rel="noopener">cloud deployment guide<a href="#"> walks through running the 80‑billion‑parameter Hunyuan 3.0 model without a local 48 GB GPU.</p>
+<p>The <a href="https://www.nano-banana.live/guides/cloud-deployment.html" target="_blank" rel="noopener">cloud deployment guide</a> walks through running the 80‑billion‑parameter Hunyuan 3.0 model without a local 48 GB GPU.</p>
 <ol>
 <li>Create a RunPod account via the provider’s sign‑up page.</li>
 <li>In the Pods dashboard, click <strong>Deploy</strong>, choose GPU Type "A100 PCIE" (80 GB), and select the official RunPod PyTorch or ComfyUI template.</li>
@@ -58,11 +59,6 @@
 <li>HiDream‑O1‑Image – requires 24 GB or a cloud A100 for full precision.</li>
 </ul>
 <p>These models incur no hourly cost once downloaded, making them suitable for occasional experimentation on a laptop or older gaming card.</p>
-<h2>Sources</h2>
-<ul>
-<li><a href="https://www.nano-banana.live/blog/run-without-gpu.html" target="_blank" rel="noopener">Run Nano Banana Without a GPU | Cloud & Budget Options<a href="#"></li>
-<li><a href="https://www.nano-banana.live/guides/cloud-deployment.html" target="_blank" rel="noopener">Run Hunyuan 3.0 Without a GPU | Cloud Deployment Guide<a href="#"></li>
-</ul>
         <h2>Sources</h2>
         <ul><li><a href="https://www.nano-banana.live/blog/run-without-gpu.html" target="_blank" rel="noopener">https://www.nano-banana.live/blog/run-without-gpu.html</a></li><li><a href="https://www.nano-banana.live/guides/cloud-deployment.html" target="_blank" rel="noopener">https://www.nano-banana.live/guides/cloud-deployment.html</a></li></ul>
       </div>

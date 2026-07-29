@@ -24,6 +24,7 @@
       </div>
     </nav>
     <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
       <header class="article-header">
         <div class="meta" style="justify-content:center;display:flex;">API Tutorial • Jul 29, 2026</div>
         <h1>Gemini image API: Editing Images with Python using Nano Banana</h1>
@@ -31,14 +32,14 @@
       </header>
       <div class="article-content">
         <h2>Prerequisites and Setup</h2>
-<p>To begin editing images with the Gemini image API, you need a Python environment, the official Google GenAI client, and the Pillow library for image handling. The Nano Banana client (<a href="https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py" target="_blank" rel="noopener">nano_api.py<a href="#">) provides a thin wrapper that sends a local image and an editing prompt to Google’s hosted <code>gemini-3.1-flash-image</code> model.</p>
+<p>To begin editing images with the Gemini image API, you need a Python environment, the official Google GenAI client, and the Pillow library for image handling. The Nano Banana client (<a href="https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py" target="_blank" rel="noopener">nano_api.py</a>) provides a thin wrapper that sends a local image and an editing prompt to Google’s hosted <code>gemini-3.1-flash-image</code> model.</p>
 <ol>
 <li>Install the required packages:</li>
 <pre><code>pip install google-genai pillow</code></pre>
 <li>Obtain a Google API key. You can create one in Google AI Studio or the Cloud Console. Set it as an environment variable named <code>GOOGLE_API_KEY</code> or <code>GEMINI_API_KEY</code>.</li>
 <li>Prepare an input image (e.g., <code>reference.jpg</code>) in the same directory where you will run the script.</li>
 </ol>
-<p>For a quick walkthrough of environment setup, see our <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart guide<a href="#">. If you prefer to run the Nano Banana client locally without relying on external services, refer to the <a href="https://www.nano-banana.live/blog/how-to-run-locally.html" target="_blank" rel="noopener">local execution guide<a href="#">.</p>
+<p>For a quick walkthrough of environment setup, see our <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart guide</a>. If you prefer to run the Nano Banana client locally without relying on external services, refer to the <a href="https://www.nano-banana.live/blog/how-to-run-locally.html" target="_blank" rel="noopener">local execution guide</a>.</p>
 <h2>Understanding the Nano Banana API client</h2>
 <p>The Nano Banana client is not a model that runs on your machine; it is a Python script that forwards your request to Google’s cloud‑based Gemini image model. The script (<code>nano_api.py</code>) performs the following steps:</p>
 <ul>
@@ -50,7 +51,7 @@
 </ul>
 <p>Because the heavy lifting happens on Google’s servers, you do not need a GPU or specialized hardware to use this API. The client merely handles authentication, request formatting, and response parsing.</p>
 <h2>Step‑by‑step: Editing an image with Gemini image API</h2>
-<p>Below is a concrete example that demonstrates how to replace the background of a portrait while keeping the subject’s lighting and pose intact. The code follows the structure shown in <a href="https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py" target="_blank" rel="noopener">nano_api.py<a href="#"> [2].</p>
+<p>Below is a concrete example that demonstrates how to replace the background of a portrait while keeping the subject’s lighting and pose intact. The code follows the structure shown in <a href="https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py" target="_blank" rel="noopener">nano_api.py</a> [2].</p>
 <h3>1. Load the input image</h3>
 <p>First, verify that the file exists and open it with Pillow:</p>
 <pre><code>from pathlib import Path
@@ -115,7 +116,7 @@ def edit_image(input_path: str, prompt: str, output_path: str = "output.png"):
 <li><strong>No image returned:</strong> The model may refuse to edit the image due to safety policies or an ambiguous prompt. Try re‑phrasing the instruction or using a simpler edit (e.g., "Change the sky to sunset\)).</li>
 <li><strong>API errors:</strong> Network issues or quota limits will surface as exceptions caught by the <code>except Exception as e</code> block. Consult the Gemini API documentation for error codes and retry strategies.</li>
 </ul>
-<p>For a deeper dive into error handling, see the <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">FAQ page<a href="#">, which covers typical API errors and how to interpret them.</p>
+<p>For a deeper dive into error handling, see the <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">FAQ page</a>, which covers typical API errors and how to interpret them.</p>
 <h2>When to use the cloud API vs local open‑weight models</h2>
 <p>The Nano Banana client accesses a cloud‑hosted model (<code>gemini-3.1-flash-image</code>) that requires an internet connection and a valid API key. This approach offers:</p>
 <ul>
@@ -125,21 +126,6 @@ def edit_image(input_path: str, prompt: str, output_path: str = "output.png"):
 </ul>
 <p>If you prefer to run a model entirely on your own hardware, you would need to download an open‑weight image model (e.g., a Stable Diffusion variant) and manage inference locally. The Nano Banana repository does not provide such weights; it is specifically a client for the Gemini image API.</p>
 <p>Thus, choose the cloud API when you want quick setup, minimal maintenance, and access to Google’s proprietary models. Opt for a local open‑weight solution only if you have strict data‑privacy requirements or wish to avoid recurring API costs.</p>
-<h2>Further reading and sources</h2>
-<p>To expand your knowledge, consult the following resources:</p>
-<ul>
-<li><a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">Gemini API image generation guide<a href="#"> – official documentation on prompts, input formats, and model capabilities [1].</li>
-<li><a href="https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py" target="_blank" rel="noopener">nano_api.py<a href="#"> – the reference implementation used in this tutorial [2].</li>
-<li><a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">Quickstart guide<a href="#"> – setting up your environment for Nano Banana.</li>
-<li><a href="https://www.nano-banana.live/blog/how-to-run-locally.html" target="_blank" rel="noopener">How to run Nano Banana locally<a href="#"> – instructions for executing the client without external dependencies.</li>
-<li><a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">FAQ<a href="#"> – troubleshooting common API errors and usage questions.</li>
-</ul>
-
-<p><strong>Sources</strong></p>
-<ol>
-<li><a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">Gemini API | Google AI for Developers – Image generation documentation<a href="#"></li>
-<li><a href="https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py" target="_blank" rel="noopener">sweesama/nano-banana – nano_api.py<a href="#"></li>
-</ol>
         <h2>Sources</h2>
         <ul><li><a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/image-generation</a></li><li><a href="https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py" target="_blank" rel="noopener">https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py</a></li></ul>
       </div>
