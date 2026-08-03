@@ -66,5 +66,19 @@
       "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py"
     ]
+  },
+  {
+    "slug": "hunyuanimage-local-deployment-requirements",
+    "publishDate": "2026-08-03",
+    "title": "HunyuanImage local deployment requirements for a local AI image model",
+    "description": "Learn the VRAM, hardware, and setup needed to run HunyuanImage-3.0 locally, compare with cloud options, and follow step‑by‑step installation instructions.",
+    "category": "Local Models",
+    "emoji": "🖥️",
+    "keyword": "HunyuanImage local deployment requirements",
+    "qualityScore": 95,
+    "sourceUrls": [
+      "https://github.com/Tencent-Hunyuan/HunyuanImage-3.0",
+      "https://www.nano-banana.live/guides/cloud-deployment.html"
+    ]
   }
 ]
