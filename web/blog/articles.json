@@ -80,5 +80,19 @@
       "https://github.com/Tencent-Hunyuan/HunyuanImage-3.0",
       "https://www.nano-banana.live/guides/cloud-deployment.html"
     ]
+  },
+  {
+    "slug": "qwen-image-local-image-editing-guide",
+    "publishDate": "2026-08-05",
+    "title": "Qwen Image local image editing guide: How to pick a local AI image model",
+    "description": "A concise guide to comparing, choosing, and installing Qwen Image Edit 2511 as a local AI image model, with VRAM considerations and step‑by‑step Diffusers instructions.",
+    "category": "Local Models",
+    "emoji": "🎨",
+    "keyword": "Qwen Image local image editing guide",
+    "qualityScore": 85,
+    "sourceUrls": [
+      "https://huggingface.co/Qwen/Qwen-Image-Edit-2511",
+      "https://www.nano-banana.live/guides/quickstart.html"
+    ]
   }
 ]

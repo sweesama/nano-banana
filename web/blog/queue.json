@@ -44,11 +44,12 @@
     "category": "Local Models",
     "emoji": "🎨",
     "depth": "deep",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://huggingface.co/Qwen/Qwen-Image-Edit-2511",
       "https://www.nano-banana.live/guides/quickstart.html"
-    ]
+    ],
+    "qualityScore": 85
   },
   {
     "keyword": "cloud API versus local AI image models",
