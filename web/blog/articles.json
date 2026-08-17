@@ -94,5 +94,19 @@
       "https://huggingface.co/Qwen/Qwen-Image-Edit-2511",
       "https://www.nano-banana.live/guides/quickstart.html"
     ]
+  },
+  {
+    "slug": "cloud-api-versus-local-ai-image-models",
+    "publishDate": "2026-08-17",
+    "title": "AI image editing workflow: Cloud API versus Local AI Image Models",
+    "description": "Learn when to use cloud APIs like Nano Banana versus local open-weight models, and how to fix common AI image API errors with practical steps.",
+    "category": "Comparisons",
+    "emoji": "⚖️",
+    "keyword": "cloud API versus local AI image models",
+    "qualityScore": 95,
+    "sourceUrls": [
+      "https://www.nano-banana.live/faq.html",
+      "https://www.nano-banana.live/guides/quickstart.html"
+    ]
   }
 ]

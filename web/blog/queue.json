@@ -57,11 +57,12 @@
     "category": "Comparisons",
     "emoji": "⚖️",
     "depth": "standard",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://www.nano-banana.live/faq.html",
       "https://www.nano-banana.live/guides/quickstart.html"
-    ]
+    ],
+    "qualityScore": 95
   },
   {
     "keyword": "AI image model benchmark Elo explained",

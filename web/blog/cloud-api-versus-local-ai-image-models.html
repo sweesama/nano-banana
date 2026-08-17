@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI image editing workflow: Cloud API versus Local AI Image Models | Nano Banana</title>
+  <meta name="description" content="Learn when to use cloud APIs like Nano Banana versus local open-weight models, and how to fix common AI image API errors with practical steps.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/cloud-api-versus-local-ai-image-models.html">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI image editing workflow: Cloud API versus Local AI Image Models","description":"Learn when to use cloud APIs like Nano Banana versus local open-weight models, and how to fix common AI image API errors with practical steps.","datePublished":"2026-08-17","dateModified":"2026-08-17","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/cloud-api-versus-local-ai-image-models.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Comparisons • Aug 17, 2026</div>
+        <h1>AI image editing workflow: Cloud API versus Local AI Image Models</h1>
+        <p class="lead" style="margin:20px auto;">Learn when to use cloud APIs like Nano Banana versus local open-weight models, and how to fix common AI image API errors with practical steps.</p>
+      </header>
+      <div class="article-content">
+        <h2>Cloud API vs Local Open-Weight Models</h2><p>Nano Banana provides a cloud‑based API powered by Google’s Gemini image models. As noted in the FAQ, the Pro model is closed‑source and cannot run totally offline, though a local Python client can call the cloud service <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">FAQ<a href="#">. This means you rely on network latency and the free tier offered by Google’s Gemini API for experimentation <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">FAQ<a href="#">. For users who need a fully offline workflow, the quickstart guide lists open‑weight alternatives such as Z‑Image, Qwen‑Image, and GLM‑Image that can be run on local hardware <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart guide<a href="#">.</p><p>According to the quickstart overview, cloud‑only routes include Nano Banana 2, ChatGPT Image 2, and Seedream 4.5, while open models like HunyuanImage 3.0, Qwen‑Image 2.0, Z‑Image/Turbo, GLM‑Image, and HiDream‑O1‑Image are deployable locally with the appropriate GPU <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart<a href="#">. The guide also notes that most open models need 16 GB–48 GB of VRAM, but a cloud GPU can be rented (e.g., an A100 for ≈ $0.40 per hour) to run them without owning hardware <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart<a href="#">.</p><h2>Fixing AI Image API Errors: Practical Steps</h2><p>When you encounter errors such as authentication failures, quota exceeded, or proxy issues while using the Nano Banana cloud API, follow these steps to diagnose and resolve the problem:</p><ol><li>Verify that your API key is correctly set. The quickstart shows setting <code>GOOGLE_API_KEY</code> or <code>GEMINI_API_KEY</code> in your terminal <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart<a href="#">.</li><li>Check the Google AI Studio console for any billing alerts or quota limits; the FAQ notes that heavy commercial use may require a paid billing account <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">FAQ<a href="#">.</li><li>If you see a “proxy error” or connection timeout, ensure your network allows outbound HTTPS to <code>generativelanguage.googleapis.com</code> and that no corporate proxy is interfering. The troubleshooting installation guide offers tips for checking proxy settings <a href="https://www.nano-banana.live/blog/troubleshooting-install.html" target="_blank" rel="noopener">troubleshooting guide<a href="#">.</li><li>Test a minimal request using the Python snippet from the quickstart:<pre><code>pip install google-genai
+from google import genai
+client = genai.Client(api_key="YOUR_KEY")
+response = client.models.edit_image(
+    model="gemini-3.1-flash-image",
+    prompt="Make the cat wear sunglasses",
+    image=your_image)
+</code></pre>If this succeeds, the issue lies in your surrounding script or environment.</li><li>Consider switching to an open‑weight model for offline work if cloud reliability is a concern. The quickstart provides installation commands for models such as Qwen‑Image 2.0 and Z‑Image/Turbo <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart<a href="#">.</li></ol><p>For more advanced prompt techniques that reduce the chance of ambiguous outputs, see the prompt engineering tips <a href="https://www.nano-banana.live/prompts/" target="_blank" rel="noopener">prompt tips<a href="#">.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">https://www.nano-banana.live/faq.html</a></li><li><a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">https://www.nano-banana.live/guides/quickstart.html</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>
