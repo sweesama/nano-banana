@@ -20,9 +20,9 @@
   <!-- SEO Optimization -->
   <title>Run Nano Banana Locally | Qwen-Image 3.0, FLUX 3 & Local Install Guide</title>
   <meta name="description"
-    content="Compare Nano Banana with Qwen-Image 3.0, FLUX 3, Qwen-Image 2.0, HunyuanImage, GLM-Image, HiDream-O1-Image, and Z-Image. Explore hosted Early Access multimodal models, Qwen's dense text layouts, and local alternatives." />
+    content="Compare the Nano Banana 2 cloud API with Qwen-Image-Edit-2511, HunyuanImage 3.0, HiDream-O1-Image, Z-Image, GLM-Image, FLUX 3, and Qwen-Image 3.0." />
   <meta name="keywords"
-    content="run nano banana locally, nano banana local install, nano banana self hosted, FLUX 3, FLUX 3 image, FLUX 3 video, FLUX 3 audio, FLUX 3 early access, FLUX 3 open weights, Qwen-Image 3.0, Qwen Image 3.0, Qwen-Image 3.0 examples, Qwen-Image 3.0 4.5K token, Qwen-Image 2.0, offline AI image editor, HunyuanImage 3.0, HiDream-O1-Image, HiDream.ai" />
+    content="run nano banana locally, nano banana API, nano banana self hosted alternatives, Qwen-Image-Edit-2511, Qwen-Image 3.0, FLUX 3, offline AI image editor, HunyuanImage 3.0, HiDream-O1-Image" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://www.nano-banana.live/guides/quickstart.html" />
 
@@ -628,8 +628,8 @@
       <h1 style="font-size: 3.5em; margin-bottom: 10px;">Run Nano Banana Locally?</h1>
 
       <p class="lead" style="margin: 0 auto; max-width: 800px;">
-        The definitive hub for <strong>local installs</strong>. Compare enterprise-grade models for your hardware, from
-        cloud APIs to highly efficient <strong>offline</strong> engines.
+        A practical guide to the real deployment choices: Google's hosted Nano Banana API, open local models, and
+        rented GPU infrastructure when your own hardware is not enough.
       </p>
     </div>
 
@@ -643,12 +643,12 @@
 
       <div class="decision-grid">
         <a class="decision-link" href="#nano-banana">Cloud API on CPU<span>Best if you do not own a GPU.</span></a>
-        <a class="decision-link" href="../blog/run-without-gpu.html">No GPU? Run in cloud<span>Rent an A100 for $0.40/hour instead of buying hardware.</span></a>
-        <a class="decision-link" href="#hunyuan-image">Best open editing model<span>HunyuanImage 3.0, but heavy VRAM.</span></a>
-        <a class="decision-link" href="#hidream-o1-image">Best open T2I newcomer<span>HiDream-O1-Image, MIT, 8B UiT.</span></a>
+        <a class="decision-link" href="../blog/run-without-gpu.html">No GPU? Compare cloud routes<span>Match the exact model to current API or rental requirements.</span></a>
+        <a class="decision-link" href="#hunyuan-image">Large open editing route<span>HunyuanImage 3.0, but heavy VRAM.</span></a>
+        <a class="decision-link" href="#hidream-o1-image">8B open T2I route<span>HiDream-O1-Image, MIT, 8B UiT.</span></a>
         <a class="decision-link" href="#flux-3">Latest multimodal preview<span>FLUX 3 for image, video, audio, and action-aware generation.</span></a>
-        <a class="decision-link" href="#qwen-image-3">Best dense-layout route<span>Qwen-Image 3.0 for long prompts and information-rich images.</span></a>
-        <a class="decision-link" href="#qwen-image">Best local text-rendering route<span>Qwen-Image 2.0 for local typography-heavy work.</span></a>
+        <a class="decision-link" href="#qwen-image-3">Hosted dense-layout route<span>Qwen-Image 3.0 for long prompts and information-rich images.</span></a>
+        <a class="decision-link" href="#qwen-image">Open local image editing<span>Qwen-Image-Edit-2511 with an official Diffusers pipeline.</span></a>
         <a class="decision-link" href="#z-image">Fast local generation<span>Z-Image Turbo for efficient local runs.</span></a>
         <a class="decision-link" href="hidream-o1-image.html">HiDream full guide<span>Dedicated install and comparison page.</span></a>
       </div>
@@ -667,15 +667,11 @@
         </a>
         <a class="featured-model-card" href="#hunyuan-image">
           <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/d9c4f6f7f800a9b4c905.png" alt="HunyuanImage 3.0 visual example" loading="lazy" />
-          <div>HunyuanImage 3.0<span>Open-weight editing leader, 80B MoE.</span></div>
+          <div>HunyuanImage 3.0<span>80B open-weight MoE with editing support.</span></div>
         </a>
         <a class="featured-model-card" href="#qwen-image-3">
           <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/qwen-image-3/compressed_1.webp" alt="Qwen-Image 3.0 dense knowledge infographic examples" loading="lazy" />
           <div>Qwen-Image 3.0<span>4.5K-token prompts, dense layouts, and 10px text rendering.</span></div>
-        </a>
-        <a class="featured-model-card" href="#qwen-image">
-          <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Qwen%20image%202.0/qwen-image-2-cover.webp" alt="Qwen-Image 2.0 visual example" loading="lazy" />
-          <div>Qwen-Image 2.0<span>Open local route for typography-heavy work.</span></div>
         </a>
       </div>
     </div>
@@ -744,12 +740,11 @@
 
         <div class="overview-card">
           <div class="overview-card-header">
-            <h4 class="overview-card-title">Qwen-Image 2.0</h4>
+            <h4 class="overview-card-title">Qwen-Image-Edit-2511</h4>
             <span class="badge badge-primary">Open</span>
           </div>
-          <p class="overview-card-desc">Strong text rendering and editing. Can run locally.</p>
-          <div class="overview-card-meta">AA open-weight Apr 2026: <strong style="color:#fff;">T2I #2</strong> · <strong
-              style="color:#fff;">Edit #3</strong></div>
+          <p class="overview-card-desc">20B BF16 image-editing model with an Apache-2.0 license and official Diffusers support.</p>
+          <div class="overview-card-meta">Official model card does not state one universal minimum VRAM figure.</div>
         </div>
 
         <div class="overview-card">
@@ -785,7 +780,7 @@
             <span class="badge badge-primary">Open</span>
           </div>
           <p class="overview-card-desc">8B pixel-level unified Transformer (no VAE). MIT license. Can run locally.</p>
-          <div class="overview-card-meta">AA open-weight T2I <strong style="color:#fff;">#8</strong> · leading open T2I model</div>
+          <div class="overview-card-meta">AA open-weight T2I <strong style="color:#fff;">#8</strong> · snapshot dated April 2026</div>
         </div>
       </div>
 
@@ -844,11 +839,11 @@
             <td>Cloud preview · official weights and local deployment not released</td>
           </tr>
           <tr>
-            <td>Qwen-Image 2.0</td>
+            <td>Qwen-Image-Edit-2511</td>
             <td><span class="badge badge-primary">Open</span></td>
-            <td>Complex text rendering and precise image editing</td>
-            <td>24GB+</td>
-            <td>AA open-weight Apr 2026: T2I #2 / Edit #3</td>
+            <td>Image editing, subject consistency, LoRA-assisted workflows</td>
+            <td>Not specified in official model card</td>
+            <td>20B BF16 · Apache-2.0 · official Diffusers pipeline</td>
           </tr>
           <tr>
             <td>Z-Image / Turbo</td>
@@ -861,22 +856,22 @@
             <td>GLM-Image</td>
             <td><span class="badge badge-primary">Open</span></td>
             <td>Text rendering, knowledge-heavy layouts, rich image-to-image tasks</td>
-            <td>24GB+</td>
+            <td>CUDA required; official repository gives no fixed minimum</td>
             <td>Local deployable · official Hugging Face release · not in current top AA snapshot</td>
           </tr>
           <tr>
             <td>HunyuanImage 3.0</td>
             <td><span class="badge badge-primary">Open</span></td>
             <td>CoT reasoning, intelligent editing, multi-image fusion (up to 3 inputs)</td>
-            <td>48GB+</td>
-            <td>AA open-weight Apr 2026: Edit #1 🏆 · Tencent Community License</td>
+            <td>Base ≥3×80GB; Instruct ≥8×80GB</td>
+            <td>Official repository recommendation · Tencent Community License</td>
           </tr>
           <tr>
             <td>HiDream-O1-Image</td>
             <td><span class="badge badge-primary">Open</span></td>
             <td>Long-text rendering, instruction editing, subject-driven personalization, storyboards</td>
             <td>24GB+</td>
-            <td>AA open-weight T2I #8 · leading open T2I model · MIT License</td>
+            <td>AA open-weight T2I #8 (April 2026 snapshot) · MIT License</td>
           </tr>
         </tbody>
       </table>
@@ -905,10 +900,10 @@
       style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(34, 197, 94, 0.08) 100%); border: 1px solid rgba(59, 130, 246, 0.35); border-radius: 16px; padding: 24px; margin-bottom: 40px;">
       <h3 style="color: #60a5fa; margin: 0 0 12px 0; font-size: 1.2rem;">💡 No GPU? You Can Still Run Open Models</h3>
       <p style="margin: 0 0 14px 0; color: var(--text-muted); line-height: 1.7;">
-        Most of the open-source models above need <strong style="color: #fff;">16GB–48GB of VRAM</strong>. If you don't have a high-end workstation, you can rent a cloud GPU by the hour and run them exactly as if they were local.
+        Hardware ranges from consumer GPUs to multi-node-class configurations. Check each official model card before renting a machine; a single 48GB or 80GB GPU is not enough for every model listed here.
       </p>
       <p style="margin: 0; color: var(--text-muted); line-height: 1.7;">
-        See our <a href="../blog/run-without-gpu.html" style="color: #60a5fa; font-weight: 600; text-decoration: underline;">Run Without a GPU guide</a> for a step-by-step comparison of cloud providers, hourly costs, and which model fits each budget.
+        See our <a href="../blog/run-without-gpu.html" style="color: #60a5fa; font-weight: 600; text-decoration: underline;">Run Without a GPU guide</a> for provider choices, configuration checks, and a process for verifying current costs before you rent.
       </p>
     </div>
 
@@ -933,7 +928,7 @@ client = genai.Client(api_key="YOUR_KEY")</code></pre>
 
       <div style="background: rgba(96, 165, 250, 0.08); border-left: 3px solid #60a5fa; padding: 14px 16px; border-radius: 0 8px 8px 0; margin-top: 24px;">
         <p style="margin: 0; font-size: 0.9em; color: #dbeafe;">
-          <strong>Prefer open models?</strong> If you don't have 24GB+ VRAM, you can still run Hunyuan, Qwen, or HiDream on a rented cloud GPU. See <a href="../blog/run-without-gpu.html" style="color: #60a5fa; text-decoration: underline; font-weight: bold;">Run Without a GPU →</a>
+          <strong>Prefer open models?</strong> Match the rental configuration to the official hardware requirements first; HunyuanImage 3.0, Qwen-Image-Edit-2511, and HiDream-O1-Image do not share the same footprint. See <a href="../blog/run-without-gpu.html" style="color: #60a5fa; text-decoration: underline; font-weight: bold;">Run Without a GPU →</a>
         </p>
       </div>
     </div>
@@ -976,28 +971,26 @@ client = genai.Client(api_key="YOUR_KEY")</code></pre>
     <div id="hunyuan-image" class="card" style="border-top: 1px solid rgba(99, 102, 241, 0.3);">
       <div class="model-header">
         <h2 class="model-title">HunyuanImage 3.0 Instruct</h2>
-        <div class="badges"><span class="badge badge-primary">Edit #1 Open</span> <span class="badge badge-gray">80B
+        <div class="badges"><span class="badge badge-primary">Open Weights</span> <span class="badge badge-gray">80B
             MoE</span></div>
       </div>
-      <p>The <strong>largest open-source image generation MoE model</strong> (80B params, 13B active/token) from Tencent.
+      <p>Tencent describes HunyuanImage 3.0 as an <strong>80B-parameter MoE model</strong> with 13B active parameters per token.
         There are two variants: <strong>HunyuanImage 3.0</strong> (text-to-image) and <strong>HunyuanImage 3.0
           Instruct</strong> (editing + reasoning). The Instruct version excels at <strong style="color: #4ade80;">image
-          editing</strong> via Chain-of-Thought reasoning, prompt self-rewrite, and multi-image fusion (up to 3 inputs).
-        <strong style="color: #4ade80;">AA open-weight Editing #1 🏆</strong> (Elo 1,224) as of April 2026.
+          editing</strong> via reasoning, prompt self-rewrite, and multi-image fusion (up to 3 inputs).
+        A dated third-party snapshot placed it at <strong style="color: #4ade80;">AA open-weight Editing #1</strong>
+        (Elo 1,224) in April 2026; treat rankings as time-sensitive rather than a permanent product claim.
       </p>
 
       <div class="hardware-specs">
-        <div class="spec-item"><span class="dot dot-green"></span> <strong>Recommended:</strong> 4× A100 80GB or 4× RTX
-          4090 (multi-GPU)</div>
-        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Minimum:</strong> Single 48GB GPU (vLLM +
-          CPU offload)</div>
-        <div class="spec-item"><span class="dot dot-red"></span> <strong>Distil Version:</strong> 8-step inference for
-          faster generation</div>
+        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Base model:</strong> official recommendation ≥3 × 80GB VRAM</div>
+        <div class="spec-item"><span class="dot dot-red"></span> <strong>Instruct / Instruct-Distil:</strong> official recommendation ≥8 × 80GB VRAM</div>
+        <div class="spec-item"><span class="dot dot-green"></span> <strong>Distil Version:</strong> 8 sampling steps recommended; the official table still lists the same VRAM class</div>
       </div>
       
       <div style="background: rgba(96, 165, 250, 0.1); border-left: 3px solid #60a5fa; padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 24px;">
         <p style="margin: 0; font-size: 0.9em; color: #dbeafe;">
-          <strong>No 48GB GPU?</strong> Don't buy expensive hardware. Follow our <a href="cloud-deployment.html" style="color: #60a5fa; text-decoration: underline; font-weight: bold;">Cloud Sandbox Guide</a> to run this model on an A100 for less than $0.50/hour.
+          <strong>Planning cloud deployment?</strong> Follow the <a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener" style="color: #60a5fa; text-decoration: underline; font-weight: bold;">official hardware table</a>, then use our <a href="cloud-deployment.html" style="color: #60a5fa; text-decoration: underline; font-weight: bold;">cloud planning guide</a>. Verify the provider's current multi-GPU price before launch.
         </p>
       </div>
 
@@ -1007,7 +1000,8 @@ client = genai.Client(api_key="YOUR_KEY")</code></pre>
         Reasoning-Level Image Editing: Transform at Your Command</h3>
       <p style="text-align:center; color:var(--text-muted); margin-bottom:24px; max-width:680px; margin-left:auto; margin-right:auto; line-height:1.6;">
         Native multimodal models are capable of first analyzing the content of user-provided images and editing
-        instructions, then optimizing editing behaviors through a Cha      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-bottom:40px;">
+        instructions before generating an edited result.</p>
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-bottom:40px;">
         <!-- Row 1 -->
         <div style="border-radius:12px; border:1px solid rgba(255,255,255,0.05); overflow:hidden; background:rgba(0,0,0,0.5); display:flex; flex-direction:column;">
           <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/hunyuan%203.0%20instruct/d9c4f6f7f800a9b4c905.png"
@@ -1320,7 +1314,7 @@ cot_text, samples = model.generate_image(
 samples[0].save("output.png")</code></pre>
 
           <h3>License</h3>
-          <p><strong>Tencent Hunyuan Community License</strong> — free for personal and commercial use.</p>
+          <p><strong>Tencent Hunyuan Community License.</strong> Review the repository's current license terms and restrictions before commercial deployment.</p>
 
           <h3>Citation</h3>
           <pre><code>@article{cao2025hunyuanimage,
@@ -1342,9 +1336,9 @@ samples[0].save("output.png")</code></pre>
       </div>
       <p>A hybrid autoregressive model for dense information generation.</p>
       <div class="hardware-specs">
-        <div class="spec-item"><span class="dot dot-green"></span> <strong>Recommended:</strong> RTX 3090 / 4090 (24GB)
+        <div class="spec-item"><span class="dot dot-green"></span> <strong>Official offload reference:</strong> about 23GB GPU memory with CPU offload, at slower speed
         </div>
-        <div class="spec-item"><span class="dot dot-red"></span> <strong>Minimum:</strong> 24GB VRAM required</div>
+        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Planning note:</strong> measure your resolution and pipeline; this is not a universal minimum</div>
       </div>
       <div class="gallery-stack">
         <div><img src="https://raw.githubusercontent.com/zai-org/GLM-Image/main/resources/show_case_t2i.jpeg"
@@ -1655,7 +1649,7 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
           <h3>Official Release Status</h3>
           <p>Qwen-Image 3.0 is currently documented through the official announcement and available as a hosted experience. As of this page update, the official Qwen repositories and model hubs do not provide downloadable 3.0 weights, a confirmed license, a model card, parameter count, benchmark table, or local deployment instructions.</p>
           <div class="highlight-box">
-            <strong>Local alternative:</strong> If you need to run Qwen locally, use the Qwen-Image 2.0 section below. Do not treat Qwen-Image 3.0 as an open-weight local model until the official release pages publish the required files and license.
+            <strong>Local alternative:</strong> If you need a released Qwen editing model, use the Qwen-Image-Edit-2511 section below. Do not treat Qwen-Image 3.0 as open-weight until official downloadable weights and a license are published.
           </div>
 
           <h3>Official Sources</h3>
@@ -1670,96 +1664,59 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
       </details>
     </div>
 
-    <!-- 5. QWEN-IMAGE 2.0 -->
-    <div id="qwen-image" class="card" class="gradient-qwen" style="border-top: 1px solid rgba(255, 165, 0, 0.3);">
+    <!-- 5. QWEN-IMAGE-EDIT-2511 -->
+    <div id="qwen-image" class="card gradient-qwen" style="border-top: 1px solid rgba(255, 165, 0, 0.3);">
       <div class="model-header">
-        <h2 class="model-title">Qwen-Image 2.0</h2>
-        <div class="badges"><span class="badge badge-primary">Open</span> <span class="badge badge-gray">7B Unified</span>
-          <span class="badge badge-gray">2026-02-10</span></div>
-
+        <h2 class="model-title">Qwen-Image-Edit-2511</h2>
+        <div class="badges"><span class="badge badge-primary">Open Weights</span> <span class="badge badge-gray">20B BF16</span>
+          <span class="badge badge-gray">Apache-2.0</span></div>
       </div>
-      <p><strong>Qwen-Image 2.0</strong> — the next-generation 7B image foundation model that unifies text-to-image generation 
-        and image editing into a single architecture. Launched on February 10, 2026, it delivers <strong>native 2K resolution</strong> 
-        (2048×2048), professional typography rendering with up to <strong>1,000-token prompts</strong>, and lighter architecture 
-        for faster inference. Scored <strong>88.32 on DPG-Bench</strong> — outperforming FLUX.1 (12B) at 83.84. 
-        Ranked <strong>#1 on AI Arena</strong> for both text-to-image and image editing (Feb 2026).
-      </p>
+      <p><strong>Qwen-Image-Edit-2511</strong> is a released image-to-image model from the Qwen team. Its official model card highlights reduced image drift, improved single- and multi-person consistency, integrated LoRA support, industrial-design use cases, and stronger geometric reasoning.</p>
 
       <div class="hardware-specs">
-        <div class="spec-item"><span class="dot dot-green"></span> <strong>Recommended:</strong> RTX 4070 Ti Super 16GB / RTX 3090 24GB / RTX 4090 24GB
-        </div>
-        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Minimum:</strong> RTX 4070 12GB (tiling/quantization required)
-        </div>
-      </div>
-      <div class="gallery-stack">
-        <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Qwen%20image%202.0/qwen-image-2-cover.webp" class="gallery-item"
-          loading="lazy" alt="Qwen-Image 2.0 Cover">
-        <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Qwen%20image%202.0/qwen-image-2-bears-composition.webp" class="gallery-item"
-          loading="lazy" alt="Qwen-Image 2.0 Bears Composition">
-        <img src="https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev/Qwen%20image%202.0/qwen-image-2-text-rendering.webp" class="gallery-item"
-          loading="lazy" alt="Qwen-Image 2.0 Text Rendering">
+        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Official size:</strong> 20B parameters, BF16 weights</div>
+        <div class="spec-item"><span class="dot dot-red"></span> <strong>VRAM:</strong> no single minimum is stated on the official model card; measure the exact pipeline, precision, and offloading setup you use</div>
       </div>
       <div style="display:flex; gap:16px; margin:20px 0; flex-wrap: wrap;">
-        <a href="https://aiimageedit.ai/qwen-image-2" target="_blank" rel="noopener" class="btn btn-primary">🚀 Try Online</a>
-        <a href="https://huggingface.co/Qwen" target="_blank" rel="noopener" class="btn btn-glass">🤗 Hugging
-          Face</a>
-        <a href="https://modelscope.cn/models/Qwen" target="_blank" rel="noopener" class="btn btn-glass">🤖
-          ModelScope</a>
-
+        <a href="https://chat.qwen.ai" target="_blank" rel="noopener" class="btn btn-primary">🚀 Try Qwen Chat</a>
+        <a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noopener" class="btn btn-glass">🤗 Official Model Card</a>
+        <a href="https://github.com/QwenLM/Qwen-Image" target="_blank" rel="noopener" class="btn btn-glass">💻 Official Repository</a>
       </div>
 
       <details>
-        <summary>Full Technical Details (Repo Mirror)</summary>
+        <summary>Official Diffusers quick start</summary>
         <div class="details-body repo-content">
           <div class="paper-info">
-            <span class="paper-title">Qwen-Image 2.0</span>
-            <span class="paper-meta">Alibaba Cloud · Released Feb 10, 2026 · 7B Parameters</span>
-            <p>Next-generation image generation foundation model with unified generation and editing capabilities. 
-              Professional typography rendering, native 2K resolution, and lighter architecture for faster inference.</p>
-
+            <span class="paper-title">Qwen-Image-Edit-2511</span>
+            <span class="paper-meta">Qwen · 20B BF16 · Apache-2.0</span>
+            <p>The following structure follows the official model card. Use a CUDA environment with enough memory for the selected precision and loading strategy.</p>
           </div>
+          <pre><code>pip install git+https://github.com/huggingface/diffusers
 
-          <h3>News & Updates</h3>
-          <ul>
-            <li><strong>2026.02.10:</strong> Qwen-Image 2.0 launched — 7B unified architecture for generation + editing.</li>
-            <li><strong>2026.02.10:</strong> Native 2K resolution support (2048×2048) introduced.</li>
-            <li><strong>2026.02.10:</strong> Achieved #1 ranking on AI Arena for both T2I and Image Editing.</li>
-            <li><strong>2025.12.31:</strong> Qwen-Image-2512 released (predecessor, 20B).</li>
-            <li><strong>2025.08.04:</strong> Original Qwen-Image technical report (arXiv:2508.02324).</li>
+import torch
+from PIL import Image
+from diffusers import QwenImageEditPlusPipeline
 
-          </ul>
+pipeline = QwenImageEditPlusPipeline.from_pretrained(
+    "Qwen/Qwen-Image-Edit-2511",
+    torch_dtype=torch.bfloat16,
+)
+pipeline.to("cuda")
 
-          <h3>Key Features</h3>
-          <ul>
-            <li><strong>Professional Typography:</strong> Up to 1,000-token prompts for infographics, slides, posters, and comics.</li>
-            <li><strong>Native 2K Resolution:</strong> 2048×2048 output with microscopic detail preservation.</li>
-            <li><strong>Unified Generation & Editing:</strong> Single model handles both tasks — improvements in generation directly benefit editing.</li>
-            <li><strong>Lighter Architecture:</strong> 7B parameters (vs predecessor 20B) for faster inference and more accessible deployment.</li>
-            <li><strong>Benchmark Leader:</strong> DPG-Bench 88.32 vs FLUX.1 (12B) 83.84.</li>
-          </ul>
+source = Image.open("input.png")
+with torch.inference_mode():
+    result = pipeline(
+        image=[source],
+        prompt="Replace the background with a quiet library; preserve the subject.",
+        generator=torch.manual_seed(0),
+        true_cfg_scale=4.0,
+        negative_prompt=" ",
+        num_inference_steps=40,
+        guidance_scale=1.0,
+    ).images[0]
 
-          <h3>Online Experience</h3>
-          <p>Try Qwen-Image 2.0 immediately without local setup:</p>
-          <ul>
-            <li><a href="https://aiimageedit.ai/qwen-image-2" target="_blank" rel="noopener">aiimageedit.ai/qwen-image-2</a> — Online playground</li>
-            <li><a href="https://chat.qwen.ai" target="_blank" rel="noopener">chat.qwen.ai</a> — Qwen Chat with image generation</li>
-          </ul>
-
-          <h3>Local Deployment</h3>
-          <ul>
-            <li><strong>GitHub:</strong> <a href="https://github.com/QwenLM/Qwen-Image" target="_blank" rel="noopener">QwenLM/Qwen-Image</a> — Latest README with 2.0 instructions</li>
-            <li><strong>Diffusers:</strong> Supported since day 0 via HuggingFace diffusers</li>
-            <li><strong>VRAM Management:</strong> Enable tiling for reduced VRAM usage (tiled=True, tile_size=128)</li>
-            <li><strong>Quantization:</strong> 4-bit support available for lower VRAM requirements</li>
-          </ul>
-
-          <h3>Citation</h3>
-          <pre><code>@misc{wu2025qwenimagetechnicalreport, 
-  title={Qwen-Image Technical Report}, 
-  author={Chenfei Wu et al.}, 
-  year={2025}, 
-  eprint={2508.02324}
-}</code></pre>
+result.save("qwen_edit.png")</code></pre>
+          <p>For multi-image editing and the latest supported parameters, use the complete example on the <a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noopener">official model card</a>.</p>
         </div>
       </details>
     </div>
@@ -1773,16 +1730,15 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
       </div>
       <p><strong>HiDream-O1-Image</strong> by <strong>HiDream.ai (智象未来)</strong> — an 8B natively-unified image
         foundation model built on a <strong>Pixel-Level Unified Transformer (UiT)</strong>: one end-to-end model on raw
-        pixels with <strong>no VAE and no separate text encoder</strong>. The distilled <strong>Dev-2604</strong> variant
-        debuted at <strong>#8 on the Artificial Analysis Text-to-Image Arena</strong>, positioned as the leading open-weights
-        text-to-image model. Despite only 8B parameters, it reaches parity with or surpasses much larger open DiTs and
-        leading closed-source models, with native synthesis up to <strong>2,048 × 2,048</strong>.</p>
+        pixels with <strong>no VAE and no separate text encoder</strong>. The official repository includes full and
+        distilled Dev variants and supports text-to-image, editing, and subject-driven personalization at up to
+        <strong>2,048 × 2,048</strong>.</p>
 
       <div class="card-grid two-col" style="margin: 20px 0;">
         <div class="comparison-card open" style="border-color: rgba(74,222,128,0.4);">
           <h3 style="margin:0 0 8px 0; color:#4ade80;">✅ Open-Source — HiDream-O1-Image (8B)</h3>
           <p style="margin:0 0 12px 0; color:var(--text-secondary);"><strong>MIT licensed</strong> and fully self-hostable.
-            Ranked <strong>#8 open-weights</strong> on the AA Text-to-Image Arena — the leading open T2I model. This is the
+            Ranked <strong>#8 open-weights</strong> in an April 2026 AA Text-to-Image Arena snapshot. This is the
             version the install guide below covers.</p>
           <div style="display:flex; gap:12px; flex-wrap:wrap;">
             <a href="https://huggingface.co/spaces/HiDream-ai/HiDream-O1-Image" target="_blank" rel="noopener" class="btn btn-primary">🚀 Try Online</a>
@@ -1792,9 +1748,8 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
         </div>
         <div class="comparison-card" style="border-color: rgba(251,191,36,0.4);">
           <h3 style="margin:0 0 8px 0; color:#fbbf24;">⭐ Commercial — HiDream-O1-Image-1.5</h3>
-          <p style="margin:0 0 12px 0; color:var(--text-secondary);">Closed-source flagship. Ranked <strong>#2 globally / #1 in China</strong>
-            on the AA Text-to-Image leaderboard (<strong>1265 ELO</strong>), ahead of Google Nano Banana 2 and ByteDance
-            Seedream 4.0. Cloud / online access only — not self-hostable.</p>
+          <p style="margin:0 0 12px 0; color:var(--text-secondary);">A separate closed-source commercial route.
+            Cloud / online access only — do not treat it as the downloadable 8B model covered by this guide.</p>
           <div style="display:flex; gap:12px; flex-wrap:wrap;">
             <a href="https://vivago.ai/" target="_blank" rel="noopener" class="btn btn-glass">🌐 Try on vivago.ai</a>
           </div>
@@ -1817,8 +1772,9 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
       </div>
 
       <div class="hardware-specs">
-        <div class="spec-item"><span class="dot dot-green"></span> <strong>Recommended:</strong> RTX 4090 / A100 (24GB+)
-        </div>
+        <div class="spec-item"><span class="dot dot-green"></span> <strong>Memory planning:</strong> the official
+          repository does not publish one universal minimum; measure the full or Dev checkpoint, resolution, and
+          attention setup before choosing a GPU.</div>
         <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Note:</strong> A CUDA-capable GPU is required;
           flash-attn strongly recommended. The optional Prompt Agent (Gemma-4-31B-it) can be offloaded to an external API
           to save VRAM.</div>
@@ -1840,8 +1796,7 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
               (Dev) variants, plus the Reasoning-Driven Prompt Agent.</li>
             <li><strong>2026.05.14:</strong> Open-sourced HiDream-O1-Image-Dev-2604 with its prompt refiner, tailored for
               text-to-image.</li>
-            <li><strong>2026.05:</strong> Dev-2604 debuts at #8 in the Artificial Analysis Text-to-Image Arena — leading
-              open-weights T2I model.</li>
+            <li><strong>2026.05:</strong> Dev-2604 was released as the distilled text-to-image variant.</li>
           </ul>
 
           <h3>Key Features</h3>
@@ -1853,8 +1808,8 @@ curl http://localhost:30000/v1/images/generations -d '{"prompt": "hello world", 
             <li><strong>Reasoning-Driven Prompt Agent:</strong> Built-in "thinking" agent that resolves implicit
               knowledge, layout, and text rendering before generation.</li>
             <li><strong>Native High Resolution:</strong> Direct synthesis up to 2,048 × 2,048 with sharp detail.</li>
-            <li><strong>Efficiency at 8B Scale:</strong> Matches or surpasses larger open DiTs and leading closed-source
-              models.</li>
+            <li><strong>8B Unified Architecture:</strong> One released model family covers generation, editing, and
+              subject-driven workflows.</li>
           </ul>
 
           <h3>Model Variants</h3>
@@ -1908,7 +1863,8 @@ python prompt_agent.py --backend api --instruction "做一张猫咪生日party�
 # Feed the returned "prompt" field into inference.py for best results.</code></pre>
 
           <h3>Web Demo</h3>
-          <pre><code>python app.py   # launches the local Gradio server</code></pre>
+          <pre><code>python app.py --model_path /path/to/HiDream-O1-Image --model_type full
+# launches the repository's local Flask interface</code></pre>
 
           <h3>License</h3>
           <p>The code and the HiDream-O1-Image models are released under the <strong>MIT License</strong> — free for
@@ -1932,13 +1888,12 @@ python prompt_agent.py --backend api --instruction "做一张猫咪生日party�
         <div class="badges"><span class="badge badge-primary">Speed</span> <span class="badge badge-gray">6B
             Params</span></div>
       </div>
-      <p>The efficiency king. <strong>8-step</strong> generation via Decoupled-DMD distillation. <a href="z-image.html"
+      <p>A 6B distilled model using <strong>8-step</strong> generation via Decoupled-DMD. <a href="z-image.html"
           style="color:#a78bfa;">📖
           View Full Z-Image Documentation →</a></p>
       <div class="hardware-specs">
-        <div class="spec-item"><span class="dot dot-green"></span> <strong>Great:</strong> RTX 4080 / 3090 (16GB+)</div>
-        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Entry:</strong> RX 580 / GTX 1070 (Via cpp)
-        </div>
+        <div class="spec-item"><span class="dot dot-green"></span> <strong>Official reference:</strong> designed to fit within 16GB consumer GPU memory</div>
+        <div class="spec-item"><span class="dot dot-yellow"></span> <strong>Compatibility:</strong> verify BF16, CUDA, and current Diffusers support for your exact GPU</div>
       </div>
       <div class="gallery-stack" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
         <img

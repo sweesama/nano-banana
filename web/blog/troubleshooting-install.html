@@ -62,9 +62,7 @@
                     <li>Did you actually create a key in Google AI Studio?</li>
                     <li>Did you enable billing if your current Gemini image route requires it? Free-tier availability and
                         limits can change over time.</li>
-                    <li><strong>Region Lock:</strong> If you are in a region where Google is unavailable, you
-                        <em>must</em> use a proxy.
-                    </li>
+                    <li><strong>Availability:</strong> Check Google's current regional and account availability. Do not attempt to bypass service restrictions.</li>
                 </ul>
 
                 <h3>Setting a Proxy in Python</h3>
@@ -81,13 +79,12 @@ from google import genai</code></pre>
                 </p>
                 <div style="background: rgba(43, 116, 255, 0.1); border-left: 4px solid #3b82f6; padding: 20px; margin-bottom: 24px; border-radius: 0 8px 8px 0;">
                     <h4 style="margin-top: 0; color: #60a5fa;">💡 Short on 24GB VRAM for Offline Models?</h4>
-                    <p style="margin-bottom: 12px; font-size: 0.95em;">If you're trying to run heavy open-weight models like Hunyuan 3.0 locally but your hardware is limited, you can rent an A100 GPU in the cloud for less than $0.50/hour using our optimized template.</p>
+                    <p style="margin-bottom: 12px; font-size: 0.95em;">If you're running an open-weight model, match the rental to that model's official GPU count and VRAM. HunyuanImage 3.0, for example, is documented as a multi-GPU-class deployment—not a universal one-A100 setup.</p>
                     <a href="../guides/cloud-deployment.html" class="btn btn-primary" style="font-size: 0.85em; padding: 8px 16px;">Read the Cloud Deployment Sandbox Guide &rarr;</a>
                 </div>
                 <p>If you see this, you are likely trying to run an <strong>offline model</strong> such as Hunyuan 3.0,
                     Qwen-Image, Z-Image, SDXL, or FLUX on your own GPU. As mentioned in our hardware guide, these
-                    local routes can require anywhere from 8GB to 24GB+ VRAM depending on the model. If your hardware is
-                    limited, stick to the `nano_api.py` client or use the cloud GPU solution above.</p>
+                    local routes have model- and implementation-specific requirements. If your hardware is limited, use the <code>nano_api.py</code> cloud client or follow the evidence-first cloud planning guide above.</p>
             </div>
         </article>
 

@@ -2,6 +2,9 @@
   "name": "nano-banana-blog-generator",
   "private": true,
   "type": "module",
+  "scripts": {
+    "test": "node test-guards.js"
+  },
   "dependencies": {
     "openai": "^4.104.0"
   }

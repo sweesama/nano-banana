@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Can I Run It? Hardware Requirements | Nano Banana</title>
     <meta name="description"
-        content="Detailed hardware guide for Nano Banana. Comparison of requirements for the Pro Client (CPU) vs Offline Alternatives (GPU)." />
+        content="Hardware guide separating the lightweight Nano Banana 2 cloud API client from open-weight image models whose documented GPU requirements vary by checkpoint." />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://www.nano-banana.live/blog/hardware-requirements.html" />
     <link rel="stylesheet" href="../styles.css" />
@@ -66,7 +66,9 @@
 
                 <h2>Scenario B: ChatGPT Image 2 (OpenAI)</h2>
                 <p><strong>Status: Closed Source / Cloud Only</strong></p>
-                <p>Like Nano Banana 2, <a href="https://openai.com/index/chatgpt-image-generation/" target="_blank" rel="noopener">ChatGPT Image 2</a> is a closed-source model from OpenAI. It cannot run locally.</p>
+                <p>Like Nano Banana 2, <a href="https://developers.openai.com/api/docs/models/gpt-image-2"
+                    target="_blank" rel="noopener">GPT Image 2</a> is documented as an API image model. OpenAI does
+                    not list public GPT Image 2 weights for local inference.</p>
                 <ul>
                     <li><strong>Requirements:</strong> Internet connection + ChatGPT Plus subscription.</li>
                     <li><strong>Local weights:</strong> ❌ Not available.</li>
@@ -74,9 +76,9 @@
                 </ul>
                 <p class="quote">⚠️ <strong>Verdict:</strong> If you need privacy or offline access, you must use open-source alternatives.</p>
 
-                <h2>Scenario C: Offline Alternatives (Hunyuan 3.1 / Qwen-Image 2.1 / Z-Image)</h2>
-                <p><strong>Status: Open Source / Local Weights</strong></p>
-                <p>If you choose to use the "Offline Alternatives" listed in our Quickstart because you demand uncensored local processing, be prepared for heavy hardware requirements.</p>
+                <h2>Scenario C: Open-Weight Alternatives</h2>
+                <p><strong>Status: Separate projects with local weights and model-specific licenses</strong></p>
+                <p>Hardware requirements differ by orders of magnitude. Check the exact model card and implementation instead of assuming every open image model fits on a gaming GPU.</p>
 
                 <h3>Minimum Specs (SDXL / Basic Inpainting)</h3>
                 <ul>
@@ -84,24 +86,24 @@
                     <li><strong>RAM:</strong> 16GB System RAM.</li>
                 </ul>
 
-                <h3>Recommended Specs (HunyuanImage 3.1 / Qwen-Image 2.1)</h3>
+                <h3>Large-model examples</h3>
                 <ul>
-                    <li><strong>GPU:</strong> NVIDIA RTX 3090 / 4090 / A6000 (24GB - 48GB VRAM).</li>
-                    <li><strong>RAM:</strong> 32GB - 64GB System RAM.</li>
-                    <li><strong>Storage:</strong> 100GB+ fast NVMe SSD space for model weights.</li>
+                    <li><strong>Qwen-Image-Edit-2511:</strong> a 20B BF16 model. Its official model card does not publish one universal minimum VRAM figure; use the official Diffusers example and measure your selected optimization.</li>
+                    <li><strong>HunyuanImage 3.0 base:</strong> the official repository recommends at least 3 × 80GB VRAM.</li>
+                    <li><strong>HunyuanImage 3.0 Instruct/Distil:</strong> the official repository recommends at least 8 × 80GB VRAM. Distillation reduces sampling steps, not the published VRAM recommendation.</li>
                 </ul>
-                <p>For top-tier reasoning-level image generation and fusion workflows, <strong>Hunyuan 3.0 (80B)</strong> requires massive VRAM pools.</p>
+                <p>Those Hunyuan numbers come from <a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener">Tencent's current model table</a>. Community quantizations may change the practical requirement, but they must be evaluated as separate artifacts rather than presented as official specifications.</p>
 
                 <div style="background: rgba(43, 116, 255, 0.1); border-left: 4px solid #3b82f6; padding: 20px; border-radius: 0 8px 8px 0; margin: 20px 0;">
                     <h4 style="margin-top: 0; color: #60a5fa;">💡 The Cloud GPU Shortcut</h4>
-                    <p style="margin-bottom: 12px; font-size: 0.95em;">If an RTX 4090 is out of budget, you can rent a cloud GPU specifically for your workflows. Rent an A100 (80GB VRAM) for less than $0.50/hour to run Hunyuan 3.0 seamlessly.</p>
+                    <p style="margin-bottom: 12px; font-size: 0.95em;">Cloud rental avoids buying hardware, but HunyuanImage 3.0 may require a multi-GPU configuration. Confirm current inventory, total VRAM, storage, and hourly price before launching an instance.</p>
                     <a href="../guides/cloud-deployment.html" class="btn-glass-subtle" style="font-size: 0.85em; padding: 8px 16px;">Read the Cloud Deployment Sandbox Guide &rarr;</a>
                 </div>
 
                 <div
                     style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 12px; margin-top: 30px;">
                     <h3>Why is there such a massive difference?</h3>
-                    <p>Nano Banana 2 and ChatGPT Image 2 connect to state-of-the-art datacenters. To run models like Hunyuan 3.1 or Qwen-Image 2.1 locally, you would need professional workstation hardware costing upwards of $5,000 to $15,000.</p>
+                    <p>Nano Banana 2 and ChatGPT Image 2 hide server hardware behind cloud services. Open-weight models expose that infrastructure decision to you, so the model card—not the product name—should drive hardware planning.</p>
                 </div>
             </div>
         </article>

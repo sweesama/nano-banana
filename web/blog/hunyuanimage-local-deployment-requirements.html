@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>HunyuanImage local deployment requirements for a local AI image model | Nano Banana</title>
-  <meta name="description" content="Learn the VRAM, hardware, and setup needed to run HunyuanImage-3.0 locally, compare with cloud options, and follow step‑by‑step installation instructions.">
+  <title>HunyuanImage 3.0 Hardware Requirements | Official VRAM</title>
+  <meta name="description" content="Read Tencent's official HunyuanImage 3.0 VRAM recommendations, understand the base and Instruct variants, and plan a realistic multi-GPU deployment.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.nano-banana.live/blog/hunyuanimage-local-deployment-requirements.html">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"HunyuanImage local deployment requirements for a local AI image model","description":"Learn the VRAM, hardware, and setup needed to run HunyuanImage-3.0 locally, compare with cloud options, and follow step‑by‑step installation instructions.","datePublished":"2026-08-03","dateModified":"2026-08-03","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/hunyuanimage-local-deployment-requirements.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"HunyuanImage 3.0 Hardware Requirements","description":"A source-backed guide to the official HunyuanImage 3.0 VRAM and environment requirements.","datePublished":"2026-08-03","dateModified":"2026-08-13","author":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/hunyuanimage-local-deployment-requirements.html"}</script>
   <link rel="stylesheet" href="../styles.css">
   <script src="../analytics.js" defer></script>
 </head>
@@ -23,46 +23,82 @@
         <a href="../blog.html" class="active">Blog</a>
       </div>
     </nav>
+
     <article class="article-container">
       <a href="../blog.html" class="article-back">← Back to Blog</a>
       <header class="article-header">
-        <div class="meta" style="justify-content:center;display:flex;">Local Models • Aug 3, 2026</div>
-        <h1>HunyuanImage local deployment requirements for a local AI image model</h1>
-        <p class="lead" style="margin:20px auto;">Learn the VRAM, hardware, and setup needed to run HunyuanImage-3.0 locally, compare with cloud options, and follow step‑by‑step installation instructions.</p>
+        <div class="meta" style="justify-content:center;display:flex;">Local Models • Updated Aug 13, 2026</div>
+        <h1>HunyuanImage 3.0 Hardware Requirements</h1>
+        <p class="lead" style="margin:20px auto;">The official numbers are much larger than a single 48GB or 80GB GPU.</p>
       </header>
+
       <div class="article-content">
-        <h2>Understanding HunyuanImage‑3.0 VRAM and hardware needs</h2>
-<p>The <a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener">HunyuanImage-3.0 repository<a href="#"> describes the model as an 80‑parameter‑billion native multimodal model. See the Nano Banana quickstart guide for an overview of running image models locally <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">[quickstart]<a href="#">. According to the Nano Banana cloud‑deployment guide, such a model demands massive VRAM; typical gaming GPUs with 8 GB or 12 GB (e.g., RTX 3060 or RTX 4070) will trigger CUDA out‑of‑memory errors when the weights are loaded <a href="https://www.nano-banana.live/guides/cloud-deployment.html" target="_blank" rel="noopener">[cloud‑deployment guide]<a href="#">. The guide notes that an NVIDIA A100 with 80 GB VRAM can load the full‑precision weights, while lower‑end cards require quantization or offloading techniques.</p>
-<h2>Local installation versus cloud deployment</h2>
-<p>If you have a workstation with a modern GPU, you can attempt to run HunyuanImage‑3.0 locally using quantization methods that reduce the memory footprint. The Nano Banana hardware requirements page offers guidance on which consumer‑grade cards may work with quantized versions <a href="https://www.nano-banana.live/blog/hardware-requirements.html" target="_blank" rel="noopener">[hardware‑requirements]<a href="#">. For users without sufficient VRAM, the cloud‑deployment guide recommends renting an A100 instance (≈ $0.40/hour on RunPod) to avoid upfront hardware costs <a href="https://www.nano-banana.live/guides/cloud-deployment.html" target="_blank" rel="noopener">[cloud‑deployment guide]<a href="#">. This approach lets you spin up a GPU, load the model from the official repository, generate images, and shut down the instance when finished.</p>
-<h2>Step‑by‑step guide to run HunyuanImage‑3.0 locally</h2>
-<ol>
-<li><strong>Clone the repository</strong>
-<pre><code>git clone https://github.com/Tencent-Hunyuan/HunyuanImage-3.0.git
+        <div class="highlight-box">
+          <strong>Official recommendation:</strong> Tencent's current repository lists at least <strong>3 × 80GB VRAM</strong> for HunyuanImage-3.0 base and <strong>8 × 80GB VRAM</strong> for both Instruct variants. A one-A100 tutorial is not an accurate default deployment plan.
+        </div>
+
+        <h2>Model variants and published VRAM</h2>
+        <table class="data-table">
+          <thead>
+            <tr><th>Variant</th><th>Use</th><th>Official recommended VRAM</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>HunyuanImage-3.0</td><td>Text-to-image</td><td>≥ 3 × 80GB</td></tr>
+            <tr><td>HunyuanImage-3.0-Instruct</td><td>Generation, editing, reasoning, multi-image input</td><td>≥ 8 × 80GB</td></tr>
+            <tr><td>HunyuanImage-3.0-Instruct-Distil</td><td>Instruct features with 8-step sampling</td><td>≥ 8 × 80GB</td></tr>
+          </tbody>
+        </table>
+
+        <p>The family uses an 80B-total mixture-of-experts architecture with 13B parameters active per token. “13B active” does not mean only 13B parameters must be stored. The official table should remain the planning baseline unless you have measured a specific community quantization or offloading setup.</p>
+
+        <h2>Software environment</h2>
+        <p>Tencent's repository currently recommends Python 3.12 and CUDA 12.8, with matching PyTorch packages. FlashInfer and FlashAttention are optional performance components and add compatibility requirements of their own.</p>
+
+        <pre><code>pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 \
+  --index-url https://download.pytorch.org/whl/cu128
+pip install -r requirements.txt</code></pre>
+
+        <p>Do not copy those pinned versions blindly into an existing environment. First confirm the host's NVIDIA driver and CUDA compatibility, then follow the current commands in the official repository.</p>
+
+        <h2>Official Instruct setup outline</h2>
+        <ol>
+          <li>Clone the official repository.</li>
+          <li>Install the documented dependencies in a dedicated environment.</li>
+          <li>Download the checkpoint to a local directory whose name does not contain dots.</li>
+          <li>Point <code>MODEL_PATH</code> to that directory and run the provided script.</li>
+        </ol>
+
+        <pre><code>git clone https://github.com/Tencent-Hunyuan/HunyuanImage-3.0.git
 cd HunyuanImage-3.0
-</code></pre>
-</li>
-<li><strong>Install dependencies</strong>
-<pre><code>pip install -r requirements.txt
-</code></pre>
-</li>
-<li><strong>Download the model weights</strong>
-<p>Follow the instructions in the repository’s README to obtain the HunyuanImage‑3.0 checkpoint (the file is several gigabytes).</p>
-</li>
-<li><strong>Launch the demo</strong>
-<p>For a quick text‑to‑image test, run:</p>
-<pre><code>python run_image_gen.py --prompt "A futuristic cityscape at sunset" --output_dir ./results
-</code></pre>
-</li>
-<li><strong>Adjust sampling steps for speed</strong>
-<p>The distilled checkpoint (HunyuanImage‑3.0‑Instruct‑Distil) supports high‑quality results in 8 steps, lowering VRAM usage further.</p>
-</li>
-</ol>
-<p>When you finish generating images, remember to stop any cloud GPU instance to avoid unnecessary charges, as highlighted in the Nano Banana cloud‑deployment walkthrough.</p>
-        <h2>Sources</h2>
-        <ul><li><a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener">https://github.com/Tencent-Hunyuan/HunyuanImage-3.0</a></li><li><a href="https://www.nano-banana.live/guides/cloud-deployment.html" target="_blank" rel="noopener">https://www.nano-banana.live/guides/cloud-deployment.html</a></li></ul>
+
+hf download tencent/HunyuanImage-3.0-Instruct \
+  --local-dir ./HunyuanImage-3-Instruct
+
+export MODEL_PATH="./HunyuanImage-3-Instruct"
+bash run_demo_instruct.sh</code></pre>
+
+        <h2>What the distilled checkpoint changes</h2>
+        <p>The Instruct-Distil checkpoint is designed for fewer sampling steps; Tencent recommends 8. That can reduce inference time. The official model table still lists ≥8 × 80GB VRAM, so “distilled” should not be translated into “fits on one gaming GPU” without measured evidence.</p>
+
+        <h2>Cloud deployment checklist</h2>
+        <ul>
+          <li>Choose a provider that can supply the required number of 80GB GPUs in one compatible instance or cluster.</li>
+          <li>Verify interconnect, disk capacity, container image, CUDA version, and total hourly cost.</li>
+          <li>Use provider pricing shown at purchase time; do not rely on a fixed price copied from an old article.</li>
+          <li>Set a spending limit and stop or terminate the instance after the test.</li>
+          <li>Start with the official demo before adding quantization, offloading, or a web UI.</li>
+        </ul>
+
+        <p>If that setup is disproportionate to your use case, compare smaller routes in the <a href="../guides/quickstart.html">model quickstart</a> or use the hosted Nano Banana 2 API. They solve different infrastructure problems.</p>
+
+        <h2>Primary sources</h2>
+        <ul>
+          <li><a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener">Tencent HunyuanImage-3.0 repository: environment, commands, and VRAM table</a></li>
+          <li><a href="https://huggingface.co/tencent/HunyuanImage-3.0-Instruct" target="_blank" rel="noopener">HunyuanImage-3.0-Instruct model page</a></li>
+        </ul>
       </div>
     </article>
+
     <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
   </div>
 </body>

@@ -1,8 +1,9 @@
+import base64
+import mimetypes
 import os
 from pathlib import Path
 
 from google import genai
-from PIL import Image
 
 # -----------------------------------------------------------------------------
 # Nano Banana (Gemini 3.1 Flash Image) - Local API Client
@@ -11,7 +12,7 @@ from PIL import Image
 # Gemini image model. The model itself does not run on the local machine.
 #
 # Prerequisites:
-# 1. pip install google-genai pillow
+# 1. pip install -U google-genai
 # 2. Set GOOGLE_API_KEY or GEMINI_API_KEY environment variable
 # -----------------------------------------------------------------------------
 
@@ -26,27 +27,34 @@ def edit_image(input_path, prompt, output_path="output.png"):
         raise FileNotFoundError(f"Input image not found: {input_path}")
 
     print(f"[*] Loading image: {input_path}")
-    image = Image.open(input_file)
+    image_bytes = input_file.read_bytes()
+    mime_type = mimetypes.guess_type(input_file.name)[0] or "image/png"
+    if not mime_type.startswith("image/"):
+        raise ValueError(f"Unsupported input type: {mime_type}")
     print("[*] Sending image to Nano Banana (Gemini 3.1 Flash Image)...")
     print(f"    Prompt: {prompt}")
 
     try:
         client = genai.Client(api_key=api_key)
-        response = client.models.generate_content(
+        interaction = client.interactions.create(
             model="gemini-3.1-flash-image",
-            contents=[prompt, image],
+            input=[
+                {"type": "text", "text": prompt},
+                {
+                    "type": "image",
+                    "data": base64.b64encode(image_bytes).decode("utf-8"),
+                    "mime_type": mime_type,
+                },
+            ],
+            response_format={"type": "image"},
         )
 
-        for part in response.candidates[0].content.parts:
-            if part.text:
-                print(part.text)
-            elif part.inline_data:
-                edited_image = part.as_image()
-                edited_image.save(output_path)
-                print(f"[+] Success! Edited image saved to: {output_path}")
-                return
+        if not interaction.output_image:
+            print("[!] No image returned. Check the prompt and safety filters.")
+            return
 
-        print("[!] No image returned. Check the prompt and safety filters.")
+        Path(output_path).write_bytes(base64.b64decode(interaction.output_image.data))
+        print(f"[+] Success! Edited image saved to: {output_path}")
     except Exception as e:
         print(f"[!] API Error: {e}")
 

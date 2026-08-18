@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Qwen Image local image editing guide: How to pick a local AI image model | Nano Banana</title>
-  <meta name="description" content="A concise guide to comparing, choosing, and installing Qwen Image Edit 2511 as a local AI image model, with VRAM considerations and step‑by‑step Diffusers instructions.">
+  <title>Run Qwen-Image-Edit-2511 Locally with Diffusers</title>
+  <meta name="description" content="Install and run Qwen-Image-Edit-2511 with its official Diffusers pipeline, understand its Apache-2.0 license, and plan GPU memory honestly.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.nano-banana.live/blog/qwen-image-local-image-editing-guide.html">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Qwen Image local image editing guide: How to pick a local AI image model","description":"A concise guide to comparing, choosing, and installing Qwen Image Edit 2511 as a local AI image model, with VRAM considerations and step‑by‑step Diffusers instructions.","datePublished":"2026-08-05","dateModified":"2026-08-05","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/qwen-image-local-image-editing-guide.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Run Qwen-Image-Edit-2511 Locally with Diffusers","description":"A source-backed setup guide for Qwen-Image-Edit-2511.","datePublished":"2026-08-05","dateModified":"2026-08-13","author":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/qwen-image-local-image-editing-guide.html"}</script>
   <link rel="stylesheet" href="../styles.css">
   <script src="../analytics.js" defer></script>
 </head>
@@ -23,53 +23,113 @@
         <a href="../blog.html" class="active">Blog</a>
       </div>
     </nav>
+
     <article class="article-container">
       <a href="../blog.html" class="article-back">← Back to Blog</a>
       <header class="article-header">
-        <div class="meta" style="justify-content:center;display:flex;">Local Models • Aug 5, 2026</div>
-        <h1>Qwen Image local image editing guide: How to pick a local AI image model</h1>
-        <p class="lead" style="margin:20px auto;">A concise guide to comparing, choosing, and installing Qwen Image Edit 2511 as a local AI image model, with VRAM considerations and step‑by‑step Diffusers instructions.</p>
+        <div class="meta" style="justify-content:center;display:flex;">Local Models • Updated Aug 13, 2026</div>
+        <h1>Run Qwen-Image-Edit-2511 Locally with Diffusers</h1>
+        <p class="lead" style="margin:20px auto;">A released Qwen editing model with official weights, an Apache-2.0 license, and a documented pipeline.</p>
       </header>
+
       <div class="article-content">
-        <p>This guide compares Qwen Image Edit 2511 with other local AI image models, explains how to choose based on VRAM and licensing, and provides concrete steps to install and run it locally with Diffusers.</p>
-<h2>What is Qwen Image Edit 2511?</h2>
-<p>Qwen Image Edit 2511 is an open‑weight image‑to‑image model released by the Qwen team, available on Hugging Face under an Apache 2.0 license. The model card notes improvements in character consistency, multi‑person consistency, built‑in LoRA support, industrial design generation, and geometric reasoning (<a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noopener">model card<a href="#">). It operates as a Diffusers pipeline and accepts BF16 tensors.</p>
-<h2>Comparing local AI image model options</h2>
-<p>When selecting a local AI image model for editing tasks, VRAM consumption and licensing are key factors. The Nano Banana quickstart guide provides a side‑by‑side look at GPU requirements for several open models (<a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart guide<a href="#">). According to that table, Qwen‑Image 2.0 (a related text‑rendering variant) lists a 24 GB+ VRAM recommendation, while HunyuanImage 3.0, an 80 B mixture‑of‑experts model, requires 48 GB+. FLUX 3 is noted as an early‑access multimodal model with no public weights yet, so local deployment details are unavailable. The exact VRAM needed for Qwen Image Edit 2511 is not specified in its model card; given its 20 B parameter size in BF16 format, users should expect a substantial memory footprint, but the precise requirement remains unknown without empirical testing.</p>
-<p>For more detailed GPU VRAM guidance across models, consult the Nano Banana hardware requirements page (<a href="https://www.nano-banana.live/blog/hardware-requirements.html" target="_blank" rel="noopener">hardware requirements page<a href="#">).</p>
-<p>Licensing differs as well: Qwen Image Edit 2511 is Apache 2.0, HunyuanImage 3.0 follows a Tencent Community License, and FLUX 3 currently offers only private/API access. These distinctions affect how you can integrate the models into commercial or research workflows.</p>
-<h2>Installing Qwen Image Edit 2511 locally with Diffusers</h2>
-<p>Below is a practical list of steps to run the model on a CUDA‑enabled GPU using the Diffusers library. The procedure follows the example provided in the model’s documentation (<a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noopener">model card<a href="#">).</p>
-<ol>
-<li>Install the latest Diffusers, Transformers, and Accelerate packages: <pre><code>pip install -U diffusers transformers accelerate</code></pre></li>
-<li>Import torch and the pipeline:</li>
-<pre><code>import torch
-from diffusers import DiffusionPipeline
-</code></pre>
-<li>Load the model in BF16 and move it to the GPU:</li>
-<pre><code>pipe = DiffusionPipeline.from_pretrained(
+        <h2>What is actually available?</h2>
+        <p><a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noopener">Qwen-Image-Edit-2511</a> is an open-weight image-to-image model. The official model card lists a 20B-parameter BF16 checkpoint under the Apache-2.0 license. It highlights reduced image drift, stronger single- and multi-person consistency, integrated community LoRAs, industrial-design workflows, and geometric reasoning.</p>
+
+        <p>This is a different product from the hosted Qwen-Image 3.0 release. Use the exact model ID and model card instead of treating every “Qwen Image” version as interchangeable.</p>
+
+        <h2>Hardware planning without an invented minimum</h2>
+        <p>The official model card identifies the model size and BF16 tensor type but does not publish one universal minimum VRAM figure. Memory use depends on the pipeline version, number and size of input images, output resolution, precision, attention implementation, and whether components are offloaded or quantized.</p>
+
+        <ul>
+          <li>Start on a CUDA machine intended for large diffusion pipelines.</li>
+          <li>Use the official BF16 example as the baseline.</li>
+          <li>Measure peak memory before promising a consumer-GPU requirement.</li>
+          <li>Treat third-party quantizations as separate artifacts with their own quality and compatibility tradeoffs.</li>
+        </ul>
+
+        <h2>Install the current Diffusers implementation</h2>
+        <p>The full model card currently asks for the latest Diffusers source. Use a clean virtual environment so the install does not disturb another project.</p>
+
+        <pre><code>python -m venv .venv
+
+# PowerShell
+.venv\Scripts\Activate.ps1
+
+# macOS or Linux
+source .venv/bin/activate
+
+pip install git+https://github.com/huggingface/diffusers
+pip install -U transformers accelerate pillow</code></pre>
+
+        <h2>Single-image editing example</h2>
+        <p>The following keeps the official specialized pipeline and parameter structure, while reducing the example to one local input image.</p>
+
+        <pre><code>import os
+import torch
+from PIL import Image
+from diffusers import QwenImageEditPlusPipeline
+
+pipeline = QwenImageEditPlusPipeline.from_pretrained(
     "Qwen/Qwen-Image-Edit-2511",
     torch_dtype=torch.bfloat16,
-    device_map="cuda"
 )
-</code></pre>
-<li>Prepare your input image and edit prompt. For example:</li>
-<pre><code>from diffusers.utils import load_image
-prompt = "Turn this cat into a dog"
-input_image = load_image("https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/diffusers/cat.png
+pipeline.to("cuda")
+pipeline.set_progress_bar_config(disable=None)
 
-t)
-</code></pre>
-<li>Run the inference:</li>
-<pre><code>image = pipe(image=input_image, prompt=prompt).images[0]
-</code></pre>
-<li>Save or display the result as needed.</li>
-</ol>
-<p>If you are using an Apple Silicon Mac, replace "cuda" with "mps" in the <code>device_map</code> argument. The pipeline also accepts additional parameters such as <code>guidance_scale</code>, <code>num_inference_steps</code>, and a <code>generator</code> for reproducible seeds, all of which are described in the Diffusers documentation.</p>
-        <h2>Sources</h2>
-        <ul><li><a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noopener">https://huggingface.co/Qwen/Qwen-Image-Edit-2511</a></li><li><a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">https://www.nano-banana.live/guides/quickstart.html</a></li></ul>
+source = Image.open("input.png").convert("RGB")
+prompt = (
+    "Replace the background with a quiet library. "
+    "Preserve the subject's identity, pose, clothing, and lighting direction."
+)
+
+with torch.inference_mode():
+    result = pipeline(
+        image=[source],
+        prompt=prompt,
+        generator=torch.manual_seed(0),
+        true_cfg_scale=4.0,
+        negative_prompt=" ",
+        num_inference_steps=40,
+        guidance_scale=1.0,
+        num_images_per_prompt=1,
+    ).images[0]
+
+result.save("qwen_edit_2511.png")
+print("Saved", os.path.abspath("qwen_edit_2511.png"))</code></pre>
+
+        <h2>Multi-image editing</h2>
+        <p>The official example accepts multiple PIL images in the <code>image</code> list. That supports tasks such as combining subjects or borrowing visual attributes from more than one reference. Begin with two inputs, keep the instruction explicit about which image supplies each element, and inspect identity drift before increasing complexity.</p>
+
+        <pre><code>image_a = Image.open("person.png").convert("RGB")
+image_b = Image.open("material.png").convert("RGB")
+
+result = pipeline(
+    image=[image_a, image_b],
+    prompt="Keep the person from image one; apply the material from image two to the jacket.",
+    generator=torch.manual_seed(0),
+    true_cfg_scale=4.0,
+    negative_prompt=" ",
+    num_inference_steps=40,
+    guidance_scale=1.0,
+).images[0]</code></pre>
+
+        <h2>When to use this route</h2>
+        <ul>
+          <li>Choose Qwen-Image-Edit-2511 when you need local weights, an Apache-2.0 license, and image-editing workflows.</li>
+          <li>Choose Nano Banana 2 when a hosted API and minimal local infrastructure matter more than offline control.</li>
+          <li>Do not choose HunyuanImage 3.0 merely because it is open-weight; its official multi-GPU requirement is in a very different class. Compare it in the <a href="hunyuanimage-local-deployment-requirements.html">Hunyuan hardware guide</a>.</li>
+        </ul>
+
+        <h2>Primary sources</h2>
+        <ul>
+          <li><a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noopener">Official Qwen-Image-Edit-2511 model card and code</a></li>
+          <li><a href="https://github.com/QwenLM/Qwen-Image" target="_blank" rel="noopener">Official Qwen-Image repository</a></li>
+          <li><a href="../guides/quickstart.html">Nano Banana route chooser and local-model comparison</a></li>
+        </ul>
       </div>
     </article>
+
     <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
   </div>
 </body>

@@ -243,6 +243,52 @@ p {
   color: var(--text-main);
 }
 
+/* Compact evidence/status summaries used on overview and benchmark pages. */
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin: 28px 0 0;
+}
+
+.kpi {
+  min-width: 0;
+  padding: 18px 20px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+}
+
+.kpi .num {
+  color: var(--primary);
+  font-size: 1.05rem;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.kpi .label {
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.kpi.status-positive {
+  border-color: rgba(82, 183, 136, 0.42);
+}
+
+.kpi.status-positive .num {
+  color: #7ee2ab;
+}
+
+.kpi.status-caution {
+  border-color: rgba(255, 184, 77, 0.42);
+}
+
+.kpi.status-caution .num {
+  color: #ffca72;
+}
+
 /* Special comparison cards */
 /* Special comparison cards - Restored Flex */
 .compare-row {

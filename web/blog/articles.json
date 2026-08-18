@@ -2,7 +2,7 @@
   {
     "slug": "how-to-run-locally",
     "publishDate": "2026-01-20",
-    "title": "How to Run Nano Banana Locally: A Definitive Guide",
+    "title": "Can Nano Banana 2 Run Locally? The Client Explained",
     "description": "Understand the difference between the Nano Banana cloud client and true offline image models.",
     "category": "Integration",
     "emoji": "💻"
@@ -10,8 +10,8 @@
   {
     "slug": "run-without-gpu",
     "publishDate": "2026-06-23",
-    "title": "Run Without a GPU: Cloud & Budget Options",
-    "description": "Compare cloud GPU rentals, API access, and lightweight models for every budget.",
+    "title": "Run AI Image Models Without Owning a GPU",
+    "description": "Compare hosted APIs, correctly sized rentals, and smaller local models without relying on stale prices.",
     "category": "Cloud & Budget",
     "emoji": "☁️"
   },
@@ -40,28 +40,15 @@
     "emoji": "✨"
   },
   {
-    "slug": "run-ai-image-models-without-gpu",
-    "publishDate": "2026-07-27",
-    "title": "cloud GPU for AI image generation: RunPod vs Vast.ai cost and setup",
-    "description": "Compare cloud GPU providers for running AI image models without a local GPU, covering pricing, ease of use, reliability, and step‑by‑step deployment of Hunyuan 3.0 on RunPod.",
-    "category": "Cloud GPU",
-    "emoji": "☁️",
-    "keyword": "how to run AI image models without a GPU",
-    "qualityScore": 90,
-    "sourceUrls": [
-      "https://www.nano-banana.live/blog/run-without-gpu.html",
-      "https://www.nano-banana.live/guides/cloud-deployment.html"
-    ]
-  },
-  {
     "slug": "nano-banana-api-image-editing-python",
     "publishDate": "2026-07-29",
-    "title": "Gemini image API: Editing Images with Python using Nano Banana",
-    "description": "Step‑by‑step guide to edit images with the Gemini image API using Python and the Nano Banana client, including setup, code examples, and troubleshooting.",
+    "title": "Edit Images with Nano Banana 2 in Python",
+    "description": "Use Gemini 3.1 Flash Image from Python and understand exactly which processing happens in Google's cloud.",
     "category": "API Tutorial",
     "emoji": "🐍",
     "keyword": "Nano Banana API image editing with Python",
-    "qualityScore": 100,
+    "reviewStatus": "human-reviewed",
+    "reviewedAt": "2026-08-13",
     "sourceUrls": [
       "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py"
@@ -70,12 +57,13 @@
   {
     "slug": "hunyuanimage-local-deployment-requirements",
     "publishDate": "2026-08-03",
-    "title": "HunyuanImage local deployment requirements for a local AI image model",
-    "description": "Learn the VRAM, hardware, and setup needed to run HunyuanImage-3.0 locally, compare with cloud options, and follow step‑by‑step installation instructions.",
+    "title": "HunyuanImage 3.0 Hardware Requirements",
+    "description": "Read Tencent's official VRAM table and plan a realistic multi-GPU deployment.",
     "category": "Local Models",
     "emoji": "🖥️",
     "keyword": "HunyuanImage local deployment requirements",
-    "qualityScore": 95,
+    "reviewStatus": "human-reviewed",
+    "reviewedAt": "2026-08-13",
     "sourceUrls": [
       "https://github.com/Tencent-Hunyuan/HunyuanImage-3.0",
       "https://www.nano-banana.live/guides/cloud-deployment.html"
@@ -84,12 +72,13 @@
   {
     "slug": "qwen-image-local-image-editing-guide",
     "publishDate": "2026-08-05",
-    "title": "Qwen Image local image editing guide: How to pick a local AI image model",
-    "description": "A concise guide to comparing, choosing, and installing Qwen Image Edit 2511 as a local AI image model, with VRAM considerations and step‑by‑step Diffusers instructions.",
+    "title": "Run Qwen-Image-Edit-2511 Locally with Diffusers",
+    "description": "Install the official 20B BF16 editing model and use its documented Diffusers pipeline.",
     "category": "Local Models",
     "emoji": "🎨",
     "keyword": "Qwen Image local image editing guide",
-    "qualityScore": 85,
+    "reviewStatus": "human-reviewed",
+    "reviewedAt": "2026-08-13",
     "sourceUrls": [
       "https://huggingface.co/Qwen/Qwen-Image-Edit-2511",
       "https://www.nano-banana.live/guides/quickstart.html"
@@ -98,15 +87,19 @@
   {
     "slug": "cloud-api-versus-local-ai-image-models",
     "publishDate": "2026-08-17",
-    "title": "AI image editing workflow: Cloud API versus Local AI Image Models",
-    "description": "Learn when to use cloud APIs like Nano Banana versus local open-weight models, and how to fix common AI image API errors with practical steps.",
+    "modifiedDate": "2026-08-18",
+    "title": "Cloud API Versus Local AI Image Models: A Practical Guide",
+    "description": "Choose between Nano Banana 2's hosted Gemini API and open-weight local image models using privacy, hardware, cost, and maintenance criteria.",
     "category": "Comparisons",
     "emoji": "⚖️",
     "keyword": "cloud API versus local AI image models",
-    "qualityScore": 95,
+    "structuralScore": 95,
+    "sourceAudit": "manual-source-check-2026-08-18",
     "sourceUrls": [
-      "https://www.nano-banana.live/faq.html",
-      "https://www.nano-banana.live/guides/quickstart.html"
+      "https://ai.google.dev/gemini-api/docs/image-generation",
+      "https://ai.google.dev/gemini-api/docs/pricing",
+      "https://github.com/Tencent-Hunyuan/HunyuanImage-3.0",
+      "https://huggingface.co/Qwen/Qwen-Image-Edit-2511"
     ]
   }
 ]

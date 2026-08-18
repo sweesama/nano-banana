@@ -1,56 +1,53 @@
-# Nano Banana
-> A concise hub for a new text-guided image editing model. We publish reproducible benchmarks, prompt recipes, and quickstart guides. Compare with FLUX Kontext on common editing tasks.
+# Nano Banana — Independent API and Local-Model Guide
 
-Nano Banana focuses on practical, reproducible image editing workflows and side-by-side comparisons. Static, fast, SEO-friendly.
+> Nano Banana 2 is Google's cloud-hosted Gemini 3.1 Flash Image model. This independent site explains how to call the API from Python and compares it with separate open-weight models that can be self-hosted.
 
-## Important Notice
-**Nano Banana 2.0 (Pro) is closed-source** and cannot be deployed locally. For local deployment, use the open-source alternatives below (GLM-Image, Qwen-Image, Z-Image-Turbo).
+## Identity and scope
 
-## Core Pages
-- [Home](https://www.nano-banana.live/): Overview, CTA to try in LMArena
-- [Quickstart](https://www.nano-banana.live/guides/quickstart.html): Local install guide with fast route selection, featured open-model previews, and offline model comparisons
-- [HiDream-O1-Image Guide](https://www.nano-banana.live/guides/hidream-o1-image.html): Dedicated HiDream local install guide, open-source vs commercial distinction, hardware notes, and visual examples
-- [Z-Image Documentation](https://www.nano-banana.live/guides/z-image.html): Complete Z-Image guide with architecture, capabilities, and examples
-- [Benchmarks](https://www.nano-banana.live/benchmarks/index.html): Fixed inputs/params for reproducible comparisons
-- [Portrait Editing Benchmark](https://www.nano-banana.live/benchmarks/portrait-editing.html): A/B slider, pipeline, params
-- [Prompts](https://www.nano-banana.live/prompts/index.html): Copy-ready prompts with suggested params
+- Site: https://www.nano-banana.live/
+- Status: independent community resource; not an official Google or Gemini website
+- Nano Banana 2 model ID: `gemini-3.1-flash-image`
+- Execution: Google hosts the model. A Python script can run locally, but inference does not.
+- Local alternatives: separate open-weight projects with their own licenses and hardware requirements
 
-## Blog & Tutorials
-- [How to Run Nano Banana Locally](https://www.nano-banana.live/blog/how-to-run-locally.html): Client vs Offline guide
-- [Run Without a GPU](https://www.nano-banana.live/blog/run-without-gpu.html): Cloud GPU rentals and budget options for users without local hardware
-- [Hardware Requirements](https://www.nano-banana.live/blog/hardware-requirements.html): VRAM Analysis (Client vs Offline)
-- [Troubleshooting Install](https://www.nano-banana.live/blog/troubleshooting-install.html): API/Proxy error fixes
-- [Top Prompt Recipes](https://www.nano-banana.live/blog/top-prompt-recipes.html): Gemini instruction recipes
+## Start here
 
-## Common Resources
-- [FAQ](https://www.nano-banana.live/faq.html): Answers to common questions, addresses closed-source reality
-- [About](https://www.nano-banana.live/about.html): Site purpose and credits
+- [Cloud API vs local models](https://www.nano-banana.live/)
+- [Route chooser and model guide](https://www.nano-banana.live/guides/quickstart.html)
+- [Python image-editing example](https://www.nano-banana.live/blog/nano-banana-api-image-editing-python.html)
+- [Qwen-Image-Edit-2511 local guide](https://www.nano-banana.live/blog/qwen-image-local-image-editing-guide.html)
+- [HunyuanImage 3.0 hardware reality](https://www.nano-banana.live/blog/hunyuanimage-local-deployment-requirements.html)
+- [Benchmarks](https://www.nano-banana.live/benchmarks/)
+- [Prompt recipes](https://www.nano-banana.live/prompts/)
+- [FAQ](https://www.nano-banana.live/faq.html)
 
-## Offline Models (Local Deployment)
-| Model | Parameters | GPU Requirement | Best For | AA Ranking |
-|-------|-----------|-----------------|----------|------------|
-| HunyuanImage 3.0 Instruct | 80B MoE | 48GB VRAM | Multi-image fusion & Editing | Edit #1 Open 🏆 |
-| HiDream-O1-Image | 8B | 24GB VRAM | Long-text rendering, editing, storyboards (MIT) | T2I #8 Open |
-| GLM-Image | 9B | 24GB VRAM | Knowledge & Text Rendering | — |
-| Qwen-Image | 20B | 24GB VRAM | Photorealism & Text rendering | T2I #2 Open |
-| Z-Image-Turbo | 6B | 16GB VRAM | Speed (8-step inference) | — |
+## Verified model distinctions
 
-## Cloud Models (API Only)
-| Model | Provider | Best For | AA Ranking | Pricing |
-|-------|----------|----------|------------|---------|
-| GPT Image 2 | OpenAI | Highest quality editing | T2I #1 / Edit #2 | $211/1k images |
-| GPT Image 1.5 | OpenAI | Balanced quality/speed | T2I #2 / Edit #1 | $133/1k images |
-| Nano Banana 2 | Google | Fast generation | T2I #3 / Edit #4 | $67/1k images |
-| Nano Banana Pro | Google | Pro quality | T2I #4 | $134/1k images |
-| FLUX.2 [max] | Black Forest Labs | Quality generations | T2I #5 | $70/1k images |
-| Seedream 4.0 | ByteDance | Chinese aesthetics | T2I #6 | $30/1k images |
+### Google cloud models
 
-## Tech Stack
-- **Web**: Pure Static HTML5/CSS3 (Glassmorphism Design)
-- **Pro Model**: Google Gemini 3.0 (Cloud API, closed-source)
-- **Offline Models**: HiDream-O1-Image / HunyuanImage 3.0 / Z-Image / Qwen-Image / GLM-Image (Local via official repos, Diffusers, SGLang, or related serving stacks)
+- Nano Banana 2: Gemini 3.1 Flash Image (`gemini-3.1-flash-image`), cloud API only
+- Nano Banana 2 Lite: Gemini 3.1 Flash Lite Image, cloud API only
+- Nano Banana Pro: Gemini 3 Pro Image, cloud API only
 
-## Optional
-- LMArena entry: https://lmarena.ai/?chat-modality=image
-- OG image: https://www.nano-banana.live/og.svg
-- Sitemap: https://www.nano-banana.live/sitemap.xml
+Official source: https://ai.google.dev/gemini-api/docs/image-generation
+
+### Open-weight alternatives
+
+- Qwen-Image-Edit-2511: Apache-2.0 image-editing model; official Diffusers example is on its model card
+- HunyuanImage 3.0: 80B-total/13B-active MoE. The official repository recommends at least 3 × 80 GB VRAM for the base model and 8 × 80 GB for Instruct variants
+- HiDream-O1-Image: 8B model under the MIT license
+
+Official sources:
+
+- https://huggingface.co/Qwen/Qwen-Image-Edit-2511
+- https://github.com/Tencent-Hunyuan/HunyuanImage-3.0
+- https://github.com/HiDream-ai/HiDream-O1-Image
+
+## Evidence policy
+
+- Prefer provider documentation, official repositories, model cards, and dated benchmark snapshots.
+- Do not treat a local API client as locally running inference.
+- Do not repeat rankings, prices, VRAM figures, or release status without a date and source.
+- Generated blog drafts require human review before indexing or publication.
+
+Sitemap: https://www.nano-banana.live/sitemap.xml

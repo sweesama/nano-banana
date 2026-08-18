@@ -11,6 +11,11 @@
   ],
   "redirects": [
     {
+      "source": "/blog/run-ai-image-models-without-gpu.html",
+      "destination": "/blog/run-without-gpu.html",
+      "permanent": true
+    },
+    {
       "source": "/(.*)",
       "has": [
         {

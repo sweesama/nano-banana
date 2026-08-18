@@ -22,13 +22,24 @@ const MODELS = [
 const DEPTHS = { brief: [450, 700], standard: [700, 1100], deep: [1100, 1600] };
 const BANNED_PHRASES = ['in today\'s rapidly evolving', 'game-changer', 'seamlessly', 'revolutionize', 'it is worth noting', 'delve into', 'unlock the power'];
 const ALLOWED_TAGS = new Set(['p', 'h2', 'h3', 'ul', 'ol', 'li', 'pre', 'code', 'strong', 'em', 'blockquote', 'a', 'br']);
+const AUTHORITATIVE_SOURCE_HOSTS = new Set([
+  'ai.google.dev',
+  'blog.google',
+  'developers.google.com',
+  'developers.openai.com',
+  'github.com',
+  'huggingface.co',
+  'opensource.org',
+  'artificialanalysis.ai',
+  'www.runpod.io',
+  'runpod.io',
+  'docs.runpod.io',
+  'vast.ai',
+  'www.vast.ai',
+]);
+const SITE_HOST = 'www.nano-banana.live';
 
-if (!API_KEY) {
-  console.error('Missing NVIDIA_API_KEY.');
-  process.exit(1);
-}
-
-const ai = new OpenAI({ apiKey: API_KEY, baseURL: 'https://integrate.api.nvidia.com/v1' });
+const ai = API_KEY ? new OpenAI({ apiKey: API_KEY, baseURL: 'https://integrate.api.nvidia.com/v1' }) : null;
 
 function escapeHtml(value) {
   return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
@@ -36,6 +47,19 @@ function escapeHtml(value) {
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+}
+
+function sourceHost(url) {
+  try {
+    return new URL(url).hostname.toLowerCase();
+  } catch {
+    return '';
+  }
+}
+
+function isAuthoritativeExternalSource(url) {
+  const host = sourceHost(url);
+  return host !== SITE_HOST && AUTHORITATIVE_SOURCE_HOSTS.has(host);
 }
 
 function findSeoCluster(item, research) {
@@ -57,24 +81,35 @@ function parseJson(text) {
 }
 
 function sanitizeHtml(input) {
-  return String(input || '')
+  const codeBlocks = [];
+  const protectedInput = String(input || '').replace(/<pre\b[^>]*>\s*<code\b[^>]*>([\s\S]*?)<\/code>\s*<\/pre>/gi, (_full, code) => {
+    const safeCode = String(code)
+      .replace(/&(?!(?:amp|lt|gt|quot|#39);)/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    const token = `@@NANO_CODE_BLOCK_${codeBlocks.length}@@`;
+    codeBlocks.push(`<pre><code>${safeCode}</code></pre>`);
+    return token;
+  });
+  const sanitized = protectedInput
     .replace(/<!--([\s\S]*?)-->/g, '')
     .replace(/<(script|style|iframe|object|embed|form|input|button)[^>]*>[\s\S]*?<\/\1>/gi, '')
     .replace(/<\/?([a-z0-9-]+)([^>]*)>/gi, (full, tag, attrs) => {
       const lower = tag.toLowerCase();
       if (!ALLOWED_TAGS.has(lower)) return '';
+      if (full.startsWith('</')) return `</${lower}>`;
       if (lower === 'a') {
         const hrefMatch = attrs.match(/href\s*=\s*["']([^"']+)["']/i);
-        if (hrefMatch && hrefMatch[1] === '#') return '</a>';
         const href = hrefMatch ? hrefMatch[1] : '#';
         const safeHref = /^(https?:\/\/|\/|\.\.\/|#)/i.test(href) ? href : '#';
         const external = /^https?:\/\//i.test(safeHref);
         return `<a href="${escapeHtml(safeHref)}"${external ? ' target="_blank" rel="noopener"' : ''}>`;
       }
       if (lower === 'br') return '<br>';
-      return full.startsWith('</') ? `</${lower}>` : `<${lower}>`;
+      return `<${lower}>`;
     })
     .trim();
+  return sanitized.replace(/@@NANO_CODE_BLOCK_(\d+)@@/g, (_full, index) => codeBlocks[Number(index)] || '');
 }
 
 function formatDisplayDate(isoDate) {
@@ -104,7 +139,6 @@ function scoreArticle(article, item, cluster) {
   if (primaryTermInTitle) score += 10;
   if (primaryTermInBody) score += 5;
   if (internalLinkCount >= 2) score += 5;
-  score += 15;
   if (!BANNED_PHRASES.some(phrase => text.includes(phrase))) score += 5;
   return Math.min(score, 100);
 }
@@ -117,31 +151,64 @@ function validateArticle(article, item, cluster) {
   if (article.title.length > 80) throw new Error('Title is too long.');
   if (article.description.length > 180) throw new Error('Description is too long.');
   if (/<(script|iframe|object|embed|form)\b/i.test(article.content)) throw new Error('Unsafe HTML detected.');
+  if (/<a\b[^>]*>(?:(?!<\/a>)[\s\S])*<a\b/i.test(article.content)) throw new Error('Nested anchor detected.');
+  if (/href=["']#["']/i.test(article.content)) throw new Error('Placeholder link detected.');
+  for (const tag of ['a', 'pre', 'code']) {
+    const opens = (article.content.match(new RegExp(`<${tag}\\b`, 'gi')) || []).length;
+    const closes = (article.content.match(new RegExp(`</${tag}>`, 'gi')) || []).length;
+    if (opens !== closes) throw new Error(`Unbalanced <${tag}> tags.`);
+  }
   if (!cluster.primaryTerms.some(term => article.title.toLowerCase().includes(term.toLowerCase()))) throw new Error('Title does not contain a researched primary keyword.');
   if (cluster.internalLinks.filter(url => article.content.includes(url)).length < 2) throw new Error('Article does not contain at least two researched internal links.');
+  if (item.sourceUrls.filter(url => article.content.includes(url)).length !== item.sourceUrls.length) throw new Error('Article does not cite every required source near the relevant claim.');
+  if (!item.sourceUrls.some(isAuthoritativeExternalSource)) throw new Error('Queue item needs at least one approved authoritative external source.');
+  if (/\b(?:we tested|our tests show|our customers|users say)\b/i.test(article.content)) throw new Error('Unsubstantiated first-party experience or testimonial claim detected.');
+  if (/\b(?:guaranteed|always|never fails|unlimited)\b/i.test(article.content)) throw new Error('Absolute product claim detected.');
+  if (/\bfree tier\b/i.test(article.content) && !item.sourceUrls.some(url => url.includes('ai.google.dev/gemini-api/docs/pricing'))) {
+    throw new Error('A free-tier claim requires the live Gemini pricing page as a source.');
+  }
 }
 
 async function fetchSourceNotes(urls) {
-  const notes = await Promise.all(urls.map(async url => {
+  if (!Array.isArray(urls) || urls.length < 2) throw new Error('Every queue item needs at least two source URLs.');
+  if (!urls.some(isAuthoritativeExternalSource)) throw new Error('No approved authoritative external source is configured.');
+
+  return Promise.all(urls.map(async (url, index) => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20000);
     try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 15000);
-      const response = await fetch(url, { headers: { accept: 'text/html,application/json' }, signal: controller.signal });
-      clearTimeout(timeout);
-      if (!response.ok) return `${url}: source unavailable (HTTP ${response.status})`;
+      const response = await fetch(url, {
+        headers: {
+          accept: 'text/html,application/json,text/plain',
+          'user-agent': 'NanoBananaSourceCheck/1.0 (+https://www.nano-banana.live/about.html)',
+        },
+        redirect: 'follow',
+        signal: controller.signal,
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const raw = await response.text();
-      const text = raw.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/gi, ' ').replace(/\s+/g, ' ').trim();
-      return `${url}: ${text.slice(0, 6000)}`;
+      const text = raw
+        .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+        .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/&nbsp;|&#160;/gi, ' ')
+        .replace(/&amp;/gi, '&')
+        .replace(/\s+/g, ' ')
+        .trim();
+      if (text.length < 200) throw new Error('source text is too short to verify claims');
+      return { index: index + 1, url, text: text.slice(0, 9000) };
     } catch (error) {
-      return `${url}: source unavailable (${error.message})`;
+      throw new Error(`Required source unavailable: ${url} (${error.message})`);
+    } finally {
+      clearTimeout(timeout);
     }
   }));
-  return notes.join('\n\n');
 }
 
-function promptFor(item, existingArticles, sourceNotes, cluster, requiredTerm) {
+function promptFor(item, existingArticles, sourceRecords, cluster, requiredTerm) {
   const [minWords, maxWords] = DEPTHS[item.depth] || DEPTHS.standard;
   const existingTitles = existingArticles.map(article => article.title).join(' | ');
+  const sourceNotes = sourceRecords.map(source => `[SOURCE ${source.index}] ${source.url}\n${source.text}`).join('\n\n');
   return `You write an accurate English-first technical article for Nano Banana, a site about Gemini image APIs and open-weight local image models.
 
 Topic keyword: ${item.keyword}
@@ -168,7 +235,11 @@ Content rules:
 - Answer the search intent directly in the opening paragraph; never stuff keywords or write a generic introduction.
 - Include at least two links from the preferred internal-link list with descriptive anchor text.
 - Cite claims by linking to source URLs near the relevant discussion. Do not add a Sources section — the publishing script generates one automatically.
+- Treat the supplied source text as the complete evidence boundary. A fact absent from it must be omitted or explicitly labeled unknown.
+- Keep volatile prices, quotas, rankings, and availability dated and linked to the source that states them.
+- A keyword may appear as a question, but answer it directly. Never imply that an API client makes a hosted model local or offline.
 - Always close every HTML tag properly. Close <a> tags with </a>, never use <a href="#"> as a closing tag.
+- Put code samples inside <pre><code> blocks and HTML-escape literal angle brackets inside code.
 - Never invent benchmark scores, model release status, API prices, hardware requirements, or product features. If a source does not confirm a detail, say that it is unknown.
 - Clearly distinguish cloud APIs from local open-weight models.
 - Mention Nano Banana naturally only when relevant. Do not keyword-stuff.
@@ -177,8 +248,49 @@ Content rules:
 - Write for a technically curious beginner and keep the advice actionable.`;
 }
 
+async function verifyArticle(article, item, sourceRecords) {
+  const verifierModel = process.env.BLOG_MODEL_VERIFIER || MODELS[MODELS.length - 1];
+  const evidence = sourceRecords.map(source => `[SOURCE ${source.index}] ${source.url}\n${source.text}`).join('\n\n');
+  const response = await ai.chat.completions.create({
+    model: verifierModel,
+    temperature: 0,
+    max_tokens: 1800,
+    response_format: { type: 'json_object' },
+    messages: [
+      {
+        role: 'system',
+        content: 'You are a strict publication fact checker. Treat the supplied source excerpts as the only evidence for factual product claims. Return JSON only.',
+      },
+      {
+        role: 'user',
+        content: `Audit this proposed article before automatic publication.
+
+Topic: ${item.keyword}
+Title: ${article.title}
+Description: ${article.description}
+Article HTML:
+${article.content}
+
+Allowed evidence:
+${evidence}
+
+Return exactly:
+{"verdict":"pass|fail","unsupportedClaims":[],"contradictions":[],"missingQualifications":[]}
+
+Fail when a claim about model identity, capabilities, weights, license, pricing, quota, ranking, release status, hardware, API syntax, or provider policy is absent from or contradicted by the evidence. Fail undated volatile numbers, claims of first-hand testing without evidence, universal superiority claims, and language that confuses a local API client with local inference. General workflow advice does not need a citation.`,
+      },
+    ],
+  });
+  const audit = parseJson(response.choices?.[0]?.message?.content || '');
+  const issueCount = ['unsupportedClaims', 'contradictions', 'missingQualifications']
+    .reduce((total, key) => total + (Array.isArray(audit[key]) ? audit[key].length : 1), 0);
+  if (audit.verdict !== 'pass' || issueCount > 0) {
+    throw new Error(`Source audit failed: ${JSON.stringify(audit)}`);
+  }
+}
+
 async function generateArticle(item, existingArticles, cluster) {
-  const sourceNotes = await fetchSourceNotes(item.sourceUrls);
+  const sourceRecords = await fetchSourceNotes(item.sourceUrls);
   const requiredTerm = cluster.primaryTerms[0];
   let lastError;
   for (const model of MODELS) {
@@ -191,7 +303,7 @@ async function generateArticle(item, existingArticles, cluster) {
         response_format: { type: 'json_object' },
         messages: [
           { role: 'system', content: 'You produce precise, source-aware technical HTML articles. Output valid JSON only.' },
-          { role: 'user', content: promptFor(item, existingArticles, sourceNotes, cluster, requiredTerm) }
+          { role: 'user', content: promptFor(item, existingArticles, sourceRecords, cluster, requiredTerm) }
         ],
       });
       article = parseJson(response.choices?.[0]?.message?.content || '');
@@ -203,6 +315,7 @@ async function generateArticle(item, existingArticles, cluster) {
     try {
       article.content = sanitizeHtml(article.content);
       validateArticle(article, item, cluster);
+      await verifyArticle(article, item, sourceRecords);
     } catch (error) {
       lastError = error;
       console.warn(`Model ${model} produced invalid content: ${error.message}`);
@@ -289,6 +402,7 @@ function updateSitemap(slug, date) {
 }
 
 async function main() {
+  if (!ai) throw new Error('Missing NVIDIA_API_KEY.');
   const queue = readJson(QUEUE_PATH);
   const articles = readJson(ARTICLES_PATH);
   const seoResearch = readJson(SEO_RESEARCH_PATH);
@@ -301,8 +415,8 @@ async function main() {
   const date = new Date().toISOString().slice(0, 10);
   const cluster = findSeoCluster(item, seoResearch);
   const article = await generateArticle(item, articles, cluster);
-  const score = scoreArticle(article, item, cluster);
-  if (score < 75) throw new Error(`Quality score ${score}/100 is below the 75-point publishing threshold.`);
+  const structuralScore = scoreArticle(article, item, cluster);
+  if (structuralScore < 75) throw new Error(`Structural score ${structuralScore}/100 is below the 75-point publishing threshold.`);
   const htmlPath = path.join(BLOG_DIR, `${item.slug}.html`);
   if (fs.existsSync(htmlPath)) throw new Error(`Article already exists: ${item.slug}.html`);
   const backups = {
@@ -313,14 +427,15 @@ async function main() {
   };
   try {
     fs.writeFileSync(htmlPath, buildArticleHtml(article, item, date), 'utf8');
-    articles.push({ slug: item.slug, publishDate: date, title: article.title, description: article.description, category: item.category, emoji: item.emoji, keyword: item.keyword, qualityScore: score, sourceUrls: item.sourceUrls });
+    articles.push({ slug: item.slug, publishDate: date, title: article.title, description: article.description, category: item.category, emoji: item.emoji, keyword: item.keyword, structuralScore, sourceAudit: 'automated-pass', sourceUrls: item.sourceUrls });
     item.status = 'done';
-    item.qualityScore = score;
+    item.structuralScore = structuralScore;
+    item.sourceAudit = 'automated-pass';
     writeJson(ARTICLES_PATH, articles);
     writeJson(QUEUE_PATH, queue);
     fs.writeFileSync(BLOG_INDEX_PATH, updateBlogIndex(article, item, date), 'utf8');
     fs.writeFileSync(SITEMAP_PATH, updateSitemap(item.slug, date), 'utf8');
-    console.log(`Published ${item.slug}.html with quality score ${score}/100.`);
+    console.log(`Prepared source-audited article ${item.slug}.html with structural score ${structuralScore}/100.`);
   } catch (error) {
     fs.writeFileSync(ARTICLES_PATH, backups.articles, 'utf8');
     fs.writeFileSync(QUEUE_PATH, backups.queue, 'utf8');
@@ -331,7 +446,11 @@ async function main() {
   }
 }
 
-main().catch(error => {
-  console.error(error.message);
-  process.exit(1);
-});
+if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
+  main().catch(error => {
+    console.error(error.message);
+    process.exit(1);
+  });
+}
+
+export { fetchSourceNotes, isAuthoritativeExternalSource, sanitizeHtml, validateArticle };

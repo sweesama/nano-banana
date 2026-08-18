@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/</loc>
-    <lastmod>2026-04-24</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/benchmarks/</loc>
@@ -18,7 +18,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/quickstart.html</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/hidream-o1-image.html</loc>
@@ -26,19 +26,19 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/cloud-deployment.html</loc>
-    <lastmod>2026-06-23</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/run-without-gpu.html</loc>
-    <lastmod>2026-06-23</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/prompts/</loc>
-    <lastmod>2026-04-25</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/faq.html</loc>
-    <lastmod>2026-04-24</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/about.html</loc>
@@ -46,15 +46,15 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog.html</loc>
-    <lastmod>2026-06-23</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/how-to-run-locally.html</loc>
-    <lastmod>2026-04-24</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/hardware-requirements.html</loc>
-    <lastmod>2026-04-24</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/troubleshooting-install.html</loc>
@@ -62,7 +62,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/top-prompt-recipes.html</loc>
-    <lastmod>2026-01-20</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/privacy.html</loc>
@@ -73,20 +73,16 @@
     <lastmod>2026-01-20</lastmod>
   </url>
   <url>
-    <loc>https://www.nano-banana.live/blog/run-ai-image-models-without-gpu.html</loc>
-    <lastmod>2026-07-27</lastmod>
-  </url>
-  <url>
     <loc>https://www.nano-banana.live/blog/nano-banana-api-image-editing-python.html</loc>
-    <lastmod>2026-07-29</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/hunyuanimage-local-deployment-requirements.html</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/qwen-image-local-image-editing-guide.html</loc>
-    <lastmod>2026-08-05</lastmod>
+    <lastmod>2026-08-13</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/cloud-api-versus-local-ai-image-models.html</loc>

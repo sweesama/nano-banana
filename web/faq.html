@@ -108,15 +108,15 @@
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      {"@type":"Question","name":"What is Nano Banana?","acceptedAnswer":{"@type":"Answer","text":"Nano Banana is a text-to-image editing model focused on controllable, iterative edits. It understands both text and visual context to modify existing images while keeping style and structure coherent."}},
-      {"@type":"Question","name":"How does Nano Banana's AI technology work?","acceptedAnswer":{"@type":"Answer","text":"The system encodes text and image into a shared semantic space, then uses a controlled, iterative generator to refine targeted regions. Attention plus prompt/mask constraints preserve global composition and lighting while applying local, reproducible edits."}},
-      {"@type":"Question","name":"How fast is it?","acceptedAnswer":{"@type":"Answer","text":"Interactive speed for most edits; typical tasks complete within ~10–30 seconds depending on resolution and hardware."}},
-      {"@type":"Question","name":"Can it keep character consistency?","acceptedAnswer":{"@type":"Answer","text":"Yes. The model is optimized to preserve identity and style across scenes. Use consistent prompts and seeds for best results."}},
-      {"@type":"Question","name":"What can I create?","acceptedAnswer":{"@type":"Answer","text":"Portrait retouching, background replacement, local edits, product shots, and style tweaks. See Benchmarks for reproducible examples."}},
-      {"@type":"Question","name":"Is it official?","acceptedAnswer":{"@type":"Answer","text":"We track public sources and community experiments. This site aggregates information and reproducible workflows as things mature."}},
-      {"@type":"Question","name":"Commercial usage","acceptedAnswer":{"@type":"Answer","text":"Follow the license of the specific release or service you run. Check terms before commercial deployment."}},
-      {"@type":"Question","name":"API availability","acceptedAnswer":{"@type":"Answer","text":"If stable public endpoints become available, we will link and compare them here. Currently we focus on local and notebook guides."}},
-      {"@type":"Question","name":"How to reproduce benchmarks?","acceptedAnswer":{"@type":"Answer","text":"Each benchmark lists inputs, parameters, and downloads. Follow the Quickstart, then replicate settings from the benchmark page."}}
+      {"@type":"Question","name":"What is Nano Banana 2?","acceptedAnswer":{"@type":"Answer","text":"Nano Banana 2 is Google's name for Gemini 3.1 Flash Image, a hosted image generation and editing model available through Google products and the Gemini API."}},
+      {"@type":"Question","name":"Can I run Nano Banana 2 locally?","acceptedAnswer":{"@type":"Answer","text":"No. The model weights are not available for local or offline inference. You can run a Python client locally, but it sends the prompt and image to Google's hosted Gemini API."}},
+      {"@type":"Question","name":"Is Nano Banana 2 free?","acceptedAnswer":{"@type":"Answer","text":"Not through the standard Gemini Developer API tier. Google currently lists no free tier for Gemini 3.1 Flash Image; pricing and account availability can change, so check Google's live pricing page."}},
+      {"@type":"Question","name":"How fast is Nano Banana 2?","acceptedAnswer":{"@type":"Answer","text":"Latency varies with request complexity, output settings, network conditions, service load, and account limits. This site does not promise a fixed completion time."}},
+      {"@type":"Question","name":"Can it keep character consistency?","acceptedAnswer":{"@type":"Answer","text":"Google documents support for reference images and subject consistency, but results vary by input, prompt, and edit. Compare outputs rather than treating consistency as guaranteed."}},
+      {"@type":"Question","name":"Can GPT Image 2 run locally?","acceptedAnswer":{"@type":"Answer","text":"No public GPT Image 2 model weights are available for local inference. OpenAI documents GPT Image 2 as an API image generation and editing model."}},
+      {"@type":"Question","name":"Can I use generated images commercially?","acceptedAnswer":{"@type":"Answer","text":"Commercial use depends on the current terms of the service or the license of the exact open-weight checkpoint. Check the applicable provider terms and model license before use."}},
+      {"@type":"Question","name":"Where is the Nano Banana API?","acceptedAnswer":{"@type":"Answer","text":"Nano Banana 2 is available as Gemini 3.1 Flash Image through the Gemini API. Google's current image-generation documentation contains the supported model ID and request format."}},
+      {"@type":"Question","name":"How do I reproduce benchmark results?","acceptedAnswer":{"@type":"Answer","text":"Use the same disclosed input, prompt, model version, and settings where available. Hosted model updates and nondeterministic execution can still produce different outputs."}}
     ]
   }
   </script>
@@ -170,60 +170,66 @@
 
     <section class="section faq-grid">
       <details id="what" open>
-        <summary>What is Nano Banana?</summary>
+        <summary>What is Nano Banana 2?</summary>
         <div>
-          Nano Banana is an <strong>AI image editing brain</strong> powered by Google's latest Gemini image models.
-          Unlike traditional "filters,"
-          it understands natural language instructions (e.g., "Make the cat wear sunglasses") to perform precise,
-          context-aware edits.
+          <strong>Nano Banana 2 is Google's name for Gemini 3.1 Flash Image.</strong> It is a hosted image generation
+          and editing model that accepts text and image inputs. See Google's <a
+            href="https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image" target="_blank"
+            rel="noopener">current model page</a> for the supported capabilities and model ID.
         </div>
       </details>
 
       <details id="local">
         <summary>Can I run Nano Banana locally?</summary>
         <div>
-          <strong>Yes and No.</strong> The "Pro" model is closed-source and cannot run totally offline.
-          However, you can run the <strong>Nano Banana Client</strong> locally via Python to control it from your
-          terminal. <br><br>
+          <strong>No—the Nano Banana 2 model itself cannot be downloaded or run offline.</strong>
+          You can run a small Python client on your computer, but that client sends the image and prompt to Google's
+          hosted Gemini API. <br><br>
           If you need a 100% offline solution (e.g., for air-gapped security), check out our <a
             href="./blog/hardware-requirements.html">Hardware Guide</a> for alternative models like Z-Image, Qwen-Image,
-          and GLM-Image.
+          and HunyuanImage.
         </div>
       </details>
 
       <details id="cost">
         <summary>Is it free?</summary>
         <div>
-          The local Python Client uses Google's Gemini API, which currently offers a generous free tier for
-          experimentation. Heavy commercial use may require a paid billing account with Google Cloud.
+          The local Python client uses Google's Gemini API. As checked on August 18, 2026, Google's <a
+            href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">pricing page</a>
+          lists no free tier for <code>gemini-3.1-flash-image</code>. Pricing, quotas, and account availability can
+          change. Open-weight models avoid that API fee, but hardware, electricity, storage, and cloud rental can still
+          cost money.
         </div>
       </details>
 
       <details id="speed">
         <summary>How fast is it?</summary>
         <div>
-          The <strong>Pro Client</strong> is usually interactive and depends on cloud latency plus queueing.<br>
-          <strong>Offline Models</strong> vary a lot: Z-Image-Turbo is optimized for speed, while Qwen-Image and
-          GLM-Image generally need more VRAM and longer generation times.
+          There is no honest universal number. Hosted API latency varies with the input, output size, network, service
+          load, and account limits. Local models vary with checkpoint, precision, resolution, and hardware. Compare the
+          exact workflow you plan to use instead of relying on a single advertised time.
         </div>
       </details>
 
       <details id="consistency">
         <summary>How do I keep character consistency?</summary>
         <div>
-          Consistency is Nano Banana's main strength over models like Flux. Our "Instruction Mode" preserves structural
-          identity by default. For advanced consistency, check our <a href="./blog/top-prompt-recipes.html">Recipes</a>
-          for "Outfit Change" workflows.
+          Google documents reference-image workflows and subject consistency, but no model guarantees an identical
+          subject in every result. Keep the same high-quality references, describe which details must remain unchanged,
+          and compare multiple outputs. See our <a href="./blog/top-prompt-recipes.html">prompt recipes</a> for a
+          practical checklist.
         </div>
       </details>
 
       <details id="chatgpt">
         <summary>Can ChatGPT Image 2 run locally?</summary>
         <div>
-          <strong>No.</strong> ChatGPT Image 2 is a <em>closed-source, cloud-only</em> model from OpenAI. There are no
-          publicly available weights, which means it cannot be downloaded or run on your local hardware.<br><br>
+          <strong>No public local weights are available.</strong> OpenAI documents the current product as
+          <a href="https://developers.openai.com/api/docs/models/gpt-image-2" target="_blank" rel="noopener">GPT Image
+            2</a>, an API model for image generation and editing. Calling that API from local code is not local
+          inference.<br><br>
           If you want similar image generation quality that runs <strong>fully offline</strong>, we recommend checking
-          out open-source alternatives like <a href="./guides/quickstart.html#qwen-image">Qwen-Image 2.1</a> or
+          out open-weight alternatives like <a href="./blog/qwen-image-local-image-editing-guide.html">Qwen-Image-Edit-2511</a> or
           <a href="./guides/quickstart.html#hunyuan-image">HunyuanImage 3.0</a> in our Quickstart Guide.
         </div>
       </details>
@@ -232,30 +238,32 @@
         <summary>Where is the API Key?</summary>
         <div>
           You can get your key from <a href="https://aistudio.google.com/" target="_blank" rel="noopener" data-track="aistudio_cta">Google AI Studio</a>. Once
-          you have it, set `GOOGLE_API_KEY` or `GEMINI_API_KEY` in your terminal to empower the client.
+          you have it, set <code>GOOGLE_API_KEY</code> or <code>GEMINI_API_KEY</code> in your terminal. The maintained
+          request format is shown in Google's <a href="https://ai.google.dev/gemini-api/docs/image-generation"
+            target="_blank" rel="noopener">image-generation documentation</a>.
         </div>
       </details>
 
       <details id="commercial">
         <summary>Can I use images commercially?</summary>
         <div>
-          Images generated via Gemini-based cloud services are generally yours to use, but remain subject to Google's
-          current Generative AI terms. Offline models like Z-Image and many Qwen releases are often Apache 2.0, but
-          some checkpoints and demos can differ. Always verify the specific model license before commercial
-          deployment.
+          It depends on the current service terms and the exact model or checkpoint. Check Google's applicable terms
+          for Gemini API output, or the repository and model-card license for an open-weight model. Do not assume that
+          one model family's license applies to every checkpoint, LoRA, demo, or hosted service.
         </div>
       </details>
 
       <details id="reproduce">
         <summary>How do I reproduce benchmark results?</summary>
         <div>
-          Each benchmark page lists the exact Prompt, Seed, and Model Version. If using the Cloud Client, results may
-          vary slightly over time as the base model updates. Offline models offer bit-exact reproducibility.
+          Use the same disclosed input, prompt, model version, and settings where they are available. Hosted models can
+          change, and both hosted and local inference may be nondeterministic across runs or hardware. We label missing
+          inputs or parameters instead of calling an incomplete comparison reproducible.
         </div>
       </details>
     </section>
 
-    <section class="section hint">Last updated: <time id="lu"></time></section>
+    <section class="section hint">Last fact-checked: <time datetime="2026-08-18">2026-08-18</time></section>
 
     <footer class="footer">
       <div class="footer-content">
@@ -302,8 +310,6 @@
   </div>
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
-    const d = new Date();
-    document.getElementById('lu').textContent = d.toISOString().slice(0, 10);
   </script>
 </body>
 

@@ -1,197 +1,51 @@
-# Nano Banana — AI Image Editing (Client & Offline)
+# Nano Banana API & Local Alternatives
 
-> The definitive resource hub for Nano Banana. Featuring the **Pro Client** (Google Gemini 3.x Image) and **Open-Source Local Alternatives** such as Z-Image, Qwen-Image, and GLM-Image.
-> *Looking for the original model docs? Check the [Legacy Docs folder](./legacy_docs/).*
+[Live site](https://www.nano-banana.live/) · [Quickstart](https://www.nano-banana.live/guides/quickstart.html) · [Benchmarks](https://www.nano-banana.live/benchmarks/) · [Prompts](https://www.nano-banana.live/prompts/)
 
-🌐 **Live Site**: [nano-banana.live](https://www.nano-banana.live) | [English](#english) | [中文](#中文)
+An independent reference site that separates two often-confused workflows:
 
----
+1. **Nano Banana 2 API:** Google's `gemini-3.1-flash-image` runs in Google's cloud. The Python client runs on your computer, but inference does not.
+2. **True local inference:** separate open-weight models such as Qwen-Image-Edit-2511, HiDream-O1-Image, and HunyuanImage 3.0 run on hardware you control.
 
-## English
+This repository is not an official Google, Gemini, Qwen, Tencent, or HiDream project.
 
-### 🎯 Project Overview
-**Nano Banana** cuts through the confusion of AI image editing. We provide the truth about "running locally" vs "cloud inference."
-This site hosts the official **Nano Banana Client** documentation, reproducible benchmarks, and prompt recipes for the latest Google Gemini image stack and strong open-source local alternatives.
+## Site structure
 
-**Key Features**:
-- **The "Truth" about Local Run**: Clear distinction between the Python Client (CPU-friendly) and Offline Models (GPU-heavy).
-- **Pro Client Guide**: How to control Gemini image models from your terminal with `google-genai`.
-- **Prompt Recipes**: Instruction-based prompts optimized for modern instruction-tuned models.
-- **Reproducible Benchmarks**: Side-by-side comparisons with FLUX and SDXL.
+- `web/index.html` — cloud-vs-local explanation and main routes
+- `web/guides/quickstart.html` — model status, official links, and route selection
+- `web/blog/` — source-backed tutorials
+- `web/benchmarks/` — first-party comparisons and dated third-party snapshots
+- `web/prompts/` — copy-ready editing prompts
+- `code/nano_api.py` — minimal Google Gemini image-editing client
+- `scripts/validate-site.js` — structural and factual regression checks
 
-### 🌐 Domain & Branding
-- **Primary**: `nano-banana.live`
-- **Secondary**: `nano-banana.online` (redirects to live)
+## Content rules
 
-### 📋 Site Architecture
-- **Home `/`**: Intro + Quickstart Entry
-- **Guides `/guides/quickstart`**:
-  - **Route A (Pro)**: Python Client (Requires API Key, Runs on CPU).
-  - **Route B (Offline)**: Z-Image / Qwen-Image / GLM-Image (GPU requirements vary by model).
-- **Blog & Tutorials `/blog`**:
-  - `/blog/how-to-run-locally.html`: The definitive guide to the Client.
-  - `/blog/run-without-gpu.html`: Cloud GPU and budget options for users without a local GPU.
-  - `/blog/hardware-requirements.html`: VRAM Analysis (Client vs Offline).
-  - `/blog/troubleshooting-install.html`: Fixing API/Proxy issues.
-  - `/blog/top-prompt-recipes.html`: Gemini instruction recipes.
-- **Benchmarks `/benchmarks`**: Fair comparisons.
-- **Prompts `/prompts`**: Copy-paste JSON/Python dictionaries.
-- **FAQ `/faq`**: Address "Closed Source" reality and licensing.
+- Prefer primary sources: provider docs, official repositories, and model cards.
+- Never describe a local API client as local inference.
+- Date volatile claims such as rankings, pricing, model availability, and hardware guidance.
+- Do not invent testimonials, first-hand testing, or precise hardware requirements.
+- Automated articles publish only after required sources are readable, a separate source audit passes, and the full static site passes structural, link, metadata, and queue checks.
 
-### 🛠 Tech Stack
-- **Web**: Pure Static HTML5/CSS3 (Glassmorphism Design).
-- **Model (Pro)**: Google Gemini 3.1 Flash Image / Gemini 3 Pro Image (Cloud).
-- **Model (Offline)**: Z-Image / Qwen-Image / GLM-Image / HunyuanImage 3.0 / HiDream-O1-Image / SDXL Turbo (Local via Diffusers and related serving stacks).
+## Automation
 
-### 📈 Latest Updates (2026-07-25)
+- `weekly-blog.yml` runs three times weekly and publishes one article only after source, fact, and site validation gates pass.
+- `sync-benchmarks.yml` runs weekly, validates the static site, and commits only changed benchmark data.
+- Both publishers share one concurrency group, rebase on the latest `main`, revalidate, and only then push.
+- Run the local checks with:
 
-#### RunPod Monetization Route
-- **Primary choice**: RunPod best matches the site's Quickstart audience because the existing content teaches cloud A100 deployment for users without local VRAM.
-- **Timing**: Start now with the standard referral route; RunPod credits are earned from qualifying new users' spend, while cash affiliate status requires an invitation after 25 paying referrals.
-- **Current implementation**: The owner-provided RunPod referral URL is now connected to the main cloud GPU CTAs, with GA4 `runpod_signup` tracking and visible referral disclosure.
-- **Alternatives**: Vast.ai is a later option for advanced SSH/spot-market users; Hugging Face Spaces is a hosting platform, not the primary monetization route for this site.
+```bash
+node scripts/validate-site.js
+python -m py_compile code/nano_api.py
+```
 
-#### Automated Benchmark and Blog Operations
-- **Benchmark source**: `scripts/sync-benchmarks.js` calls Artificial Analysis's documented media endpoints for Text-to-Image and Image Editing. It tries the Pro endpoint first for `rank`, `samples`, release date, image pricing, and open-weight URLs, then safely falls back to the Free endpoint when the key lacks Pro access. The API key is never sent to the browser.
-- **Benchmark UX fallback**: Creator cells show initials first and hide them only after a favicon reaches a usable image size; the Reve mapping uses the official `app.reve.com` domain. Samples, release dates, and pricing columns are omitted when the active API response has no values, and automatically return when Pro metadata is available.
-- **Benchmark schedule**: `.github/workflows/sync-benchmarks.yml` runs daily at 00:30 UTC and commits a new static HTML snapshot only when the API response passes validation. Create an Artificial Analysis API key at [Artificial Analysis API key management](https://artificialanalysis.ai/api-key-management-redirect), then add it in GitHub repository `Settings → Secrets and variables → Actions` as `AA_API_KEY`.
-- **Free-tier limitation**: The Free media endpoint provides model identity, creator, Elo, and confidence interval only. Samples, release dates, image pricing, and open-weight URLs require Pro or Commercial media access; fields not returned by the active endpoint are shown as `—` rather than guessed.
-- **Blog schedule**: `.github/workflows/weekly-blog.yml` runs three times weekly and consumes one curated item from `web/blog/queue.json` per run, targeting three high-quality English articles per week. The queue is a long-term content library organized across API tutorials, local models, cloud GPUs, prompting, benchmarks, troubleshooting, and workflows; the initial library contains dozens of specific articles rather than only six posts.
-- **SEO research**: `web/blog/seo-research.json` stores English keyword clusters, related terms, search intent, evidence URLs, and preferred internal links. Exact monthly search volume is not claimed without Search Console, Google Ads Keyword Planner, or a licensed SEO data source.
-- **Blog model**: `web/blog/scripts/generate-article.js` uses NVIDIA NIM's OpenAI-compatible API with `deepseek-ai/deepseek-v4-pro` as the quality-first primary writer, `qwen/qwen3.5-122b-a10b` second, and `nvidia/nemotron-3-super-120b-a12b` as the final fallback. DeepSeek V4 Flash is not used as the primary writer. The SEO workflow now requires a researched primary term in the title, at least two researched internal links, direct search-intent coverage, and Article JSON-LD. Create a key at [NVIDIA Build](https://build.nvidia.com/), then add it in GitHub repository `Settings → Secrets and variables → Actions` as `NVIDIA_API_KEY`.
-- **Blog quality gate**: Generated content is sanitized to an allowlist of HTML tags, checked for title/description length, headings, lists, links, minimum word count, dangerous tags, duplicate slugs, and common AI filler phrases. Articles below 75/100 are not published.
-- **Blog rollback**: If article, index, or sitemap updates fail, the generator restores all previous files and exits non-zero; the workflow therefore does not commit a partial article.
-- **Content policy**: The queue contains selected topics and source URLs. The generator must distinguish cloud APIs from local models and must not invent rankings, prices, release status, or hardware requirements.
+## Primary references
 
-#### Traffic-first Integrity and Measurement Fixes
-- **Homepage SEO preserved**: Kept the local-install search intent while changing the main question-style title to `Local AI Image Editor?` and clarifying that Nano Banana uses a cloud API while open-weight alternatives run locally.
-- **API example corrected**: Updated `code/nano_api.py` to call the hosted `gemini-3.1-flash-image` model for real image editing instead of calling Imagen generation without using the input image.
-- **Deployment truthfulness**: Replaced the unverified Nano Banana clone/launch commands with the official HunyuanImage repository and its current README workflow.
-- **Navigation and accessibility**: Fixed QuickStart/FAQ anchor targets, added missing image `alt` text, and completed external-link `noopener` coverage for the touched pages.
-- **Measurement**: Added shared `web/analytics.js` tracking for key API, QuickStart, LMArena, RunPod, and model-repository CTA clicks on the main traffic pages.
-- **Benchmark labeling**: Changed the benchmark page from a real-time/daily claim to an automated static snapshot label; the scheduled sync updates it when the upstream API succeeds.
-- **IndexNow status**: No fake key or speculative submission endpoint was added; configuration remains pending a real IndexNow key and deployment decision.
+- [Google Gemini image generation](https://ai.google.dev/gemini-api/docs/image-generation)
+- [Qwen-Image-Edit-2511 model card](https://huggingface.co/Qwen/Qwen-Image-Edit-2511)
+- [HunyuanImage 3.0 repository](https://github.com/Tencent-Hunyuan/HunyuanImage-3.0)
+- [HiDream-O1-Image repository](https://github.com/HiDream-ai/HiDream-O1-Image)
 
-#### FLUX 3 Early Access QuickStart Watchlist
-- **Model coverage**: Added FLUX 3 to the QuickStart SEO metadata, route shortcuts, model overview, comparison table, and detailed announcement card.
-- **Accurate status**: Marked FLUX 3 as Early Access and multimodal; documented image, video, audio, and action-aware capabilities without claiming public weights or local deployment.
-- **Release caveat**: Linked the official Black Forest Labs announcement and recorded the FLUX 3 Image coming-soon status, private/API access, preliminary evaluations, and future open-weight FLUX 3 Dev roadmap.
-- **Benchmark policy**: Did not add FLUX 3 to reproducible benchmark rankings until public access and fixed evaluation details are available.
-- **Open-weight check**: Rechecked the official model page on July 25, 2026; FLUX 3 Dev open weights are announced but not released, while FLUX 3 Image remains marked as coming soon.
-- **Official preview asset**: Added only the final FLUX 3 capability overview image through the official Sanity CDN, resized to 1200px and forced to WebP rather than copying the 16MB original PNG into R2.
+## 中文说明
 
-#### Qwen-Image 3.0 QuickStart SEO and R2 Gallery
-- **QuickStart SEO**: Added Qwen-Image 3.0 keywords, description text, route shortcut, featured preview card, model overview card, and comparison-table row.
-- **Hosted-only status**: Documented the official 4.5K-token, dense-layout, 10px text, multilingual, and complex-UI capabilities without claiming downloadable weights or local deployment.
-- **Official examples**: Added all 16 Qwen-Image 3.0 announcement examples mirrored to the project's Cloudflare R2 CDN as compressed WebP assets under `qwen-image-3/`, including the 6A/6B handwritten-annotation comparison, 9A/9B painting-restoration comparison, and 12A/12B source-photo-to-scientific-plate comparison.
-- **Local alternative**: Kept Qwen-Image 2.0 as the open-weight local route and linked users to its existing setup section.
-- **UX refinement**: Added reliable in-page anchor scrolling with target highlighting and balanced the route/featured card grids for desktop, tablet, and mobile layouts.
-- **Indexing**: Updated the QuickStart page metadata, sitemap last-modified date, and this changelog.
-
-#### Phase 3 — Soft Monetization: No-GPU Guide + Cloud GPU Recommendations
-- **New page**: Created `/blog/run-without-gpu.html` to answer the site's most common search intent ("nano banana local" / "no GPU").
-- **Quick Start integration**: Added a low-risk "No GPU? Run in the cloud" decision link and a contextual callout above the model cards, plus a soft prompt in the Nano Banana 2 section pointing to the new guide.
-- **Monetization strategy**: Recommend RunPod (referral) and Vast.ai (referral) as cloud GPU options, with a disclosure note. The existing `/guides/cloud-deployment.html` is ready for a real RunPod referral link once the account is set up.
-- **Affiliate plan**: Documented RunPod and Amazon Associates registration steps. RunPod is the first priority because the site already teaches users to deploy on it.
-- **Indexing**: Updated `sitemap.xml`, `blog.html`, and this README to surface the new page.
-
-#### SEO UX Phase 1 & 2 — Quickstart Entry Points + HiDream Long-tail Page
-- **Phase 1**: Added a low-risk "Choose the Right Route Fast" section to Quick Start without changing the existing URL, H1, or core SEO target.
-- **Featured Previews**: Added visual preview cards for HiDream-O1-Image, HunyuanImage 3.0, and Qwen-Image so users can judge model quality before reading setup details.
-- **Phase 2**: Created `/guides/hidream-o1-image.html` as a dedicated long-tail SEO page for HiDream local install, open-source status, hardware planning, and model comparisons.
-- **Indexing**: Updated sitemap and LLM summary files so crawlers can discover the new HiDream guide.
-
-#### Quick Start — Added HiDream-O1-Image (Open Source)
-- **New Model**: Added HiDream.ai (智象未来) **HiDream-O1-Image** (8B) to the Quick Start local-deployment guides.
-- **Architecture**: Pixel-Level Unified Transformer (UiT) — no VAE, no separate text encoder; native 2048×2048.
-- **Open Weights**: MIT License, AA Text-to-Image Arena open-weights **#8** (Dev-2604), leading open T2I model.
-- **Docs**: Full card with installation, text-to-image, Prompt Agent, and web demo commands, plus overview card + summary table rows.
-- **Note**: Clarified that the headline commercial **HiDream-O1-Image-1.5** (AA global #2 / China #1, 1265 ELO) is closed-source via vivago.ai, distinct from the open-weights model.
-- **SEO**: Updated quickstart meta description and keywords.
-
-#### Benchmarks Page — Complete Rewrite (2026-04-25)
-- **Artificial Analysis Integration**: Full integration of AA Text-to-Image and Image Editing leaderboards with detailed Top 10 rankings.
-- **Real-time Data**: Elo scores, 95% confidence intervals, sample counts, release dates, and API pricing for all models.
-- **Company Logos**: Added favicon icons via Google favicon service for all model creators (OpenAI, Google, Black Forest Labs, ByteDance, xAI, Tencent, Alibaba, ImagineArt).
-- **Filter Buttons**: Added "All", "Current", "Open Weights" filter options.
-- **Data Accuracy**: All prices and rankings verified against AA official data (GPT Image 2: $211/1k, etc.).
-- **Quickstart Navigation**: Multiple entry points linking to local deployment guides.
-
-#### Quick Start Page — Major Content Refresh (2026-04-08)
-- **Nano Banana 2**: Replaced Nano Banana Pro with the newer Nano Banana 2 (Gemini 3.1 Flash Image) across the entire page. AA T2I #2 / Edit #3.
-- **HunyuanImage 3.0 Instruct**: Added as the 4th open-source model. 80B MoE, CoT reasoning, multi-image fusion. AA open-weight Edit #1 🏆.
-- **AA Rankings Updated**: All Artificial Analysis rankings refreshed to April 2026 data. Qwen-Image now open-weight T2I #2.
-- **SEO Meta**: Updated description and keywords to include HunyuanImage and "self hosted".
-- **Sitemap**: Updated quickstart.html lastmod to 2026-04-08.
-
----
-
-### 📈 Previous Updates (2026-02-01)
-
-#### Z-Image Page Enhancements
-- **Gallery Carousels**: Refined image selection across all capability sections (removed inconsistent aspect ratios).
-- **Architecture Diagram**: Enlarged to full width for better readability.
-- **Internal Navigation**: All links now properly route to internal pages.
-
-#### Quick Start Page Updates
-- **Closed-Source Warning**: Added prominent notice that Nano Banana Pro cannot run locally.
-- **Z-Image Section**: Added 6-image CDN showcase and "Read Full Guide" button linking to z-image.html.
-- **External Links**: Hugging Face and ModelScope links now open in new tabs.
-
----
-
-### 📈 Previous Updates (2026-01-20)
-
-#### 1. Content Strategy Pivot: "The Truth"
-- **New Blog Section**: Launched 4 deep-dive articles addressing the "Local Run" confusion.
-- **GSC Alignment**: Content now directly targets search queries like "nano banana local install" and "requirements".
-- **FAQ Overhaul**: Rewrote FAQ to explicitly state that Nano Banana Pro is closed-source, while offering Z-Image as the offline alternative.
-
-#### 2. Visual & UX Upgrades
-- **Glassmorphism UI**: Updated Blog and FAQ with premium glass cards and gradients.
-- **Accordion FAQ**: Replaced dense grids with expandable details/summary animations.
-- **No Underlines**: Cleaned up link styling across article cards.
-
-#### 3. SEO Improvements
-- **Sitemap**: Updates `2026-01-20` for all 14 pages.
-- **Favicons**: Unified branding across root/subdirectories.
-- **Canonical URLs**: Full coverage for all new blog posts.
-
----
-
-## 中文 (Chinese)
-
-### 🎯 项目概述
-**Nano Banana** 是 AI 图像编辑领域的"真相"中心。我们致力于澄清"本地运行"与"云端推理"的区别。
-本站提供 **Nano Banana Client**（Google Gemini 3.x Image）以及 **Z-Image / Qwen-Image / GLM-Image** 等离线替代方案的文档、基准测试和 Prompt 配方。
-
-**核心功能**:
-- **理清"本地运行"**: 明确区分 Python 客户端 (任意电脑) 与 离线大模型 (需要高端显卡)。
-- **Pro 客户端指南**: 如何在终端中通过 `google-genai` API 操控云端图像模型。
-- **Prompt 配方**: 专为指令遵循模型优化的自然语言 Prompt。
-- **基准测试**: 与 FLUX 和 SDXL 的公平对比。
-
-### 📋 网站架构
-- **首页 `/`**: 入口与概览
-- **快速入门 `/guides/quickstart`**:
-  - **路线 A (Pro)**: Python Client (需要 API Key, CPU 即可运行).
-  - **路线 B (离线)**: Z-Image / Qwen-Image / GLM-Image（显卡要求因模型而异）.
-- **博客 `/blog`**:
-  - `/blog/how-to-run-locally.html`: 客户端运行权威指南.
-  - `/blog/hardware-requirements.html`: 硬件配置分析.
-  - `/blog/troubleshooting-install.html`: 解决 API/代理报错.
-  - `/blog/top-prompt-recipes.html`: Gemini 专用 Prompt.
-- **常见问题 `/faq`**: 明确闭源/开源界限。
-
-### 📈 最新更新 (2026-01-20)
-
-#### 1. 内容战略转型
-- **博客上线**: 4篇核心技术文章，精准回应 "Local Install" 搜索意图。
-- **FAQ 重写**: 诚实说明 Pro 版的闭源属性，并指引离线用户去使用 Z-Image。
-
-#### 2. 视觉升级
-- **设计风格**: 博客和 FAQ 全面采用毛玻璃 (Glassmorphism) 风格。
-- **交互优化**: FAQ 改为折叠面板 (Accordion) 样式，博客卡片移除下划线。
-
-#### 3. SEO 优化
-- **Sitemap 更新**: 全站 14 个页面时间戳更新为 2026-01-20。
+本项目是一个独立资料站，不是 Google 官方网站。Nano Banana 2 是 Google 托管的 Gemini 3.1 Flash Image：你可以在本地运行 Python 客户端，但模型推理仍发生在云端。真正离线运行需要选择另外的开源权重模型，并以各项目的官方仓库、许可证和硬件说明为准。

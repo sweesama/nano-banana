@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>AI image editing workflow: Cloud API versus Local AI Image Models | Nano Banana</title>
-  <meta name="description" content="Learn when to use cloud APIs like Nano Banana versus local open-weight models, and how to fix common AI image API errors with practical steps.">
+  <title>Cloud API Versus Local AI Image Models: A Practical Guide | Nano Banana</title>
+  <meta name="description" content="Choose between Nano Banana 2's hosted Gemini API and open-weight local image models using privacy, hardware, cost, and maintenance criteria.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.nano-banana.live/blog/cloud-api-versus-local-ai-image-models.html">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI image editing workflow: Cloud API versus Local AI Image Models","description":"Learn when to use cloud APIs like Nano Banana versus local open-weight models, and how to fix common AI image API errors with practical steps.","datePublished":"2026-08-17","dateModified":"2026-08-17","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/cloud-api-versus-local-ai-image-models.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Cloud API Versus Local AI Image Models: A Practical Guide","description":"Choose between Nano Banana 2's hosted Gemini API and open-weight local image models using privacy, hardware, cost, and maintenance criteria.","datePublished":"2026-08-17","dateModified":"2026-08-18","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/cloud-api-versus-local-ai-image-models.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
   <link rel="stylesheet" href="../styles.css">
   <script src="../analytics.js" defer></script>
 </head>
@@ -23,26 +23,115 @@
         <a href="../blog.html" class="active">Blog</a>
       </div>
     </nav>
+
     <article class="article-container">
       <a href="../blog.html" class="article-back">← Back to Blog</a>
       <header class="article-header">
-        <div class="meta" style="justify-content:center;display:flex;">Comparisons • Aug 17, 2026</div>
-        <h1>AI image editing workflow: Cloud API versus Local AI Image Models</h1>
-        <p class="lead" style="margin:20px auto;">Learn when to use cloud APIs like Nano Banana versus local open-weight models, and how to fix common AI image API errors with practical steps.</p>
+        <div class="meta" style="justify-content:center;display:flex;">Comparisons • Updated Aug 18, 2026</div>
+        <h1>Cloud API Versus Local AI Image Models: A Practical Guide</h1>
+        <p class="lead" style="margin:20px auto;">Choose the deployment boundary first; compare model quality second.</p>
       </header>
+
       <div class="article-content">
-        <h2>Cloud API vs Local Open-Weight Models</h2><p>Nano Banana provides a cloud‑based API powered by Google’s Gemini image models. As noted in the FAQ, the Pro model is closed‑source and cannot run totally offline, though a local Python client can call the cloud service <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">FAQ<a href="#">. This means you rely on network latency and the free tier offered by Google’s Gemini API for experimentation <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">FAQ<a href="#">. For users who need a fully offline workflow, the quickstart guide lists open‑weight alternatives such as Z‑Image, Qwen‑Image, and GLM‑Image that can be run on local hardware <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart guide<a href="#">.</p><p>According to the quickstart overview, cloud‑only routes include Nano Banana 2, ChatGPT Image 2, and Seedream 4.5, while open models like HunyuanImage 3.0, Qwen‑Image 2.0, Z‑Image/Turbo, GLM‑Image, and HiDream‑O1‑Image are deployable locally with the appropriate GPU <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart<a href="#">. The guide also notes that most open models need 16 GB–48 GB of VRAM, but a cloud GPU can be rented (e.g., an A100 for ≈ $0.40 per hour) to run them without owning hardware <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart<a href="#">.</p><h2>Fixing AI Image API Errors: Practical Steps</h2><p>When you encounter errors such as authentication failures, quota exceeded, or proxy issues while using the Nano Banana cloud API, follow these steps to diagnose and resolve the problem:</p><ol><li>Verify that your API key is correctly set. The quickstart shows setting <code>GOOGLE_API_KEY</code> or <code>GEMINI_API_KEY</code> in your terminal <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart<a href="#">.</li><li>Check the Google AI Studio console for any billing alerts or quota limits; the FAQ notes that heavy commercial use may require a paid billing account <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">FAQ<a href="#">.</li><li>If you see a “proxy error” or connection timeout, ensure your network allows outbound HTTPS to <code>generativelanguage.googleapis.com</code> and that no corporate proxy is interfering. The troubleshooting installation guide offers tips for checking proxy settings <a href="https://www.nano-banana.live/blog/troubleshooting-install.html" target="_blank" rel="noopener">troubleshooting guide<a href="#">.</li><li>Test a minimal request using the Python snippet from the quickstart:<pre><code>pip install google-genai
+        <p><strong>Nano Banana 2 is a cloud API model, not a downloadable local model.</strong> Google documents Nano
+          Banana 2 as <code>gemini-3.1-flash-image</code>, a hosted image generation and editing model. A Python script
+          may run on your laptop, but the image and prompt are still sent to Google's servers. Google's
+          <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">official
+            image-generation documentation</a> shows the current Interactions API request format.</p>
+
+        <p>A local AI image model is different: its released weights are loaded on hardware you control. Examples on
+          this site include <a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank"
+            rel="noopener">HunyuanImage 3.0</a> and
+          <a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noopener">Qwen-Image-Edit-2511</a>.
+          Their official repositories provide weights, licenses, and deployment instructions. They are genuine local
+          routes, but they require much more hardware and maintenance than an API client.</p>
+
+        <h2>Choose a cloud API when operations are the bottleneck</h2>
+        <p>A hosted API is usually the simpler route when you want to test an editing workflow without buying or
+          configuring GPU hardware. The provider manages model serving, updates, and capacity. Your application handles
+          authentication, uploads, requests, responses, retries, and billing.</p>
+
+        <ul>
+          <li><strong>Good fit:</strong> prototypes, occasional edits, variable demand, or teams without GPU operations experience.</li>
+          <li><strong>Main trade-offs:</strong> every request needs network access; uploaded content crosses your local boundary; pricing and model behavior can change.</li>
+          <li><strong>Cost check:</strong> as checked on August 18, 2026, Google's <a
+              href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">live pricing page</a>
+            lists no standard free tier for <code>gemini-3.1-flash-image</code>. Do not plan around an old “free tier” claim.</li>
+        </ul>
+
+        <h2>Choose a local model when the data boundary matters</h2>
+        <p>Local weights are useful when images must stay on infrastructure you control, internet access is unavailable,
+          or sustained utilization makes self-hosting worth the operational work. “Open-weight” does not automatically
+          mean lightweight: model size, precision, attention implementation, resolution, and concurrency all affect the
+          required GPU memory.</p>
+
+        <p>For example, Tencent's current HunyuanImage 3.0 repository lists an 80B mixture-of-experts architecture and
+          multi-GPU-class recommendations. Qwen's official Image Edit 2511 card describes a 20B BF16 checkpoint and a
+          Diffusers workflow but does not give one universal minimum VRAM figure. Start from the exact official model
+          card, then measure your selected checkpoint and settings. Our <a href="../guides/quickstart.html">local-model
+            quickstart</a> keeps the deployment routes separate.</p>
+
+        <h2>A five-question decision test</h2>
+        <ol>
+          <li><strong>Can the source image leave your environment?</strong> If not, eliminate hosted APIs before comparing quality.</li>
+          <li><strong>How often will the model run?</strong> An occasional request and a continuously occupied GPU have very different economics.</li>
+          <li><strong>Can you operate the documented hardware?</strong> Count every required GPU, storage, driver, dependency, and idle hour.</li>
+          <li><strong>Do you need a fixed model version?</strong> Local checkpoints are easier to pin; hosted behavior can change behind a stable product name.</li>
+          <li><strong>What evidence matters?</strong> Test your real inputs. A leaderboard snapshot cannot substitute for your editing task, latency, and failure rate.</li>
+        </ol>
+
+        <h2>Use the current Gemini request pattern</h2>
+        <p>If the cloud route is appropriate, this shortened Python pattern follows Google's current Interactions API.
+          It base64-encodes the input and decodes the returned image. The fuller maintained example is in our
+          <a href="nano-banana-api-image-editing-python.html">Nano Banana 2 Python tutorial</a>.</p>
+
+        <pre><code>import base64
+from pathlib import Path
+
 from google import genai
-client = genai.Client(api_key="YOUR_KEY")
-response = client.models.edit_image(
+
+source = Path("input.png")
+client = genai.Client()
+interaction = client.interactions.create(
     model="gemini-3.1-flash-image",
-    prompt="Make the cat wear sunglasses",
-    image=your_image)
-</code></pre>If this succeeds, the issue lies in your surrounding script or environment.</li><li>Consider switching to an open‑weight model for offline work if cloud reliability is a concern. The quickstart provides installation commands for models such as Qwen‑Image 2.0 and Z‑Image/Turbo <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart<a href="#">.</li></ol><p>For more advanced prompt techniques that reduce the chance of ambiguous outputs, see the prompt engineering tips <a href="https://www.nano-banana.live/prompts/" target="_blank" rel="noopener">prompt tips<a href="#">.</p>
-        <h2>Sources</h2>
-        <ul><li><a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">https://www.nano-banana.live/faq.html</a></li><li><a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">https://www.nano-banana.live/guides/quickstart.html</a></li></ul>
+    input=[
+        {"type": "text", "text": "Replace the background with a quiet library."},
+        {
+            "type": "image",
+            "mime_type": "image/png",
+            "data": base64.b64encode(source.read_bytes()).decode("utf-8"),
+        },
+    ],
+    response_format={"type": "image"},
+)
+
+Path("edited.png").write_bytes(
+    base64.b64decode(interaction.output_image.data)
+)</code></pre>
+
+        <h2>Troubleshoot the boundary before changing models</h2>
+        <ul>
+          <li><strong>Authentication or permission error:</strong> verify the key, project, billing status, model access, and current model ID in Google AI Studio.</li>
+          <li><strong>Quota or rate error:</strong> inspect the account's current limits and pricing rather than assuming an unlimited or free allowance.</li>
+          <li><strong>Network or proxy error:</strong> test whether the same environment can reach the Gemini API over HTTPS.</li>
+          <li><strong>No image returned:</strong> inspect the complete API response and safety outcome; do not assume every request contains <code>output_image</code>.</li>
+          <li><strong>Privacy mismatch:</strong> stop sending the image to a cloud API and move to a separately licensed open-weight model.</li>
+        </ul>
+
+        <p>The practical answer is not that one product form is always better. Use Nano Banana 2 when a managed API is
+          the right boundary. Use a released local model when control of data, version, or infrastructure is worth the
+          extra work. Never call an API wrapper “offline” simply because the wrapper runs on your own computer.</p>
+
+        <h2>Primary sources</h2>
+        <ul>
+          <li><a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">Google Gemini image generation and editing documentation</a></li>
+          <li><a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">Google Gemini Developer API pricing</a></li>
+          <li><a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener">Tencent HunyuanImage 3.0 repository</a></li>
+          <li><a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noopener">Qwen-Image-Edit-2511 model card</a></li>
+        </ul>
       </div>
     </article>
+
     <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
   </div>
 </body>

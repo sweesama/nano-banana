@@ -66,10 +66,10 @@
           <div class="meta" style="margin-bottom: 16px; color: var(--primary);">Integration • Jan 20, 2026</div>
           <h2
             style="font-size: 2.5em; margin-bottom: 16px; background: linear-gradient(to right, #fff, #aaa); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
-            How to Run Locally: The Definitive Guide</h2>
+            Can Nano Banana 2 Run Locally?</h2>
           <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 1.1em; line-height: 1.6;">
-            Clarifying the "Closed Source" reality. Learn how to set up the Nano Banana Python Client to access Pro
-            features from your terminal.
+            Nano Banana 2 is a hosted Google model, not downloadable weights. Learn how a local Python client calls the
+            cloud API, and when an open local alternative is the better route.
           </p>
           <a href="./blog/how-to-run-locally.html" class="btn btn-primary" style="width: fit-content;">Read Guide →</a>
         </div>
@@ -80,27 +80,17 @@
       </div>
 
       <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
-        <a href="./blog/cloud-api-versus-local-ai-image-models.html" class="card article-card"><div class="article-image bg-gradient-4" style="display:flex;align-items:center;justify-content:center;"><span style="font-size:40px;">⚖️</span></div><div class="article-meta">Comparisons • Aug 17, 2026</div><h3>AI image editing workflow: Cloud API versus Local AI Image Models</h3><p>Learn when to use cloud APIs like Nano Banana versus local open-weight models, and how to fix common AI image API errors with practical steps.</p></a>
-        <a href="./blog/qwen-image-local-image-editing-guide.html" class="card article-card"><div class="article-image bg-gradient-4" style="display:flex;align-items:center;justify-content:center;"><span style="font-size:40px;">🎨</span></div><div class="article-meta">Local Models • Aug 5, 2026</div><h3>Qwen Image local image editing guide: How to pick a local AI image model</h3><p>A concise guide to comparing, choosing, and installing Qwen Image Edit 2511 as a local AI image model, with VRAM considerations and step‑by‑step Diffusers instructions.</p></a>
-        <a href="./blog/hunyuanimage-local-deployment-requirements.html" class="card article-card"><div class="article-image bg-gradient-4" style="display:flex;align-items:center;justify-content:center;"><span style="font-size:40px;">🖥️</span></div><div class="article-meta">Local Models • Aug 3, 2026</div><h3>HunyuanImage local deployment requirements for a local AI image model</h3><p>Learn the VRAM, hardware, and setup needed to run HunyuanImage-3.0 locally, compare with cloud options, and follow step‑by‑step installation instructions.</p></a>
+        <a href="./blog/cloud-api-versus-local-ai-image-models.html" class="card article-card"><div class="article-image bg-gradient-4" style="display:flex;align-items:center;justify-content:center;"><span style="font-size:40px;">⚖️</span></div><div class="article-meta">Comparisons • Updated Aug 18, 2026</div><h3>Cloud API Versus Local AI Image Models</h3><p>Choose the right deployment boundary using privacy, hardware, cost, and maintenance—not a misleading “local client” label.</p></a>
+        <a href="./blog/qwen-image-local-image-editing-guide.html" class="card article-card"><div class="article-image bg-gradient-4" style="display:flex;align-items:center;justify-content:center;"><span style="font-size:40px;">🎨</span></div><div class="article-meta">Local Models • Updated Aug 13, 2026</div><h3>Run Qwen-Image-Edit-2511 Locally with Diffusers</h3><p>Use the official 20B BF16 model, Apache-2.0 license, and Diffusers pipeline without inventing a universal VRAM minimum.</p></a>
+        <a href="./blog/hunyuanimage-local-deployment-requirements.html" class="card article-card"><div class="article-image bg-gradient-4" style="display:flex;align-items:center;justify-content:center;"><span style="font-size:40px;">🖥️</span></div><div class="article-meta">Local Models • Updated Aug 13, 2026</div><h3>HunyuanImage 3.0 Hardware Requirements</h3><p>Tencent's official VRAM table, environment requirements, and a realistic multi-GPU deployment checklist.</p></a>
         <!-- Article: Jul 29, 2026 -->
         <a href="./blog/nano-banana-api-image-editing-python.html" class="card article-card">
           <div class="article-image bg-gradient-4" style="display: flex; align-items: center; justify-content: center;">
             <span style="font-size: 40px;">🐍</span>
           </div>
-          <div class="article-meta">API Tutorial • Jul 29, 2026</div>
-          <h3>Gemini image API: Editing Images with Python using Nano Banana</h3>
-          <p>Step‑by‑step guide to edit images with the Gemini image API using Python and the Nano Banana client, including setup, code examples, and troubleshooting.</p>
-        </a>
-
-        <!-- Article: Jul 27, 2026 -->
-        <a href="./blog/run-ai-image-models-without-gpu.html" class="card article-card">
-          <div class="article-image bg-gradient-4" style="display: flex; align-items: center; justify-content: center;">
-            <span style="font-size: 40px;">☁️</span>
-          </div>
-          <div class="article-meta">Cloud GPU • Jul 27, 2026</div>
-          <h3>cloud GPU for AI image generation: RunPod vs Vast.ai cost and setup</h3>
-          <p>Compare cloud GPU providers for running AI image models without a local GPU, covering pricing, ease of use, reliability, and step‑by‑step deployment of Hunyuan 3.0 on RunPod.</p>
+          <div class="article-meta">API Tutorial • Updated Aug 13, 2026</div>
+          <h3>Edit Images with Nano Banana 2 in Python</h3>
+          <p>A working Gemini 3.1 Flash Image example that clearly explains which code is local and which inference is cloud-hosted.</p>
         </a>
 
         <!-- Article: Jun 23 -->
@@ -108,9 +98,9 @@
           <div class="article-image bg-gradient-1" style="display: flex; align-items: center; justify-content: center;">
             <span style="font-size: 40px;">☁️</span>
           </div>
-          <div class="article-meta">Cloud & Budget • Jun 23</div>
-          <h3>Run Without a GPU: Cloud & Budget Options</h3>
-          <p>No RTX 4090? Compare cloud GPU rentals, free API tiers, and lightweight models for every budget.</p>
+          <div class="article-meta">Cloud & Budget • Updated Aug 13, 2026</div>
+          <h3>Run AI Image Models Without Owning a GPU</h3>
+          <p>Compare hosted APIs, correctly sized rentals, and smaller local models without relying on stale prices.</p>
         </a>
 
         <!-- Article: Jan 18 -->
@@ -120,7 +110,7 @@
           </div>
           <div class="article-meta">Hardware • Jan 18</div>
           <h3>Can My PC Run It? Hardware Truths</h3>
-          <p>Why "Client" mode needs 0 GPU, while "Offline" mode needs an RTX 4090. A tier list for 2026.</p>
+          <p>Why a cloud API needs no local GPU, while open-weight hardware ranges from consumer cards to multi-GPU servers.</p>
         </a>
 
         <!-- Article: Jan 12 -->

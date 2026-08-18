@@ -1,4 +1,4 @@
-name: Generate Nano Banana Blog Article
+name: Publish Source-Audited Nano Banana Article
 
 on:
   schedule:
@@ -8,39 +8,61 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: nano-banana-content-publisher
+  cancel-in-progress: false
+
 jobs:
-  generate:
+  publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
 
+      - name: Validate the current site
+        run: node scripts/validate-site.js
+
       - name: Install generator dependencies
         working-directory: web/blog/scripts
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
 
-      - name: Generate and publish article
+      - name: Test publishing guards
+        working-directory: web/blog/scripts
+        run: npm test
+
+      - name: Generate and source-audit one article
         working-directory: web/blog/scripts
         env:
           NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
           BLOG_MODEL_PRIMARY: deepseek-ai/deepseek-v4-pro
           BLOG_MODEL_FALLBACK: qwen/qwen3.5-122b-a10b
           BLOG_MODEL_LAST_RESORT: nvidia/nemotron-3-super-120b-a12b
+          BLOG_MODEL_VERIFIER: nvidia/nemotron-3-super-120b-a12b
         run: node generate-article.js
 
-      - name: Commit and push
+      - name: Validate the generated site
+        run: node scripts/validate-site.js
+
+      - name: Commit, rebase, revalidate, and publish
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name "Nano Banana Blog Bot"
           git config user.email "bot@nano-banana.live"
           git add web/blog.html web/blog web/sitemap.xml
           if git diff --staged --quiet; then
             echo "No article changes detected."
-          else
-            git commit -m "content: publish scheduled AI image article"
-            git push
+            exit 0
           fi
+          git commit -m "content: publish source-audited AI image article"
+          git pull --rebase origin main
+          node scripts/validate-site.js
+          git push origin HEAD:main

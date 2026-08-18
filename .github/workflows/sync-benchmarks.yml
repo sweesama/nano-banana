@@ -2,18 +2,25 @@ name: Sync Artificial Analysis Benchmarks
 
 on:
   schedule:
-    - cron: '30 0 * * *'
+    - cron: '30 0 * * 1'
   workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: nano-banana-content-publisher
+  cancel-in-progress: false
+
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -25,8 +32,13 @@ jobs:
           AA_API_KEY: ${{ secrets.AA_API_KEY }}
         run: node scripts/sync-benchmarks.js
 
+      - name: Validate the generated site
+        run: node scripts/validate-site.js
+
       - name: Commit changes
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name "Benchmark Bot"
           git config user.email "bot@nano-banana.live"
           git add web/benchmarks/index.html
@@ -34,5 +46,7 @@ jobs:
             echo "No benchmark changes detected."
           else
             git commit -m "chore: sync Artificial Analysis benchmarks"
-            git push
+            git pull --rebase origin main
+            node scripts/validate-site.js
+            git push origin HEAD:main
           fi

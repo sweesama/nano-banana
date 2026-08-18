@@ -1,73 +1,23 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3758496128431673"
-    crossorigin="anonymous"></script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P0QMF67972"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-P0QMF67972');
-  </script>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#0b0f14" />
-  <meta name="color-scheme" content="dark" />
-  <title>Run Hunyuan 3.0 Without a GPU | Cloud Deployment Guide</title>
-  <meta name="description"
-    content="Full tutorial on how to rent an A100 cloud GPU on RunPod to deploy heavy open-weight image models such as HunyuanImage 3.0 for short-term experiments." />
-  <meta name="keywords"
-    content="run hunyuan 3.0 on cloud, runpod deployment, rent cloud gpu for stable diffusion, nano banana cloud setup, A100 per hour" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://www.nano-banana.live/guides/cloud-deployment.html" />
-
-  <link rel="icon" href="../favicon.png" type="image/png" />
-  <link rel="stylesheet" href="../styles.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3758496128431673" crossorigin="anonymous"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0f14">
+  <meta name="color-scheme" content="dark">
+  <title>Cloud GPU Planning for Open Image Models | RunPod Guide</title>
+  <meta name="description" content="Choose a cloud GPU by the model's official VRAM requirement, compare single- and multi-GPU routes, and avoid paying for the wrong RunPod configuration.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/guides/cloud-deployment.html">
+  <link rel="icon" href="../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../styles.css">
   <script src="../analytics.js" defer></script>
-  
   <style>
-    .tutorial-step {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 24px;
-    }
-
-    .step-number {
-      display: inline-block;
-      width: 32px;
-      height: 32px;
-      background: var(--primary);
-      color: #0b0f14;
-      border-radius: 50%;
-      text-align: center;
-      line-height: 32px;
-      font-weight: bold;
-      margin-right: 12px;
-    }
-
-    .cost-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-      font-size: 0.9em;
-    }
-    
-    .cost-table th, .cost-table td {
-      padding: 12px;
-      border: 1px solid var(--glass-border);
-      text-align: left;
-    }
-
-    .cost-table th {
-      background: rgba(255, 255, 255, 0.05);
-    }
+    .tutorial-step { background: rgba(255,255,255,.02); border: 1px solid var(--glass-border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+    .step-number { display: inline-block; width: 32px; height: 32px; background: var(--primary); color: #0b0f14; border-radius: 50%; text-align: center; line-height: 32px; font-weight: bold; margin-right: 12px; }
   </style>
 </head>
-
 <body>
   <div class="container">
     <nav class="nav">
@@ -77,108 +27,80 @@
         <a href="../prompts/index.html">Prompts</a>
         <a href="quickstart.html" class="active">Quickstart</a>
         <a href="../faq.html">FAQ</a>
-        <a href="../about.html">About</a>
         <a href="../blog.html">Blog</a>
       </div>
     </nav>
 
-    <div style="max-width: 800px; margin: 40px auto 0;">
-      <h1 style="font-size: 2.8em; margin-bottom: 16px; line-height: 1.2;">How to Run Hunyuan 3.0 Without a 48GB GPU</h1>
-      <p class="lead">Deploying massive open-source models doesn't require a $5,000 workstation. Learn how to rent a cloud A100 GPU for $0.40/hour using RunPod.</p>
-    </div>
+    <header style="max-width:800px;margin:40px auto 0;">
+      <h1 style="font-size:2.8em;margin-bottom:16px;line-height:1.2;">Choose a Cloud GPU Without Renting the Wrong Machine</h1>
+      <p class="lead">Start with the model's official requirement, then compare current instance inventory and total cost.</p>
+    </header>
 
-    <section class="section" style="max-width: 800px; margin: 0 auto;">
-      <div style="background: rgba(248, 113, 113, 0.1); border-left: 4px solid #f87171; padding: 20px; border-radius: 0 8px 8px 0; margin-bottom: 40px;">
-        <h4 style="margin-top: 0; color: #fca5a5;">The Local Hardware Bottleneck</h4>
-        <p style="margin-bottom: 0; font-size: 0.95em;">Models like Hunyuan 3.0 (80B Parameters) demand massive VRAM. Typical gaming GPUs (like the RTX 3060 8GB or 4070 12GB) will immediately hit <code>CUDA out of memory</code> errors when attempting to load the weights.</p>
+    <section class="section" style="max-width:800px;margin:0 auto;">
+      <div class="highlight-box">
+        <strong>Do not begin with a provider or a price.</strong> Nano Banana 2 needs no rented GPU because it is a Google cloud API. Open-weight models have different requirements, and HunyuanImage 3.0 is a multi-GPU-class deployment in Tencent's official table.
       </div>
 
-      <h2>The Solution: Cloud GPU Sandboxes</h2>
-      <p>Instead of investing thousands in hardware that depreciates rapidly, AI researchers and e-commerce studios rent "Cloud GPUs" by the hour. You spin up the virtual machine, load an open-weight model such as HunyuanImage 3.0 through its official repository or ComfyUI, generate your images, and turn it off. You only pay for the exact minutes you use.</p>
-
-      <table class="cost-table">
-        <thead>
-          <tr>
-            <th>Setup</th>
-            <th>Upfront Cost</th>
-            <th>VRAM</th>
-            <th>Best For</th>
-          </tr>
-        </thead>
+      <h2>Model-first planning</h2>
+      <table class="data-table">
+        <thead><tr><th>Route</th><th>What the official source establishes</th><th>Planning action</th></tr></thead>
         <tbody>
-          <tr>
-            <td>Local RTX 4090 Workstation</td>
-            <td>~$3,500+</td>
-            <td>24GB</td>
-            <td>24/7 dedicated local rendering</td>
-          </tr>
-          <tr>
-            <td><strong style="color: #60a5fa;">Cloud A100 (via RunPod)</strong></td>
-            <td><strong style="color: #60a5fa;">$0.00 ($0.44/hour)</strong></td>
-            <td><strong style="color: #60a5fa;">80GB</strong></td>
-            <td>Heavy 80B models, weekend projects</td>
-          </tr>
+          <tr><td>Nano Banana 2</td><td>Google-hosted <code>gemini-3.1-flash-image</code></td><td>Use the API; do not rent a GPU for the model</td></tr>
+          <tr><td>Qwen-Image-Edit-2511</td><td>20B BF16; official card gives no universal minimum VRAM</td><td>Choose a high-memory CUDA candidate and measure the exact pipeline</td></tr>
+          <tr><td>HunyuanImage-3.0 base</td><td>Official recommendation ≥3 × 80GB</td><td>Look for a compatible multi-GPU configuration</td></tr>
+          <tr><td>HunyuanImage-3.0 Instruct</td><td>Official recommendation ≥8 × 80GB</td><td>Price the entire configuration, not one A100</td></tr>
         </tbody>
       </table>
 
-      <h2 style="margin-top: 60px;">Step-by-Step Deployment Guide</h2>
-      
+      <p>For other models, open the exact repository or model card from the <a href="quickstart.html">quickstart</a>. Community quantizations can reduce memory, but they are separate artifacts and should be tested before you publish a requirement.</p>
+
+      <h2>What to compare on a cloud marketplace</h2>
+      <ul>
+        <li><strong>Total GPUs and VRAM:</strong> count every required GPU, not only the memory of one card.</li>
+        <li><strong>Interconnect and topology:</strong> multi-GPU workloads may depend on how the cards communicate.</li>
+        <li><strong>Software image:</strong> match the repository's Python, CUDA, PyTorch, and driver requirements.</li>
+        <li><strong>Storage:</strong> include model weights, caches, containers, and outputs.</li>
+        <li><strong>Billing state:</strong> confirm what continues billing while an instance is stopped.</li>
+        <li><strong>Current price:</strong> inventory and rates change; use the checkout screen as the source of truth.</li>
+      </ul>
+
+      <h2>RunPod setup checklist</h2>
       <div class="tutorial-step">
-        <h3 style="margin-top: 0;"><span class="step-number">1</span> Create a RunPod Account</h3>
-        <p>RunPod is currently the cheapest and most reliable provider for AI-ready containers. They offer heavily discounted "Secure Cloud" instances.</p>
-        <p>👉 <strong><a href="https://runpod.io?ref=jcni0c53" target="_blank" rel="noopener" style="color: #60a5fa; font-weight: 600; text-decoration: underline;" data-track="runpod_signup">Open the official RunPod entry</a></strong> to create your account and access current spot pricing. This referral link may support the site at no extra cost to new users.</p>
+        <h3><span class="step-number">1</span>Open current inventory</h3>
+        <p><a href="https://runpod.io?ref=jcni0c53" target="_blank" rel="noopener" data-track="runpod_signup">Open RunPod through this site's referral link</a>, then compare available GPU configurations and current prices. Qualifying usage may support this site at no extra cost to you.</p>
       </div>
 
       <div class="tutorial-step">
-        <h3 style="margin-top: 0;"><span class="step-number">2</span> Deploy an A100 Instance</h3>
-        <p>Once logged in, navigate to <strong>Pods -> Deploy</strong>.</p>
-        <ul>
-          <li><strong>GPU Type:</strong> Search for "A100 PCIE" (80GB). If unavailable, an RTX A6000 (48GB) works well too.</li>
-          <li><strong>Template:</strong> Select the <code>RunPod PyTorch</code> or <code>ComfyUI</code> official template. This saves you from having to install Python, CUDA, and drivers manually.</li>
-          <li><strong>Volume:</strong> Allocate at least 150GB of disk space to hold the heavy Hunyuan 3.0 model weights.</li>
-        </ul>
-        <p>Click "Deploy". In about 60 seconds, your massive GPU server will be online.</p>
+        <h3><span class="step-number">2</span>Match the exact model</h3>
+        <p>Write down the checkpoint, variant, precision, number of inputs, and target resolution. For Hunyuan, check the <a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener">official Tencent table</a>. For Qwen, begin with the <a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noopener">official model card</a>.</p>
       </div>
 
       <div class="tutorial-step">
-        <h3 style="margin-top: 0;"><span class="step-number">3</span> Connect & Install an Open Model</h3>
-        <p>Click "Connect" on your running Pod to open the Web Terminal or Jupyter Notebook. For HunyuanImage 3.0, use the official repository and follow its current README instructions.</p>
-        <div style="background: rgba(0,0,0,0.4); padding: 16px; border-radius: 8px; margin: 16px 0;">
-          <pre style="margin:0; font-size: 0.9em; tab-size: 4;"><code>git clone https://github.com/Tencent-Hunyuan/HunyuanImage-3.0.git
-cd HunyuanImage-3.0</code></pre>
-        </div>
-        <p><a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener" data-track="hunyuan_repo_cta">Open the official HunyuanImage repository →</a></p>
+        <h3><span class="step-number">3</span>Launch a clean environment</h3>
+        <p>Select a documented PyTorch image with compatible drivers. Install the official project first and generate one baseline output before adding ComfyUI nodes, quantization, or custom kernels.</p>
       </div>
 
       <div class="tutorial-step">
-        <h3 style="margin-top: 0;"><span class="step-number">4</span> Turn It Off When Done!</h3>
-        <p>This is crucial: when you finish generating your images, hit the <strong>Stop</strong> button on your Pod. You only pay a few pennies a day for the storage disk while the GPU is stopped. You can start it back up next week exactly where you left off!</p>
+        <h3><span class="step-number">4</span>Measure before scaling</h3>
+        <p>Record peak VRAM, load time, generation time, output settings, and total bill for one job. That evidence tells you whether to keep the instance, change precision, or choose another model.</p>
       </div>
 
+      <div class="tutorial-step">
+        <h3><span class="step-number">5</span>Stop billing deliberately</h3>
+        <p>Save outputs, remove secrets from notebooks, and stop or terminate the resources you no longer need. Check whether storage and public IPs continue billing after compute stops.</p>
+      </div>
+
+      <h2>Primary sources</h2>
+      <ul>
+        <li><a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">Google Gemini image API documentation</a></li>
+        <li><a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener">Tencent HunyuanImage-3.0 repository</a></li>
+        <li><a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noopener">Qwen-Image-Edit-2511 model card</a></li>
+      </ul>
+
+      <p class="disclosure"><strong>Disclosure:</strong> the RunPod URL above is a referral link. This page does not claim a fixed hourly price or that one provider is always cheapest; verify current inventory and terms before paying.</p>
     </section>
 
-    <footer class="footer">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h4>Product</h4>
-          <ul>
-            <li><a href="../benchmarks/index.html">Benchmarks</a></li>
-            <li><a href="../prompts/index.html">Prompt Recipes</a></li>
-            <li><a href="quickstart.html">Quickstart Guide</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h4>Legal</h4>
-          <ul>
-            <li><a href="../privacy.html">Privacy Policy</a></li>
-            <li><a href="../terms.html">Terms of Service</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p> 2026 Nano Banana — English‑first, static‑first. <a href="https://www.nano-banana.live/" target="_blank" rel="noopener">nano-banana.live</a></p>
-      </div>
-    </footer>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
   </div>
 </body>
 </html>

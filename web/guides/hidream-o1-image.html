@@ -204,10 +204,10 @@
         </div>
         <div class="mini-card">
           <h3 style="color:#fbbf24;">Commercial HiDream-O1-Image-1.5</h3>
-          <p>This is the closed-source flagship model reported on the commercial leaderboard. It is cloud-only and should not be described as locally runnable.</p>
+          <p>This is a separate closed-source commercial route. It is cloud-only and should not be described as locally runnable.</p>
           <ul>
             <li>Closed-source commercial model</li>
-            <li>Reported AA global #2 / China #1 with 1265 ELO</li>
+            <li>Ranking and availability may change; verify them on the provider before purchase</li>
             <li>Available through online product routes such as vivago.ai</li>
             <li>Not a self-hosted local install target</li>
           </ul>
@@ -223,8 +223,8 @@
           <p>The model is built as a natively unified Transformer over raw pixels, instead of stitching together a separate VAE and text encoder pipeline.</p>
         </div>
         <div class="mini-card">
-          <h3>Open T2I Leader</h3>
-          <p>The distilled Dev-2604 variant is positioned as a leading open-weights text-to-image model on Artificial Analysis.</p>
+          <h3>8B Open Weights</h3>
+          <p>The official repository provides full and distilled Dev checkpoints under the MIT license.</p>
         </div>
         <div class="mini-card">
           <h3>Native 2K Output</h3>
@@ -263,7 +263,7 @@
             </tr>
             <tr>
               <td>2</td>
-              <td>Prepare a CUDA machine with 24GB+ VRAM for practical testing.</td>
+              <td>Prepare a CUDA machine and measure the exact checkpoint and resolution; the official repository does not publish one fixed minimum.</td>
               <td>The model is open, but it is not lightweight like a normal desktop app.</td>
             </tr>
             <tr>
@@ -340,7 +340,7 @@ python app.py</code></pre>
       <h3>Is HiDream-O1-Image open source?</h3>
       <p>Yes, the 8B HiDream-O1-Image model is released as open weights under the MIT license. The commercial HiDream-O1-Image-1.5 model is different and should be treated as closed-source.</p>
       <h3>Can it run on a normal laptop?</h3>
-      <p>Not realistically. It is open-source, but practical inference still needs a CUDA GPU. For most users, 24GB+ VRAM is the safer planning number.</p>
+      <p>Not realistically. The official implementation requires a CUDA-capable GPU, but it does not publish one universal minimum VRAM figure. Measure the exact full or Dev checkpoint, resolution, and attention setup before renting hardware.</p>
       <h3>Is this the same as Nano Banana?</h3>
       <p>No. Nano Banana refers to the Google/Gemini image route in this site. HiDream-O1-Image is listed as a local open-source alternative.</p>
     </section>

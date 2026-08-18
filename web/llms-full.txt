@@ -1,62 +1,47 @@
-# Nano Banana — LLM Full Summary
-> Nano Banana is a static, SEO‑friendly hub about a new text‑guided image editing model. We focus on reproducible benchmarks, prompt recipes, and quickstarts. The site is English‑first, minimal/Google‑style UI, mobile‑friendly, and deployable to Vercel.
+# Nano Banana — Full Context for Search and AI Assistants
 
-## Mission
-Help users quickly understand what the model is, how to run it, and how it compares with alternatives like FLUX Kontext. All examples are designed to be reproducible.
+## What this site is
 
-## Structure
-- Home: https://www.nano-banana.live/
-  - Hero explaining the model and scope
-  - CTA: Try in LMArena (https://lmarena.ai/?chat-modality=image)
-  - Cards linking to Benchmarks / Quickstart / Prompts
-- Benchmarks index: https://www.nano-banana.live/benchmarks/index.html
-  - **Artificial Analysis Leaderboards**: Full Top 10 rankings for Text-to-Image and Image Editing
-  - Real-time Elo scores, confidence intervals, pricing, and release dates
-  - Company favicon icons for all model creators
-  - Filter by: All, Current, Open Weights
-  - Data sourced from: https://artificialanalysis.ai/image/leaderboard/
-- Portrait Editing Benchmark: https://www.nano-banana.live/benchmarks/portrait-editing.html
-  - Inputs to download, fixed params, and pipeline steps
-  - A/B slider: left (FLUX Kontext) vs right (Nano Banana)
-- Quickstart: https://www.nano-banana.live/guides/quickstart.html
-  - Preserves the main local-install URL and H1 for SEO stability
-  - Adds fast route-selection links for cloud API, no-GPU cloud options, open editing, open T2I, text rendering, and fast local generation
-  - Adds featured open-model visual previews for HiDream-O1-Image, HunyuanImage 3.0, and Qwen-Image
-  - Includes a "No GPU? Run in the cloud" callout and contextual prompt in the Nano Banana 2 section
-  - Includes offline model overview, hardware notes, galleries, and setup commands
-- Run Without a GPU: https://www.nano-banana.live/blog/run-without-gpu.html
-  - Targets the site's most common search intent (no-GPU / local alternatives)
-  - Compares Nano Banana 2 API, RunPod/Vast.ai cloud GPU rentals, and lightweight local models
-  - Includes a decision table and disclosure for affiliate/referral links
-- HiDream-O1-Image Guide: https://www.nano-banana.live/guides/hidream-o1-image.html
-  - Dedicated long-tail SEO page for HiDream-O1-Image local install and open-source status
-  - Distinguishes MIT open-source HiDream-O1-Image 8B from closed commercial HiDream-O1-Image-1.5
-  - Includes visual examples, hardware planning, official repository links, setup outline, and model selection guidance
-- Prompts: https://www.nano-banana.live/prompts/index.html
-  - Copy‑ready prompt recipes with suggested parameters
+Nano Banana is an independent, English-first reference site operated by Mzu. It is not affiliated with or endorsed by Google. Its purpose is to answer a confusing question accurately: what can run from a local computer, and what actually performs inference on that computer?
+
+Google's Nano Banana 2 is Gemini 3.1 Flash Image. It is a hosted model reached through Google's API. Running the sample Python client on a laptop does not make the model local or offline; the input is sent to Google's service. True offline inference requires a different open-weight model.
+
+## Main user routes
+
+1. Use Nano Banana 2 through Google: obtain an API key, install the official `google-genai` package, and call `gemini-3.1-flash-image`.
+2. Run an open-weight editor: start with the official Qwen-Image-Edit-2511 model card and its Diffusers example.
+3. Evaluate a very large open model: read Tencent's official HunyuanImage 3.0 hardware table before renting or buying hardware.
+4. Compare other local routes: consult each provider's official repository and license before deployment.
+
+## Canonical pages
+
+- Home and model distinction: https://www.nano-banana.live/
+- Quickstart and route chooser: https://www.nano-banana.live/guides/quickstart.html
+- Gemini Python editing tutorial: https://www.nano-banana.live/blog/nano-banana-api-image-editing-python.html
+- Qwen editing tutorial: https://www.nano-banana.live/blog/qwen-image-local-image-editing-guide.html
+- Hunyuan deployment requirements: https://www.nano-banana.live/blog/hunyuanimage-local-deployment-requirements.html
+- Prompt collection: https://www.nano-banana.live/prompts/
+- Benchmark snapshot: https://www.nano-banana.live/benchmarks/
 - FAQ: https://www.nano-banana.live/faq.html
-- About: https://www.nano-banana.live/about.html
 
-## Content model
-- Benchmark
-  - fields: title, description, inputs (urls), params (seed, steps, guidance, strength, scheduler), pipeline steps, comparison images
-- Prompt
-  - fields: title, prompt text, params (seed, steps, guidance, strength), notes
-- Guide
-  - fields: title, route (colab/local), code blocks, assets
+## Source hierarchy
 
-## Technical notes for crawlers
-- All URLs use explicit .html extensions for consistency. Internal navigation uses index.html for directory pages to ensure compatibility with local file:// browsing.
-- Sitemap: https://www.nano-banana.live/sitemap.xml
-- Robots: https://www.nano-banana.live/robots.txt
-- OG image: https://www.nano-banana.live/og.svg
-- Theme color: #0b0f14; color-scheme: dark
+Claims about model names, IDs, licenses, weights, commands, and hardware should be checked against primary sources:
 
-## Update cadence
-- Benchmarks: updated when new tasks/inputs are verified
-- Prompts: incremental additions
-- Quickstart: updated after tooling, model availability, UX entry-point changes, or notebooks change
-- Model guide pages: added for high-value long-tail SEO terms when a model has enough search and comparison value
+- Google Gemini image generation: https://ai.google.dev/gemini-api/docs/image-generation
+- Qwen-Image-Edit-2511: https://huggingface.co/Qwen/Qwen-Image-Edit-2511
+- HunyuanImage 3.0: https://github.com/Tencent-Hunyuan/HunyuanImage-3.0
+- HiDream-O1-Image: https://github.com/HiDream-ai/HiDream-O1-Image
+- FLUX 3 announcement: https://bfl.ai/blog/flux-3
+- Qwen-Image 3.0 announcement: https://qwen.ai/blog?id=qwen-image-3.0
 
-## Contact
-- Use the About page for ownership/credits; no newsletter or comments for MVP.
+Third-party leaderboard information is a dated snapshot and may change. Cloud GPU prices also change and should be checked on the provider's current pricing page before purchase.
+
+## Publication policy
+
+- AI may prepare a draft, but scheduled direct publication is disabled.
+- Drafts are `noindex` until facts, code, internal links, and HTML structure are reviewed.
+- The repository validator rejects malformed anchors, unbalanced code blocks, broken internal links, invalid JSON-LD, duplicate sitemap URLs, and known stale model labels.
+- Anonymous or invented testimonials are not used as evidence.
+
+Sitemap: https://www.nano-banana.live/sitemap.xml

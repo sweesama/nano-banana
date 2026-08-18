@@ -37,7 +37,7 @@
             <a href="../blog.html" class="article-back">← Back to Blog</a>
             <header class="article-header">
                 <div class="meta" style="justify-content: center; display: flex;">Integration • Jan 20, 2026</div>
-                <h1>How to Run Nano Banana Locally: A Definitive Guide</h1>
+                <h1>Can Nano Banana 2 Run Locally? The Client Explained</h1>
                 <p class="lead" style="margin: 20px auto;">Everything you need to know about setting up the local Python
                     client.</p>
                 <div class="article-image bg-gradient-1"
@@ -55,19 +55,22 @@
                     <h3 style="margin-top: 0; color: #f87171;">The "Closed Source" Reality</h3>
                     <p>Before we begin, a crucial clarification: <strong>Nano Banana 2 cannot truly run
                             offline.</strong></p>
-                    <p>Why? Because the core model is **closed source**. It runs on Google's current Gemini image
+                    <p>Why? Because the core model is <strong>closed source</strong>. It runs on Google's current Gemini image
                         infrastructure, while your machine only acts as the local controller.
                         When you "run it locally," you are actually running a <strong>local client</strong> that sends
                         instructions to the cloud model.</p>
                 </div>
 
                 <h2>Step 1: Get Your API Key</h2>
-                <p>Since the logic happens in the cloud, you need a key to unlock it.</p>
+                <p>Because inference happens in Google's cloud, the Python client needs a Gemini API key.</p>
                 <ol>
                     <li>Visit <a href="https://aistudio.google.com/" target="_blank" rel="noopener" data-track="aistudio_cta">Google AI Studio</a>.</li>
                     <li>Click "Get API Key".</li>
                     <li>Copy it to a safe place.</li>
                 </ol>
+                <p>As checked on August 18, 2026, Google's <a href="https://ai.google.dev/gemini-api/docs/pricing"
+                    target="_blank" rel="noopener">live pricing page</a> lists no standard free tier for
+                    <code>gemini-3.1-flash-image</code>. Check that page again before relying on any cost estimate.</p>
 
                 <h2>Step 2: Prepare Your Environment</h2>
                 <p>You don't need a GPU, but you do need Python.</p>
@@ -85,37 +88,22 @@ source venv/bin/activate</code></pre>
 
                 <h2>Step 3: Install the Client SDK</h2>
                 <p>We use the official Google GenAI SDK to communicate with the Nano Banana 2 model.</p>
-                <pre><code class="language-bash">pip install google-genai pillow</code></pre>
+                <pre><code class="language-bash">pip install -U google-genai</code></pre>
 
-                <h2>Step 4: The Core Script</h2>
-                <p>Save the following as <code>nano_api.py</code>:</p>
-                <pre><code class="language-python">import os
-from google import genai
-from PIL import Image
-
-api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
-client = genai.Client(api_key=api_key)
-image = Image.open("reference.jpg")
-
-response = client.models.generate_content(
-    model="gemini-3.1-flash-image",
-    contents=["Replace the background with a neon cyberpunk city while preserving the subject's lighting and pose.", image],
-)
-
-for part in response.candidates[0].content.parts:
-    if part.text:
-        print(part.text)
-    elif part.inline_data:
-        part.as_image().save("nano_edit_result.png")
-</code></pre>
+                <h2>Step 4: Use the Current Image-Editing Example</h2>
+                <p>The API surface changes over time, so use the maintained <a href="nano-banana-api-image-editing-python.html">Nano Banana 2 Python tutorial</a>. It follows Google's current <code>gemini-3.1-flash-image</code> Interactions API, keeps the key in an environment variable, uploads the input with its MIME type, and decodes the returned image.</p>
+                <p>For the underlying source of truth, compare the example against <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">Google's image-generation documentation</a>.</p>
 
                 <h2>What About ChatGPT Image 2?</h2>
-                <p><strong>Same story:</strong> <a href="https://openai.com/index/chatgpt-image-generation/" target="_blank" rel="noopener">ChatGPT Image 2</a> (released April 2026) is also a <strong>closed-source, cloud-only model</strong>. Like Nano Banana 2, it cannot run locally because OpenAI has not released the model weights.</p>
-                <p>If you see online tutorials claiming to run "ChatGPT Image 2 locally," they are misleading—they are likely using API wrappers or unrelated open-source models.</p>
+                <p><strong>Same boundary:</strong> OpenAI documents <a
+                    href="https://developers.openai.com/api/docs/models/gpt-image-2" target="_blank"
+                    rel="noopener">GPT Image 2</a> as an API image generation and editing model. No public GPT Image 2
+                    weights are listed for self-hosted inference.</p>
+                <p>A tutorial can run an API client on your computer, but that does not make the underlying model local.</p>
 
                 <h2>Want True Offline?</h2>
                 <p>If you strictly need to run without internet (e.g., for air-gapped security), you cannot use Nano
-                    Banana 2 or ChatGPT Image 2. Instead, check out the <strong>HunyuanImage 3.0</strong>, <strong>Qwen-Image 2.1</strong>, and
+                    Banana 2 or ChatGPT Image 2. Instead, check out <strong>HunyuanImage 3.0</strong>, <strong>Qwen-Image-Edit-2511</strong>, and
                     <strong>Z-Image</strong> alternatives in our <a href="../guides/quickstart.html">Quickstart
                         Guide</a>. These open models can run fully offline, but usually require a stronger GPU and more
                     setup than the cloud client.</p>

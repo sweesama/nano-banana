@@ -5,12 +5,12 @@
     "category": "Cloud GPU",
     "emoji": "☁️",
     "depth": "standard",
-    "status": "done",
+    "status": "retired",
+    "consolidatedInto": "run-without-gpu",
     "sourceUrls": [
       "https://www.nano-banana.live/blog/run-without-gpu.html",
       "https://www.nano-banana.live/guides/cloud-deployment.html"
-    ],
-    "qualityScore": 90
+    ]
   },
   {
     "keyword": "Nano Banana API image editing with Python",
@@ -18,12 +18,11 @@
     "category": "API Tutorial",
     "emoji": "🐍",
     "depth": "deep",
-    "status": "done",
+    "status": "human-reviewed",
     "sourceUrls": [
       "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py"
-    ],
-    "qualityScore": 100
+    ]
   },
   {
     "keyword": "HunyuanImage local deployment requirements",
@@ -31,12 +30,11 @@
     "category": "Local Models",
     "emoji": "🖥️",
     "depth": "deep",
-    "status": "done",
+    "status": "human-reviewed",
     "sourceUrls": [
       "https://github.com/Tencent-Hunyuan/HunyuanImage-3.0",
       "https://www.nano-banana.live/guides/cloud-deployment.html"
-    ],
-    "qualityScore": 95
+    ]
   },
   {
     "keyword": "Qwen Image local image editing guide",
@@ -44,12 +42,11 @@
     "category": "Local Models",
     "emoji": "🎨",
     "depth": "deep",
-    "status": "done",
+    "status": "human-reviewed",
     "sourceUrls": [
       "https://huggingface.co/Qwen/Qwen-Image-Edit-2511",
       "https://www.nano-banana.live/guides/quickstart.html"
-    ],
-    "qualityScore": 85
+    ]
   },
   {
     "keyword": "cloud API versus local AI image models",
@@ -59,10 +56,13 @@
     "depth": "standard",
     "status": "done",
     "sourceUrls": [
-      "https://www.nano-banana.live/faq.html",
-      "https://www.nano-banana.live/guides/quickstart.html"
+      "https://ai.google.dev/gemini-api/docs/image-generation",
+      "https://ai.google.dev/gemini-api/docs/pricing",
+      "https://github.com/Tencent-Hunyuan/HunyuanImage-3.0",
+      "https://huggingface.co/Qwen/Qwen-Image-Edit-2511"
     ],
-    "qualityScore": 95
+    "structuralScore": 95,
+    "sourceAudit": "manual-source-check-2026-08-18"
   },
   {
     "keyword": "AI image model benchmark Elo explained",
@@ -132,7 +132,7 @@
     "depth": "standard",
     "status": "pending",
     "sourceUrls": [
-      "https://ai.google.dev/gemini-api/docs/terms",
+      "https://ai.google.dev/gemini-api/terms",
       "https://www.nano-banana.live/faq.html"
     ]
   },
@@ -156,6 +156,8 @@
     "depth": "deep",
     "status": "pending",
     "sourceUrls": [
+      "https://github.com/Tencent-Hunyuan/HunyuanImage-3.0",
+      "https://huggingface.co/Qwen/Qwen-Image-Edit-2511",
       "https://www.nano-banana.live/blog/hardware-requirements.html",
       "https://www.nano-banana.live/guides/quickstart.html"
     ]
@@ -193,6 +195,7 @@
     "depth": "standard",
     "status": "pending",
     "sourceUrls": [
+      "https://opensource.org/ai/open-source-ai-definition",
       "https://www.nano-banana.live/faq.html",
       "https://www.nano-banana.live/benchmarks/"
     ]
@@ -229,6 +232,7 @@
     "depth": "brief",
     "status": "pending",
     "sourceUrls": [
+      "https://docs.runpod.io/pods/manage-pods",
       "https://www.nano-banana.live/blog/run-without-gpu.html",
       "https://www.nano-banana.live/guides/cloud-deployment.html"
     ]
@@ -265,7 +269,7 @@
     "depth": "brief",
     "status": "pending",
     "sourceUrls": [
-      "https://www.runpod.io/docs/pods/manage-pods",
+      "https://docs.runpod.io/pods/manage-pods",
       "https://www.nano-banana.live/guides/cloud-deployment.html"
     ]
   },
@@ -289,6 +293,7 @@
     "depth": "standard",
     "status": "pending",
     "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://www.nano-banana.live/prompts/",
       "https://www.nano-banana.live/blog/top-prompt-recipes.html"
     ]
@@ -301,6 +306,7 @@
     "depth": "standard",
     "status": "pending",
     "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://www.nano-banana.live/prompts/",
       "https://www.nano-banana.live/blog/top-prompt-recipes.html"
     ]
@@ -325,6 +331,7 @@
     "depth": "standard",
     "status": "pending",
     "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://www.nano-banana.live/prompts/",
       "https://www.nano-banana.live/blog/top-prompt-recipes.html"
     ]
@@ -409,6 +416,8 @@
     "depth": "standard",
     "status": "pending",
     "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/quickstart",
+      "https://ai.google.dev/gemini-api/docs/troubleshooting",
       "https://www.nano-banana.live/blog/troubleshooting-install.html",
       "https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py"
     ]
@@ -433,6 +442,7 @@
     "depth": "deep",
     "status": "pending",
     "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://www.nano-banana.live/prompts/",
       "https://www.nano-banana.live/blog/top-prompt-recipes.html"
     ]
@@ -445,6 +455,7 @@
     "depth": "standard",
     "status": "pending",
     "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://www.nano-banana.live/prompts/",
       "https://www.nano-banana.live/blog/top-prompt-recipes.html"
     ]
@@ -457,6 +468,8 @@
     "depth": "standard",
     "status": "pending",
     "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/pricing",
+      "https://github.com/Tencent-Hunyuan/HunyuanImage-3.0",
       "https://www.nano-banana.live/faq.html",
       "https://www.nano-banana.live/guides/quickstart.html"
     ]
