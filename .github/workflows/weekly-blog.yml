@@ -18,12 +18,12 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '22'
 
@@ -42,10 +42,6 @@ jobs:
         working-directory: web/blog/scripts
         env:
           NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
-          BLOG_MODEL_PRIMARY: deepseek-ai/deepseek-v4-pro
-          BLOG_MODEL_FALLBACK: qwen/qwen3.5-122b-a10b
-          BLOG_MODEL_LAST_RESORT: nvidia/nemotron-3-super-120b-a12b
-          BLOG_MODEL_VERIFIER: nvidia/nemotron-3-super-120b-a12b
         run: node generate-article.js
 
       - name: Validate the generated site

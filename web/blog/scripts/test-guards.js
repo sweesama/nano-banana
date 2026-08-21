@@ -1,6 +1,29 @@
 import assert from 'node:assert/strict';
 
-import { isAuthoritativeExternalSource, sanitizeHtml, validateArticle } from './generate-article.js';
+import {
+  MODELS,
+  VERIFIER_MODELS,
+  classifyModelError,
+  isAuthoritativeExternalSource,
+  normalizeDescription,
+  parseModelList,
+  sanitizeHtml,
+  validateArticle,
+} from './generate-article.js';
+
+assert.equal(MODELS.includes('deepseek-ai/deepseek-v4-pro'), false);
+assert.equal(MODELS.includes('qwen/qwen3.5-122b-a10b'), false);
+assert.ok(MODELS.length >= 4);
+assert.ok(VERIFIER_MODELS.length >= 2);
+assert.deepEqual(parseModelList('model/a, model/b, model/a', ['fallback']), ['model/a', 'model/b']);
+assert.equal(classifyModelError({ status: 410, message: 'Gone' }), 'permanent');
+assert.equal(classifyModelError({ status: 429, message: 'Rate limited' }), 'transient');
+assert.equal(classifyModelError({ status: 401, message: 'Unauthorized' }), 'auth');
+
+const longDescription = 'This source-backed guide explains how image benchmark Elo scores work, what uncertainty means, and why a single leaderboard position should never be treated as permanent proof of model quality or universal superiority.';
+const normalizedDescription = normalizeDescription(longDescription);
+assert.ok(normalizedDescription.length <= 170);
+assert.match(normalizedDescription, /[.!?]$/);
 
 const sourceUrl = 'https://ai.google.dev/gemini-api/docs/image-generation';
 const internalOne = 'https://www.nano-banana.live/faq.html';

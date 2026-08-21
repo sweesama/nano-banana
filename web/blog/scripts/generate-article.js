@@ -14,11 +14,27 @@ const SEO_RESEARCH_PATH = path.join(BLOG_DIR, 'seo-research.json');
 const BLOG_INDEX_PATH = path.join(WEB_DIR, 'blog.html');
 const SITEMAP_PATH = path.join(WEB_DIR, 'sitemap.xml');
 const API_KEY = process.env.NVIDIA_API_KEY;
-const MODELS = [
-  process.env.BLOG_MODEL_PRIMARY || 'deepseek-ai/deepseek-v4-pro',
-  process.env.BLOG_MODEL_FALLBACK || 'qwen/qwen3.5-122b-a10b',
-  process.env.BLOG_MODEL_LAST_RESORT || 'nvidia/nemotron-3-super-120b-a12b',
-];
+
+function parseModelList(value, fallback) {
+  const parsed = String(value || '').split(',').map(item => item.trim()).filter(Boolean);
+  return parsed.length > 0 ? [...new Set(parsed)] : fallback;
+}
+
+const MODELS = parseModelList(process.env.BLOG_MODEL_LIST, [
+  'nvidia/nemotron-3.5-lightning-30b-a3b',
+  'nvidia/nemotron-3-super-120b-a12b',
+  'z-ai/glm-5.2',
+  'nvidia/nemotron-3-nano-30b-a3b',
+  'openai/gpt-oss-120b',
+]);
+const VERIFIER_MODELS = parseModelList(process.env.BLOG_VERIFIER_MODEL_LIST, [
+  'nvidia/nemotron-3-super-120b-a12b',
+  'z-ai/glm-5.2',
+  'nvidia/nemotron-3-nano-30b-a3b',
+]);
+const API_TIMEOUT_MS = Number(process.env.BLOG_API_TIMEOUT_MS || 180000);
+const MAX_MODEL_ATTEMPTS = 2;
+const disabledModels = new Set();
 const DEPTHS = { brief: [450, 700], standard: [700, 1100], deep: [1100, 1600] };
 const BANNED_PHRASES = ['in today\'s rapidly evolving', 'game-changer', 'seamlessly', 'revolutionize', 'it is worth noting', 'delve into', 'unlock the power'];
 const ALLOWED_TAGS = new Set(['p', 'h2', 'h3', 'ul', 'ol', 'li', 'pre', 'code', 'strong', 'em', 'blockquote', 'a', 'br']);
@@ -78,6 +94,89 @@ function parseJson(text) {
   const end = cleaned.lastIndexOf('}');
   if (start < 0 || end < start) throw new Error('Model did not return a JSON object.');
   return JSON.parse(cleaned.slice(start, end + 1));
+}
+
+function getErrorStatus(error) {
+  return Number(error?.status || error?.response?.status || 0);
+}
+
+function isJsonModeUnsupported(error) {
+  return getErrorStatus(error) === 400 && /response[_ -]?format|json[_ -]?object|structured output/i.test(error?.message || '');
+}
+
+function classifyModelError(error) {
+  const status = getErrorStatus(error);
+  const message = error?.message || '';
+  if (status === 401 || status === 403) return 'auth';
+  if (status === 404 || status === 410 || status === 400) return 'permanent';
+  if (status === 429 || status >= 500 || /quota|RESOURCE_EXHAUSTED|high demand/i.test(message)) return 'transient';
+  if (/AbortError|aborted|timeout/i.test(message)) return 'timeout';
+  if (/Connection|ECONNRESET|socket|network|fetch/i.test(message)) return 'transient';
+  if (/JSON object|JSON.parse|Unexpected token|Unexpected end/i.test(message)) return 'retryable-output';
+  return 'unknown';
+}
+
+function normalizeDescription(value, maxLength = 170) {
+  const compact = String(value || '').replace(/\s+/g, ' ').trim();
+  if (compact.length <= maxLength) return compact;
+  const candidate = compact.slice(0, maxLength - 1);
+  const sentenceBoundary = Math.max(candidate.lastIndexOf('. '), candidate.lastIndexOf('! '), candidate.lastIndexOf('? '));
+  const wordBoundary = candidate.lastIndexOf(' ');
+  const cutAt = sentenceBoundary >= 100 ? sentenceBoundary + 1 : wordBoundary;
+  const shortened = candidate.slice(0, cutAt > 0 ? cutAt : maxLength - 1).replace(/[\s,;:\-]+$/g, '');
+  return /[.!?]$/.test(shortened) ? shortened : `${shortened}.`;
+}
+
+async function requestJsonModel(model, messages, { label, temperature, maxTokens }) {
+  if (disabledModels.has(model)) throw new Error(`Model ${model} is disabled for this run.`);
+  let lastError;
+  for (let attempt = 1; attempt <= MAX_MODEL_ATTEMPTS; attempt++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(new Error(`Model timeout after ${Math.round(API_TIMEOUT_MS / 1000)}s`)), API_TIMEOUT_MS);
+    const payload = {
+      model,
+      temperature,
+      top_p: 0.95,
+      max_tokens: maxTokens,
+      response_format: { type: 'json_object' },
+      messages,
+    };
+    try {
+      console.log(`[${label}] Trying ${model} (${attempt}/${MAX_MODEL_ATTEMPTS})...`);
+      let response;
+      try {
+        response = await ai.chat.completions.create(payload, { signal: controller.signal });
+      } catch (error) {
+        if (!isJsonModeUnsupported(error)) throw error;
+        console.log(`[${label}] ${model} does not accept response_format; retrying with prompt-enforced JSON.`);
+        response = await ai.chat.completions.create({ ...payload, response_format: undefined }, { signal: controller.signal });
+      }
+      const data = parseJson(response.choices?.[0]?.message?.content || '');
+      console.log(`[${label}] ${model} returned valid JSON.`);
+      return data;
+    } catch (error) {
+      lastError = error;
+      const kind = classifyModelError(error);
+      const status = getErrorStatus(error);
+      const summary = status ? `HTTP ${status}` : (error.message || 'Unknown error');
+      console.warn(`[${label}] ${model} failed: ${summary}`);
+      if (kind === 'auth') throw new Error(`NVIDIA API authentication failed: ${summary}`);
+      if (kind === 'permanent') {
+        disabledModels.add(model);
+        console.warn(`[${label}] ${model} is disabled for the remainder of this run.`);
+        break;
+      }
+      if (kind === 'timeout') break;
+      if (attempt < MAX_MODEL_ATTEMPTS && ['transient', 'retryable-output', 'unknown'].includes(kind)) {
+        await new Promise(resolve => setTimeout(resolve, kind === 'transient' ? 12000 : 3000));
+        continue;
+      }
+      break;
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+  throw lastError || new Error(`Model ${model} failed.`);
 }
 
 function sanitizeHtml(input) {
@@ -249,14 +348,8 @@ Content rules:
 }
 
 async function verifyArticle(article, item, sourceRecords) {
-  const verifierModel = process.env.BLOG_MODEL_VERIFIER || MODELS[MODELS.length - 1];
   const evidence = sourceRecords.map(source => `[SOURCE ${source.index}] ${source.url}\n${source.text}`).join('\n\n');
-  const response = await ai.chat.completions.create({
-    model: verifierModel,
-    temperature: 0,
-    max_tokens: 1800,
-    response_format: { type: 'json_object' },
-    messages: [
+  const messages = [
       {
         role: 'system',
         content: 'You are a strict publication fact checker. Treat the supplied source excerpts as the only evidence for factual product claims. Return JSON only.',
@@ -279,14 +372,29 @@ Return exactly:
 
 Fail when a claim about model identity, capabilities, weights, license, pricing, quota, ranking, release status, hardware, API syntax, or provider policy is absent from or contradicted by the evidence. Fail undated volatile numbers, claims of first-hand testing without evidence, universal superiority claims, and language that confuses a local API client with local inference. General workflow advice does not need a citation.`,
       },
-    ],
-  });
-  const audit = parseJson(response.choices?.[0]?.message?.content || '');
-  const issueCount = ['unsupportedClaims', 'contradictions', 'missingQualifications']
-    .reduce((total, key) => total + (Array.isArray(audit[key]) ? audit[key].length : 1), 0);
-  if (audit.verdict !== 'pass' || issueCount > 0) {
-    throw new Error(`Source audit failed: ${JSON.stringify(audit)}`);
+    ];
+  let lastError;
+  for (const verifierModel of VERIFIER_MODELS) {
+    if (disabledModels.has(verifierModel)) continue;
+    let audit;
+    try {
+      audit = await requestJsonModel(verifierModel, messages, {
+        label: 'source-audit',
+        temperature: 0,
+        maxTokens: 1800,
+      });
+    } catch (error) {
+      lastError = error;
+      continue;
+    }
+    const issueCount = ['unsupportedClaims', 'contradictions', 'missingQualifications']
+      .reduce((total, key) => total + (Array.isArray(audit[key]) ? audit[key].length : 1), 0);
+    if (audit.verdict !== 'pass' || issueCount > 0) {
+      throw new Error(`Source audit failed: ${JSON.stringify(audit)}`);
+    }
+    return;
   }
+  throw lastError || new Error('All verifier models were unavailable.');
 }
 
 async function generateArticle(item, existingArticles, cluster) {
@@ -294,25 +402,28 @@ async function generateArticle(item, existingArticles, cluster) {
   const requiredTerm = cluster.primaryTerms[0];
   let lastError;
   for (const model of MODELS) {
+    if (disabledModels.has(model)) continue;
     let article;
     try {
-      const response = await ai.chat.completions.create({
-        model,
-        temperature: 0.45,
-        max_tokens: 7000,
-        response_format: { type: 'json_object' },
-        messages: [
+      article = await requestJsonModel(model, [
           { role: 'system', content: 'You produce precise, source-aware technical HTML articles. Output valid JSON only.' },
           { role: 'user', content: promptFor(item, existingArticles, sourceRecords, cluster, requiredTerm) }
-        ],
+        ], {
+        label: 'article',
+        temperature: 0.45,
+        maxTokens: 7000,
       });
-      article = parseJson(response.choices?.[0]?.message?.content || '');
     } catch (error) {
       lastError = error;
       console.warn(`Model ${model} failed to respond: ${error.message}`);
       continue;
     }
     try {
+      const originalDescription = article.description;
+      article.description = normalizeDescription(article.description);
+      if (article.description !== originalDescription) {
+        console.log(`Shortened meta description from ${String(originalDescription || '').length} to ${article.description.length} characters.`);
+      }
       article.content = sanitizeHtml(article.content);
       validateArticle(article, item, cluster);
       await verifyArticle(article, item, sourceRecords);
@@ -453,4 +564,14 @@ if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
   });
 }
 
-export { fetchSourceNotes, isAuthoritativeExternalSource, sanitizeHtml, validateArticle };
+export {
+  MODELS,
+  VERIFIER_MODELS,
+  classifyModelError,
+  fetchSourceNotes,
+  isAuthoritativeExternalSource,
+  normalizeDescription,
+  parseModelList,
+  sanitizeHtml,
+  validateArticle,
+};
