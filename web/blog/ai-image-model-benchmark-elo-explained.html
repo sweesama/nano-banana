@@ -31,38 +31,35 @@
         <p class="lead" style="margin:20px auto;">Learn how Elo scores work on the Artificial Analysis image leaderboard, what confidence intervals mean, and how to use Nano Banana benchmarks to compare models.</p>
       </header>
       <div class="article-content">
-        <p>When you look at a leaderboard that ranks text‑to‑image models, the numbers you see are often Elo scores. This rating system, borrowed from chess and esports, converts blind user preferences into a single value that predicts which model will win a head‑to‑head comparison. Understanding what the score means, how the confidence interval is calculated, and how to read the Nano Banana benchmark snapshot lets you compare models quickly and decide which one fits your needs.</p>
+        <p>When you look at a leaderboard that ranks text‑to‑image models, the numbers you see are often Elo scores. Elo converts pairwise preferences into a relative rating: a higher score means a model has been preferred more often under that benchmark's voting setup, not that it is universally better. Understanding the score, its uncertainty, and the age of the snapshot helps you compare models without overreading a single rank.</p>
 
 <h2>What an Elo score represents in image model benchmarks</h2>
 <p>On the Artificial Analysis image leaderboard each model receives an Elo rating that reflects its expected performance in pairwise duels where human judges pick the image they prefer <a href="https://artificialanalysis.ai/image/leaderboard/text-to-image" target="_blank" rel="noopener">[source]</a>. The score is not an absolute measure of quality; it is a relative ranking. A model with a higher Elo is expected to win more often against a lower‑rated opponent. The difference between two scores can be turned into an expected win probability using the standard Elo formula.</p>
-<p>Because the duels are based on limited samples, each Elo comes with a 95 % confidence interval (shown as ± value). This interval tells you the range in which the true skill level likely lies. If the intervals of two models overlap, the data does not give a statistically significant preference for one over the other. Non‑overlapping intervals suggest a reliable ranking difference.</p>
-<p>The leaderboard is refreshed automatically whenever the scheduled sync with Artificial Analysis succeeds, ensuring that the displayed scores reflect the most recent batch of blind votes <a href="https://www.nano-banana.live/benchmarks/" target="_blank" rel="noopener">[source]</a>. No manual curation is involved; the ranking updates as new duel results are collected.</p>
+<p>Because the duels are based on limited samples, each Elo comes with a 95 % confidence interval (shown as ± value). Overlapping intervals are a useful warning not to overstate the order, but overlap alone is not a complete significance test between two ratings. A narrow interval generally indicates a more precise estimate under the benchmark's assumptions.</p>
+<p>The Nano Banana page is a dated snapshot of data synced from Artificial Analysis <a href="https://www.nano-banana.live/benchmarks/" target="_blank" rel="noopener">[source]</a>. Its values can lag behind or differ slightly from the live leaderboard, so use the live source for a current number and record the date whenever you cite one.</p>
 
 <h2>How to read the Nano Banana benchmark snapshot</h2>
-<p>The Nano Banana benchmarks page mirrors the Artificial Analysis leaderboard but presents the data in a compact table that includes the Elo score, its confidence interval, the number of duel samples, release date, and API pricing when available. The table does not show raw win‑loss counts; instead it summarizes them into the Elo metric.</p>
+<p>The Nano Banana benchmarks page presents a compact snapshot with Elo, confidence intervals, sample counts, release dates, and API pricing when those fields are available. A blank field is not evidence that a model has no price, release date, or API; it only means that value was not present in the synced data.</p>
 <p>When you scan the table, focus on three columns:</p>
 <ul>
   <li><strong>Elo</strong> – the central estimate of model strength.</li>
-  <li><strong>95 % CI</strong> – the uncertainty band; narrower intervals mean more duel samples have been collected.</li>
-  <li><strong>Samples</strong> – the number of pairwise comparisons that contributed to the score; higher numbers usually produce tighter confidence intervals.</li>
+  <li><strong>95 % CI</strong> – the uncertainty band reported for that rating; narrower intervals indicate a more precise estimate under the stated method.</li>
+  <li><strong>Samples</strong> – the number of pairwise comparisons that contributed to the score; sample count is useful context, but it does not replace checking how votes were collected.</li>
 </ul>
-<p>If you want to know whether a model’s API price is justified, compare its Elo to models in a similar price bracket. Because the leaderboard does not embed price directly into the rating, you must look at the pricing column alongside the Elo to assess cost‑effectiveness.</p>
+<p>If you want to compare value, look at the dated API price beside Elo rather than treating price as part of the rating. Provider prices and benchmark positions can both change, and API price alone does not include every workflow or local-deployment cost.</p>
 
 <h2>Practical steps for comparing models using the benchmarks</h2>
 <ol>
   <li><strong>Identify your use case</strong> – decide whether you need photorealistic outputs, artistic styles, or fast generation.</li>
   <li><strong>Filter the leaderboard</strong> – on the Nano Banana benchmarks page you can toggle “Current only”, “Open weights”, or specific providers to narrow the list.</li>
-  <li><strong>Compare Elo and confidence intervals</strong> – pick two models; if their intervals do not overlap, the higher‑Elo model is statistically preferred. If they overlap, consider other factors such as price, license, or local deployment effort.</li>
+  <li><strong>Compare Elo and uncertainty</strong> – treat a small gap with overlapping intervals as an uncertain ordering. For a formal comparison, use the benchmark's stated statistical method rather than inferring significance from interval overlap alone.</li>
   <li><strong>Check sample size and recency</strong> – a model with a high Elo but very few samples may be less reliable than a slightly lower‑Elo model with many duels.</li>
-  <li><strong>Look at pricing per 1 000 images</strong> – divide the API cost by the expected volume to see which model gives the best Elo per dollar.</li>
+  <li><strong>Check dated pricing</strong> – estimate cost at your expected volume using the provider's current price, then compare it with quality, latency, license, and deployment needs.</li>
   <li><strong>Consult deployment guides</strong> – if you plan to run the model locally, follow the quickstart guide for Nano Banana <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">[internal link]</a> to verify hardware requirements and setup steps.</li>
 </ol>
 
 <p>By following these steps you turn the raw Elo numbers into actionable insight. Remember that the Elo score is a relative measure derived from human preferences; it does not capture every aspect such as safety, bias, or specific prompt adherence. Use the benchmark as a starting point, then run your own tests on the prompts that matter most to your application.</p>
 
-<blockquote>
-  <p>"The Elo system turns a collection of subjective judgments into a predictive rating that lets you compare models on a common scale."</p>
-</blockquote>
         <h2>Sources</h2>
         <ul><li><a href="https://artificialanalysis.ai/image/leaderboard/text-to-image" target="_blank" rel="noopener">https://artificialanalysis.ai/image/leaderboard/text-to-image</a></li><li><a href="https://www.nano-banana.live/benchmarks/" target="_blank" rel="noopener">https://www.nano-banana.live/benchmarks/</a></li></ul>
       </div>

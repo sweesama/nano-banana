@@ -111,7 +111,7 @@
     "emoji": "📊",
     "keyword": "AI image model benchmark Elo explained",
     "structuralScore": 85,
-    "sourceAudit": "automated-pass",
+    "sourceAudit": "manual-reviewed-2026-08-21",
     "sourceUrls": [
       "https://artificialanalysis.ai/image/leaderboard/text-to-image",
       "https://www.nano-banana.live/benchmarks/"

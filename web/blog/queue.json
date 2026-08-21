@@ -76,7 +76,7 @@
       "https://www.nano-banana.live/benchmarks/"
     ],
     "structuralScore": 85,
-    "sourceAudit": "automated-pass"
+    "sourceAudit": "manual-reviewed-2026-08-21"
   },
   {
     "keyword": "Gemini image editing API input image workflow",

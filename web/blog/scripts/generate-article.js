@@ -25,11 +25,10 @@ const MODELS = parseModelList(process.env.BLOG_MODEL_LIST, [
   'z-ai/glm-5.2',
   'nvidia/nemotron-3-super-120b-a12b',
   'nvidia/nemotron-3-nano-30b-a3b',
-  'nvidia/nemotron-3.5-lightning-30b-a3b',
 ]);
 const VERIFIER_MODELS = parseModelList(process.env.BLOG_VERIFIER_MODEL_LIST, [
-  'openai/gpt-oss-120b',
   'z-ai/glm-5.2',
+  'openai/gpt-oss-120b',
   'nvidia/nemotron-3-super-120b-a12b',
   'nvidia/nemotron-3-nano-30b-a3b',
 ]);
@@ -57,6 +56,12 @@ const AUTHORITATIVE_SOURCE_HOSTS = new Set([
 const SITE_HOST = 'www.nano-banana.live';
 
 const ai = API_KEY ? new OpenAI({ apiKey: API_KEY, baseURL: 'https://integrate.api.nvidia.com/v1' }) : null;
+
+function modelsForItem(item) {
+  if (item?.category !== 'Benchmarks') return MODELS;
+  const preferred = 'nvidia/nemotron-3-super-120b-a12b';
+  return [...new Set([preferred, ...MODELS])].filter(model => MODELS.includes(model));
+}
 
 function escapeHtml(value) {
   return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
@@ -462,7 +467,11 @@ Resolve every audit item; do not merely add disclaimers around contradicted clai
   ];
 
   let lastError;
-  for (const repairModel of MODELS) {
+  const preferredRepairModel = 'nvidia/nemotron-3-super-120b-a12b';
+  const repairModels = [...new Set([preferredRepairModel, ...MODELS])]
+    .filter(model => MODELS.includes(model))
+    .slice(0, 1);
+  for (const repairModel of repairModels) {
     if (disabledModels.has(repairModel)) continue;
     try {
       console.log(`[source-repair] Revising with ${repairModel}...`);
@@ -487,7 +496,7 @@ async function generateArticle(item, existingArticles, cluster) {
   const sourceRecords = await fetchSourceNotes(item.sourceUrls);
   const requiredTerm = cluster.primaryTerms[0];
   let lastError;
-  for (const model of MODELS) {
+  for (const model of modelsForItem(item)) {
     if (disabledModels.has(model)) continue;
     let article;
     try {
@@ -510,6 +519,8 @@ async function generateArticle(item, existingArticles, cluster) {
         await verifyArticle(article, item, sourceRecords);
       } catch (error) {
         if (!error.audit) throw error;
+        // 排行榜快照最容易发生数据漂移；与其反复修补数字，不如换模型重新生成一篇不依赖易变数字的文章。
+        if (item.category === 'Benchmarks') throw error;
         article = await repairArticleAfterAudit(article, item, sourceRecords, cluster, requiredTerm, error.audit);
       }
     } catch (error) {
@@ -655,6 +666,7 @@ export {
   classifyModelError,
   fetchSourceNotes,
   isAuthoritativeExternalSource,
+  modelsForItem,
   normalizeDescription,
   normalizeTitle,
   parseModelList,
