@@ -21,15 +21,16 @@ function parseModelList(value, fallback) {
 }
 
 const MODELS = parseModelList(process.env.BLOG_MODEL_LIST, [
-  'nvidia/nemotron-3.5-lightning-30b-a3b',
-  'nvidia/nemotron-3-super-120b-a12b',
-  'z-ai/glm-5.2',
-  'nvidia/nemotron-3-nano-30b-a3b',
   'openai/gpt-oss-120b',
+  'z-ai/glm-5.2',
+  'nvidia/nemotron-3-super-120b-a12b',
+  'nvidia/nemotron-3-nano-30b-a3b',
+  'nvidia/nemotron-3.5-lightning-30b-a3b',
 ]);
 const VERIFIER_MODELS = parseModelList(process.env.BLOG_VERIFIER_MODEL_LIST, [
-  'nvidia/nemotron-3-super-120b-a12b',
+  'openai/gpt-oss-120b',
   'z-ai/glm-5.2',
+  'nvidia/nemotron-3-super-120b-a12b',
   'nvidia/nemotron-3-nano-30b-a3b',
 ]);
 const API_TIMEOUT_MS = Number(process.env.BLOG_API_TIMEOUT_MS || 180000);
@@ -125,6 +126,22 @@ function normalizeDescription(value, maxLength = 170) {
   const cutAt = sentenceBoundary >= 100 ? sentenceBoundary + 1 : wordBoundary;
   const shortened = candidate.slice(0, cutAt > 0 ? cutAt : maxLength - 1).replace(/[\s,;:\-]+$/g, '');
   return /[.!?]$/.test(shortened) ? shortened : `${shortened}.`;
+}
+
+function normalizeTitle(value, requiredTerm, maxLength = 70) {
+  const compact = String(value || '').replace(/\s+/g, ' ').trim();
+  if (compact.length <= maxLength) return compact;
+  const truncate = text => {
+    const candidate = text.slice(0, maxLength + 1);
+    const wordBoundary = candidate.lastIndexOf(' ');
+    return candidate.slice(0, wordBoundary >= 20 ? wordBoundary : maxLength).replace(/[\s:;,.\-]+$/g, '');
+  };
+  const shortened = truncate(compact);
+  if (!requiredTerm || shortened.toLowerCase().includes(requiredTerm.toLowerCase())) return shortened;
+
+  const termPattern = new RegExp(requiredTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'ig');
+  const remainder = compact.replace(termPattern, '').replace(/^[\s:;,.\-]+|[\s:;,.\-]+$/g, '');
+  return truncate(`${requiredTerm}: ${remainder}`);
 }
 
 async function requestJsonModel(model, messages, { label, temperature, maxTokens }) {
@@ -336,6 +353,7 @@ Content rules:
 - Cite claims by linking to source URLs near the relevant discussion. Do not add a Sources section — the publishing script generates one automatically.
 - Treat the supplied source text as the complete evidence boundary. A fact absent from it must be omitted or explicitly labeled unknown.
 - Keep volatile prices, quotas, rankings, and availability dated and linked to the source that states them.
+- For benchmark or Elo topics, prefer explaining how to interpret the metric. Do not reproduce a live ranking table, exact current ranks, prices, sample counts, confidence intervals, or model scores when fetched sources show different snapshots. Hypothetical numbers must be explicitly labeled as examples.
 - A keyword may appear as a question, but answer it directly. Never imply that an API client makes a hosted model local or offline.
 - Always close every HTML tag properly. Close <a> tags with </a>, never use <a href="#"> as a closing tag.
 - Put code samples inside <pre><code> blocks and HTML-escape literal angle brackets inside code.
@@ -390,11 +408,79 @@ Fail when a claim about model identity, capabilities, weights, license, pricing,
     const issueCount = ['unsupportedClaims', 'contradictions', 'missingQualifications']
       .reduce((total, key) => total + (Array.isArray(audit[key]) ? audit[key].length : 1), 0);
     if (audit.verdict !== 'pass' || issueCount > 0) {
-      throw new Error(`Source audit failed: ${JSON.stringify(audit)}`);
+      const auditError = new Error(`Source audit failed: ${JSON.stringify(audit)}`);
+      auditError.audit = audit;
+      throw auditError;
     }
     return;
   }
   throw lastError || new Error('All verifier models were unavailable.');
+}
+
+function prepareArticle(article, item, cluster, requiredTerm) {
+  const originalTitle = article.title;
+  const originalDescription = article.description;
+  article.title = normalizeTitle(article.title, requiredTerm);
+  article.description = normalizeDescription(article.description);
+  if (article.title !== originalTitle) {
+    console.log(`Shortened title from ${String(originalTitle || '').length} to ${article.title.length} characters.`);
+  }
+  if (article.description !== originalDescription) {
+    console.log(`Shortened meta description from ${String(originalDescription || '').length} to ${article.description.length} characters.`);
+  }
+  article.content = sanitizeHtml(article.content);
+  validateArticle(article, item, cluster);
+  return article;
+}
+
+async function repairArticleAfterAudit(article, item, sourceRecords, cluster, requiredTerm, audit) {
+  const evidence = sourceRecords.map(source => `[SOURCE ${source.index}] ${source.url}\n${source.text}`).join('\n\n');
+  const messages = [
+    {
+      role: 'system',
+      content: 'You are a conservative publication editor. Revise an article to resolve every fact-check issue using only the supplied evidence. Return JSON only.',
+    },
+    {
+      role: 'user',
+      content: `Revise this article after a failed source audit.
+
+Topic: ${item.keyword}
+Required title phrase: ${requiredTerm}
+Required source URLs: ${item.sourceUrls.join(', ')}
+Required internal links: ${cluster.internalLinks.join(', ')}
+Audit findings: ${JSON.stringify(audit)}
+
+Current article:
+${JSON.stringify(article)}
+
+Allowed evidence:
+${evidence}
+
+Return exactly {"title":"...","description":"...","content":"..."}.
+Resolve every audit item; do not merely add disclaimers around contradicted claims. Remove unsupported or conflicting ranks, scores, prices, sample counts, open-weight labels, and model status claims. For benchmark topics, explain the interpretation method and snapshot drift without copying a current leaderboard table. Preserve every required source URL and at least two required internal links in relevant anchor tags. Keep the title phrase verbatim. Use valid article-body HTML only.`,
+    },
+  ];
+
+  let lastError;
+  for (const repairModel of MODELS) {
+    if (disabledModels.has(repairModel)) continue;
+    try {
+      console.log(`[source-repair] Revising with ${repairModel}...`);
+      const repaired = await requestJsonModel(repairModel, messages, {
+        label: 'source-repair',
+        temperature: 0.15,
+        maxTokens: 7000,
+      });
+      prepareArticle(repaired, item, cluster, requiredTerm);
+      await verifyArticle(repaired, item, sourceRecords);
+      console.log(`[source-repair] ${repairModel} passed the second source audit.`);
+      return repaired;
+    } catch (error) {
+      lastError = error;
+      console.warn(`[source-repair] ${repairModel} revision failed: ${error.message}`);
+    }
+  }
+  throw lastError || new Error('All configured models failed to repair the source audit findings.');
 }
 
 async function generateArticle(item, existingArticles, cluster) {
@@ -419,14 +505,13 @@ async function generateArticle(item, existingArticles, cluster) {
       continue;
     }
     try {
-      const originalDescription = article.description;
-      article.description = normalizeDescription(article.description);
-      if (article.description !== originalDescription) {
-        console.log(`Shortened meta description from ${String(originalDescription || '').length} to ${article.description.length} characters.`);
+      prepareArticle(article, item, cluster, requiredTerm);
+      try {
+        await verifyArticle(article, item, sourceRecords);
+      } catch (error) {
+        if (!error.audit) throw error;
+        article = await repairArticleAfterAudit(article, item, sourceRecords, cluster, requiredTerm, error.audit);
       }
-      article.content = sanitizeHtml(article.content);
-      validateArticle(article, item, cluster);
-      await verifyArticle(article, item, sourceRecords);
     } catch (error) {
       lastError = error;
       console.warn(`Model ${model} produced invalid content: ${error.message}`);
@@ -571,6 +656,7 @@ export {
   fetchSourceNotes,
   isAuthoritativeExternalSource,
   normalizeDescription,
+  normalizeTitle,
   parseModelList,
   sanitizeHtml,
   validateArticle,

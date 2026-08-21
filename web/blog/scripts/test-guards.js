@@ -6,6 +6,7 @@ import {
   classifyModelError,
   isAuthoritativeExternalSource,
   normalizeDescription,
+  normalizeTitle,
   parseModelList,
   sanitizeHtml,
   validateArticle,
@@ -15,6 +16,8 @@ assert.equal(MODELS.includes('deepseek-ai/deepseek-v4-pro'), false);
 assert.equal(MODELS.includes('qwen/qwen3.5-122b-a10b'), false);
 assert.ok(MODELS.length >= 4);
 assert.ok(VERIFIER_MODELS.length >= 2);
+assert.equal(MODELS[0], 'openai/gpt-oss-120b');
+assert.equal(VERIFIER_MODELS[0], 'openai/gpt-oss-120b');
 assert.deepEqual(parseModelList('model/a, model/b, model/a', ['fallback']), ['model/a', 'model/b']);
 assert.equal(classifyModelError({ status: 410, message: 'Gone' }), 'permanent');
 assert.equal(classifyModelError({ status: 429, message: 'Rate limited' }), 'transient');
@@ -24,6 +27,13 @@ const longDescription = 'This source-backed guide explains how image benchmark E
 const normalizedDescription = normalizeDescription(longDescription);
 assert.ok(normalizedDescription.length <= 170);
 assert.match(normalizedDescription, /[.!?]$/);
+
+const normalizedTitle = normalizeTitle(
+  'A very long introduction before the required phrase AI image benchmark and several unnecessary trailing promises for every reader',
+  'AI image benchmark',
+);
+assert.ok(normalizedTitle.length <= 70);
+assert.match(normalizedTitle.toLowerCase(), /ai image benchmark/);
 
 const sourceUrl = 'https://ai.google.dev/gemini-api/docs/image-generation';
 const internalOne = 'https://www.nano-banana.live/faq.html';
