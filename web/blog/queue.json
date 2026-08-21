@@ -70,11 +70,13 @@
     "category": "Benchmarks",
     "emoji": "📊",
     "depth": "standard",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://artificialanalysis.ai/image/leaderboard/text-to-image",
       "https://www.nano-banana.live/benchmarks/"
-    ]
+    ],
+    "structuralScore": 85,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "Gemini image editing API input image workflow",

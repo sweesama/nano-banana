@@ -101,5 +101,20 @@
       "https://github.com/Tencent-Hunyuan/HunyuanImage-3.0",
       "https://huggingface.co/Qwen/Qwen-Image-Edit-2511"
     ]
+  },
+  {
+    "slug": "ai-image-model-benchmark-elo-explained",
+    "publishDate": "2026-08-21",
+    "title": "AI image model benchmark Elo explained",
+    "description": "Learn how Elo scores work on the Artificial Analysis image leaderboard, what confidence intervals mean, and how to use Nano Banana benchmarks to compare models.",
+    "category": "Benchmarks",
+    "emoji": "📊",
+    "keyword": "AI image model benchmark Elo explained",
+    "structuralScore": 85,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+      "https://www.nano-banana.live/benchmarks/"
+    ]
   }
 ]
