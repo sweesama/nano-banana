@@ -16,9 +16,12 @@ import {
 assert.equal(MODELS.includes('z-ai/glm-5.2'), false);
 assert.equal(MODELS.includes('openai/gpt-oss-120b'), false);
 assert.equal(MODELS.includes('nvidia/nemotron-3-nano-30b-a3b'), false);
+assert.equal(MODELS.includes('deepseek-ai/deepseek-v4-flash-0731'), false);
+assert.equal(VERIFIER_MODELS.includes('deepseek-ai/deepseek-v4-flash-0731'), false);
 assert.ok(MODELS.length >= 4);
-assert.ok(VERIFIER_MODELS.length >= 3);
+assert.ok(VERIFIER_MODELS.length >= 4);
 assert.equal(MODELS[0], 'nvidia/nemotron-3-ultra-550b-a55b');
+assert.equal(MODELS[1], 'nvidia/nemotron-3-super-120b-a12b');
 assert.equal(VERIFIER_MODELS[0], 'stepfun-ai/step-3.7-flash');
 assert.equal(MODELS.includes('stepfun-ai/step-3.7-flash'), true);
 assert.equal(modelsForItem({ category: 'Benchmarks' })[0], MODELS[0]);

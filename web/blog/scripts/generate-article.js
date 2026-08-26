@@ -24,14 +24,15 @@ function parseModelList(value, fallback) {
 // These defaults were re-verified in NVIDIA's official catalog on 2026-08-26.
 const MODELS = parseModelList(process.env.BLOG_MODEL_LIST, [
   'nvidia/nemotron-3-ultra-550b-a55b',
+  'nvidia/nemotron-3-super-120b-a12b',
   'stepfun-ai/step-3.7-flash',
-  'deepseek-ai/deepseek-v4-flash-0731',
   'nvidia/nemotron-3.5-lightning-30b-a3b',
 ]);
 const VERIFIER_MODELS = parseModelList(process.env.BLOG_VERIFIER_MODEL_LIST, [
   'stepfun-ai/step-3.7-flash',
   'nvidia/nemotron-3-ultra-550b-a55b',
-  'deepseek-ai/deepseek-v4-flash-0731',
+  'nvidia/nemotron-3-super-120b-a12b',
+  'nvidia/nemotron-3.5-lightning-30b-a3b',
 ]);
 const API_TIMEOUT_MS = Number(process.env.BLOG_API_TIMEOUT_MS || 180000);
 const MAX_MODEL_ATTEMPTS = 2;
