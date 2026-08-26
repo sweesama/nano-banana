@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: '0 0 * * 1,3,5'
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Generate, source-audit, and validate without publishing
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -48,6 +54,7 @@ jobs:
         run: node scripts/validate-site.js
 
       - name: Commit, rebase, revalidate, and publish
+        if: github.event_name != 'workflow_dispatch' || inputs.dry_run != true
         shell: bash
         run: |
           set -euo pipefail
@@ -62,3 +69,7 @@ jobs:
           git pull --rebase origin main
           node scripts/validate-site.js
           git push origin HEAD:main
+
+      - name: Confirm dry-run validation
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run == true
+        run: echo "Dry run passed generation, source audit, and site validation; nothing was published."

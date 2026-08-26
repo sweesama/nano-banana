@@ -13,14 +13,15 @@ import {
   validateArticle,
 } from './generate-article.js';
 
-assert.equal(MODELS.includes('deepseek-ai/deepseek-v4-pro'), false);
-assert.equal(MODELS.includes('qwen/qwen3.5-122b-a10b'), false);
+assert.equal(MODELS.includes('z-ai/glm-5.2'), false);
+assert.equal(MODELS.includes('openai/gpt-oss-120b'), false);
+assert.equal(MODELS.includes('nvidia/nemotron-3-nano-30b-a3b'), false);
 assert.ok(MODELS.length >= 4);
-assert.ok(VERIFIER_MODELS.length >= 2);
-assert.equal(MODELS[0], 'openai/gpt-oss-120b');
-assert.equal(VERIFIER_MODELS[0], 'z-ai/glm-5.2');
-assert.equal(MODELS.includes('nvidia/nemotron-3.5-lightning-30b-a3b'), false);
-assert.equal(modelsForItem({ category: 'Benchmarks' })[0], 'nvidia/nemotron-3-super-120b-a12b');
+assert.ok(VERIFIER_MODELS.length >= 3);
+assert.equal(MODELS[0], 'deepseek-ai/deepseek-v4-flash-0731');
+assert.equal(VERIFIER_MODELS[0], 'nvidia/nemotron-3.5-lightning-30b-a3b');
+assert.equal(MODELS.includes('stepfun-ai/step-3.7-flash'), true);
+assert.equal(modelsForItem({ category: 'Benchmarks' })[0], MODELS[0]);
 assert.equal(modelsForItem({ category: 'API Tutorial' })[0], MODELS[0]);
 assert.deepEqual(parseModelList('model/a, model/b, model/a', ['fallback']), ['model/a', 'model/b']);
 assert.equal(classifyModelError({ status: 410, message: 'Gone' }), 'permanent');

@@ -20,17 +20,18 @@ function parseModelList(value, fallback) {
   return parsed.length > 0 ? [...new Set(parsed)] : fallback;
 }
 
+// NVIDIA hosted free endpoints are prototype services and may rotate or throttle.
+// These defaults were re-verified in NVIDIA's official catalog on 2026-08-26.
 const MODELS = parseModelList(process.env.BLOG_MODEL_LIST, [
-  'openai/gpt-oss-120b',
-  'z-ai/glm-5.2',
-  'nvidia/nemotron-3-super-120b-a12b',
-  'nvidia/nemotron-3-nano-30b-a3b',
+  'deepseek-ai/deepseek-v4-flash-0731',
+  'nvidia/nemotron-3.5-lightning-30b-a3b',
+  'stepfun-ai/step-3.7-flash',
+  'nvidia/nemotron-3-ultra-550b-a55b',
 ]);
 const VERIFIER_MODELS = parseModelList(process.env.BLOG_VERIFIER_MODEL_LIST, [
-  'z-ai/glm-5.2',
-  'openai/gpt-oss-120b',
-  'nvidia/nemotron-3-super-120b-a12b',
-  'nvidia/nemotron-3-nano-30b-a3b',
+  'nvidia/nemotron-3.5-lightning-30b-a3b',
+  'stepfun-ai/step-3.7-flash',
+  'deepseek-ai/deepseek-v4-flash-0731',
 ]);
 const API_TIMEOUT_MS = Number(process.env.BLOG_API_TIMEOUT_MS || 180000);
 const MAX_MODEL_ATTEMPTS = 2;
@@ -58,9 +59,7 @@ const SITE_HOST = 'www.nano-banana.live';
 const ai = API_KEY ? new OpenAI({ apiKey: API_KEY, baseURL: 'https://integrate.api.nvidia.com/v1' }) : null;
 
 function modelsForItem(item) {
-  if (item?.category !== 'Benchmarks') return MODELS;
-  const preferred = 'nvidia/nemotron-3-super-120b-a12b';
-  return [...new Set([preferred, ...MODELS])].filter(model => MODELS.includes(model));
+  return MODELS;
 }
 
 function escapeHtml(value) {
@@ -188,7 +187,11 @@ async function requestJsonModel(model, messages, { label, temperature, maxTokens
         console.warn(`[${label}] ${model} is disabled for the remainder of this run.`);
         break;
       }
-      if (kind === 'timeout') break;
+      if (kind === 'timeout') {
+        disabledModels.add(model);
+        console.warn(`[${label}] ${model} timed out and is disabled for the remainder of this run.`);
+        break;
+      }
       if (attempt < MAX_MODEL_ATTEMPTS && ['transient', 'retryable-output', 'unknown'].includes(kind)) {
         await new Promise(resolve => setTimeout(resolve, kind === 'transient' ? 12000 : 3000));
         continue;
@@ -467,10 +470,7 @@ Resolve every audit item; do not merely add disclaimers around contradicted clai
   ];
 
   let lastError;
-  const preferredRepairModel = 'nvidia/nemotron-3-super-120b-a12b';
-  const repairModels = [...new Set([preferredRepairModel, ...MODELS])]
-    .filter(model => MODELS.includes(model))
-    .slice(0, 1);
+  const repairModels = MODELS.filter(model => !disabledModels.has(model));
   for (const repairModel of repairModels) {
     if (disabledModels.has(repairModel)) continue;
     try {
