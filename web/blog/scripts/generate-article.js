@@ -23,14 +23,14 @@ function parseModelList(value, fallback) {
 // NVIDIA hosted free endpoints are prototype services and may rotate or throttle.
 // These defaults were re-verified in NVIDIA's official catalog on 2026-08-26.
 const MODELS = parseModelList(process.env.BLOG_MODEL_LIST, [
+  'nvidia/nemotron-3-ultra-550b-a55b',
+  'stepfun-ai/step-3.7-flash',
   'deepseek-ai/deepseek-v4-flash-0731',
   'nvidia/nemotron-3.5-lightning-30b-a3b',
-  'stepfun-ai/step-3.7-flash',
-  'nvidia/nemotron-3-ultra-550b-a55b',
 ]);
 const VERIFIER_MODELS = parseModelList(process.env.BLOG_VERIFIER_MODEL_LIST, [
-  'nvidia/nemotron-3.5-lightning-30b-a3b',
   'stepfun-ai/step-3.7-flash',
+  'nvidia/nemotron-3-ultra-550b-a55b',
   'deepseek-ai/deepseek-v4-flash-0731',
 ]);
 const API_TIMEOUT_MS = Number(process.env.BLOG_API_TIMEOUT_MS || 180000);
