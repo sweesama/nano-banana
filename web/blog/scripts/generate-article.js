@@ -158,6 +158,18 @@ function verifierModelsForAuthor(authorRoute) {
   return independent.length > 0 ? independent : VERIFIER_MODELS;
 }
 
+function resolveMaxTokens(provider, label, requested) {
+  if (provider === 'minimax') {
+    // M3's reasoning tokens share the completion budget. A 7k ceiling can cut
+    // otherwise valid long-form JSON midway through a quoted HTML string.
+    return Math.max(requested, label === 'source-audit' ? 8192 : 24576);
+  }
+  if (provider === 'deepseek' && label === 'source-audit') {
+    return Math.max(requested, 4096);
+  }
+  return requested;
+}
+
 function classifyModelError(error) {
   const status = getErrorStatus(error);
   const message = error?.message || '';
@@ -218,7 +230,7 @@ async function requestJsonModel(model, messages, { label, temperature, maxTokens
       // while remaining inside its documented (0, 1] range.
       temperature: route.provider === 'minimax' ? Math.max(temperature, 0.01) : temperature,
       top_p: 0.95,
-      max_tokens: maxTokens,
+      max_tokens: resolveMaxTokens(route.provider, label, maxTokens),
       response_format: { type: 'json_object' },
       messages,
       ...(route.provider === 'minimax' ? { reasoning_split: true } : {}),
@@ -749,4 +761,5 @@ export {
   sanitizeHtml,
   validateArticle,
   verifierModelsForAuthor,
+  resolveMaxTokens,
 };

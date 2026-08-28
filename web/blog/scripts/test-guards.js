@@ -13,6 +13,7 @@ import {
   sanitizeHtml,
   validateArticle,
   verifierModelsForAuthor,
+  resolveMaxTokens,
 } from './generate-article.js';
 
 assert.equal(MODELS.includes('stepfun-ai/step-3.7-flash'), false);
@@ -28,6 +29,10 @@ assert.deepEqual(parseModelList('model/a, model/b, model/a', ['fallback']), ['mo
 assert.deepEqual(parseModelRoute('minimax:MiniMax-M3'), { provider: 'minimax', model: 'MiniMax-M3', routeName: 'minimax:MiniMax-M3' });
 assert.equal(verifierModelsForAuthor('minimax:MiniMax-M3')[0], 'deepseek:deepseek-v4-flash');
 assert.equal(verifierModelsForAuthor('deepseek:deepseek-v4-flash')[0], 'minimax:MiniMax-M3');
+assert.equal(resolveMaxTokens('minimax', 'article', 7000), 24576);
+assert.equal(resolveMaxTokens('minimax', 'source-audit', 1800), 8192);
+assert.equal(resolveMaxTokens('deepseek', 'source-audit', 1800), 4096);
+assert.equal(resolveMaxTokens('nvidia', 'article', 7000), 7000);
 assert.equal(classifyModelError({ status: 410, message: 'Gone' }), 'permanent');
 assert.equal(classifyModelError({ status: 429, message: 'Rate limited' }), 'transient');
 assert.equal(classifyModelError({ status: 401, message: 'Unauthorized' }), 'auth');
