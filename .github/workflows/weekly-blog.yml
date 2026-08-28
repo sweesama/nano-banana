@@ -47,6 +47,8 @@ jobs:
       - name: Generate and source-audit one article
         working-directory: web/blog/scripts
         env:
+          MINIMAX_API_KEY: ${{ secrets.MINIMAX_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
         run: node generate-article.js
 

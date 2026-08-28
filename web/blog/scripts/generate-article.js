@@ -13,26 +13,46 @@ const ARTICLES_PATH = path.join(BLOG_DIR, 'articles.json');
 const SEO_RESEARCH_PATH = path.join(BLOG_DIR, 'seo-research.json');
 const BLOG_INDEX_PATH = path.join(WEB_DIR, 'blog.html');
 const SITEMAP_PATH = path.join(WEB_DIR, 'sitemap.xml');
-const API_KEY = process.env.NVIDIA_API_KEY;
+const PROVIDER_CONFIG = Object.freeze({
+  minimax: {
+    label: 'MiniMax',
+    apiKey: process.env.MINIMAX_API_KEY,
+    baseURL: process.env.MINIMAX_BASE_URL || 'https://api.minimaxi.com/v1',
+  },
+  deepseek: {
+    label: 'DeepSeek',
+    apiKey: process.env.DEEPSEEK_API_KEY,
+    baseURL: process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com',
+  },
+  nvidia: {
+    label: 'NVIDIA NIM',
+    apiKey: process.env.NVIDIA_API_KEY,
+    baseURL: process.env.NVIDIA_BASE_URL || 'https://integrate.api.nvidia.com/v1',
+  },
+});
+const providerClients = new Map();
+const MODEL_ROUTE = Symbol('modelRoute');
 
 function parseModelList(value, fallback) {
   const parsed = String(value || '').split(',').map(item => item.trim()).filter(Boolean);
   return parsed.length > 0 ? [...new Set(parsed)] : fallback;
 }
 
-// NVIDIA hosted free endpoints are prototype services and may rotate or throttle.
-// These defaults were re-verified in NVIDIA's official catalog on 2026-08-26.
+// MiniMax M3 writes the article, DeepSeek performs an independent source audit,
+// and NVIDIA free endpoints remain only as last-resort fallbacks.
 const MODELS = parseModelList(process.env.BLOG_MODEL_LIST, [
-  'nvidia/nemotron-3-ultra-550b-a55b',
-  'nvidia/nemotron-3-super-120b-a12b',
-  'stepfun-ai/step-3.7-flash',
-  'nvidia/nemotron-3.5-lightning-30b-a3b',
+  'minimax:MiniMax-M3',
+  'deepseek:deepseek-v4-flash',
+  'nvidia:nvidia/nemotron-3-ultra-550b-a55b',
+  'nvidia:nvidia/nemotron-3-super-120b-a12b',
+  'nvidia:nvidia/nemotron-3.5-lightning-30b-a3b',
 ]);
 const VERIFIER_MODELS = parseModelList(process.env.BLOG_VERIFIER_MODEL_LIST, [
-  'stepfun-ai/step-3.7-flash',
-  'nvidia/nemotron-3-ultra-550b-a55b',
-  'nvidia/nemotron-3-super-120b-a12b',
-  'nvidia/nemotron-3.5-lightning-30b-a3b',
+  'deepseek:deepseek-v4-flash',
+  'minimax:MiniMax-M3',
+  'nvidia:nvidia/nemotron-3-ultra-550b-a55b',
+  'nvidia:nvidia/nemotron-3-super-120b-a12b',
+  'nvidia:nvidia/nemotron-3.5-lightning-30b-a3b',
 ]);
 const API_TIMEOUT_MS = Number(process.env.BLOG_API_TIMEOUT_MS || 180000);
 const MAX_MODEL_ATTEMPTS = 2;
@@ -56,8 +76,6 @@ const AUTHORITATIVE_SOURCE_HOSTS = new Set([
   'www.vast.ai',
 ]);
 const SITE_HOST = 'www.nano-banana.live';
-
-const ai = API_KEY ? new OpenAI({ apiKey: API_KEY, baseURL: 'https://integrate.api.nvidia.com/v1' }) : null;
 
 function modelsForItem(item) {
   return MODELS;
@@ -110,9 +128,40 @@ function isJsonModeUnsupported(error) {
   return getErrorStatus(error) === 400 && /response[_ -]?format|json[_ -]?object|structured output/i.test(error?.message || '');
 }
 
+function parseModelRoute(routeName) {
+  const raw = String(routeName || '').trim();
+  const separator = raw.indexOf(':');
+  if (separator > 0) {
+    const provider = raw.slice(0, separator);
+    const model = raw.slice(separator + 1);
+    if (PROVIDER_CONFIG[provider] && model) return { provider, model, routeName: raw };
+  }
+  return { provider: 'nvidia', model: raw, routeName: raw };
+}
+
+function getProviderClient(provider) {
+  const config = PROVIDER_CONFIG[provider];
+  if (!config?.apiKey) return null;
+  if (!providerClients.has(provider)) {
+    providerClients.set(provider, new OpenAI({
+      apiKey: config.apiKey,
+      baseURL: config.baseURL,
+      maxRetries: 0,
+    }));
+  }
+  return providerClients.get(provider);
+}
+
+function verifierModelsForAuthor(authorRoute) {
+  const authorProvider = authorRoute ? parseModelRoute(authorRoute).provider : '';
+  const independent = VERIFIER_MODELS.filter(routeName => parseModelRoute(routeName).provider !== authorProvider);
+  return independent.length > 0 ? independent : VERIFIER_MODELS;
+}
+
 function classifyModelError(error) {
   const status = getErrorStatus(error);
   const message = error?.message || '';
+  if (error?.code === 'PROVIDER_UNCONFIGURED') return 'unconfigured';
   if (status === 401 || status === 403) return 'auth';
   if (status === 404 || status === 410 || status === 400) return 'permanent';
   if (status === 429 || status >= 500 || /quota|RESOURCE_EXHAUSTED|high demand/i.test(message)) return 'transient';
@@ -151,29 +200,45 @@ function normalizeTitle(value, requiredTerm, maxLength = 70) {
 
 async function requestJsonModel(model, messages, { label, temperature, maxTokens }) {
   if (disabledModels.has(model)) throw new Error(`Model ${model} is disabled for this run.`);
+  const route = parseModelRoute(model);
+  const client = getProviderClient(route.provider);
+  if (!client) {
+    disabledModels.add(model);
+    const error = new Error(`${PROVIDER_CONFIG[route.provider]?.label || route.provider} API key is not configured.`);
+    error.code = 'PROVIDER_UNCONFIGURED';
+    throw error;
+  }
   let lastError;
   for (let attempt = 1; attempt <= MAX_MODEL_ATTEMPTS; attempt++) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(new Error(`Model timeout after ${Math.round(API_TIMEOUT_MS / 1000)}s`)), API_TIMEOUT_MS);
     const payload = {
-      model,
-      temperature,
+      model: route.model,
+      // MiniMax rejects an exact zero; 0.01 keeps fact-checking deterministic
+      // while remaining inside its documented (0, 1] range.
+      temperature: route.provider === 'minimax' ? Math.max(temperature, 0.01) : temperature,
       top_p: 0.95,
       max_tokens: maxTokens,
       response_format: { type: 'json_object' },
       messages,
+      ...(route.provider === 'minimax' ? { reasoning_split: true } : {}),
+      ...(route.provider === 'deepseek' ? {
+        thinking: { type: label === 'source-audit' ? 'enabled' : 'disabled' },
+        ...(label === 'source-audit' ? { reasoning_effort: 'low' } : {}),
+      } : {}),
     };
     try {
       console.log(`[${label}] Trying ${model} (${attempt}/${MAX_MODEL_ATTEMPTS})...`);
       let response;
       try {
-        response = await ai.chat.completions.create(payload, { signal: controller.signal });
+        response = await client.chat.completions.create(payload, { signal: controller.signal });
       } catch (error) {
         if (!isJsonModeUnsupported(error)) throw error;
         console.log(`[${label}] ${model} does not accept response_format; retrying with prompt-enforced JSON.`);
-        response = await ai.chat.completions.create({ ...payload, response_format: undefined }, { signal: controller.signal });
+        response = await client.chat.completions.create({ ...payload, response_format: undefined }, { signal: controller.signal });
       }
       const data = parseJson(response.choices?.[0]?.message?.content || '');
+      Object.defineProperty(data, MODEL_ROUTE, { value: model, enumerable: false, configurable: true });
       console.log(`[${label}] ${model} returned valid JSON.`);
       return data;
     } catch (error) {
@@ -182,7 +247,11 @@ async function requestJsonModel(model, messages, { label, temperature, maxTokens
       const status = getErrorStatus(error);
       const summary = status ? `HTTP ${status}` : (error.message || 'Unknown error');
       console.warn(`[${label}] ${model} failed: ${summary}`);
-      if (kind === 'auth') throw new Error(`NVIDIA API authentication failed: ${summary}`);
+      if (kind === 'unconfigured' || kind === 'auth') {
+        disabledModels.add(model);
+        console.warn(`[${label}] ${model} is unavailable; trying another provider.`);
+        break;
+      }
       if (kind === 'permanent') {
         disabledModels.add(model);
         console.warn(`[${label}] ${model} is disabled for the remainder of this run.`);
@@ -401,7 +470,7 @@ Fail when a claim about model identity, capabilities, weights, license, pricing,
       },
     ];
   let lastError;
-  for (const verifierModel of VERIFIER_MODELS) {
+  for (const verifierModel of verifierModelsForAuthor(article[MODEL_ROUTE])) {
     if (disabledModels.has(verifierModel)) continue;
     let audit;
     try {
@@ -610,7 +679,12 @@ function updateSitemap(slug, date) {
 }
 
 async function main() {
-  if (!ai) throw new Error('Missing NVIDIA_API_KEY.');
+  const configuredRoutes = [...MODELS, ...VERIFIER_MODELS]
+    .map(parseModelRoute)
+    .filter(route => PROVIDER_CONFIG[route.provider]?.apiKey);
+  if (configuredRoutes.length === 0) {
+    throw new Error('No model API key is configured. Set MINIMAX_API_KEY, DEEPSEEK_API_KEY, or NVIDIA_API_KEY.');
+  }
   const queue = readJson(QUEUE_PATH);
   const articles = readJson(ARTICLES_PATH);
   const seoResearch = readJson(SEO_RESEARCH_PATH);
@@ -671,6 +745,8 @@ export {
   normalizeDescription,
   normalizeTitle,
   parseModelList,
+  parseModelRoute,
   sanitizeHtml,
   validateArticle,
+  verifierModelsForAuthor,
 };
