@@ -329,6 +329,21 @@ function countWords(value) {
   return String(value).replace(/<[^>]+>/g, ' ').trim().split(/\s+/).filter(Boolean).length;
 }
 
+function findAbsoluteProductClaim(value) {
+  const text = String(value).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  const patterns = [
+    /\bnever fails\b/i,
+    /\bunlimited\s+(?:usage|requests?|access|credits?|storage|generations?|downloads?)\b/i,
+    /\bguaranteed\s+(?:results?|quality|accuracy|availability|uptime|success)\b/i,
+    /\balways\s+(?:works?|available|free|accurate|secure|private|succeeds?|produces?|delivers?|supports?)\b/i,
+  ];
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (match) return match[0];
+  }
+  return '';
+}
+
 function scoreArticle(article, item, cluster) {
   const text = `${article.title} ${article.description} ${article.content}`.toLowerCase();
   const [minWords] = DEPTHS[item.depth] || DEPTHS.standard;
@@ -369,7 +384,8 @@ function validateArticle(article, item, cluster) {
   if (item.sourceUrls.filter(url => article.content.includes(url)).length !== item.sourceUrls.length) throw new Error('Article does not cite every required source near the relevant claim.');
   if (!item.sourceUrls.some(isAuthoritativeExternalSource)) throw new Error('Queue item needs at least one approved authoritative external source.');
   if (/\b(?:we tested|our tests show|our customers|users say)\b/i.test(article.content)) throw new Error('Unsubstantiated first-party experience or testimonial claim detected.');
-  if (/\b(?:guaranteed|always|never fails|unlimited)\b/i.test(article.content)) throw new Error('Absolute product claim detected.');
+  const absoluteClaim = findAbsoluteProductClaim(article.content);
+  if (absoluteClaim) throw new Error(`Absolute product claim detected: "${absoluteClaim}".`);
   if (/\bfree tier\b/i.test(article.content) && !item.sourceUrls.some(url => url.includes('ai.google.dev/gemini-api/docs/pricing'))) {
     throw new Error('A free-tier claim requires the live Gemini pricing page as a source.');
   }
@@ -758,6 +774,7 @@ export {
   normalizeTitle,
   parseModelList,
   parseModelRoute,
+  findAbsoluteProductClaim,
   sanitizeHtml,
   validateArticle,
   verifierModelsForAuthor,

@@ -4,6 +4,7 @@ import {
   MODELS,
   VERIFIER_MODELS,
   classifyModelError,
+  findAbsoluteProductClaim,
   isAuthoritativeExternalSource,
   modelsForItem,
   normalizeDescription,
@@ -37,6 +38,10 @@ assert.equal(classifyModelError({ status: 410, message: 'Gone' }), 'permanent');
 assert.equal(classifyModelError({ status: 429, message: 'Rate limited' }), 'transient');
 assert.equal(classifyModelError({ status: 401, message: 'Unauthorized' }), 'auth');
 assert.equal(classifyModelError({ code: 'PROVIDER_UNCONFIGURED' }), 'unconfigured');
+assert.equal(findAbsoluteProductClaim('<p>Always validate the response before saving it.</p>'), '');
+assert.equal(findAbsoluteProductClaim('<p>The API always works in every region.</p>').toLowerCase(), 'always works');
+assert.equal(findAbsoluteProductClaim('<p>Usage is not guaranteed and quotas may change.</p>'), '');
+assert.equal(findAbsoluteProductClaim('<p>Guaranteed uptime is included.</p>').toLowerCase(), 'guaranteed uptime');
 
 const longDescription = 'This source-backed guide explains how image benchmark Elo scores work, what uncertainty means, and why a single leaderboard position should never be treated as permanent proof of model quality or universal superiority.';
 const normalizedDescription = normalizeDescription(longDescription);
