@@ -13,26 +13,41 @@ const ARTICLES_PATH = path.join(BLOG_DIR, 'articles.json');
 const SEO_RESEARCH_PATH = path.join(BLOG_DIR, 'seo-research.json');
 const BLOG_INDEX_PATH = path.join(WEB_DIR, 'blog.html');
 const SITEMAP_PATH = path.join(WEB_DIR, 'sitemap.xml');
-const API_KEY = process.env.NVIDIA_API_KEY;
+const PROVIDER_CONFIG = Object.freeze({
+  minimax: {
+    label: 'MiniMax',
+    apiKey: process.env.MINIMAX_API_KEY,
+    baseURL: process.env.MINIMAX_BASE_URL || 'https://api.minimaxi.com/v1',
+  },
+  deepseek: {
+    label: 'DeepSeek',
+    apiKey: process.env.DEEPSEEK_API_KEY,
+    baseURL: process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com',
+  },
+  nvidia: {
+    label: 'NVIDIA NIM',
+    apiKey: process.env.NVIDIA_API_KEY,
+    baseURL: process.env.NVIDIA_BASE_URL || 'https://integrate.api.nvidia.com/v1',
+  },
+});
+const providerClients = new Map();
+const MODEL_ROUTE = Symbol('modelRoute');
 
 function parseModelList(value, fallback) {
   const parsed = String(value || '').split(',').map(item => item.trim()).filter(Boolean);
   return parsed.length > 0 ? [...new Set(parsed)] : fallback;
 }
 
-// NVIDIA hosted free endpoints are prototype services and may rotate or throttle.
-// These defaults were re-verified in NVIDIA's official catalog on 2026-08-26.
+// MiniMax M3 writes the article and DeepSeek performs an independent source
+// audit. Retired or slow NVIDIA routes can still be supplied through the
+// environment, but are not default fallbacks for unattended publishing.
 const MODELS = parseModelList(process.env.BLOG_MODEL_LIST, [
-  'nvidia/nemotron-3-ultra-550b-a55b',
-  'nvidia/nemotron-3-super-120b-a12b',
-  'stepfun-ai/step-3.7-flash',
-  'nvidia/nemotron-3.5-lightning-30b-a3b',
+  'minimax:MiniMax-M3',
+  'deepseek:deepseek-v4-flash',
 ]);
 const VERIFIER_MODELS = parseModelList(process.env.BLOG_VERIFIER_MODEL_LIST, [
-  'stepfun-ai/step-3.7-flash',
-  'nvidia/nemotron-3-ultra-550b-a55b',
-  'nvidia/nemotron-3-super-120b-a12b',
-  'nvidia/nemotron-3.5-lightning-30b-a3b',
+  'deepseek:deepseek-v4-flash',
+  'minimax:MiniMax-M3',
 ]);
 const API_TIMEOUT_MS = Number(process.env.BLOG_API_TIMEOUT_MS || 180000);
 const MAX_MODEL_ATTEMPTS = 2;
@@ -56,8 +71,6 @@ const AUTHORITATIVE_SOURCE_HOSTS = new Set([
   'www.vast.ai',
 ]);
 const SITE_HOST = 'www.nano-banana.live';
-
-const ai = API_KEY ? new OpenAI({ apiKey: API_KEY, baseURL: 'https://integrate.api.nvidia.com/v1' }) : null;
 
 function modelsForItem(item) {
   return MODELS;
@@ -110,9 +123,52 @@ function isJsonModeUnsupported(error) {
   return getErrorStatus(error) === 400 && /response[_ -]?format|json[_ -]?object|structured output/i.test(error?.message || '');
 }
 
+function parseModelRoute(routeName) {
+  const raw = String(routeName || '').trim();
+  const separator = raw.indexOf(':');
+  if (separator > 0) {
+    const provider = raw.slice(0, separator);
+    const model = raw.slice(separator + 1);
+    if (PROVIDER_CONFIG[provider] && model) return { provider, model, routeName: raw };
+  }
+  return { provider: 'nvidia', model: raw, routeName: raw };
+}
+
+function getProviderClient(provider) {
+  const config = PROVIDER_CONFIG[provider];
+  if (!config?.apiKey) return null;
+  if (!providerClients.has(provider)) {
+    providerClients.set(provider, new OpenAI({
+      apiKey: config.apiKey,
+      baseURL: config.baseURL,
+      maxRetries: 0,
+    }));
+  }
+  return providerClients.get(provider);
+}
+
+function verifierModelsForAuthor(authorRoute) {
+  const authorProvider = authorRoute ? parseModelRoute(authorRoute).provider : '';
+  const independent = VERIFIER_MODELS.filter(routeName => parseModelRoute(routeName).provider !== authorProvider);
+  return independent.length > 0 ? independent : VERIFIER_MODELS;
+}
+
+function resolveMaxTokens(provider, label, requested) {
+  if (provider === 'minimax') {
+    // M3's reasoning tokens share the completion budget. A 7k ceiling can cut
+    // otherwise valid long-form JSON midway through a quoted HTML string.
+    return Math.max(requested, label === 'source-audit' ? 8192 : 24576);
+  }
+  if (provider === 'deepseek' && label === 'source-audit') {
+    return Math.max(requested, 4096);
+  }
+  return requested;
+}
+
 function classifyModelError(error) {
   const status = getErrorStatus(error);
   const message = error?.message || '';
+  if (error?.code === 'PROVIDER_UNCONFIGURED') return 'unconfigured';
   if (status === 401 || status === 403) return 'auth';
   if (status === 404 || status === 410 || status === 400) return 'permanent';
   if (status === 429 || status >= 500 || /quota|RESOURCE_EXHAUSTED|high demand/i.test(message)) return 'transient';
@@ -151,29 +207,45 @@ function normalizeTitle(value, requiredTerm, maxLength = 70) {
 
 async function requestJsonModel(model, messages, { label, temperature, maxTokens }) {
   if (disabledModels.has(model)) throw new Error(`Model ${model} is disabled for this run.`);
+  const route = parseModelRoute(model);
+  const client = getProviderClient(route.provider);
+  if (!client) {
+    disabledModels.add(model);
+    const error = new Error(`${PROVIDER_CONFIG[route.provider]?.label || route.provider} API key is not configured.`);
+    error.code = 'PROVIDER_UNCONFIGURED';
+    throw error;
+  }
   let lastError;
   for (let attempt = 1; attempt <= MAX_MODEL_ATTEMPTS; attempt++) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(new Error(`Model timeout after ${Math.round(API_TIMEOUT_MS / 1000)}s`)), API_TIMEOUT_MS);
     const payload = {
-      model,
-      temperature,
+      model: route.model,
+      // MiniMax rejects an exact zero; 0.01 keeps fact-checking deterministic
+      // while remaining inside its documented (0, 1] range.
+      temperature: route.provider === 'minimax' ? Math.max(temperature, 0.01) : temperature,
       top_p: 0.95,
-      max_tokens: maxTokens,
+      max_tokens: resolveMaxTokens(route.provider, label, maxTokens),
       response_format: { type: 'json_object' },
       messages,
+      ...(route.provider === 'minimax' ? { reasoning_split: true } : {}),
+      ...(route.provider === 'deepseek' ? {
+        thinking: { type: label === 'source-audit' ? 'enabled' : 'disabled' },
+        ...(label === 'source-audit' ? { reasoning_effort: 'low' } : {}),
+      } : {}),
     };
     try {
       console.log(`[${label}] Trying ${model} (${attempt}/${MAX_MODEL_ATTEMPTS})...`);
       let response;
       try {
-        response = await ai.chat.completions.create(payload, { signal: controller.signal });
+        response = await client.chat.completions.create(payload, { signal: controller.signal });
       } catch (error) {
         if (!isJsonModeUnsupported(error)) throw error;
         console.log(`[${label}] ${model} does not accept response_format; retrying with prompt-enforced JSON.`);
-        response = await ai.chat.completions.create({ ...payload, response_format: undefined }, { signal: controller.signal });
+        response = await client.chat.completions.create({ ...payload, response_format: undefined }, { signal: controller.signal });
       }
       const data = parseJson(response.choices?.[0]?.message?.content || '');
+      Object.defineProperty(data, MODEL_ROUTE, { value: model, enumerable: false, configurable: true });
       console.log(`[${label}] ${model} returned valid JSON.`);
       return data;
     } catch (error) {
@@ -182,7 +254,11 @@ async function requestJsonModel(model, messages, { label, temperature, maxTokens
       const status = getErrorStatus(error);
       const summary = status ? `HTTP ${status}` : (error.message || 'Unknown error');
       console.warn(`[${label}] ${model} failed: ${summary}`);
-      if (kind === 'auth') throw new Error(`NVIDIA API authentication failed: ${summary}`);
+      if (kind === 'unconfigured' || kind === 'auth') {
+        disabledModels.add(model);
+        console.warn(`[${label}] ${model} is unavailable; trying another provider.`);
+        break;
+      }
       if (kind === 'permanent') {
         disabledModels.add(model);
         console.warn(`[${label}] ${model} is disabled for the remainder of this run.`);
@@ -248,6 +324,21 @@ function countWords(value) {
   return String(value).replace(/<[^>]+>/g, ' ').trim().split(/\s+/).filter(Boolean).length;
 }
 
+function findAbsoluteProductClaim(value) {
+  const text = String(value).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  const patterns = [
+    /\bnever fails\b/i,
+    /\bunlimited\s+(?:usage|requests?|access|credits?|storage|generations?|downloads?)\b/i,
+    /\bguaranteed\s+(?:results?|quality|accuracy|availability|uptime|success)\b/i,
+    /\balways\s+(?:works?|available|free|accurate|secure|private|succeeds?|produces?|delivers?|supports?)\b/i,
+  ];
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (match) return match[0];
+  }
+  return '';
+}
+
 function scoreArticle(article, item, cluster) {
   const text = `${article.title} ${article.description} ${article.content}`.toLowerCase();
   const [minWords] = DEPTHS[item.depth] || DEPTHS.standard;
@@ -288,13 +379,78 @@ function validateArticle(article, item, cluster) {
   if (item.sourceUrls.filter(url => article.content.includes(url)).length !== item.sourceUrls.length) throw new Error('Article does not cite every required source near the relevant claim.');
   if (!item.sourceUrls.some(isAuthoritativeExternalSource)) throw new Error('Queue item needs at least one approved authoritative external source.');
   if (/\b(?:we tested|our tests show|our customers|users say)\b/i.test(article.content)) throw new Error('Unsubstantiated first-party experience or testimonial claim detected.');
-  if (/\b(?:guaranteed|always|never fails|unlimited)\b/i.test(article.content)) throw new Error('Absolute product claim detected.');
+  const absoluteClaim = findAbsoluteProductClaim(article.content);
+  if (absoluteClaim) throw new Error(`Absolute product claim detected: "${absoluteClaim}".`);
   if (/\bfree tier\b/i.test(article.content) && !item.sourceUrls.some(url => url.includes('ai.google.dev/gemini-api/docs/pricing'))) {
     throw new Error('A free-tier claim requires the live Gemini pricing page as a source.');
   }
 }
 
-async function fetchSourceNotes(urls) {
+function isRepairableContentError(error) {
+  return /researched primary keyword|researched internal links|cite every required source|absolute product claim|free-tier claim|first-party experience|testimonial claim/i.test(error?.message || '');
+}
+
+function extractRelevantSourceText(value, keyword = '', maxChars = 12000) {
+  const text = String(value || '').replace(/\s+/g, ' ').trim();
+  if (text.length <= maxChars) return text;
+
+  const lower = text.toLowerCase();
+  const stopWords = new Set(['about', 'after', 'before', 'guide', 'image', 'using', 'with', 'workflow']);
+  const keywordTerms = String(keyword || '')
+    .toLowerCase()
+    .split(/[^a-z0-9_.-]+/)
+    .filter(term => term.length >= 5 && !stopWords.has(term));
+  const anchors = [...new Set([
+    String(keyword || '').toLowerCase(),
+    'client.interactions.create',
+    'client.models.generate_content',
+    'response_format',
+    'response format',
+    'mime_type',
+    'aspect_ratio',
+    'image editing',
+    'text-and-image',
+    'input image',
+    'base64',
+    'synthid',
+    'breaking changes',
+    ...keywordTerms,
+  ].filter(term => term.length >= 5))];
+
+  const ranges = [{ start: 0, end: Math.min(text.length, 1400), priority: -1 }];
+  anchors.forEach((anchor, priority) => {
+    let cursor = 0;
+    let matches = 0;
+    while (matches < 2) {
+      const index = lower.indexOf(anchor, cursor);
+      if (index < 0) break;
+      ranges.push({
+        start: Math.max(0, index - 650),
+        end: Math.min(text.length, index + anchor.length + 1550),
+        priority,
+      });
+      cursor = index + anchor.length;
+      matches += 1;
+    }
+  });
+
+  const selected = [];
+  let estimatedLength = 0;
+  for (const range of ranges.sort((a, b) => a.priority - b.priority)) {
+    const overlap = selected.some(existing => range.start <= existing.end && range.end >= existing.start);
+    if (overlap) continue;
+    const length = range.end - range.start;
+    if (estimatedLength + length > maxChars && selected.length > 0) continue;
+    selected.push(range);
+    estimatedLength += length;
+  }
+
+  const ordered = selected.sort((a, b) => a.start - b.start);
+  const excerpts = ordered.map(range => text.slice(range.start, range.end));
+  return excerpts.join(' [...] ').slice(0, maxChars).trim();
+}
+
+async function fetchSourceNotes(urls, keyword = '') {
   if (!Array.isArray(urls) || urls.length < 2) throw new Error('Every queue item needs at least two source URLs.');
   if (!urls.some(isAuthoritativeExternalSource)) throw new Error('No approved authoritative external source is configured.');
 
@@ -321,7 +477,7 @@ async function fetchSourceNotes(urls) {
         .replace(/\s+/g, ' ')
         .trim();
       if (text.length < 200) throw new Error('source text is too short to verify claims');
-      return { index: index + 1, url, text: text.slice(0, 9000) };
+      return { index: index + 1, url, text: extractRelevantSourceText(text, keyword) };
     } catch (error) {
       throw new Error(`Required source unavailable: ${url} (${error.message})`);
     } finally {
@@ -362,6 +518,10 @@ Content rules:
 - Cite claims by linking to source URLs near the relevant discussion. Do not add a Sources section — the publishing script generates one automatically.
 - Treat the supplied source text as the complete evidence boundary. A fact absent from it must be omitted or explicitly labeled unknown.
 - Keep volatile prices, quotas, rankings, and availability dated and linked to the source that states them.
+- Do not mention prices, costs, free tiers, quotas, or regional availability unless the supplied evidence includes an official source that states the claim.
+- For executable API examples, copy the documented API surface and field names exactly. Never combine the Interactions API input-object schema with the legacy GenerateContent contents/config schema.
+- If the evidence does not contain the exact syntax needed for a runnable example, explain the boundary and link the official source instead of inventing code.
+- When relevant official evidence describes provenance labeling or breaking API changes, summarize the practical implication with a nearby citation.
 - For benchmark or Elo topics, prefer explaining how to interpret the metric. Do not reproduce a live ranking table, exact current ranks, prices, sample counts, confidence intervals, or model scores when fetched sources show different snapshots. Hypothetical numbers must be explicitly labeled as examples.
 - A keyword may appear as a question, but answer it directly. Never imply that an API client makes a hosted model local or offline.
 - Always close every HTML tag properly. Close <a> tags with </a>, never use <a href="#"> as a closing tag.
@@ -401,7 +561,7 @@ Fail when a claim about model identity, capabilities, weights, license, pricing,
       },
     ];
   let lastError;
-  for (const verifierModel of VERIFIER_MODELS) {
+  for (const verifierModel of verifierModelsForAuthor(article[MODEL_ROUTE])) {
     if (disabledModels.has(verifierModel)) continue;
     let audit;
     try {
@@ -466,7 +626,7 @@ Allowed evidence:
 ${evidence}
 
 Return exactly {"title":"...","description":"...","content":"..."}.
-Resolve every audit item; do not merely add disclaimers around contradicted claims. Remove unsupported or conflicting ranks, scores, prices, sample counts, open-weight labels, and model status claims. For benchmark topics, explain the interpretation method and snapshot drift without copying a current leaderboard table. Preserve every required source URL and at least two required internal links in relevant anchor tags. Keep the title phrase verbatim. Use valid article-body HTML only.`,
+Resolve every audit item; do not merely add disclaimers around contradicted claims. Remove unsupported or conflicting ranks, scores, prices, sample counts, open-weight labels, and model status claims. Do not mention prices, costs, free tiers, quotas, or regional availability unless an official supplied source states the claim. For API code, preserve the exact documented API surface and field names; never mix Interactions API input objects with legacy GenerateContent contents/config fields. If exact executable syntax is absent from the evidence, omit the code rather than guessing. When relevant evidence documents provenance labels or breaking API changes, include the practical implication with a nearby citation. For benchmark topics, explain the interpretation method and snapshot drift without copying a current leaderboard table. Preserve every required source URL and at least two required internal links in relevant anchor tags. Keep the title phrase verbatim. Use valid article-body HTML only.`,
     },
   ];
 
@@ -494,7 +654,7 @@ Resolve every audit item; do not merely add disclaimers around contradicted clai
 }
 
 async function generateArticle(item, existingArticles, cluster) {
-  const sourceRecords = await fetchSourceNotes(item.sourceUrls);
+  const sourceRecords = await fetchSourceNotes(item.sourceUrls, item.keyword);
   const requiredTerm = cluster.primaryTerms[0];
   let lastError;
   for (const model of modelsForItem(item)) {
@@ -515,7 +675,18 @@ async function generateArticle(item, existingArticles, cluster) {
       continue;
     }
     try {
-      prepareArticle(article, item, cluster, requiredTerm);
+      try {
+        prepareArticle(article, item, cluster, requiredTerm);
+      } catch (error) {
+        if (!isRepairableContentError(error)) throw error;
+        article = await repairArticleAfterAudit(article, item, sourceRecords, cluster, requiredTerm, {
+          verdict: 'fail',
+          unsupportedClaims: [],
+          contradictions: [],
+          missingQualifications: [error.message],
+        });
+        return article;
+      }
       try {
         await verifyArticle(article, item, sourceRecords);
       } catch (error) {
@@ -610,7 +781,12 @@ function updateSitemap(slug, date) {
 }
 
 async function main() {
-  if (!ai) throw new Error('Missing NVIDIA_API_KEY.');
+  const configuredRoutes = [...MODELS, ...VERIFIER_MODELS]
+    .map(parseModelRoute)
+    .filter(route => PROVIDER_CONFIG[route.provider]?.apiKey);
+  if (configuredRoutes.length === 0) {
+    throw new Error('No model API key is configured. Set MINIMAX_API_KEY, DEEPSEEK_API_KEY, or NVIDIA_API_KEY.');
+  }
   const queue = readJson(QUEUE_PATH);
   const articles = readJson(ARTICLES_PATH);
   const seoResearch = readJson(SEO_RESEARCH_PATH);
@@ -665,12 +841,18 @@ export {
   MODELS,
   VERIFIER_MODELS,
   classifyModelError,
+  extractRelevantSourceText,
   fetchSourceNotes,
   isAuthoritativeExternalSource,
+  isRepairableContentError,
   modelsForItem,
   normalizeDescription,
   normalizeTitle,
   parseModelList,
+  parseModelRoute,
+  findAbsoluteProductClaim,
   sanitizeHtml,
   validateArticle,
+  verifierModelsForAuthor,
+  resolveMaxTokens,
 };
