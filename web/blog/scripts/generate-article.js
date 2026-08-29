@@ -38,21 +38,16 @@ function parseModelList(value, fallback) {
   return parsed.length > 0 ? [...new Set(parsed)] : fallback;
 }
 
-// MiniMax M3 writes the article, DeepSeek performs an independent source audit,
-// and NVIDIA free endpoints remain only as last-resort fallbacks.
+// MiniMax M3 writes the article and DeepSeek performs an independent source
+// audit. Retired or slow NVIDIA routes can still be supplied through the
+// environment, but are not default fallbacks for unattended publishing.
 const MODELS = parseModelList(process.env.BLOG_MODEL_LIST, [
   'minimax:MiniMax-M3',
   'deepseek:deepseek-v4-flash',
-  'nvidia:nvidia/nemotron-3-ultra-550b-a55b',
-  'nvidia:nvidia/nemotron-3-super-120b-a12b',
-  'nvidia:nvidia/nemotron-3.5-lightning-30b-a3b',
 ]);
 const VERIFIER_MODELS = parseModelList(process.env.BLOG_VERIFIER_MODEL_LIST, [
   'deepseek:deepseek-v4-flash',
   'minimax:MiniMax-M3',
-  'nvidia:nvidia/nemotron-3-ultra-550b-a55b',
-  'nvidia:nvidia/nemotron-3-super-120b-a12b',
-  'nvidia:nvidia/nemotron-3.5-lightning-30b-a3b',
 ]);
 const API_TIMEOUT_MS = Number(process.env.BLOG_API_TIMEOUT_MS || 180000);
 const MAX_MODEL_ATTEMPTS = 2;
@@ -391,7 +386,71 @@ function validateArticle(article, item, cluster) {
   }
 }
 
-async function fetchSourceNotes(urls) {
+function isRepairableContentError(error) {
+  return /researched primary keyword|researched internal links|cite every required source|absolute product claim|free-tier claim|first-party experience|testimonial claim/i.test(error?.message || '');
+}
+
+function extractRelevantSourceText(value, keyword = '', maxChars = 12000) {
+  const text = String(value || '').replace(/\s+/g, ' ').trim();
+  if (text.length <= maxChars) return text;
+
+  const lower = text.toLowerCase();
+  const stopWords = new Set(['about', 'after', 'before', 'guide', 'image', 'using', 'with', 'workflow']);
+  const keywordTerms = String(keyword || '')
+    .toLowerCase()
+    .split(/[^a-z0-9_.-]+/)
+    .filter(term => term.length >= 5 && !stopWords.has(term));
+  const anchors = [...new Set([
+    String(keyword || '').toLowerCase(),
+    'client.interactions.create',
+    'client.models.generate_content',
+    'response_format',
+    'response format',
+    'mime_type',
+    'aspect_ratio',
+    'image editing',
+    'text-and-image',
+    'input image',
+    'base64',
+    'synthid',
+    'breaking changes',
+    ...keywordTerms,
+  ].filter(term => term.length >= 5))];
+
+  const ranges = [{ start: 0, end: Math.min(text.length, 1400), priority: -1 }];
+  anchors.forEach((anchor, priority) => {
+    let cursor = 0;
+    let matches = 0;
+    while (matches < 2) {
+      const index = lower.indexOf(anchor, cursor);
+      if (index < 0) break;
+      ranges.push({
+        start: Math.max(0, index - 650),
+        end: Math.min(text.length, index + anchor.length + 1550),
+        priority,
+      });
+      cursor = index + anchor.length;
+      matches += 1;
+    }
+  });
+
+  const selected = [];
+  let estimatedLength = 0;
+  for (const range of ranges.sort((a, b) => a.priority - b.priority)) {
+    const overlap = selected.some(existing => range.start <= existing.end && range.end >= existing.start);
+    if (overlap) continue;
+    const length = range.end - range.start;
+    if (estimatedLength + length > maxChars && selected.length > 0) continue;
+    selected.push(range);
+    estimatedLength += length;
+  }
+
+  const ordered = selected.sort((a, b) => a.start - b.start);
+  const excerpts = ordered.map(range => text.slice(range.start, range.end));
+  return excerpts.join(' [...] ').slice(0, maxChars).trim();
+}
+
+async function fetchSourceNotes(urls, keyword = '') {
   if (!Array.isArray(urls) || urls.length < 2) throw new Error('Every queue item needs at least two source URLs.');
   if (!urls.some(isAuthoritativeExternalSource)) throw new Error('No approved authoritative external source is configured.');
 
@@ -418,7 +477,7 @@ async function fetchSourceNotes(urls) {
         .replace(/\s+/g, ' ')
         .trim();
       if (text.length < 200) throw new Error('source text is too short to verify claims');
-      return { index: index + 1, url, text: text.slice(0, 9000) };
+      return { index: index + 1, url, text: extractRelevantSourceText(text, keyword) };
     } catch (error) {
       throw new Error(`Required source unavailable: ${url} (${error.message})`);
     } finally {
@@ -459,6 +518,10 @@ Content rules:
 - Cite claims by linking to source URLs near the relevant discussion. Do not add a Sources section — the publishing script generates one automatically.
 - Treat the supplied source text as the complete evidence boundary. A fact absent from it must be omitted or explicitly labeled unknown.
 - Keep volatile prices, quotas, rankings, and availability dated and linked to the source that states them.
+- Do not mention prices, costs, free tiers, quotas, or regional availability unless the supplied evidence includes an official source that states the claim.
+- For executable API examples, copy the documented API surface and field names exactly. Never combine the Interactions API input-object schema with the legacy GenerateContent contents/config schema.
+- If the evidence does not contain the exact syntax needed for a runnable example, explain the boundary and link the official source instead of inventing code.
+- When relevant official evidence describes provenance labeling or breaking API changes, summarize the practical implication with a nearby citation.
 - For benchmark or Elo topics, prefer explaining how to interpret the metric. Do not reproduce a live ranking table, exact current ranks, prices, sample counts, confidence intervals, or model scores when fetched sources show different snapshots. Hypothetical numbers must be explicitly labeled as examples.
 - A keyword may appear as a question, but answer it directly. Never imply that an API client makes a hosted model local or offline.
 - Always close every HTML tag properly. Close <a> tags with </a>, never use <a href="#"> as a closing tag.
@@ -563,7 +626,7 @@ Allowed evidence:
 ${evidence}
 
 Return exactly {"title":"...","description":"...","content":"..."}.
-Resolve every audit item; do not merely add disclaimers around contradicted claims. Remove unsupported or conflicting ranks, scores, prices, sample counts, open-weight labels, and model status claims. For benchmark topics, explain the interpretation method and snapshot drift without copying a current leaderboard table. Preserve every required source URL and at least two required internal links in relevant anchor tags. Keep the title phrase verbatim. Use valid article-body HTML only.`,
+Resolve every audit item; do not merely add disclaimers around contradicted claims. Remove unsupported or conflicting ranks, scores, prices, sample counts, open-weight labels, and model status claims. Do not mention prices, costs, free tiers, quotas, or regional availability unless an official supplied source states the claim. For API code, preserve the exact documented API surface and field names; never mix Interactions API input objects with legacy GenerateContent contents/config fields. If exact executable syntax is absent from the evidence, omit the code rather than guessing. When relevant evidence documents provenance labels or breaking API changes, include the practical implication with a nearby citation. For benchmark topics, explain the interpretation method and snapshot drift without copying a current leaderboard table. Preserve every required source URL and at least two required internal links in relevant anchor tags. Keep the title phrase verbatim. Use valid article-body HTML only.`,
     },
   ];
 
@@ -591,7 +654,7 @@ Resolve every audit item; do not merely add disclaimers around contradicted clai
 }
 
 async function generateArticle(item, existingArticles, cluster) {
-  const sourceRecords = await fetchSourceNotes(item.sourceUrls);
+  const sourceRecords = await fetchSourceNotes(item.sourceUrls, item.keyword);
   const requiredTerm = cluster.primaryTerms[0];
   let lastError;
   for (const model of modelsForItem(item)) {
@@ -612,7 +675,18 @@ async function generateArticle(item, existingArticles, cluster) {
       continue;
     }
     try {
-      prepareArticle(article, item, cluster, requiredTerm);
+      try {
+        prepareArticle(article, item, cluster, requiredTerm);
+      } catch (error) {
+        if (!isRepairableContentError(error)) throw error;
+        article = await repairArticleAfterAudit(article, item, sourceRecords, cluster, requiredTerm, {
+          verdict: 'fail',
+          unsupportedClaims: [],
+          contradictions: [],
+          missingQualifications: [error.message],
+        });
+        return article;
+      }
       try {
         await verifyArticle(article, item, sourceRecords);
       } catch (error) {
@@ -767,8 +841,10 @@ export {
   MODELS,
   VERIFIER_MODELS,
   classifyModelError,
+  extractRelevantSourceText,
   fetchSourceNotes,
   isAuthoritativeExternalSource,
+  isRepairableContentError,
   modelsForItem,
   normalizeDescription,
   normalizeTitle,

@@ -4,8 +4,10 @@ import {
   MODELS,
   VERIFIER_MODELS,
   classifyModelError,
+  extractRelevantSourceText,
   findAbsoluteProductClaim,
   isAuthoritativeExternalSource,
+  isRepairableContentError,
   modelsForItem,
   normalizeDescription,
   normalizeTitle,
@@ -19,8 +21,8 @@ import {
 
 assert.equal(MODELS.includes('stepfun-ai/step-3.7-flash'), false);
 assert.equal(VERIFIER_MODELS.includes('stepfun-ai/step-3.7-flash'), false);
-assert.ok(MODELS.length >= 4);
-assert.ok(VERIFIER_MODELS.length >= 4);
+assert.equal(MODELS.length, 2);
+assert.equal(VERIFIER_MODELS.length, 2);
 assert.equal(MODELS[0], 'minimax:MiniMax-M3');
 assert.equal(MODELS[1], 'deepseek:deepseek-v4-flash');
 assert.equal(VERIFIER_MODELS[0], 'deepseek:deepseek-v4-flash');
@@ -42,6 +44,15 @@ assert.equal(findAbsoluteProductClaim('<p>Always validate the response before sa
 assert.equal(findAbsoluteProductClaim('<p>The API always works in every region.</p>').toLowerCase(), 'always works');
 assert.equal(findAbsoluteProductClaim('<p>Usage is not guaranteed and quotas may change.</p>'), '');
 assert.equal(findAbsoluteProductClaim('<p>Guaranteed uptime is included.</p>').toLowerCase(), 'guaranteed uptime');
+assert.equal(isRepairableContentError(new Error('Article does not cite every required source near the relevant claim.')), true);
+assert.equal(isRepairableContentError(new Error('Unsafe HTML detected.')), false);
+
+const longSource = `${'Introductory navigation text. '.repeat(500)} ${'Unrelated model notes. '.repeat(500)} Current image editing example: client.interactions.create uses input objects with type image, base64 data, and mime_type. The response_format object controls aspect_ratio. Generated images include SynthID. Breaking changes require the current request shape.`;
+const relevantSource = extractRelevantSourceText(longSource, 'Gemini image editing API input image workflow');
+assert.ok(relevantSource.length <= 12000);
+assert.match(relevantSource, /client\.interactions\.create/);
+assert.match(relevantSource, /response_format/);
+assert.match(relevantSource, /SynthID/);
 
 const longDescription = 'This source-backed guide explains how image benchmark Elo scores work, what uncertainty means, and why a single leaderboard position should never be treated as permanent proof of model quality or universal superiority.';
 const normalizedDescription = normalizeDescription(longDescription);
