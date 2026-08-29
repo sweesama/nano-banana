@@ -519,7 +519,8 @@ Content rules:
 - Treat the supplied source text as the complete evidence boundary. A fact absent from it must be omitted or explicitly labeled unknown.
 - Keep volatile prices, quotas, rankings, and availability dated and linked to the source that states them.
 - Do not mention prices, costs, free tiers, quotas, or regional availability unless the supplied evidence includes an official source that states the claim.
-- For executable API examples, copy the documented API surface and field names exactly. Never combine the Interactions API input-object schema with the legacy GenerateContent contents/config schema.
+- For executable API examples, use only the API surface and field names shown in the supplied evidence. Do not mention or compare alternative or older API names unless the evidence explicitly discusses both.
+- Do not add environment auto-loading behavior, request-size limits, rate-limit advice, retry policy, model compatibility, or extra allowed values unless the supplied evidence states them.
 - If the evidence does not contain the exact syntax needed for a runnable example, explain the boundary and link the official source instead of inventing code.
 - When relevant official evidence describes provenance labeling or breaking API changes, summarize the practical implication with a nearby citation.
 - For benchmark or Elo topics, prefer explaining how to interpret the metric. Do not reproduce a live ranking table, exact current ranks, prices, sample counts, confidence intervals, or model scores when fetched sources show different snapshots. Hypothetical numbers must be explicitly labeled as examples.
@@ -604,39 +605,41 @@ function prepareArticle(article, item, cluster, requiredTerm) {
 
 async function repairArticleAfterAudit(article, item, sourceRecords, cluster, requiredTerm, audit) {
   const evidence = sourceRecords.map(source => `[SOURCE ${source.index}] ${source.url}\n${source.text}`).join('\n\n');
-  const messages = [
-    {
-      role: 'system',
-      content: 'You are a conservative publication editor. Revise an article to resolve every fact-check issue using only the supplied evidence. Return JSON only.',
-    },
-    {
-      role: 'user',
-      content: `Revise this article after a failed source audit.
+  let currentArticle = article;
+  let currentAudit = audit;
+  let lastError;
+  const repairModels = MODELS.filter(model => !disabledModels.has(model));
+  for (const repairModel of repairModels) {
+    if (disabledModels.has(repairModel)) continue;
+    const messages = [
+      {
+        role: 'system',
+        content: 'You are a conservative publication editor. Revise an article to resolve every fact-check issue using only the supplied evidence. Return JSON only.',
+      },
+      {
+        role: 'user',
+        content: `Revise this article after a failed source audit.
 
 Topic: ${item.keyword}
 Required title phrase: ${requiredTerm}
 Required source URLs: ${item.sourceUrls.join(', ')}
 Required internal links: ${cluster.internalLinks.join(', ')}
-Audit findings: ${JSON.stringify(audit)}
+Audit findings: ${JSON.stringify(currentAudit)}
 
 Current article:
-${JSON.stringify(article)}
+${JSON.stringify(currentArticle)}
 
 Allowed evidence:
 ${evidence}
 
 Return exactly {"title":"...","description":"...","content":"..."}.
-Resolve every audit item; do not merely add disclaimers around contradicted claims. Remove unsupported or conflicting ranks, scores, prices, sample counts, open-weight labels, and model status claims. Do not mention prices, costs, free tiers, quotas, or regional availability unless an official supplied source states the claim. For API code, preserve the exact documented API surface and field names; never mix Interactions API input objects with legacy GenerateContent contents/config fields. If exact executable syntax is absent from the evidence, omit the code rather than guessing. When relevant evidence documents provenance labels or breaking API changes, include the practical implication with a nearby citation. For benchmark topics, explain the interpretation method and snapshot drift without copying a current leaderboard table. Preserve every required source URL and at least two required internal links in relevant anchor tags. Keep the title phrase verbatim. Use valid article-body HTML only.`,
-    },
-  ];
-
-  let lastError;
-  const repairModels = MODELS.filter(model => !disabledModels.has(model));
-  for (const repairModel of repairModels) {
-    if (disabledModels.has(repairModel)) continue;
+Treat every audit finding as a deletion or correction instruction. Do not retain a disputed claim merely because it is generally plausible, and do not replace it with a nearby unsupported detail. Remove unsupported or conflicting ranks, scores, prices, sample counts, open-weight labels, and model status claims. Do not mention prices, costs, free tiers, quotas, regional availability, environment auto-loading, request-size limits, rate-limit advice, retry policy, model compatibility, alternative API names, or extra allowed values unless an official supplied source explicitly states them. For API code, preserve only the exact documented API surface and field names. If exact executable syntax is absent from the evidence, omit the code rather than guessing. When relevant evidence documents provenance labels or breaking API changes, include the practical implication with a nearby citation. For benchmark topics, explain the interpretation method and snapshot drift without copying a current leaderboard table. Preserve every required source URL and at least two required internal links in relevant anchor tags. Keep the title phrase verbatim. Use valid article-body HTML only.`,
+      },
+    ];
+    let repaired;
     try {
       console.log(`[source-repair] Revising with ${repairModel}...`);
-      const repaired = await requestJsonModel(repairModel, messages, {
+      repaired = await requestJsonModel(repairModel, messages, {
         label: 'source-repair',
         temperature: 0.15,
         maxTokens: 7000,
@@ -648,6 +651,16 @@ Resolve every audit item; do not merely add disclaimers around contradicted clai
     } catch (error) {
       lastError = error;
       console.warn(`[source-repair] ${repairModel} revision failed: ${error.message}`);
+      if (repaired) {
+        currentArticle = repaired;
+        currentAudit = error.audit || {
+          verdict: 'fail',
+          unsupportedClaims: [],
+          contradictions: [],
+          missingQualifications: [error.message],
+        };
+        console.log('[source-repair] Passing the latest revision and audit findings to the next editor.');
+      }
     }
   }
   throw lastError || new Error('All configured models failed to repair the source audit findings.');
@@ -666,7 +679,7 @@ async function generateArticle(item, existingArticles, cluster) {
           { role: 'user', content: promptFor(item, existingArticles, sourceRecords, cluster, requiredTerm) }
         ], {
         label: 'article',
-        temperature: 0.45,
+        temperature: 0.25,
         maxTokens: 7000,
       });
     } catch (error) {
