@@ -178,15 +178,30 @@ function classifyModelError(error) {
   return 'unknown';
 }
 
+const DANGLING_DESCRIPTION_ENDING = /(?:\b(?:and|or|but|nor|so|yet|with|without|for|to|of|in|on|at|by|from|into|through|including|covering|a|an|the)|\b(?:such as|as well as))[\s,;:\-]*[.!?]?$/i;
+
+function hasDanglingDescriptionEnding(value) {
+  return DANGLING_DESCRIPTION_ENDING.test(String(value || '').trim());
+}
+
+function finishDescription(value) {
+  let result = String(value || '').trim().replace(/[\s,;:\-]+$/g, '');
+  while (result && hasDanglingDescriptionEnding(result)) {
+    result = result.replace(DANGLING_DESCRIPTION_ENDING, '').trim().replace(/[\s,;:\-]+$/g, '');
+  }
+  if (!result) return '';
+  return /[.!?]$/.test(result) ? result : `${result}.`;
+}
+
 function normalizeDescription(value, maxLength = 170) {
   const compact = String(value || '').replace(/\s+/g, ' ').trim();
-  if (compact.length <= maxLength) return compact;
+  const finished = finishDescription(compact);
+  if (finished.length <= maxLength) return finished;
   const candidate = compact.slice(0, maxLength - 1);
   const sentenceBoundary = Math.max(candidate.lastIndexOf('. '), candidate.lastIndexOf('! '), candidate.lastIndexOf('? '));
   const wordBoundary = candidate.lastIndexOf(' ');
   const cutAt = sentenceBoundary >= 100 ? sentenceBoundary + 1 : wordBoundary;
-  const shortened = candidate.slice(0, cutAt > 0 ? cutAt : maxLength - 1).replace(/[\s,;:\-]+$/g, '');
-  return /[.!?]$/.test(shortened) ? shortened : `${shortened}.`;
+  return finishDescription(candidate.slice(0, cutAt > 0 ? cutAt : maxLength - 1));
 }
 
 function normalizeTitle(value, requiredTerm, maxLength = 70) {
@@ -366,6 +381,7 @@ function validateArticle(article, item, cluster) {
   }
   if (article.title.length > 80) throw new Error('Title is too long.');
   if (article.description.length > 180) throw new Error('Description is too long.');
+  if (hasDanglingDescriptionEnding(article.description)) throw new Error('Description ends with an incomplete phrase.');
   if (/<(script|iframe|object|embed|form)\b/i.test(article.content)) throw new Error('Unsafe HTML detected.');
   if (/<a\b[^>]*>(?:(?!<\/a>)[\s\S])*<a\b/i.test(article.content)) throw new Error('Nested anchor detected.');
   if (/href=["']#["']/i.test(article.content)) throw new Error('Placeholder link detected.');
@@ -859,6 +875,7 @@ export {
   isAuthoritativeExternalSource,
   isRepairableContentError,
   modelsForItem,
+  hasDanglingDescriptionEnding,
   normalizeDescription,
   normalizeTitle,
   parseModelList,

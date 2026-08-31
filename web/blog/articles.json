@@ -121,7 +121,7 @@
     "slug": "gemini-image-editing-api-input-image-workflow",
     "publishDate": "2026-08-31",
     "title": "Gemini image API: Input Image Workflow for Image Editing",
-    "description": "A practical tutorial on the Gemini image API input image workflow in Python, covering base64 uploads, multi-turn editing with previous_interaction_id, and.",
+    "description": "A practical Python guide to the Gemini image API input image workflow, covering base64 uploads, multi-turn editing, aspect ratios, image sizes, and output handling.",
     "category": "API Tutorial",
     "emoji": "🧩",
     "keyword": "Gemini image editing API input image workflow",

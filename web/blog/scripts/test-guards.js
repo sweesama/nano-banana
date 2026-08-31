@@ -9,6 +9,7 @@ import {
   isAuthoritativeExternalSource,
   isRepairableContentError,
   modelsForItem,
+  hasDanglingDescriptionEnding,
   normalizeDescription,
   normalizeTitle,
   parseModelList,
@@ -59,6 +60,13 @@ const normalizedDescription = normalizeDescription(longDescription);
 assert.ok(normalizedDescription.length <= 170);
 assert.match(normalizedDescription, /[.!?]$/);
 
+const incompleteDescription = 'A practical tutorial on the Gemini image API input image workflow in Python, covering base64 uploads, multi-turn editing with previous_interaction_id, and.';
+const repairedDescription = normalizeDescription(incompleteDescription);
+assert.equal(repairedDescription, 'A practical tutorial on the Gemini image API input image workflow in Python, covering base64 uploads, multi-turn editing with previous_interaction_id.');
+assert.equal(hasDanglingDescriptionEnding(repairedDescription), false);
+assert.equal(normalizeDescription('A'.repeat(170)).length, 170);
+assert.equal(normalizeDescription(''), '');
+
 const normalizedTitle = normalizeTitle(
   'A very long introduction before the required phrase AI image benchmark and several unnecessary trailing promises for every reader',
   'AI image benchmark',
@@ -100,6 +108,10 @@ assert.throws(
 assert.throws(
   () => validateArticle({ ...baseArticle, content: `${baseArticle.content}<p>Use the free tier.</p>` }, item, cluster),
   /pricing page/,
+);
+assert.throws(
+  () => validateArticle({ ...baseArticle, description: `${baseArticle.description.slice(0, -1)}, and.` }, item, cluster),
+  /incomplete phrase/,
 );
 
 console.log('Publishing guard tests passed.');

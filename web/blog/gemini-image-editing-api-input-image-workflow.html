@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Gemini image API: Input Image Workflow for Image Editing | Nano Banana</title>
-  <meta name="description" content="A practical tutorial on the Gemini image API input image workflow in Python, covering base64 uploads, multi-turn editing with previous_interaction_id, and.">
+  <meta name="description" content="A practical Python guide to the Gemini image API input image workflow, covering base64 uploads, multi-turn editing, aspect ratios, image sizes, and output handling.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.nano-banana.live/blog/gemini-image-editing-api-input-image-workflow.html">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Gemini image API: Input Image Workflow for Image Editing","description":"A practical tutorial on the Gemini image API input image workflow in Python, covering base64 uploads, multi-turn editing with previous_interaction_id, and.","datePublished":"2026-08-31","dateModified":"2026-08-31","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/gemini-image-editing-api-input-image-workflow.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Gemini image API: Input Image Workflow for Image Editing","description":"A practical Python guide to the Gemini image API input image workflow, covering base64 uploads, multi-turn editing, aspect ratios, image sizes, and output handling.","datePublished":"2026-08-31","dateModified":"2026-08-31","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/gemini-image-editing-api-input-image-workflow.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
   <link rel="stylesheet" href="../styles.css">
   <script src="../analytics.js" defer></script>
 </head>
@@ -28,7 +28,7 @@
       <header class="article-header">
         <div class="meta" style="justify-content:center;display:flex;">API Tutorial • Aug 31, 2026</div>
         <h1>Gemini image API: Input Image Workflow for Image Editing</h1>
-        <p class="lead" style="margin:20px auto;">A practical tutorial on the Gemini image API input image workflow in Python, covering base64 uploads, multi-turn editing with previous_interaction_id, and.</p>
+        <p class="lead" style="margin:20px auto;">A practical Python guide to the Gemini image API input image workflow, covering base64 uploads, multi-turn editing, aspect ratios, image sizes, and output handling.</p>
       </header>
       <div class="article-content">
         <p>When you want to <strong>edit images with Gemini</strong>, the input image workflow is how you hand a reference picture to the model alongside your text prompt and get a modified picture back. The current surface for this is the Interactions API with the <code>gemini-3.1-flash-image</code> model: <code>input</code> is a list of typed content blocks, the response is base64 image data, and follow-up edits are chained through <code>previous_interaction_id</code>. This walkthrough covers the Python version of that workflow, the <strong>Gemini API environment variables</strong> you need, the <strong>Gemini image API aspect ratio</strong> and image size knobs, and the places where the documented surface still leaves gaps for implementers.</p>
