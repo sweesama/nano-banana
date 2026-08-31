@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Gemini image API: Input Image Workflow for Image Editing | Nano Banana</title>
+  <meta name="description" content="A practical tutorial on the Gemini image API input image workflow in Python, covering base64 uploads, multi-turn editing with previous_interaction_id, and.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/gemini-image-editing-api-input-image-workflow.html">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Gemini image API: Input Image Workflow for Image Editing","description":"A practical tutorial on the Gemini image API input image workflow in Python, covering base64 uploads, multi-turn editing with previous_interaction_id, and.","datePublished":"2026-08-31","dateModified":"2026-08-31","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/gemini-image-editing-api-input-image-workflow.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">API Tutorial • Aug 31, 2026</div>
+        <h1>Gemini image API: Input Image Workflow for Image Editing</h1>
+        <p class="lead" style="margin:20px auto;">A practical tutorial on the Gemini image API input image workflow in Python, covering base64 uploads, multi-turn editing with previous_interaction_id, and.</p>
+      </header>
+      <div class="article-content">
+        <p>When you want to <strong>edit images with Gemini</strong>, the input image workflow is how you hand a reference picture to the model alongside your text prompt and get a modified picture back. The current surface for this is the Interactions API with the <code>gemini-3.1-flash-image</code> model: <code>input</code> is a list of typed content blocks, the response is base64 image data, and follow-up edits are chained through <code>previous_interaction_id</code>. This walkthrough covers the Python version of that workflow, the <strong>Gemini API environment variables</strong> you need, the <strong>Gemini image API aspect ratio</strong> and image size knobs, and the places where the documented surface still leaves gaps for implementers.</p>
+
+<h2>The shape of an input-image request</h2>
+
+<p>An image editing request is just a normal Interactions call whose <code>input</code> array mixes typed blocks. A text block carries the instruction and an image block carries the reference picture. The image block has three required fields per Google's <a href="https://ai.google.dev/gemini-api/docs/image-generation?hl=en" target="_blank" rel="noopener">image generation documentation</a>:</p>
+
+<ul>
+<li><code>type</code> — the literal string <code>"image"</code></li>
+<li><code>data</code> — the picture encoded as a base64 string</li>
+<li><code>mime_type</code> — for example <code>"image/png"</code> or <code>"image/jpeg"</code></li>
+</ul>
+
+<p>The model returns <code>interaction.output_image</code> with a <code>data</code> field that is itself base64, so the round trip is symmetric: read bytes, base64-encode for input, base64-decode for output. The <strong>Gemini image API</strong> ships SDK examples in Python, JavaScript, Java, and raw REST, and all four follow this same block-list shape, which is what makes the input image workflow portable across languages.</p>
+
+<h2>A runnable Python example for editing</h2>
+
+<p>The <strong>Gemini image API example</strong> in the official docs reads a local file, base64-encodes it inside the input list, and decodes the returned image straight to disk. The structure is:</p>
+
+<pre><code>from google import genai
+import base64
+
+client = genai.Client()
+
+with open("/path/to/cat_image.png", "rb") as f:
+    image_bytes = f.read()
+
+interaction = client.interactions.create(
+    model="gemini-3.1-flash-image",
+    input=[
+        {"type": "text", "text": "Create a picture of a nano banana dish in a fancy restaurant with a Gemini theme"},
+        {"type": "image", "data": base64.b64encode(image_bytes).decode("utf-8"), "mime_type": "image/png"},
+    ],
+)
+
+with open("generated_image.png", "wb") as f:
+    f.write(base64.b64decode(interaction.output_image.data))
+</code></pre>
+
+<p>Three things are worth noting because they are common <strong>Gemini image API errors</strong> sources:</p>
+
+<ol>
+<li>The image goes in as a base64 <em>string</em>, not a raw byte buffer. The <code>b64encode(...).decode("utf-8")</code> step is what flips the type from <code>bytes</code> to <code>str</code>; the official example uses this exact pattern.</li>
+<li>The <code>mime_type</code> must match the bytes you sent. Passing <code>image/png</code> with JPEG bytes (or vice versa) is an easy way to get a rejected request.</li>
+<li>Always read <code>interaction.output_image</code> defensively. The JavaScript example in the docs only writes the file inside an <code>if (generatedImage)</code> guard, which is the safe pattern even though the Python snippet shown in the guide writes unconditionally.</li>
+</ol>
+
+<p>If you want the REST equivalent with the same field names, the official guide shows the request body as a JSON array with <code>type</code>, <code>mime_type</code>, and <code>data</code> keys, posted to <code>https://generativelanguage.googleapis.com/v1beta/interactions</code> with the API key in an <code>x-goog-api-key</code> header.</p>
+
+<h2>Chaining edits with previous_interaction_id</h2>
+
+<p>The recommended way to iterate on an image is multi-turn. The first call generates the picture, every later call references it through <code>previous_interaction_id</code> and supplies a new instruction. The model treats the chained call as a follow-up to the previous one rather than a fresh start, which keeps visual elements stable across rounds.</p>
+
+<pre><code>interaction_2 = client.interactions.create(
+    model="gemini-3.1-flash-image",
+    input="Update this infographic to be in Spanish. Do not change any other elements of the image.",
+    previous_interaction_id=interaction.id,
+    response_format={
+        "type": "image",
+        "mime_type": "image/jpeg",
+        "aspect_ratio": "16:9",
+        "image_size": "2K",
+    },
+)
+</code></pre>
+
+<p>This pattern is what the official <a href="https://ai.google.dev/gemini-api/docs/image-generation?hl=en" target="_blank" rel="noopener">Gemini image generation page</a> recommends over regenerating from scratch on each iteration, because it preserves character, palette, and layout and only changes what your new instruction targets. The <strong>Gemini image editing API</strong> is therefore best thought of as a conversation with a canvas, not a one-shot text-to-image endpoint.</p>
+
+<h2>Controlling output: aspect ratio and image size</h2>
+
+<p>Output shape is not negotiated by the prompt. It is set explicitly through <code>response_format</code>, which currently supports four fields in the documented examples:</p>
+
+<ul>
+<li><code>type</code> — set to <code>"image"</code></li>
+<li><code>mime_type</code> — output format such as <code>"image/png"</code> or <code>"image/jpeg"</code></li>
+<li><code>aspect_ratio</code> — a string such as <code>"16:9"</code></li>
+<li><code>image_size</code> — a string such as <code>"2K"</code></li>
+</ul>
+
+<p>The exact list of valid <strong>Gemini image API aspect ratio</strong> strings and <code>image_size</code> values beyond the <code>"16:9"</code> and <code>"2K"</code> shown in the official examples is not enumerated in the fetched source, so check the live doc before relying on a specific value.</p>
+
+<h2>Environment variables and local setup</h2>
+
+<p>The Python client requires a Gemini API key. The Nano Banana <a href="https://www.nano-banana.live/blog/how-to-run-locally.html" target="_blank" rel="noopener">local client guide</a> spells this out step by step:</p>
+
+<pre><code>export GEMINI_API_KEY="your-key-here"
+</code></pre>
+
+<p>The full local workflow is:</p>
+
+<ol>
+<li>Grab a key from Google AI Studio and store it in <code>GEMINI_API_KEY</code>.</li>
+<li>Create a Python virtual environment with <code>python -m venv venv</code> and activate it.</li>
+<li>Install the SDK with <code>pip install -U google-genai</code>.</li>
+<li>Run the input-image example above against <code>gemini-3.1-flash-image</code>.</li>
+</ol>
+
+<p>A practical clarification the same guide makes explicit, and worth repeating here: even though your script runs on your machine, the core model is closed source and runs on Google's current Gemini image infrastructure. Running the <strong>Gemini image API</strong> Python client locally does not make the model local or offline — your computer is acting as a controller, not a host. The same guide also flags that the API surface changes over time, so re-check the maintained Nano Banana Python tutorial and Google's <a href="https://ai.google.dev/gemini-api/docs/image-generation?hl=en" target="_blank" rel="noopener">image generation documentation</a> before relying on specific field names or code shapes.</p>
+
+<p>If you genuinely need offline image editing, the Nano Banana quickstart points at open alternatives such as HunyuanImage 3.0 and Qwen-Image-Edit-2511, with the trade-off noted in the guide that they usually require a stronger GPU and more setup than the cloud client.</p>
+
+<h2>Known gaps in the public docs</h2>
+<p>A few details that beginners usually need are not pinned down in the fetched snippets, and the official page itself is the source of truth rather than third-party tutorials:</p>
+
+<ul>
+<li>The full enumeration of supported <code>mime_type</code> values beyond <code>image/png</code> and <code>image/jpeg</code> is delegated to the Image understanding page rather than spelled out on the image generation page. The guide explicitly tells you to check that page for "multiple images, larger payloads, and supported MIME types."</li>
+<li>Valid values for <code>aspect_ratio</code> and <code>image_size</code> outside the <code>"16:9"</code> and <code>"2K"</code> example are not listed in the fetched content. Do not invent values; pull them from the live doc.</li>
+</ul>
+
+<h2>Where to go next</h2>
+<p>For a hands-on walkthrough that mirrors the snippets above and tracks the current <strong>Gemini image API Python</strong> surface, follow the Nano Banana <a href="https://www.nano-banana.live/blog/how-to-run-locally.html" target="_blank" rel="noopener">local Python client walkthrough</a>. If you are choosing between cloud and open models, the Nano Banana <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart guide</a> compares the closed Gemini API with offline options like HunyuanImage 3.0 and Qwen-Image-Edit-2511. And if you hit a <strong>Gemini image API error</strong> that the official page does not document, the Nano Banana <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">FAQ</a> collects the most common failures from real install attempts, including API key issues and MIME-type mismatches that line up with the base64 pitfall called out earlier.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://ai.google.dev/gemini-api/docs/image-generation?hl=en" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/image-generation?hl=en</a></li><li><a href="https://www.nano-banana.live/blog/how-to-run-locally.html" target="_blank" rel="noopener">https://www.nano-banana.live/blog/how-to-run-locally.html</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>

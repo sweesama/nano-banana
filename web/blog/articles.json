@@ -116,5 +116,20 @@
       "https://artificialanalysis.ai/image/leaderboard/text-to-image",
       "https://www.nano-banana.live/benchmarks/"
     ]
+  },
+  {
+    "slug": "gemini-image-editing-api-input-image-workflow",
+    "publishDate": "2026-08-31",
+    "title": "Gemini image API: Input Image Workflow for Image Editing",
+    "description": "A practical tutorial on the Gemini image API input image workflow in Python, covering base64 uploads, multi-turn editing with previous_interaction_id, and.",
+    "category": "API Tutorial",
+    "emoji": "🧩",
+    "keyword": "Gemini image editing API input image workflow",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/image-generation?hl=en",
+      "https://www.nano-banana.live/blog/how-to-run-locally.html"
+    ]
   }
 ]
