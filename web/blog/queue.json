@@ -98,11 +98,13 @@
     "category": "API Tutorial",
     "emoji": "🪟",
     "depth": "standard",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://ai.google.dev/gemini-api/docs/quickstart",
       "https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py"
-    ]
+    ],
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "Gemini image generation API aspect ratio and resolution",

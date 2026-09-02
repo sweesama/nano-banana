@@ -131,5 +131,20 @@
       "https://ai.google.dev/gemini-api/docs/image-generation?hl=en",
       "https://www.nano-banana.live/blog/how-to-run-locally.html"
     ]
+  },
+  {
+    "slug": "gemini-image-api-environment-variables-windows",
+    "publishDate": "2026-09-02",
+    "title": "Gemini image API: Setting Environment Variables on Windows",
+    "description": "Learn how to set Gemini image API environment variables on Windows, from session-only exports to persistent user-level setup with setx and PowerShell.",
+    "category": "API Tutorial",
+    "emoji": "🪟",
+    "keyword": "Gemini image API environment variables on Windows",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/quickstart",
+      "https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py"
+    ]
   }
 ]

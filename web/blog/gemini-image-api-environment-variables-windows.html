@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Gemini image API: Setting Environment Variables on Windows | Nano Banana</title>
+  <meta name="description" content="Learn how to set Gemini image API environment variables on Windows, from session-only exports to persistent user-level setup with setx and PowerShell.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/gemini-image-api-environment-variables-windows.html">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Gemini image API: Setting Environment Variables on Windows","description":"Learn how to set Gemini image API environment variables on Windows, from session-only exports to persistent user-level setup with setx and PowerShell.","datePublished":"2026-09-02","dateModified":"2026-09-02","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/gemini-image-api-environment-variables-windows.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">API Tutorial • Sep 2, 2026</div>
+        <h1>Gemini image API: Setting Environment Variables on Windows</h1>
+        <p class="lead" style="margin:20px auto;">Learn how to set Gemini image API environment variables on Windows, from session-only exports to persistent user-level setup with setx and PowerShell.</p>
+      </header>
+      <div class="article-content">
+        <p>When you call the Gemini image API from Python on Windows, the SDK reads your API key from an environment variable rather than from hard-coded text. The official quickstart demonstrates the Unix <code>export</code> syntax (<a href="https://ai.google.dev/gemini-api/docs/quickstart" target="_blank" rel="noopener">Google AI quickstart</a>), but Windows requires a different set of commands to set, persist, and verify that variable. This guide walks through every step that matters for a clean local setup on a Windows machine.</p><h2>What the script actually looks for</h2><p>The Nano Banana reference client in the project's <code>nano_api.py</code> shows the variable names the Python code is expected to read. The relevant lines are:</p><pre><code>api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+if not api_key:
+    raise RuntimeError("Set GOOGLE_API_KEY or GEMINI_API_KEY before running this script.")</code></pre><p>Two practical takeaways follow directly from this source:</p><ul><li>Either <code>GOOGLE_API_KEY</code> or <code>GEMINI_API_KEY</code> is accepted. The Google docs emphasize <code>GEMINI_API_KEY</code>; the reference client accepts both for compatibility.</li><li>If neither variable is set, the script aborts with a clear <code>RuntimeError</code>. There is no implicit fallback to a config file or a default key.</li></ul><p>This means your Windows setup only needs to define one of those two names for the variable to work with the <a href="https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py" target="_blank" rel="noopener">nano_api.py</a> example.</p><h2>Set the variable for the current session</h2><p>A session-scoped variable lives only in the window where you set it. This is the safest way to test a new key without affecting other projects.</p><p>In Command Prompt (<code>cmd.exe</code>):</p><pre><code>set GEMINI_API_KEY=your_api_key_here</code></pre><p>In PowerShell:</p><pre><code>$env:GEMINI_API_KEY = "your_api_key_here"</code></pre><p>The value is available only until you close the shell. Open a new window and the variable is gone, which is convenient when you want to rotate a key quickly.</p><h2>Persist the variable across sessions</h2><p>For ongoing development you usually want the variable to survive logouts and reboots. Windows offers two user-level mechanisms.</p><p>Command Prompt, user-level persistence:</p><pre><code>setx GEMINI_API_KEY "your_api_key_here"</code></pre><p>PowerShell, user-level persistence:</p><pre><code>[System.Environment]::SetEnvironmentVariable(
+    "GEMINI_API_KEY",
+    "your_api_key_here",
+    "User"
+)</code></pre><p>Both approaches write to the Windows user environment registry hive. After running either command, close and reopen your terminal so the new value is loaded into the process. The machine-level equivalent uses <code>"Machine"</code> instead of <code>"User"</code> in PowerShell and requires an elevated shell; for personal development, the user scope is enough.</p><blockquote>Important: <code>setx</code> silently truncates values that contain certain delimiters and does not require quotes for simple alphanumeric keys. If your key contains unusual characters, wrap it in double quotes exactly as shown above, and avoid the <code>export</code> keyword that the <a href="https://ai.google.dev/gemini-api/docs/quickstart" target="_blank" rel="noopener">Google quickstart</a> shows for POSIX shells.</blockquote><h2>Verify the variable is visible</h2><p>Before you run any Python code, confirm the shell sees the value.</p><p>Command Prompt:</p><pre><code>echo %GEMINI_API_KEY%</code></pre><p>PowerShell:</p><pre><code>echo $env:GEMINI_API_KEY</code></pre><p>If the line is empty, the variable is not defined in the current scope. The most common causes are running the verification command in a window that was open before you used <code>setx</code>, or mixing the two syntaxes (<code>%VAR%</code> in PowerShell, <code>$env:VAR</code> in Command Prompt).</p><h2>Wire the variable into a Gemini image API call</h2><p>The Nano Banana reference script (<a href="https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py" target="_blank" rel="noopener">nano_api.py</a>) shows how the key is consumed by the SDK once the variable is in place:</p><pre><code>import base64
+import mimetypes
+import os
+from pathlib import Path
+from google import genai
+
+api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+client = genai.Client(api_key=api_key)
+interaction = client.interactions.create(
+    model="gemini-3.1-flash-image",
+    input=[
+        {"type": "text", "text": prompt},
+        {
+            "type": "image",
+            "data": base64.b64encode(image_bytes).decode("utf-8"),
+            "mime_type": mime_type,
+        },
+    ],
+    response_format={"type": "image"},
+)</code></pre><p>A few notes on what this snippet does and does not tell you:</p><ul><li>The image is sent as base64-encoded bytes with a guessed MIME type, matching the multimodal input format described in the <a href="https://ai.google.dev/gemini-api/docs/quickstart" target="_blank" rel="noopener">Google quickstart</a>.</li><li><code>response_format={"type": "image"}</code> requests image output; the script then writes <code>interaction.output_image.data</code> to disk.</li><li>This is a hosted API call. The Gemini image model runs on Google's servers; the Python script only sends bytes over HTTPS. There is no local GPU involvement.</li></ul><p>For the install step, the quickstart specifies <code>pip install -U google-genai</code>. Run that once in the Python environment you intend to use, then verify everything with a minimal call against a small local JPEG.</p><h2>A practical Windows checklist</h2><ol><li>Open the Windows shell you normally use for Python work.</li><li>Run <code>setx GEMINI_API_KEY "your_key"</code> in Command Prompt or the PowerShell equivalent.</li><li>Close and reopen the shell so the new registry entry is picked up.</li><li>Verify with <code>echo %GEMINI_API_KEY%</code> or <code>echo $env:GEMINI_API_KEY</code>.</li><li>Install the SDK: <code>pip install -U google-genai</code>.</li><li>Run the <a href="https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py" target="_blank" rel="noopener">reference client</a> with a local image and editing prompt.</li></ol><h2>Where to go next</h2><p>If the image comes back blank or the script prints <code>No image returned</code>, check the <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">Nano Banana FAQ</a> for prompt-shape and output troubleshooting. For a broader walkthrough of the editing flow used in <code>nano_api.py</code>, see the <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">Nano Banana quickstart guide</a>. If you would rather run an open-weight image model on your own hardware instead of using a hosted endpoint, the <a href="https://www.nano-banana.live/blog/how-to-run-locally.html" target="_blank" rel="noopener">local-runs article</a> covers the trade-offs between the cloud Gemini image API and self-hosted alternatives.</p><p>The environment variable is the smallest piece of the puzzle, but it is the one that breaks most often on Windows because the official quickstart only documents the Unix shell. Once it is in place, the rest of the Gemini image API Python workflow follows the same pattern as on any other platform.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://ai.google.dev/gemini-api/docs/quickstart" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/quickstart</a></li><li><a href="https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py" target="_blank" rel="noopener">https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>
