@@ -112,11 +112,13 @@
     "category": "API Tutorial",
     "emoji": "📐",
     "depth": "standard",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://ai.google.dev/gemini-api/docs/models"
-    ]
+    ],
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "Gemini image API errors 403 quota and model names",

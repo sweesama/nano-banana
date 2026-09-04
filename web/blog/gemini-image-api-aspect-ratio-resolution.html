@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Gemini image API: Setting Aspect Ratio and Resolution | Nano Banana</title>
+  <meta name="description" content="A hands-on guide to controlling aspect_ratio and image_size in the Gemini image API&#39;s response_format field, based on the official image-generation documentation.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/gemini-image-api-aspect-ratio-resolution.html">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Gemini image API: Setting Aspect Ratio and Resolution","description":"A hands-on guide to controlling aspect_ratio and image_size in the Gemini image API's response_format field, based on the official image-generation documentation.","datePublished":"2026-09-04","dateModified":"2026-09-04","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/gemini-image-api-aspect-ratio-resolution.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">API Tutorial • Sep 4, 2026</div>
+        <h1>Gemini image API: Setting Aspect Ratio and Resolution</h1>
+        <p class="lead" style="margin:20px auto;">A hands-on guide to controlling aspect_ratio and image_size in the Gemini image API&#39;s response_format field, based on the official image-generation documentation.</p>
+      </header>
+      <div class="article-content">
+        <p>If you have already placed a <strong>Gemini image API</strong> call and ended up with the wrong shape or a soft-looking output, the fix usually lives in one place: the <code>response_format</code> object passed to <code>interactions.create()</code>. Two nested fields, <code>aspect_ratio</code> and <code>image_size</code>, control the rendered image, and setting them explicitly is the difference between a predictable asset and a one-off generation. The behavior below is taken from Google's image-generation documentation, so you can match it against the live page if a token changes.</p>
+
+<h2>Where aspect ratio and resolution live in the request</h2>
+<p>The <strong>Gemini image API</strong> exposes image-output controls through a single <code>response_format</code> object. Inside that object, <code>aspect_ratio</code> accepts a string such as <code>"16:9"</code> and <code>image_size</code> accepts a token such as <code>"2K"</code>. According to <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/image-generation</a>, you can control "the aspect ratio and output image size using the <code>aspect_ratio</code> and <code>image_size</code> fields within <code>response_format</code>." If you omit both, the documented default behavior is that the output size automatically matches the input image, or the model falls back to 1:1 squares when there is no input.</p>
+
+<h2>The response_format field, briefly</h2>
+<p><code>response_format</code> accepts either a single object or an array. Pass a single object when you want only an image back; pass an array when you want text plus image. The shape used in the official Python example for a 2K, 16:9 image is:</p>
+<pre><code>response_format = {
+    "type": "image",
+    "mime_type": "image/jpeg",
+    "aspect_ratio": "16:9",
+    "image_size": "2K",
+}</code></pre>
+<p>Setting <code>type</code> to <code>"image"</code> suppresses the conversational text reply and returns the generated image only, which is the cleanest pattern for a generation-only workflow. If you need a caption plus an image, swap the single object for a list like <code>[{"type": "text"}, {"type": "image"}]</code>, as shown in the same docs page.</p>
+
+<h2>Choosing an aspect_ratio</h2>
+<p>The only aspect ratio value explicitly shown in the current image-generation documentation is <code>"16:9"</code>, used inside <code>response_format</code> for the official landscape infographic example. For prompt-only requests with no <code>response_format</code> supplied, the documented default is 1:1 squares. The docs do not enumerate a wider list of supported aspect ratio tokens on this page, so the safest path is to start from the official example and confirm any additional tokens in the model reference at <a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/models</a> before using them. Pass the value as a string exactly as it appears in the model reference, not as a number or a colon-free shorthand.</p>
+
+<h2>Choosing an image_size</h2>
+<p>The single image-size token explicitly confirmed in the current image-generation docs is <code>"2K"</code>, used together with <code>"16:9"</code> to produce a higher-resolution landscape image in the multi-turn infographic example. Treat this token as the documented high-resolution switch for the <strong>Gemini image API</strong>; the docs do not enumerate a wider list at the time of writing, so confirm any additional tokens in the model reference at <a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/models</a> before relying on them.</p>
+
+<h2>Defaults and when they kick in</h2>
+<p>Google's docs state that the output size "automatically matches the size of the input image, or is generated as 1:1 squares." That has two practical consequences:</p>
+<ol>
+<li>If you send an edit request with a reference image and you do not pass <code>response_format</code>, the output inherits the reference's resolution and aspect ratio.</li>
+<li>If you send a text-to-image request with no image input and no <code>response_format</code>, you get a 1:1 image whose resolution is decided by the model.</li>
+</ol>
+<p>For predictable, repeatable results, for example a banner asset or a product card, set both <code>aspect_ratio</code> and <code>image_size</code> explicitly on every call.</p>
+
+<h2>Step-by-step Python example</h2>
+<p>The following <strong>Gemini image API</strong> example mirrors the official "update an infographic" pattern, condensed to focus on the resolution and aspect ratio fields. It assumes you have the <code>google-genai</code> package installed and a <code>GEMINI_API_KEY</code> available as an environment variable; for a fresh setup, see the <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">Nano Banana quickstart</a> and the <a href="https://www.nano-banana.live/blog/how-to-run-locally.html" target="_blank" rel="noopener">how-to-run-locally guide</a> for context on cloud API versus local open-weight models.</p>
+<pre><code>import base64
+from google import genai
+
+client = genai.Client()  # reads GEMINI_API_KEY from the environment
+
+interaction = client.interactions.create(
+    model="gemini-3.1-flash-image",
+    input="Update this infographic to be in Spanish. Do not change any other elements of the image.",
+    previous_interaction_id="&lt;PREVIOUS_INTERACTION_ID&gt;",
+    response_format={
+        "type": "image",
+        "mime_type": "image/jpeg",
+        "aspect_ratio": "16:9",
+        "image_size": "2K",
+    },
+)
+
+if interaction.output_image:
+    with open("hero.jpg", "wb") as f:
+        f.write(base64.b64decode(interaction.output_image.data))
+</code></pre>
+<p>The bytes returned in <code>interaction.output_image.data</code> are base64-encoded; the helper above decodes and writes them to disk. Confirm the exact field names and supported tokens against the live reference at <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/image-generation</a> before shipping, since model field names can shift between releases.</p>
+
+<h2>Editing across turns</h2>
+<p>For multi-turn edits, pass <code>previous_interaction_id</code> instead of re-uploading the image, as shown in the official infographic-to-Spanish example. You can still set <code>response_format</code> on the follow-up call, which is how the official docs convert an English infographic to a 16:9, 2K Spanish version without re-prompting the layout. If a turn returns a ratio or size you did not expect, note that the documentation states that without <code>response_format</code>, the output size automatically matches the input image size or defaults to 1:1 squares; it does not state that it inherits the previous turn's shape in a multi-turn edit. To ensure the desired output, explicitly set <code>response_format</code> on each call.</p>
+
+<h2>Quick checklist before you ship</h2>
+<ul>
+<li>Confirm the model name in the model reference at <a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/models</a>; <code>gemini-3.1-flash-image</code> is the current generation example in the image-generation docs.</li>
+<li>Always pass <code>aspect_ratio</code> and <code>image_size</code> for asset-style output rather than relying on defaults.</li>
+<li>Set <code>type: "image"</code> on <code>response_format</code> when you do not want a text reply, or use an array form for text-plus-image.</li>
+<li>Remember that every generated image carries a SynthID watermark, per the image-generation documentation.</li>
+<li>If something looks off, the <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">Nano Banana FAQ</a> covers environment variable setup and common request shape mistakes.</li>
+</ul>
+        <h2>Sources</h2>
+        <ul><li><a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/image-generation</a></li><li><a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/models</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>

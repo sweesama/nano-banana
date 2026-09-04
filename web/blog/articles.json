@@ -146,5 +146,20 @@
       "https://ai.google.dev/gemini-api/docs/quickstart",
       "https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py"
     ]
+  },
+  {
+    "slug": "gemini-image-api-aspect-ratio-resolution",
+    "publishDate": "2026-09-04",
+    "title": "Gemini image API: Setting Aspect Ratio and Resolution",
+    "description": "A hands-on guide to controlling aspect_ratio and image_size in the Gemini image API's response_format field, based on the official image-generation documentation.",
+    "category": "API Tutorial",
+    "emoji": "📐",
+    "keyword": "Gemini image generation API aspect ratio and resolution",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/image-generation",
+      "https://ai.google.dev/gemini-api/docs/models"
+    ]
   }
 ]
