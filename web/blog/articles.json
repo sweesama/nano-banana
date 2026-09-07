@@ -161,5 +161,20 @@
       "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://ai.google.dev/gemini-api/docs/models"
     ]
+  },
+  {
+    "slug": "gemini-image-api-403-quota-model-errors",
+    "publishDate": "2026-09-07",
+    "title": "AI image editing workflow: fixing Gemini image API 403 and 429 errors",
+    "description": "Resolve Gemini image API 403 authentication errors and 429 RESOURCE_EXHAUSTED responses in your AI image editing workflow.",
+    "category": "Troubleshooting",
+    "emoji": "🚦",
+    "keyword": "Gemini image API errors 403 quota and model names",
+    "structuralScore": 85,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/troubleshooting",
+      "https://www.nano-banana.live/blog/troubleshooting-install.html"
+    ]
   }
 ]

@@ -126,11 +126,13 @@
     "category": "Troubleshooting",
     "emoji": "🚦",
     "depth": "standard",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://ai.google.dev/gemini-api/docs/troubleshooting",
       "https://www.nano-banana.live/blog/troubleshooting-install.html"
-    ]
+    ],
+    "structuralScore": 85,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "Gemini image API privacy and cloud processing explained",
