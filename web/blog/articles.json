@@ -176,5 +176,20 @@
       "https://ai.google.dev/gemini-api/docs/troubleshooting",
       "https://www.nano-banana.live/blog/troubleshooting-install.html"
     ]
+  },
+  {
+    "slug": "gemini-image-api-privacy-cloud-processing",
+    "publishDate": "2026-09-09",
+    "title": "Gemini image API Privacy and Cloud Processing Explained",
+    "description": "Understand how Google handles your data when using the Gemini image API, including differences between Paid Services and Unpaid Services under the Gemini API terms.",
+    "category": "API Guide",
+    "emoji": "🔐",
+    "keyword": "Gemini image API privacy and cloud processing explained",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://ai.google.dev/gemini-api/terms",
+      "https://www.nano-banana.live/faq.html"
+    ]
   }
 ]

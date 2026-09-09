@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Gemini image API Privacy and Cloud Processing Explained | Nano Banana</title>
+  <meta name="description" content="Understand how Google handles your data when using the Gemini image API, including differences between Paid Services and Unpaid Services under the Gemini API terms.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/gemini-image-api-privacy-cloud-processing.html">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Gemini image API Privacy and Cloud Processing Explained","description":"Understand how Google handles your data when using the Gemini image API, including differences between Paid Services and Unpaid Services under the Gemini API terms.","datePublished":"2026-09-09","dateModified":"2026-09-09","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/gemini-image-api-privacy-cloud-processing.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">API Guide • Sep 9, 2026</div>
+        <h1>Gemini image API Privacy and Cloud Processing Explained</h1>
+        <p class="lead" style="margin:20px auto;">Understand how Google handles your data when using the Gemini image API, including differences between Paid Services and Unpaid Services under the Gemini API terms.</p>
+      </header>
+      <div class="article-content">
+        <p>When you send an image to the Gemini image API, that image leaves your machine and is processed on Google's cloud infrastructure. Understanding exactly what Google does with your prompts and images is essential for any developer building with the <strong>Gemini image API</strong>, especially when handling sensitive or proprietary visual data. This guide explains the privacy terms, the distinction between Paid Services and Unpaid Services, and how to keep your data practices aligned with Google's policies.</p>
+
+<h2>What Google Does with Your Data: Unpaid Services vs. Paid Services</h2>
+<p>Google's <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener">Gemini API Additional Terms of Service</a> draw a clear line between <strong>Unpaid Services</strong> and <strong>Paid Services</strong>. This distinction directly affects how your images and prompts are used.</p>
+
+<h3>Unpaid Services: Data Used for Product Improvement</h3>
+<p>The Gemini API terms define <strong>Unpaid Services</strong> as any Services that are offered free of charge, including direct interactions with Google AI Studio and unpaid quota in Gemini API. When you use Unpaid Services, Google uses the content you submit—including images and prompts—and any generated responses to provide, improve, and develop Google products and services and machine learning technologies, consistent with Google's Privacy Policy. Human reviewers may read, annotate, and process your API input and output to help with quality. Google states that it takes steps to protect your privacy in this process, including disconnecting this data from your Google Account, API key, and Cloud project before reviewers see it. The terms explicitly warn: <em>"Do not submit sensitive, confidential, or personal information to the Unpaid Services."</em></p>
+
+<h3>Paid Services: No Training on Your Data</h3>
+<p>A Service is considered a <strong>Paid Service</strong> when it is offered for a fee. Your access to Gemini API is a Paid Service only when you access the API through a Cloud Project associated with an active billing account. In this case, Google <em>does not use your prompts (including associated system instructions, cached content, and files such as images, videos, or documents) or responses to improve our products</em>, and processes them in accordance with the Data Processing Addendum for Products Where Google is a Data Processor. Google may log prompts and responses for a limited period of time, solely for detecting and preventing violations of the Prohibited Use Policy to maintain the safety and security of the Services, and any required legal or regulatory disclosures. This logging is not for product improvement.</p>
+
+<blockquote>
+<p><strong>Key takeaway:</strong> If you are building a production application with the Gemini image API and care about data privacy, you should use a Paid Service. The Unpaid Services tier is not appropriate for sensitive or confidential images.</p>
+</blockquote>
+
+<h2>Practical Implications for Image Editing with Gemini</h2>
+<p>When you <strong>edit images with Gemini</strong> using the API, your original image and the edited output are processed in the cloud. This has several practical implications:</p>
+<ul>
+<li><strong>Data residency for logs:</strong> For Paid Services, logged prompts and responses may be stored transiently or cached in any country in which Google or its agents maintain facilities. The terms do not guarantee data residency in a specific region.</li>
+<li><strong>Retention for Paid Services:</strong> Logs are kept only for a limited period, solely for detecting and preventing violations of the Prohibited Use Policy and maintaining service safety and security. Unpaid Services data may be used longer for product improvement.</li>
+<li><strong>Grounding with Google Search:</strong> When using this feature, Google stores prompts, contextual information, and output for thirty (30) days for the purposes of creating Grounded Results and Search Suggestions, and the stored information can be used for debugging and testing of systems that support Grounding with Google Search. This applies even to Paid Services, where such processing is handled in accordance with the Data Processing Addendum.</li>
+</ul>
+
+<p>Before sending proprietary images to the Gemini image API, review your organization's data handling policies and confirm whether the Paid Service terms meet your requirements.</p>
+
+<h2>Setting Up the Gemini Image API: Environment Variables and Authentication</h2>
+<p>To call the Gemini image API, you need an API key obtained from Google AI Studio. Both Google's documentation and the <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">Nano Banana FAQ</a> recommend setting the key as an environment variable, either <code>GOOGLE_API_KEY</code> or <code>GEMINI_API_KEY</code>, in your terminal. This keeps your key out of your source code.</p>
+
+<p>The Nano Banana FAQ also notes that <em>the maintained request format is shown in Google's image-generation documentation</em>, which you should consult for the latest request structure, model IDs, and supported parameters rather than relying on third-party examples. For a full walkthrough, see the <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">Nano Banana Quickstart Guide</a>.</p>
+
+<h2>Common Errors and How to Handle Them</h2>
+<p>When working with the Gemini image API, you may encounter errors that can arise from incorrect authentication, account configuration, or policy enforcement. The official <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener">Gemini API terms</a> do not list specific error codes, but Google's API documentation provides troubleshooting guidance. For practical advice on alternative workflows when cloud API access is constrained, refer to our article on <a href="https://www.nano-banana.live/blog/how-to-run-locally.html" target="_blank" rel="noopener">running AI models locally</a>.</p>
+
+<h2>Cloud API vs. Local Open-Weight Models</h2>
+<p>It is important to distinguish between the hosted Gemini image API and local open-weight models. The Gemini image API is a cloud service: your images are processed on Google's servers, and you cannot run the model offline. The <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">Nano Banana FAQ</a> explicitly notes that the Nano Banana 2 model (Google's Gemini 3.1 Flash Image) cannot be downloaded or run offline; only a client that sends requests to Google's API can run on your machine.</p>
+
+<p>In contrast, open-weight models can be run entirely on your own hardware, which may be preferable for air-gapped or privacy-sensitive environments. The Nano Banana FAQ points to its Hardware Guide for alternative models including Z-Image, Qwen-Image, and HunyuanImage. If your priority is data privacy and you cannot use a Paid Service tier, consider using a local open-weight model. For guidance on hardware and setup, see our <a href="https://www.nano-banana.live/blog/how-to-run-locally.html" target="_blank" rel="noopener">guide to running models locally</a>.</p>
+
+<h2>Conclusion</h2>
+<p>When using the Gemini image API, always check the current Gemini API Additional Terms and choose the appropriate service tier for your data sensitivity. For production use, the Paid Service tier offers stronger privacy guarantees because Google does not use your prompts or responses to improve its products. For absolute data control, local open-weight models remain the only option. By understanding these boundaries, you can make an informed decision about whether the Gemini image API is right for your project.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/terms</a></li><li><a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">https://www.nano-banana.live/faq.html</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>

@@ -140,11 +140,13 @@
     "category": "API Guide",
     "emoji": "🔐",
     "depth": "standard",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://ai.google.dev/gemini-api/terms",
       "https://www.nano-banana.live/faq.html"
-    ]
+    ],
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "HunyuanImage versus Qwen Image local editing",
