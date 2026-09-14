@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HunyuanImage vs Qwen Image: Which local AI image model should you | Nano Banana</title>
+  <meta name="description" content="Compare HunyuanImage 3.0 and Qwen-Image-Edit-2511 for local editing. Learn VRAM needs, installation steps, and which open-weights model fits your GPU.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/hunyuanimage-versus-qwen-image-local-editing.html">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"HunyuanImage vs Qwen Image: Which local AI image model should you","description":"Compare HunyuanImage 3.0 and Qwen-Image-Edit-2511 for local editing. Learn VRAM needs, installation steps, and which open-weights model fits your GPU.","datePublished":"2026-09-14","dateModified":"2026-09-14","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/hunyuanimage-versus-qwen-image-local-editing.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Local Models • Sep 14, 2026</div>
+        <h1>HunyuanImage vs Qwen Image: Which local AI image model should you</h1>
+        <p class="lead" style="margin:20px auto;">Compare HunyuanImage 3.0 and Qwen-Image-Edit-2511 for local editing. Learn VRAM needs, installation steps, and which open-weights model fits your GPU.</p>
+      </header>
+      <div class="article-content">
+        <p>If you want to edit images on your own hardware, two open-weights options dominate recent discussions: Tencent's HunyuanImage 3.0 and Alibaba's Qwen-Image-Edit-2511. This article compares them for local editing, explains what each model actually does, and gives you concrete installation steps. It also covers the VRAM question that decides whether a local AI image model will run on your machine at all.</p>
+
+<h2>What each model is built for</h2>
+
+<p>HunyuanImage 3.0 is a native multimodal model for image generation. According to its <a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener">official GitHub repository</a>, it supports text-to-image (T2I), image-to-image (TI2I) for creative editing, and multi-image fusion with up to three reference images. The Instruct variant adds reasoning and prompt enhancement, and a distilled checkpoint (HunyuanImage-3.0-Instruct-Distil) is available for efficient deployment with 8-step sampling recommended. The repository also notes vLLM acceleration support.</p>
+
+<p>Qwen-Image-Edit-2511 is a dedicated image editing model. Its <a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noopener">Hugging Face model card</a> describes it as an enhanced version over Qwen-Image-Edit-2509 with better consistency, mitigation of image drift, improved character consistency, integrated LoRA capabilities, enhanced industrial design generation, and stronger geometric reasoning. It is an image-to-image model, not a general text-to-image generator. The model card lists it as 20B parameters in BF16, with Apache 2.0 licensing.</p>
+
+<p>So the first decision is not "which is better" but "which task do you have." If you need a single model that can generate from text and also edit, HunyuanImage 3.0 is the broader tool. If your work is almost entirely editing existing images, Qwen-Image-Edit-2511 is purpose-built for that.</p>
+
+<h2>VRAM and hardware requirements</h2>
+
+<p>Neither source publishes a simple minimum VRAM number. That is an important boundary: the GitHub repository and the Hugging Face model card do not state official VRAM requirements. Any specific number you see elsewhere should be treated as community-reported, not official.</p>
+
+<p>What the sources do tell us:</p>
+
+<ul>
+  <li>HunyuanImage 3.0 uses a mixture-of-experts architecture. The repository states it has 13 billion activated parameters per token, which is a measure of compute per token, not total model size. The total parameter count is not stated in the fetched source.</li>
+  <li>Qwen-Image-Edit-2511 is listed at 20B parameters in BF16 on its model card. Loading 20B parameters in BF16 requires roughly 40 GB just for weights, before any activation memory or pipeline overhead. That is a rough arithmetic estimate, not an official requirement.</li>
+  <li>HunyuanImage 3.0 requires Python 3.12+ and CUDA 12.8, with PyTorch 2.8.0, torchvision 0.23.0, and torchaudio 2.8.0 installed from the CUDA 12.8 index. FlashInfer v0.5.0 is recommended for optimized MoE inference.</li>
+</ul>
+
+<p>For a broader discussion of how VRAM maps to model size and quantization, see our <a href="https://www.nano-banana.live/blog/hardware-requirements.html" target="_blank" rel="noopener">hardware requirements guide</a>. If you are deciding between local and hosted options, the <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart guide</a> covers the cloud API path, which avoids local VRAM limits entirely.</p>
+
+<h2>Installation: HunyuanImage 3.0</h2>
+
+<p>The repository provides a local installation path. The steps below follow the official instructions.</p>
+
+<ol>
+  <li>Clone the repository:
+    <pre><code>git clone https://github.com/Tencent-Hunyuan/HunyuanImage-3.0.git
+cd HunyuanImage-3.0/</code></pre>
+  </li>
+  <li>Install PyTorch with CUDA 12.8:
+    <pre><code>pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128</code></pre>
+  </li>
+  <li>Install other dependencies:
+    <pre><code>pip install -r requirements.txt</code></pre>
+  </li>
+  <li>Optionally install FlashInfer for faster MoE inference:
+    <pre><code>pip install flashinfer-python==0.5.0</code></pre>
+    <p>The repository notes that when FlashInfer is enabled, the first inference may take about 10 minutes due to kernel compilation. Subsequent runs on the same machine are faster.</p>
+  </li>
+  <li>Download model weights. For the Instruct variant:
+    <pre><code>hf download tencent/HunyuanImage-3.0-Instruct --local-dir ./HunyuanImage-3-Instruct</code></pre>
+  </li>
+  <li>Run the demo:
+    <pre><code>export MODEL_PATH="./HunyuanImage-3-Instruct"
+bash run_demo_instruct.sh</code></pre>
+  </li>
+</ol>
+
+<p>The repository also documents command-line arguments such as <code>--prompt</code>, <code>--image</code>, <code>--diff-infer-steps</code> (default 50), <code>--image-size</code> (can be <code>auto</code> or explicit like <code>1280x768</code>), and <code>--bot-task</code> (options include <code>image</code>, <code>auto</code>, <code>recaption</code>, and <code>think_recaption</code>). For image-to-image editing, the example in the repository uses <code>bot_task="think_recaption"</code> and <code>infer_align_image_size=True</code> to align output size to the input image.</p>
+
+<h2>Installation: Qwen-Image-Edit-2511</h2>
+
+<p>The model card provides a Diffusers-based quick start. The steps are shorter because the model is designed to work with the standard Diffusers pipeline.</p>
+
+<ol>
+  <li>Install the latest Diffusers from source:
+    <pre><code>pip install git+https://github.com/huggingface/diffusers</code></pre>
+  </li>
+  <li>Load the pipeline and run an edit. The model card shows this example:
+    <pre><code>import os
+import torch
+from PIL import Image
+from diffusers import QwenImageEditPlusPipeline
+
+pipeline = QwenImageEditPlusPipeline.from_pretrained(
+    "Qwen/Qwen-Image-Edit-2511",
+    torch_dtype=torch.bfloat16)
+print("pipeline loaded")
+pipeline.to('cuda')
+pipeline.set_progress_bar_config(disable=None)
+
+image1 = Image.open("input1.png")
+image2 = Image.open("input2.png")
+prompt = "The magician bear is on the left, the alchemist bear is on the right, facing each other in the central park square."
+
+inputs = {
+    "image": [image1, image2],
+    "prompt": prompt,
+    "generator": torch.manual_seed(0),
+    "true_cfg_scale": 4.0,
+    "negative_prompt": " ",
+    "num_inference_steps": 40,
+    "guidance_scale": 1.0,
+    "num_images_per_prompt": 1,
+}
+
+with torch.inference_mode():
+    output = pipeline(**inputs)
+output_image = output.images[0]
+output_image.save("output_image_edit_2511.png")
+print("image saved at", os.path.abspath("output_image_edit_2511.png"))</code></pre>
+  </li>
+</ol>
+
+<p>Note that the model card uses <code>QwenImageEditPlusPipeline</code>, not a generic <code>DiffusionPipeline</code>. The model card also shows a simpler <code>DiffusionPipeline</code> example for basic use, but the full editing example uses the Plus pipeline. Use the pipeline name exactly as shown in the source.</p>
+
+<h2>Editing capabilities compared</h2>
+
+<p>Both models support image-to-image editing, but the emphasis differs.</p>
+
+<p><strong>HunyuanImage 3.0</strong> highlights multi-image fusion with up to three inputs, style transfer, element preservation, and background replacement. The repository showcases precise editing with element preservation and style transformation. It also supports multi-turn interaction according to the open-source plan.</p>
+
+<p><strong>Qwen-Image-Edit-2511</strong> focuses on consistency. The model card specifically calls out improved character consistency, improved multi-person consistency (fusing two separate person images into a coherent group shot), and mitigation of image drift. It also integrates selected community LoRAs directly into the base model, so effects like lighting enhancement and new viewpoint generation work without extra tuning. Industrial design applications such as batch product design and material replacement are also highlighted.</p>
+
+<p>If your editing work involves keeping a character or product consistent across many edits, Qwen-Image-Edit-2511's stated improvements target exactly that. If you need to combine multiple reference images or generate from scratch as well as edit, HunyuanImage 3.0 covers more ground.</p>
+
+<h2>Practical decision checklist</h2>
+
+<ul>
+  <li><strong>Task:</strong> Text-to-image plus editing? HunyuanImage 3.0. Editing only? Qwen-Image-Edit-2511.</li>
+  <li><strong>Consistency:</strong> Character or multi-person consistency is critical? Qwen-Image-Edit-2511 explicitly targets this.</li>
+  <li><strong>Multi-image fusion:</strong> Need to combine up to three references? HunyuanImage 3.0 documents this.</li>
+  <li><strong>Installation complexity:</strong> Qwen uses standard Diffusers and a shorter setup. Hunyuan requires specific PyTorch and CUDA versions plus optional FlashInfer compilation.</li>
+  <li><strong>VRAM:</strong> Neither source states official minimums. Qwen is listed at 20B BF16 parameters; Hunyuan's total size is not stated in the fetched source. Check community reports and your own hardware before committing.</li>
+  <li><strong>License:</strong> Qwen-Image is Apache 2.0 per the model card. HunyuanImage 3.0's license is in its repository; check the LICENSE file for terms.</li>
+</ul>
+
+<h2>What about FLUX and other open-weights models?</h2>
+
+<p>FLUX is another family of open-weights image models often mentioned alongside these two. The fetched sources for this article do not cover FLUX installation or VRAM, so we cannot compare it here. If you are evaluating multiple open-weights image models, treat each model's official repository as the authority for installation and hardware claims.</p>
+
+<h2>Cloud APIs versus local models</h2>
+
+<p>Running either model locally means you manage the GPU, the CUDA version, and the model weights. A cloud API like the Gemini image API does not make a local model run on your machine; it sends your request to a hosted service. If your hardware cannot fit a 20B BF16 model, a hosted API is a practical alternative. Nano Banana's <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart guide</a> walks through the API path, and the <a href="https://www.nano-banana.live/benchmarks/" target="_blank" rel="noopener">benchmarks page</a> explains how to interpret model comparisons without over-reading a single score.</p>
+
+<h2>Bottom line</h2>
+
+<p>Choose HunyuanImage 3.0 if you want one local model that generates and edits, supports multi-image fusion, and offers a distilled checkpoint for faster sampling. Choose Qwen-Image-Edit-2511 if editing is your main job and consistency across characters or groups matters most. In both cases, verify VRAM against your own hardware, because neither official source publishes a minimum requirement. Start with the installation steps above, and fall back to a hosted API if your GPU cannot handle the weights.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener">https://github.com/Tencent-Hunyuan/HunyuanImage-3.0</a></li><li><a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noopener">https://huggingface.co/Qwen/Qwen-Image-Edit-2511</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>

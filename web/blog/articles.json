@@ -191,5 +191,20 @@
       "https://ai.google.dev/gemini-api/terms",
       "https://www.nano-banana.live/faq.html"
     ]
+  },
+  {
+    "slug": "hunyuanimage-versus-qwen-image-local-editing",
+    "publishDate": "2026-09-14",
+    "title": "HunyuanImage vs Qwen Image: Which local AI image model should you",
+    "description": "Compare HunyuanImage 3.0 and Qwen-Image-Edit-2511 for local editing. Learn VRAM needs, installation steps, and which open-weights model fits your GPU.",
+    "category": "Local Models",
+    "emoji": "⚖️",
+    "keyword": "HunyuanImage versus Qwen Image local editing",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://github.com/Tencent-Hunyuan/HunyuanImage-3.0",
+      "https://huggingface.co/Qwen/Qwen-Image-Edit-2511"
+    ]
   }
 ]
