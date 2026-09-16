@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>How Much VRAM Does a local AI image model Need? HunyuanImage, Qwen | Nano Banana</title>
+  <meta name="description" content="A practical VRAM guide for local AI image models: what HunyuanImage 3.0, Qwen-Image-Edit-2511, and FLUX-class open weights actually demand, why the numbers vary.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/local-ai-image-model-vram-requirements.html">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How Much VRAM Does a local AI image model Need? HunyuanImage, Qwen","description":"A practical VRAM guide for local AI image models: what HunyuanImage 3.0, Qwen-Image-Edit-2511, and FLUX-class open weights actually demand, why the numbers vary.","datePublished":"2026-09-16","dateModified":"2026-09-16","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/local-ai-image-model-vram-requirements.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Local Models • Sep 16, 2026</div>
+        <h1>How Much VRAM Does a local AI image model Need? HunyuanImage, Qwen</h1>
+        <p class="lead" style="margin:20px auto;">A practical VRAM guide for local AI image models: what HunyuanImage 3.0, Qwen-Image-Edit-2511, and FLUX-class open weights actually demand, why the numbers vary.</p>
+      </header>
+      <div class="article-content">
+        <p>There is no single VRAM number for a local AI image model. The honest answer is that AI image model VRAM requirements are set by the model's parameter count, its numeric precision, the attention and MoE kernels you enable, and whether you offload weights to system RAM. A small SDXL-class checkpoint can fit on an 8GB card, while Tencent's own repository recommends at least 3 × 80GB of VRAM for HunyuanImage 3.0 base and at least 8 × 80GB for the Instruct and Distil checkpoints. Those two facts describe the same category of software, which is why you should plan from the model card rather than from a product name.</p>
+
+<p>This article walks through the concrete numbers that are actually published, explains why they differ so much, and then gives you install paths for the two models most people ask about: <strong>HunyuanImage local</strong> deployment and <strong>Qwen Image local</strong> editing. If you want the short version first, the <a href="https://www.nano-banana.live/blog/hardware-requirements.html" target="_blank" rel="noopener">hardware requirements breakdown</a> covers the same ground in table form.</p>
+
+<h2>Start With the Published Numbers, Not With Guesswork</h2>
+
+<p>The most common mistake is assuming every open-weight image model fits on a gaming GPU. The <a href="https://www.nano-banana.live/blog/hardware-requirements.html" target="_blank" rel="noopener">Nano Banana hardware guide</a> separates three scenarios that are frequently confused:</p>
+
+<ul>
+  <li><strong>Cloud clients</strong> such as Nano Banana 2 send text and images to a remote API. No GPU is required; a modern CPU and roughly 4GB of RAM are enough, and storage is around 100MB for Python libraries.</li>
+  <li><strong>Closed cloud-only models</strong> such as GPT Image 2 have no public weights, so local inference is not an option at all.</li>
+  <li><strong>Open-weight models</strong> ship weights you download and run yourself, and their hardware requirements differ by orders of magnitude from one project to the next.</li>
+</ul>
+
+<p>That third category is where VRAM planning actually matters. A cloud API client does not make a hosted model local or offline, and an open-weight download does not become cheap just because a similar-looking product runs in a browser.</p>
+
+<h3>Minimum specs for a basic local setup</h3>
+
+<p>For SDXL-class generation and basic inpainting, the published minimum in the same guide is an NVIDIA RTX 3060 with 8GB of VRAM and 16GB of system RAM. Treat that as the floor for entry-level local generation, not as a target for large multimodal models.</p>
+
+<h3>Large-model examples and their official recommendations</h3>
+
+<p>Two current open-weight models illustrate how wide the range is:</p>
+
+<ul>
+  <li><strong>Qwen-Image-Edit-2511</strong> is listed on its model card as a 20B parameter model in BF16. The card does not publish one universal minimum VRAM figure, so the correct approach is to use the official Diffusers example and measure your own configuration with the optimization you choose.</li>
+  <li><strong>HunyuanImage 3.0</strong> is a large MoE model. The official repository recommends at least 3 × 80GB VRAM for the base text-to-image checkpoint and at least 8 × 80GB for the Instruct and Distil checkpoints.</li>
+</ul>
+
+<p>One detail worth repeating because it surprises people: distillation reduces sampling steps, not the published VRAM recommendation. The Distil checkpoint is recommended for 8-step sampling, but Tencent's model table still lists the same 8 × 80GB guidance. Community quantizations may change the practical requirement, but they must be evaluated as separate artifacts rather than presented as official specifications.</p>
+
+<h2>Why the Same Category Has Such Different Requirements</h2>
+
+<p>Three factors explain almost all of the variance.</p>
+
+<h3>1. Parameter count and precision</h3>
+
+<p>Weights dominate memory. A 20B BF16 model stores roughly 40GB of parameters before you add activations, attention buffers, and the text encoder. That is why the Qwen model card points you at the Diffusers pipeline and tells you to measure, rather than quoting a single number. HunyuanImage 3.0 is larger still, and its repository describes a model with 13 billion activated parameters per token in a much bigger MoE total, which is consistent with the multi-GPU recommendation.</p>
+
+<h3>2. Attention and MoE kernels</h3>
+
+<p>HunyuanImage 3.0 exposes <code>--attn-impl</code> and <code>--moe-impl</code> flags. The documented attention implementation is <code>sdpa</code>, and the MoE implementation is either <code>eager</code> or <code>flashinfer</code>. Installing FlashInfer is described as enabling up to 3x faster inference, with a one-time kernel compilation cost of roughly 10 minutes on first run. Speed and memory behavior both depend on which kernels you enable, so two machines with identical GPUs can report different peak usage.</p>
+
+<h3>3. Offloading and quantization</h3>
+
+<p>Offloading moves weights to system RAM and streams them to the GPU as needed. The quickstart guide notes an official offload reference for GLM-Image Knowledge 9B of about 23GB GPU memory with CPU offload, at slower speed. That is a useful illustration of the trade: you can lower VRAM below the naive weight size, but you pay in latency and you need enough system RAM to hold the rest.</p>
+
+<blockquote>Practical rule: find the model card, read the official recommendation, then decide whether you are buying hardware, renting a multi-GPU instance, or choosing a smaller model.</blockquote>
+
+<h2>Installing HunyuanImage 3.0 Locally</h2>
+
+<p>The <a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener">HunyuanImage 3.0 repository</a> documents Python 3.12+ and CUDA 12.8 as the tested environment. The setup sequence is explicit:</p>
+
+<pre><code># 1. Install PyTorch (CUDA 12.8 build)
+pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128
+
+# 2. Install tencentcloud-sdk for Prompt Enhancement (base model only)
+pip install -i https://mirrors.tencent.com/pypi/simple/ --upgrade tencentcloud-sdk-python
+
+# 3. Install remaining dependencies
+pip install -r requirements.txt
+
+# Optional: FlashInfer for optimized MoE inference (v0.5.0 tested)
+pip install flashinfer-python==0.5.0</code></pre>
+
+<p>The repository warns that the CUDA version used by PyTorch must match the system CUDA version, because FlashInfer compiles kernels at runtime against it. GCC 9 or newer is recommended for compiling FlashAttention and FlashInfer.</p>
+
+<p>Then clone and download weights:</p>
+
+<pre><code>git clone https://github.com/Tencent-Hunyuan/HunyuanImage-3.0.git
+cd HunyuanImage-3.0/
+hf download tencent/HunyuanImage-3.0-Instruct --local-dir ./HunyuanImage-3-Instruct
+export MODEL_PATH="./HunyuanImage-3-Instruct"
+bash run_demo_instruct.sh</code></pre>
+
+<p>The Transformers path shown in the repository and in the <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">local install quickstart</a> looks like this:</p>
+
+<pre><code>from transformers import AutoModelForCausalLM
+
+model_id = "./HunyuanImage-3-Instruct"
+kwargs = dict(
+    attn_implementation="sdpa",
+    trust_remote_code=True,
+    torch_dtype="auto",
+    device_map="auto",
+    moe_impl="eager",  # use "flashinfer" if installed
+    moe_drop_tokens=True,
+)
+model = AutoModelForCausalLM.from_pretrained(model_id, **kwargs)
+model.load_tokenizer(model_id)
+
+prompt = "A futuristic city at sunset with flying vehicles"
+cot_text, samples = model.generate_image(
+    prompt=prompt,
+    seed=42,
+    image_size="1024x1024",
+    use_system_prompt="en_unified",
+    bot_task="think_recaption",
+    diff_infer_steps=50,
+    verbose=2,
+)
+samples[0].save("output.png")</code></pre>
+
+<p>Documented command-line arguments include <code>--diff-infer-steps</code> (50 recommended), <code>--image-size</code> (accepts <code>auto</code> or values such as <code>1280x768</code> or <code>16:9</code>), <code>--use-system-prompt</code> (options include <code>None</code>, <code>dynamic</code>, <code>en_vanilla</code>, <code>en_recaption</code>, <code>en_think_recaption</code>, <code>en_unified</code>, and <code>custom</code>), and <code>--bot-task</code> (<code>image</code>, <code>auto</code>, <code>recaption</code>, or <code>think_recaption</code>). The Distil checkpoint is recommended at 8 sampling steps.</p>
+
+<p>Licensing matters here: HunyuanImage 3.0 uses the Tencent Hunyuan Community License, and the repository asks you to review current terms and restrictions before commercial deployment.</p>
+
+<h2>Installing Qwen-Image-Edit-2511 Locally</h2>
+
+<p>The <a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noopener">Qwen-Image-Edit-2511 model card</a> lists the model at 20B parameters in BF16 under Apache 2.0, and provides an official Diffusers pipeline. The card instructs you to install the latest Diffusers from source:</p>
+
+<pre><code>pip install git+https://github.com/huggingface/diffusers</code></pre>
+
+<p>The documented usage pattern uses <code>QwenImageEditPlusPipeline</code>:</p>
+
+<pre><code>import os
+import torch
+from PIL import Image
+from diffusers import QwenImageEditPlusPipeline
+
+pipeline = QwenImageEditPlusPipeline.from_pretrained(
+    "Qwen/Qwen-Image-Edit-2511",
+    torch_dtype=torch.bfloat16,
+)
+print("pipeline loaded")
+pipeline.to("cuda")
+pipeline.set_progress_bar_config(disable=None)
+
+image1 = Image.open("input1.png")
+image2 = Image.open("input2.png")
+prompt = "The magician bear is on the left, the alchemist bear is on the right, facing each other in the central park square."
+
+inputs = {
+    "image": [image1, image2],
+    "prompt": prompt,
+    "generator": torch.manual_seed(0),
+    "true_cfg_scale": 4.0,
+    "negative_prompt": " ",
+    "num_inference_steps": 40,
+    "guidance_scale": 1.0,
+    "num_images_per_prompt": 1,
+}
+
+with torch.inference_mode():
+    output = pipeline(**inputs)
+
+output_image = output.images[0]
+output_image.save("output_image_edit_2511.png")
+print("image saved at", os.path.abspath("output_image_edit_2511.png"))</code></pre>
+
+<p>Note what the card does <em>not</em> say. There is no published single minimum VRAM figure for this model. The card also shows a simpler <code>DiffusionPipeline</code> example with <code>device_map="cuda"</code>, and mentions switching to <code>"mps"</code> for Apple devices. Beyond that, the correct method is to run the official example and measure your own peak memory with the optimization you select. Any specific number you see elsewhere should be treated as an unverified community report unless it comes from the model card or repository.</p>
+
+<h2>Choosing Between Them</h2>
+
+<p>Use this decision list before you download anything:</p>
+
+<ol>
+  <li><strong>Do you have a single consumer GPU?</strong> Start with SDXL-class models at the 8GB floor, or a smaller open model. Do not start with HunyuanImage 3.0 base.</li>
+  <li><strong>Do you need image editing with reference images?</strong> Qwen-Image-Edit-2511 has an official Diffusers pipeline and Apache 2.0 licensing, and its card documents multi-image input and character consistency improvements.</li>
+  <li><strong>Do you need reasoning-driven prompt enhancement and multi-image fusion?</strong> HunyuanImage 3.0-Instruct supports up to three reference images and a think-then-recaption workflow, but the official VRAM recommendation is multi-GPU.</li>
+  <li><strong>Do you have no GPU at all?</strong> A cloud API client is the only realistic route. The <a href="https://www.nano-banana.live/blog/hardware-requirements.html" target="_blank" rel="noopener">hardware guide</a> documents that a client needs no GPU, and rented cloud instances are the alternative when a model requires a multi-GPU configuration.</li>
+  <li><strong>Are you comparing speed?</strong> Check the <a href="https://www.nano-banana.live/benchmarks/" target="_blank" rel="noopener">benchmark pages</a> rather than assuming that a smaller checkpoint is always faster; kernel choice and step count change the result.</li>
+</ol>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>How much VRAM does a local AI image model need in one sentence?</h3>
+
+<p>It depends on the model: 8GB is the published floor for SDXL-class work, Qwen-Image-Edit-2511 publishes no single minimum and must be measured, and HunyuanImage 3.0 officially recommends at least 3 × 80GB for the base checkpoint and at least 8 × 80GB for Instruct and Distil.</p>
+
+<h3>Does distillation lower the VRAM requirement?</h3>
+
+<p>No. Distillation reduces sampling steps. Tencent's published VRAM recommendation for the Distil checkpoint remains 8 × 80GB.</p>
+
+<h3>Can I run these models on a Mac?</h3>
+
+<p>The Qwen model card mentions switching the device to <code>"mps"</code> for Apple devices. The HunyuanImage repository documents CUDA 12.8 and does not describe a macOS path, so treat Mac support for that model as unknown.</p>
+
+<h3>Will a quantized community build fit on my card?</h3>
+
+<p>Possibly, but a quantization is a separate artifact with its own behavior. It is not an official specification, and the published recommendations above still describe the original checkpoints.</p>
+
+<p>Plan from the model card, measure your own peak memory, and pick the smallest model that solves your actual task. That approach will save you more time than any single VRAM figure.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener">https://github.com/Tencent-Hunyuan/HunyuanImage-3.0</a></li><li><a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noopener">https://huggingface.co/Qwen/Qwen-Image-Edit-2511</a></li><li><a href="https://www.nano-banana.live/blog/hardware-requirements.html" target="_blank" rel="noopener">https://www.nano-banana.live/blog/hardware-requirements.html</a></li><li><a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">https://www.nano-banana.live/guides/quickstart.html</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>

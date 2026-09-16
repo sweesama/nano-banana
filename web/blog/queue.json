@@ -168,13 +168,15 @@
     "category": "Local Models",
     "emoji": "💾",
     "depth": "deep",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://github.com/Tencent-Hunyuan/HunyuanImage-3.0",
       "https://huggingface.co/Qwen/Qwen-Image-Edit-2511",
       "https://www.nano-banana.live/blog/hardware-requirements.html",
       "https://www.nano-banana.live/guides/quickstart.html"
-    ]
+    ],
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "Flux versus HunyuanImage versus Qwen Image",
