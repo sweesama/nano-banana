@@ -223,5 +223,21 @@
       "https://www.nano-banana.live/blog/hardware-requirements.html",
       "https://www.nano-banana.live/guides/quickstart.html"
     ]
+  },
+  {
+    "slug": "flux-hunyuanimage-qwen-image-comparison",
+    "publishDate": "2026-09-21",
+    "title": "Choosing a local AI image model: FLUX vs HunyuanImage 3.0 vs Qwen",
+    "description": "Compare FLUX.1-dev, HunyuanImage 3.0, and Qwen Image for local use. Learn VRAM requirements, installation steps, and which open weights model fits your GPU.",
+    "category": "Local Models",
+    "emoji": "🧪",
+    "keyword": "Flux versus HunyuanImage versus Qwen Image",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://huggingface.co/black-forest-labs/FLUX.1-dev",
+      "https://github.com/Tencent-Hunyuan/HunyuanImage-3.0",
+      "https://www.nano-banana.live/guides/quickstart.html"
+    ]
   }
 ]

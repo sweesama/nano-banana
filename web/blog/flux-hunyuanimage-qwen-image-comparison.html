@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Choosing a local AI image model: FLUX vs HunyuanImage 3.0 vs Qwen | Nano Banana</title>
+  <meta name="description" content="Compare FLUX.1-dev, HunyuanImage 3.0, and Qwen Image for local use. Learn VRAM requirements, installation steps, and which open weights model fits your GPU.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/flux-hunyuanimage-qwen-image-comparison.html">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Choosing a local AI image model: FLUX vs HunyuanImage 3.0 vs Qwen","description":"Compare FLUX.1-dev, HunyuanImage 3.0, and Qwen Image for local use. Learn VRAM requirements, installation steps, and which open weights model fits your GPU.","datePublished":"2026-09-21","dateModified":"2026-09-21","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/flux-hunyuanimage-qwen-image-comparison.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Local Models • Sep 21, 2026</div>
+        <h1>Choosing a local AI image model: FLUX vs HunyuanImage 3.0 vs Qwen</h1>
+        <p class="lead" style="margin:20px auto;">Compare FLUX.1-dev, HunyuanImage 3.0, and Qwen Image for local use. Learn VRAM requirements, installation steps, and which open weights model fits your GPU.</p>
+      </header>
+      <div class="article-content">
+        <p>If you want to run a local AI image model, the practical decision comes down to three things: what your GPU can hold, what license you can live with, and whether you need text-to-image only or image editing too. This comparison covers FLUX.1-dev, HunyuanImage 3.0, and Qwen Image using the official model cards and repository documentation, so you can pick a route and install it without guessing.</p>
+
+<h2>What each model actually is</h2>
+
+<h3>FLUX.1-dev</h3>
+<p>FLUX.1-dev is a 12 billion parameter rectified flow transformer from Black Forest Labs. The model card describes it as capable of generating images from text descriptions, with output quality second only to FLUX.1 [pro] and competitive prompt following. It is released under the FLUX.1 [dev] Non-Commercial License, and the Hugging Face repository is gated: you must accept the license terms before downloading files. The card also lists ComfyUI and Diffusers as supported local routes. The same Black Forest Labs model tree lists additional editing- and control-focused FLUX.1 variants, including FLUX.1-Fill-dev, FLUX.1-Redux-dev, FLUX.1-canny-dev, and FLUX.1-Depth-dev, which are sibling models in the FLUX.1 family rather than capabilities baked into FLUX.1-dev itself. See the <a href="https://huggingface.co/black-forest-labs/FLUX.1-dev" target="_blank" rel="noopener">FLUX.1-dev model card</a> for the full license and usage details.</p>
+
+<h3>HunyuanImage 3.0</h3>
+<p>HunyuanImage 3.0 is Tencent's native multimodal image generation model. The GitHub repository describes it as a Mixture-of-Experts model with 13 billion activated parameters per token, while the Nano Banana quickstart page lists it as an 80 billion parameter open-weight MoE. The two figures come from different sources and describe different things: the 80B is the model's total parameter count as listed on the quickstart page, and the 13B-activated figure is the per-token active parameter count from the GitHub repository. HunyuanImage 3.0 supports text-to-image, image-to-image editing, multi-image fusion with up to three reference images, and prompt self-rewrite. The repository provides three variants: HunyuanImage-3.0 for text-to-image, HunyuanImage-3.0-Instruct for editing and reasoning, and HunyuanImage-3.0-Instruct-Distil for faster inference. It is licensed under the Tencent Hunyuan Community License. See the <a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener">HunyuanImage 3.0 repository</a> for installation and usage.</p>
+
+<h3>Qwen Image</h3>
+<p>Qwen Image is referenced on the Nano Banana quickstart page as a hosted dense-layout route for long prompts and information-rich images, with a 4.5K-token context. The same page lists Qwen-Image-Edit-2511 as an open local image editing model with an official Diffusers pipeline, so editing is documented for the Qwen family in addition to HunyuanImage 3.0. The quickstart page does not state a parameter count or VRAM requirement for Qwen Image, so those details are unknown from the supplied evidence. For the current model variants and installation, check the <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">Nano Banana quickstart guide</a>.</p>
+
+<h2>AI image model VRAM requirements</h2>
+
+<p>VRAM is the first filter. The supplied sources give concrete numbers for some models and leave others unspecified.</p>
+
+<ul>
+  <li><strong>FLUX.1-dev:</strong> The model card's Diffusers example uses <code>torch.bfloat16</code> and calls <code>pipe.enable_model_cpu_offload()</code> with the comment "save some VRAM by offloading the model to CPU. Remove this if you have enough GPU power." The card does not state a minimum VRAM figure. The model is 12B parameters in BF16, so you can estimate the weight footprint, but the official minimum is not published in the source.</li>
+  <li><strong>HunyuanImage 3.0:</strong> The quickstart page lists it as an 80B open-weight MoE and notes it is "heavy VRAM." The repository recommends CUDA 12.8, PyTorch 2.8.0, and FlashInfer 0.5.0 for up to 3x faster inference. No exact VRAM minimum is stated in the supplied evidence.</li>
+  <li><strong>Qwen Image:</strong> The quickstart page describes it as a hosted dense-layout route. For the open Qwen-Image-Edit-2511 variant, the page links an official Diffusers pipeline but does not state a VRAM figure in the supplied text.</li>
+</ul>
+
+<p>For a broader framework on estimating VRAM from parameter count, quantization, and offloading, see the <a href="https://www.nano-banana.live/blog/hardware-requirements.html" target="_blank" rel="noopener">hardware requirements guide</a>. The key takeaway: FLUX.1-dev is documented at 12B parameters and HunyuanImage 3.0 is documented at 80B total with 13B activated per token, while Qwen Image's parameter count and local VRAM requirement are not confirmed by the sources here, so a full light-to-heavy ranking across all three is not source-supported.</p>
+
+<h2>Installation: concrete steps</h2>
+
+<h3>FLUX.1-dev with Diffusers</h3>
+<p>The model card provides a reference Diffusers example. Install or upgrade Diffusers first:</p>
+<pre><code>pip install -U diffusers</code></pre>
+<p>Then run the pipeline. The card's example uses <code>FluxPipeline</code> and <code>enable_model_cpu_offload()</code>:</p>
+<pre><code>import torch
+from diffusers import FluxPipeline
+
+pipe = FluxPipeline.from_pretrained(
+    "black-forest-labs/FLUX.1-dev",
+    torch_dtype=torch.bfloat16
+)
+pipe.enable_model_cpu_offload()  # save some VRAM by offloading the model to CPU
+
+prompt = "A cat holding a sign that says hello world"
+image = pipe(
+    prompt,
+    height=1024,
+    width=1024,
+    guidance_scale=3.5,
+    num_inference_steps=50,
+    max_sequence_length=512,
+    generator=torch.Generator("cpu").manual_seed(0)
+).images[0]
+image.save("flux-dev.png")</code></pre>
+<p>Note that the repository is gated, so you must accept the license on Hugging Face before the download will work. The card also lists ComfyUI as a local inference option.</p>
+
+<h3>HunyuanImage 3.0 local installation</h3>
+<p>The repository gives a step-by-step local install. The environment requires Python 3.12+ and CUDA 12.8. Install PyTorch first:</p>
+<pre><code>pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128</code></pre>
+<p>Then install the remaining dependencies:</p>
+<pre><code>pip install -r requirements.txt</code></pre>
+<p>For up to 3x faster inference, the repository recommends FlashInfer 0.5.0:</p>
+<pre><code>pip install flashinfer-python==0.5.0</code></pre>
+<p>Clone the repository and download weights:</p>
+<pre><code>git clone https://github.com/Tencent-Hunyuan/HunyuanImage-3.0.git
+cd HunyuanImage-3.0/
+hf download tencent/HunyuanImage-3.0-Instruct --local-dir ./HunyuanImage-3-Instruct</code></pre>
+<p>Run the demo:</p>
+<pre><code>export MODEL_PATH="./HunyuanImage-3-Instruct"
+bash run_demo_instruct.sh</code></pre>
+<p>The repository warns that when FlashInfer is enabled, the first inference may take about 10 minutes due to kernel compilation, and subsequent runs on the same machine will be much faster. It also notes that the CUDA version used by PyTorch must match the system CUDA version, and GCC 9 or higher is recommended.</p>
+
+<h3>Qwen Image local installation</h3>
+<p>The supplied evidence does not include a complete Qwen Image local installation command. The quickstart page links an official Diffusers pipeline for Qwen-Image-Edit-2511 but does not reproduce the code in the fetched text. If you need the exact syntax, follow the <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart guide</a> and the linked Diffusers pipeline rather than inventing commands.</p>
+
+<h2>Which one should you choose?</h2>
+
+<p>Use this decision list:</p>
+
+<ol>
+  <li><strong>You have a mid-range GPU and want text-to-image only.</strong> Start with FLUX.1-dev. It is 12B parameters, has a documented Diffusers example with CPU offloading, and the model card describes cutting-edge output quality. Check the non-commercial license first.</li>
+  <li><strong>You need image editing, multi-image fusion, or reasoning over prompts.</strong> Editing capability is not exclusive to one model in this comparison. The supplied sources document editing for HunyuanImage 3.0 (the Instruct variant), for the FLUX.1 family (FLUX.1-Fill-dev, FLUX.1-Redux-dev, FLUX.1-canny-dev, and FLUX.1-Depth-dev appear in the same model tree as FLUX.1-dev), and for Qwen-Image-Edit-2511, which the quickstart page lists as an open local image editing model with an official Diffusers pipeline. HunyuanImage 3.0 is also the heaviest documented here, so confirm your VRAM before committing.</li>
+  <li><strong>You need long prompts and information-rich layouts.</strong> The quickstart page positions Qwen Image as the dense-layout route with a 4.5K-token context. For local use, look at Qwen-Image-Edit-2511 and its official Diffusers pipeline.</li>
+  <li><strong>You do not own a GPU.</strong> None of these are cloud APIs. If you want to run a hosted model, use a cloud route instead. The quickstart page separates hosted APIs from open local models, and the <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart guide</a> covers both.</li>
+</ol>
+
+<h2>Licensing and practical constraints</h2>
+
+<p>FLUX.1-dev uses the FLUX.1 [dev] Non-Commercial License. The model card states that generated outputs can be used for personal, scientific, and commercial purposes as described in that license, but the license itself is non-commercial, so read it before commercial deployment. HunyuanImage 3.0 uses the Tencent Hunyuan Community License; the quickstart page advises reviewing the repository's current license terms and restrictions before commercial deployment. Qwen Image licensing is not stated in the supplied evidence.</p>
+
+<p>One more boundary: the supplied sources do not provide benchmark scores or Elo rankings for these three models. If you want to compare them on measured quality, the <a href="https://www.nano-banana.live/benchmarks/" target="_blank" rel="noopener">Nano Banana benchmarks page</a> is the place to look, but treat any single score as one snapshot rather than a permanent verdict.</p>
+
+<h2>Bottom line</h2>
+<p>FLUX.1-dev is the most documented local starting point for text-to-image, with a 12B parameter model and a Diffusers example that includes CPU offloading; editing-focused siblings exist in the same FLUX.1 family but are separate checkpoints. HunyuanImage 3.0 is documented as an 80B total-parameter MoE with 13B activated per token and as a heavy VRAM route, with editing and multi-image fusion covered by its Instruct variant. Qwen Image is positioned for long prompts and dense layouts, with an open editing variant (Qwen-Image-Edit-2511) that has an official Diffusers pipeline, but its local VRAM requirement is not confirmed in the evidence here, so editing is documented across more than one of these three rather than belonging to only one. Pick based on your GPU, your license needs, and whether you need editing. Then follow the official install steps rather than improvising.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://huggingface.co/black-forest-labs/FLUX.1-dev" target="_blank" rel="noopener">https://huggingface.co/black-forest-labs/FLUX.1-dev</a></li><li><a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener">https://github.com/Tencent-Hunyuan/HunyuanImage-3.0</a></li><li><a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">https://www.nano-banana.live/guides/quickstart.html</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>
