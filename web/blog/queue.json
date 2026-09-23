@@ -199,11 +199,13 @@
     "category": "Local Models",
     "emoji": "🛠️",
     "depth": "deep",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://huggingface.co/docs/diffusers/index",
       "https://www.nano-banana.live/guides/quickstart.html"
-    ]
+    ],
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "open weights versus open source AI image models",

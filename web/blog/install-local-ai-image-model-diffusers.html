@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>How to Install a Local AI Image Model with Diffusers | Nano Banana</title>
+  <meta name="description" content="A practical guide to installing a local AI image model with Diffusers, covering open local routes such as HunyuanImage 3.0, Qwen-Image-Edit-2511, HiDream-O1-Image.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/install-local-ai-image-model-diffusers.html">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to Install a Local AI Image Model with Diffusers","description":"A practical guide to installing a local AI image model with Diffusers, covering open local routes such as HunyuanImage 3.0, Qwen-Image-Edit-2511, HiDream-O1-Image.","datePublished":"2026-09-23","dateModified":"2026-09-23","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/install-local-ai-image-model-diffusers.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Local Models • Sep 23, 2026</div>
+        <h1>How to Install a Local AI Image Model with Diffusers</h1>
+        <p class="lead" style="margin:20px auto;">A practical guide to installing a local AI image model with Diffusers, covering open local routes such as HunyuanImage 3.0, Qwen-Image-Edit-2511, HiDream-O1-Image.</p>
+      </header>
+      <div class="article-content">
+        <p>To install a local AI image model with Diffusers, you need three things: a Python environment with PyTorch, the Diffusers library, and enough GPU memory for the model you choose. The Hugging Face Diffusers library provides a <code>DiffusionPipeline</code> API that loads pretrained diffusion models and runs inference in a few lines of code, with optimizations like offloading and quantization for memory-constrained devices (<a href="https://huggingface.co/docs/diffusers/index" target="_blank" rel="noopener">Diffusers documentation</a>). This guide compares the main open local routes described in the fetched sources and walks through a concrete install.</p>
+
+<h2>Which local AI image model should you install?</h2>
+<p>Not every model you see in a benchmark is locally deployable. According to the <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">Nano Banana quickstart guide</a>, the key distinction is whether a route is closed cloud-only or open and locally deployable. As of the April 2026 snapshot on that page:</p>
+<ul>
+  <li><strong>HunyuanImage 3.0</strong> — an 80B open-weight MoE with editing support and Chain-of-Thought reasoning. It can run locally, but it is heavy on VRAM.</li>
+  <li><strong>Qwen-Image-Edit-2511</strong> — a 20B BF16 image-editing model with an Apache-2.0 license and official Diffusers support. The official model card does not state one universal minimum VRAM figure.</li>
+  <li><strong>HiDream-O1-Image</strong> — an 8B pixel-level unified Transformer (no VAE) under the MIT license, with native 2048px generation. It can run locally.</li>
+  <li><strong>Z-Image / Turbo</strong> — a fast local generation route with an official release.</li>
+  <li><strong>GLM-Image</strong> — a 9B hybrid autoregressive model for dense information generation. The official offload reference is about 23GB GPU memory with CPU offload, at slower speed.</li>
+</ul>
+<p>By contrast, <strong>Qwen-Image 3.0</strong> is hosted only: the quickstart page states that official weights and local deployment have not been released. <strong>FLUX 3</strong> is listed as early access with image access coming soon and no public weights or local deployment yet. <strong>Nano Banana 2</strong>, <strong>ChatGPT Image 2</strong>, and <strong>Seedream 4.5</strong> are closed cloud models that cannot run locally. If you want a hosted route instead, the quickstart guide covers cloud API options.</p>
+
+<h2>AI image model VRAM requirements: what to expect</h2>
+<p>VRAM is the deciding factor for most local installs. The quickstart page gives one concrete figure: GLM-Image needs about 23GB GPU memory with CPU offload, and runs slower in that mode. For HunyuanImage 3.0, the page describes it as an 80B MoE that is heavy on VRAM but does not publish a single minimum number. For Qwen-Image-Edit-2511, the official model card does not state one universal minimum VRAM figure. Treat any specific number you see elsewhere as unverified unless it comes from the model card.</p>
+<p>Diffusers itself provides the tools to fit larger models into smaller memory: offloading and quantization are built in, and <code>torch.compile</code> can boost inference speed when memory is not the bottleneck (<a href="https://huggingface.co/docs/diffusers/index" target="_blank" rel="noopener">Diffusers documentation</a>). For a broader discussion of how VRAM maps to model size, see the <a href="https://www.nano-banana.live/blog/hardware-requirements.html" target="_blank" rel="noopener">hardware requirements guide</a>.</p>
+
+<h2>Step-by-step: install Diffusers and run a model</h2>
+<p>The Diffusers documentation recommends starting with the Hugging Face Diffusion Models Course if you are new to diffusion theory. For installation, the library is distributed on PyPI and the docs list an Installation page as the first step. The exact command is not reproduced in the fetched source text, so follow the official <a href="https://huggingface.co/docs/diffusers/index" target="_blank" rel="noopener">Diffusers installation page</a> for the current command.</p>
+<p>Once Diffusers is installed, the general workflow is:</p>
+<ol>
+  <li><strong>Install PyTorch</strong> with CUDA support for your GPU. The HunyuanImage quickstart on the Nano Banana page shows a CUDA 12.8 example: <code>pip install torch==2.8.0 torchvision==0.23.0 --index-url https://download.pytorch.org/whl/cu128</code>.</li>
+  <li><strong>Install Diffusers</strong> from the official installation instructions.</li>
+  <li><strong>Load a pipeline</strong> with <code>DiffusionPipeline.from_pretrained(...)</code>. The Diffusers docs describe the <code>DiffusionPipeline</code> as the core API for inference, mixing and matching components, and loading adapters like LoRA.</li>
+  <li><strong>Apply memory optimizations</strong> if needed — offloading and quantization are documented in the library.</li>
+  <li><strong>Generate</strong> by calling the pipeline with a prompt and saving the output image.</li>
+</ol>
+<p>For HunyuanImage 3.0 specifically, the Nano Banana quickstart shows a Transformers-based path rather than a Diffusers pipeline. The example loads the model with <code>AutoModelForCausalLM.from_pretrained</code> and calls <code>model.generate_image(...)</code>:</p>
+<pre><code>from transformers import AutoModelForCausalLM
+
+model_id = "./HunyuanImage-3-Instruct"
+kwargs = dict(
+    attn_implementation="sdpa",
+    trust_remote_code=True,
+    torch_dtype="auto",
+    device_map="auto",
+    moe_impl="eager",  # Use "flashinfer" if installed
+    moe_drop_tokens=True,
+)
+model = AutoModelForCausalLM.from_pretrained(model_id, **kwargs)
+model.load_tokenizer(model_id)
+
+prompt = "A futuristic city at sunset with flying vehicles"
+cot_text, samples = model.generate_image(
+    prompt=prompt,
+    seed=42,
+    image_size="1024x1024",
+    use_system_prompt="en_unified",
+    bot_task="think_recaption",
+    diff_infer_steps=50,
+    verbose=2
+)
+samples[0].save("output.png")</code></pre>
+<p>That snippet is from the Nano Banana quickstart page and is the only runnable HunyuanImage example in the fetched evidence. If you want a Diffusers-native pipeline, Qwen-Image-Edit-2511 is the model the quickstart page explicitly says has official Diffusers support. The exact pipeline class name is not in the fetched source, so check the model card on Hugging Face before writing code.</p>
+
+<h2>HunyuanImage local vs Qwen Image local vs FLUX local installation</h2>
+<p>Here is how the three routes compare based on the fetched evidence:</p>
+<ul>
+  <li><strong>HunyuanImage 3.0</strong> — 80B MoE, open weights, editing and reasoning support, heavy VRAM. The quickstart page lists three variants: HunyuanImage-3.0 (text-to-image, 50 steps), HunyuanImage-3.0-Instruct (editing + reasoning, 50 steps), and HunyuanImage-3.0-Instruct-Distil (fast inference, 8 steps). License is the Tencent Hunyuan Community License; review the repository's current terms before commercial deployment.</li>
+  <li><strong>Qwen Image local</strong> — Qwen-Image-Edit-2511 is a 20B BF16 editing model with Apache-2.0 and official Diffusers support. Qwen-Image 3.0 is hosted only, so it is not a local option. No universal minimum VRAM is stated on the model card.</li>
+  <li><strong>FLUX local installation</strong> — FLUX 3 is early access with no public weights or local deployment yet. The quickstart page mentions a FLUX 3 Dev roadmap but does not confirm availability. Do not plan a FLUX 3 local install until weights are released.</li>
+</ul>
+<p>If you want the smallest local footprint among the open models with stated sizes, HiDream-O1-Image at 8B is the lightest option, though it is a pixel-level Transformer without a VAE. If you want the fastest local generation, Z-Image Turbo is described as the efficient local route, though its parameter count is not stated in the fetched evidence.</p>
+
+<h2>Practical installation checklist</h2>
+<ul>
+  <li>Confirm your GPU has enough VRAM for the model class you picked. GLM-Image needs about 23GB with CPU offload; HunyuanImage 3.0 is heavier but no single figure is published.</li>
+  <li>Install PyTorch with the CUDA build matching your driver. The quickstart example uses CUDA 12.8.</li>
+  <li>Install Diffusers from the official installation page.</li>
+  <li>Download the model weights from Hugging Face. For HunyuanImage, the example uses a local path <code>./HunyuanImage-3-Instruct</code>.</li>
+  <li>Set <code>device_map="auto"</code> and consider <code>moe_impl="eager"</code> if flashinfer is not installed.</li>
+  <li>Run a small test prompt at 1024x1024 before scaling up.</li>
+  <li>If you run out of memory, enable offloading or quantization in Diffusers.</li>
+</ul>
+
+<h2>When local is the wrong choice</h2>
+<p>Local installs are not always the best route. If you do not own a GPU, the quickstart page recommends cloud API routes on CPU. Closed models like Nano Banana 2, ChatGPT Image 2, and Seedream 4.5 cannot run locally at all. For a side-by-side comparison of cloud versus local tradeoffs, see the <a href="https://www.nano-banana.live/benchmarks/" target="_blank" rel="noopener">benchmarks page</a>. And remember: installing a client or API wrapper does not make a hosted model local or offline — only open-weight models with released weights can run on your own hardware.</p>
+
+<h2>FAQ</h2>
+<h3>Can I run Qwen Image locally?</h3>
+<p>Qwen-Image-Edit-2511 can run locally and has official Diffusers support. Qwen-Image 3.0 is hosted only, with no released weights for local deployment.</p>
+<h3>How much VRAM does HunyuanImage 3.0 need?</h3>
+<p>The fetched sources do not state a single minimum VRAM figure for HunyuanImage 3.0. It is described as an 80B MoE that is heavy on VRAM. Check the model card for current requirements.</p>
+<h3>Is FLUX available for local installation?</h3>
+<p>FLUX 3 is listed as early access with no public weights or local deployment yet. A FLUX 3 Dev roadmap is mentioned, but availability is not confirmed in the fetched evidence.</p>
+<h3>Do I need Diffusers for every local model?</h3>
+<p>No. HunyuanImage 3.0's quickstart example uses Transformers, not Diffusers. Diffusers is the recommended route for models with official pipeline support, such as Qwen-Image-Edit-2511.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://huggingface.co/docs/diffusers/index" target="_blank" rel="noopener">https://huggingface.co/docs/diffusers/index</a></li><li><a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">https://www.nano-banana.live/guides/quickstart.html</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>
