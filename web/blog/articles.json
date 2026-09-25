@@ -254,5 +254,21 @@
       "https://huggingface.co/docs/diffusers/index",
       "https://www.nano-banana.live/guides/quickstart.html"
     ]
+  },
+  {
+    "slug": "open-weights-versus-open-source-image-models",
+    "publishDate": "2026-09-25",
+    "title": "Open Weights vs Open Source: Choosing a local AI image model",
+    "description": "Open weights and open source are not the same thing. Learn how the OSI definition applies to image models, then compare HunyuanImage and Qwen Image as local options.",
+    "category": "Local Models",
+    "emoji": "📦",
+    "keyword": "open weights versus open source AI image models",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://opensource.org/ai/open-source-ai-definition",
+      "https://www.nano-banana.live/faq.html",
+      "https://www.nano-banana.live/benchmarks/"
+    ]
   }
 ]

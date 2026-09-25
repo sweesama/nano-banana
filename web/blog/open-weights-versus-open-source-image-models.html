@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Open Weights vs Open Source: Choosing a local AI image model | Nano Banana</title>
+  <meta name="description" content="Open weights and open source are not the same thing. Learn how the OSI definition applies to image models, then compare HunyuanImage and Qwen Image as local options.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/open-weights-versus-open-source-image-models.html">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Open Weights vs Open Source: Choosing a local AI image model","description":"Open weights and open source are not the same thing. Learn how the OSI definition applies to image models, then compare HunyuanImage and Qwen Image as local options.","datePublished":"2026-09-25","dateModified":"2026-09-25","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/open-weights-versus-open-source-image-models.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Local Models • Sep 25, 2026</div>
+        <h1>Open Weights vs Open Source: Choosing a local AI image model</h1>
+        <p class="lead" style="margin:20px auto;">Open weights and open source are not the same thing. Learn how the OSI definition applies to image models, then compare HunyuanImage and Qwen Image as local options.</p>
+      </header>
+      <div class="article-content">
+        <p>If you are comparing a local AI image model for offline generation, the first decision is not which checkpoint looks best in a gallery — it is what you actually receive when you download it. "Open weights" and "open source" are used interchangeably in blog posts, but the Open Source Initiative draws a hard line between them in the <a href="https://opensource.org/ai/open-source-ai-definition" target="_blank" rel="noopener">Open Source AI Definition 1.0</a>. That distinction determines whether you can inspect training data, retrain the model, or only run the weights someone else published. This article explains the difference, then walks through what it means for HunyuanImage local and Qwen Image local installation.</p>
+
+<h2>What "open source" requires under OSAID 1.0</h2>
+
+<p>The OSI definition grants four freedoms: use the system for any purpose, study how it works and inspect its components, modify it for any purpose (including changing its output), and share it with or without modifications. Those freedoms apply to a full system and to discrete elements such as a model, weights, or parameters.</p>
+
+<p>The critical part is the "preferred form to make modifications." For a machine-learning system, the OSI says that form must include three things:</p>
+
+<ul>
+  <li><strong>Data information</strong> — enough detail about the training data that a skilled person can build a substantially equivalent system, including provenance, scope, characteristics, how data was obtained and selected, labeling procedures, and filtering methods.</li>
+  <li><strong>Code</strong> — the complete source code used to train and run the system, covering data processing, training arguments and settings, validation, tokenizers, hyperparameter search, inference code, and model architecture.</li>
+  <li><strong>Parameters</strong> — the weights and other configuration settings, potentially including intermediate checkpoints and the final optimizer state.</li>
+</ul>
+
+<p>The definition is explicit that "Open Source models" and "Open Source weights" must include the data information and code used to derive those parameters. A repository that ships a <code>.safetensors</code> file and an inference script but no training data disclosure is, by this standard, open weights — not open source.</p>
+
+<blockquote>
+  <p>"Open Source models" and "Open Source weights" must include the data information and code used to derive those parameters.</p>
+</blockquote>
+
+<p>The OSI also notes it does not require a specific legal mechanism for keeping parameters freely available, and expects the legal picture to become clearer over time. In practice, that means you should read the model card and license for each checkpoint rather than assuming a family-wide rule. The <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">Nano Banana FAQ</a> makes the same point about commercial use: do not assume one model family's license applies to every checkpoint, LoRA, demo, or hosted service.</p>
+
+<h2>Why the distinction matters when you install locally</h2>
+
+<p>For most people running a local AI image model, the practical difference shows up in three places.</p>
+
+<h3>1. Reproducibility and provenance</h3>
+<p>If the training data description is missing, you cannot verify what the model learned from, and you cannot rebuild it. That is a provenance gap, not just a licensing technicality. When a model card omits data information, treat the model as open weights and label it that way in your own notes.</p>
+
+<h3>2. Modification rights</h3>
+<p>Fine-tuning, distillation, and architecture changes require the code and the parameters. If only weights are published, you can run inference and often train adapters, but you cannot reproduce the original training run. Whether that matters depends on your goal: inference-only workflows rarely need the full training stack.</p>
+
+<h3>3. Hardware planning</h3>
+<p>Neither label tells you how much VRAM you need. That depends on the checkpoint, precision, resolution, and your runtime. The <a href="https://www.nano-banana.live/blog/hardware-requirements.html" target="_blank" rel="noopener">hardware requirements guide</a> is referenced by the FAQ as the place to look for alternative offline models such as Z-Image, Qwen-Image, and HunyuanImage. The <a href="https://www.nano-banana.live/benchmarks/" target="_blank" rel="noopener">benchmarks page</a> presents Elo ratings with 95% confidence intervals and notes that unavailable metadata is omitted rather than shown as an empty column.</p>
+
+<h2>Comparing HunyuanImage and Qwen Image for local use</h2>
+
+<p>The Nano Banana FAQ points readers who need a fully offline solution toward alternatives such as Z-Image, Qwen-Image, and HunyuanImage, and recommends Qwen-Image-Edit-2511 or HunyuanImage 3.0 in the <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">Quickstart Guide</a> for offline image generation. Here is how to think about the comparison without inventing specs the sources do not confirm.</p>
+
+<ul>
+  <li><strong>HunyuanImage local</strong> — named in the FAQ as an open-weight alternative. Exact specifications depend on the checkpoint, precision, and resolution; check the model card rather than a forum post.</li>
+  <li><strong>Qwen Image local</strong> — also named in the FAQ as an open-weight alternative, and includes editing-oriented checkpoints such as Qwen-Image-Edit-2511. Qwen Image requirements likewise vary by checkpoint and quantization.</li>
+</ul>
+
+<p>Neither of these should be described as "open source" unless the publisher actually provides data information and training code. The honest label for most downloadable image checkpoints today is <em>open weights image models</em>.</p>
+
+<h2>How to check a checkpoint before you install it</h2>
+
+<ol>
+  <li><strong>Open the model card.</strong> Look for a training data section, not just a usage example.</li>
+  <li><strong>Find the license file.</strong> Check whether it is an OSI-approved license or a custom community license.</li>
+  <li><strong>Look for training code.</strong> Inference code alone does not satisfy the OSAID preferred form.</li>
+  <li><strong>Note the checkpoint name and date.</strong> Licenses can differ between versions of the same family.</li>
+  <li><strong>Estimate your VRAM.</strong> Test at low resolution first, and check the model card for the checkpoint you plan to run.</li>
+  <li><strong>Follow the Quickstart Guide.</strong> The FAQ links to the <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">Quickstart Guide</a> for offline image generation recommendations such as Qwen-Image-Edit-2511 and HunyuanImage 3.0.</li>
+</ol>
+
+<p>If a step is missing from the evidence — for example, an exact specification for a specific quantization — say so and link the model card instead of guessing. The Nano Banana FAQ is careful about this: it labels missing inputs or parameters rather than calling an incomplete comparison reproducible. The <a href="https://www.nano-banana.live/benchmarks/" target="_blank" rel="noopener">benchmarks page</a> takes a similar approach by not inferring a model's license, local availability, privacy, or total operating cost when those fields are absent.</p>
+
+<h2>Cloud APIs are not local models</h2>
+
+<p>One clarification that comes up constantly: running a Python client on your laptop does not make a hosted model local. The Nano Banana FAQ states plainly that Nano Banana 2 cannot be downloaded or run offline, and that a local client still sends the image and prompt to Google's hosted Gemini API. The same logic applies to ChatGPT Image 2 — calling an API from local code is not local inference. If your requirement is a 100% offline, air-gapped workflow, you need open-weight checkpoints, not an API wrapper.</p>
+
+<h2>Reading rankings without over-claiming</h2>
+
+<p>The <a href="https://www.nano-banana.live/benchmarks/" target="_blank" rel="noopener">Nano Banana benchmarks page</a> sources its leaderboards from Artificial Analysis and refreshes on a scheduled sync. The page shows Elo ratings alongside 95% confidence intervals, and it notes that samples, release dates, and pricing are displayed only when Artificial Analysis returns those fields — unavailable metadata is omitted instead of shown as an empty column. Because snapshots change, treat any single Elo number as a dated observation, not a permanent fact. The Nano Banana FAQ separately warns that hosted models can change and that both hosted and local inference may be nondeterministic across runs or hardware. When you compare a local AI image model against a hosted one, compare the exact workflow you plan to use — same prompt, same resolution, same settings — rather than a headline score.</p>
+
+<h2>The short version</h2>
+
+<p>Open weights give you parameters you can run and often fine-tune. Open source, under OSAID 1.0, additionally requires data information and the code used to derive those parameters. Most downloadable image checkpoints are open weights. Before installing HunyuanImage or Qwen Image locally, read the model card and confirm the license for that exact checkpoint. If you need a fully offline pipeline, choose an open-weight checkpoint and verify its provenance — and never describe an API client as local inference.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://opensource.org/ai/open-source-ai-definition" target="_blank" rel="noopener">https://opensource.org/ai/open-source-ai-definition</a></li><li><a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">https://www.nano-banana.live/faq.html</a></li><li><a href="https://www.nano-banana.live/benchmarks/" target="_blank" rel="noopener">https://www.nano-banana.live/benchmarks/</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>
