@@ -270,5 +270,20 @@
       "https://www.nano-banana.live/faq.html",
       "https://www.nano-banana.live/benchmarks/"
     ]
+  },
+  {
+    "slug": "runpod-gpu-choice-ai-image-models",
+    "publishDate": "2026-09-28",
+    "title": "Choosing a cloud GPU for AI image generation: RunPod GPU pricing and",
+    "description": "A practical guide to picking a RunPod GPU for open-weight image models, comparing per-hour pricing, setup steps, and reliability against Vast.ai.",
+    "category": "Cloud GPU",
+    "emoji": "☁️",
+    "keyword": "RunPod GPU choice for AI image models",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://www.runpod.io/gpu-instance/pricing",
+      "https://www.nano-banana.live/guides/cloud-deployment.html"
+    ]
   }
 ]

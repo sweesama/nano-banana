@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Choosing a cloud GPU for AI image generation: RunPod GPU pricing and | Nano Banana</title>
+  <meta name="description" content="A practical guide to picking a RunPod GPU for open-weight image models, comparing per-hour pricing, setup steps, and reliability against Vast.ai.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/runpod-gpu-choice-ai-image-models.html">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Choosing a cloud GPU for AI image generation: RunPod GPU pricing and","description":"A practical guide to picking a RunPod GPU for open-weight image models, comparing per-hour pricing, setup steps, and reliability against Vast.ai.","datePublished":"2026-09-28","dateModified":"2026-09-28","author":{"@type":"Organization","name":"Nano Banana"},"publisher":{"@type":"Organization","name":"Nano Banana"},"mainEntityOfPage":"https://www.nano-banana.live/blog/runpod-gpu-choice-ai-image-models.html","isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}}</script>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Cloud GPU • Sep 28, 2026</div>
+        <h1>Choosing a cloud GPU for AI image generation: RunPod GPU pricing and</h1>
+        <p class="lead" style="margin:20px auto;">A practical guide to picking a RunPod GPU for open-weight image models, comparing per-hour pricing, setup steps, and reliability against Vast.ai.</p>
+      </header>
+      <div class="article-content">
+        <p>If you want to run an open-weight image model like Qwen-Image-Edit-2511 or HunyuanImage 3.0 without buying a workstation, renting a cloud GPU is the fastest path. But the wrong instance wastes money and time. This guide walks through how to choose a RunPod GPU for AI image generation, using current RunPod GPU pricing and a model-first planning checklist. It also covers where RunPod vs Vast.ai decisions usually go wrong, and how to stop cloud GPU charges when you are done.</p>
+
+<h2>Start with the model, not the GPU</h2>
+<p>The most common mistake is opening a GPU marketplace and sorting by price. Instead, start with the model's official requirement. The <a href="https://www.nano-banana.live/guides/cloud-deployment.html" target="_blank" rel="noopener">cloud deployment guide</a> lays out a model-first route:</p>
+<ul>
+  <li><strong>Nano Banana 2</strong> is a Google-hosted API (gemini-3.1-flash-image). You do not rent a GPU for it. Use the API.</li>
+  <li><strong>Qwen-Image-Edit-2511</strong> is a 20B BF16 model. Its official card gives no universal minimum VRAM, so you must pick a high-memory CUDA candidate and measure the exact pipeline.</li>
+  <li><strong>HunyuanImage-3.0 base</strong> officially recommends at least 3 × 80GB GPUs.</li>
+  <li><strong>HunyuanImage-3.0 Instruct</strong> officially recommends at least 8 × 80GB GPUs.</li>
+</ul>
+<p>That last point matters for budgeting. A single A100 is not enough for HunyuanImage Instruct. You need to price the entire multi-GPU configuration, not one card. Community quantizations can reduce memory, but they are separate artifacts and should be tested before you treat them as a requirement.</p>
+
+<h2>RunPod GPU pricing: what you actually pay</h2>
+<p>RunPod publishes per-hour and per-second rates for Pods, Serverless, and Clusters. The table below uses the <a href="https://www.runpod.io/gpu-instance/pricing" target="_blank" rel="noopener">official RunPod GPU pricing page</a> (updated September 27, 2026). Prices are volatile, so treat these as a snapshot and verify at checkout.</p>
+
+<h3>Pods (dedicated instances)</h3>
+<ul>
+  <li><strong>RTX A5000 24GB</strong> — $0.27/hr</li>
+  <li><strong>A40 48GB</strong> — $0.49/hr</li>
+  <li><strong>L4 24GB</strong> — $0.49/hr</li>
+  <li><strong>RTX 3090 24GB</strong> — $0.50/hr</li>
+  <li><strong>RTX A6000 48GB</strong> — $0.53/hr</li>
+  <li><strong>RTX 4090 24GB</strong> — $0.74/hr</li>
+  <li><strong>L40S 48GB</strong> — $1.09/hr</li>
+  <li><strong>A100 PCIe / SXM 80GB</strong> — $1.59/hr</li>
+  <li><strong>H100 PCIe 80GB</strong> — $2.89/hr</li>
+  <li><strong>H100 SXM 80GB</strong> — $3.49/hr</li>
+  <li><strong>H200 141GB</strong> — $4.59/hr</li>
+  <li><strong>B200 180GB</strong> — $6.79/hr</li>
+</ul>
+
+<h3>Serverless (per-second inference)</h3>
+<p>Serverless bills workers by usage and is aimed at API-style inference. Examples from the same page include 24GB 4090 PRO at $1.10/hr, 48GB A6000/A40 at $1.22/hr, and 80GB A100 at $2.72/hr. RunPod states Serverless saves 25% over other Serverless cloud providers on flex workers alone.</p>
+
+<h3>Storage and billing state</h3>
+<p>Storage starts at $0.05/GB/mo for network standard over 1TB, with container disk at $0.10/GB/mo. Volume disk is $0.10/GB/mo running and $0.20/GB/mo idle. That idle rate is the detail most people miss: a stopped instance can still bill for storage. The <a href="https://www.nano-banana.live/guides/cloud-deployment.html" target="_blank" rel="noopener">deployment guide</a> explicitly says to confirm what continues billing while an instance is stopped.</p>
+
+<h2>RunPod vs Vast.ai: cost, setup, reliability</h2>
+<p>Both are marketplaces for renting a GPU for AI image generation, but they differ in how much control you get. The supplied evidence covers RunPod's pricing and setup in detail; it does not include a Vast.ai pricing page, so any specific Vast.ai rate is unknown here. What you can compare is structure:</p>
+<ul>
+  <li><strong>Cost model:</strong> RunPod lists per-hour and per-second Pods, Serverless, and Clusters. Vast.ai's exact rates are not in the supplied sources, so verify them directly before comparing.</li>
+  <li><strong>Setup:</strong> RunPod offers documented PyTorch images and a Hub with templates. The deployment guide recommends selecting a documented PyTorch image with compatible drivers, installing the official project first, and generating one baseline output before adding ComfyUI nodes or custom kernels.</li>
+  <li><strong>Reliability:</strong> RunPod advertises 31 global regions and reserved clusters with SLA-backed uptime for enterprises. For single-instance work, reliability mostly means matching the software image to the repository's Python, CUDA, PyTorch, and driver requirements.</li>
+</ul>
+<p>If you only need occasional inference and do not want to manage a machine, a hosted API may be cheaper and simpler. The <a href="https://www.nano-banana.live/blog/run-without-gpu.html" target="_blank" rel="noopener">run without a GPU</a> article covers that route. Renting a GPU only makes sense when you need open weights, custom nodes, or full control.</p>
+
+<h2>A practical RunPod setup checklist</h2>
+<ol>
+  <li><strong>Open current inventory.</strong> Compare available GPU configurations and current prices on RunPod. Inventory and rates change, so the checkout screen is the source of truth.</li>
+  <li><strong>Match the exact model.</strong> Write down the checkpoint, variant, precision, number of inputs, and target resolution. For Hunyuan, check the official Tencent table. For Qwen, begin with the official model card.</li>
+  <li><strong>Launch a clean environment.</strong> Select a documented PyTorch image with compatible drivers. Install the official project first and generate one baseline output before adding quantization or custom kernels.</li>
+  <li><strong>Measure before scaling.</strong> Record peak VRAM, load time, generation time, output settings, and total bill for one job. That evidence tells you whether to keep the instance, change precision, or choose another model.</li>
+  <li><strong>Stop billing deliberately.</strong> Save outputs, remove secrets from notebooks, and stop or terminate resources you no longer need. Check whether storage and public IPs continue billing after compute stops.</li>
+</ol>
+
+<h2>Security and cost control on rented GPUs</h2>
+<p>Cloud GPU security is mostly about secrets and persistence. The deployment guide advises removing secrets from notebooks before you stop an instance. Treat any rented machine as shared infrastructure: do not leave API keys in environment files, and do not assume a stopped instance is a private one.</p>
+<p>To stop cloud GPU charges, you need to do more than stop compute. RunPod's pricing page shows volume disk billing at $0.20/GB/mo when idle, so a large model cache can keep costing money after the GPU is off. Terminate the instance and delete volumes you no longer need. If you are still deciding whether to rent at all, the <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart guide</a> is a better first stop than a GPU marketplace.</p>
+
+<h2>What to do next</h2>
+<p>Pick the model first, then the GPU. For Qwen-Image-Edit-2511, a 48GB card like the L40S or A6000 is a reasonable starting candidate, but the official card gives no universal minimum, so measure. For HunyuanImage-3.0, price the full multi-GPU configuration. For Nano Banana 2, do not rent anything — it is a Google-hosted API. Verify every price on the <a href="https://www.runpod.io/gpu-instance/pricing" target="_blank" rel="noopener">RunPod pricing page</a> before you pay, and stop or terminate resources when the job is done.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://www.runpod.io/gpu-instance/pricing" target="_blank" rel="noopener">https://www.runpod.io/gpu-instance/pricing</a></li><li><a href="https://www.nano-banana.live/guides/cloud-deployment.html" target="_blank" rel="noopener">https://www.nano-banana.live/guides/cloud-deployment.html</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>
