@@ -30,6 +30,10 @@ This repository is not an official Google, Gemini, Qwen, Tencent, or HiDream pro
 ## Automation
 
 - `weekly-blog.yml` runs three times weekly and publishes one article only after source, fact, and site validation gates pass.
+- Each run attempts at most two topics. Failed topics wait 24 hours, fresh topics take priority, and three editorial failures move a topic to `needs-review`. Provider outages do not consume this retry budget.
+- Drafts, audit findings, and malformed model responses are retained for 14 days in the run's `blog-diagnostics` artifact. Queue progress is committed even if generation fails, while the run still reports failure.
+- Manual `dry_run` runs generate and validate without publishing. Publishing is restricted to `main`; local diagnostic files are ignored by Git.
+- To retry a reviewed topic, set its status to `pending` and remove `failureCount`, `nextAttemptAt`, and `lastError` from `web/blog/queue.json`.
 - `sync-benchmarks.yml` runs weekly, validates the static site, and commits only changed benchmark data.
 - Both publishers share one concurrency group, rebase on the latest `main`, revalidate, and only then push.
 - Run the local checks with:

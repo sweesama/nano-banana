@@ -2,6 +2,7 @@ import OpenAI from 'openai';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { randomUUID } from 'node:crypto';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,6 +14,10 @@ const ARTICLES_PATH = path.join(BLOG_DIR, 'articles.json');
 const SEO_RESEARCH_PATH = path.join(BLOG_DIR, 'seo-research.json');
 const BLOG_INDEX_PATH = path.join(WEB_DIR, 'blog.html');
 const SITEMAP_PATH = path.join(WEB_DIR, 'sitemap.xml');
+const DIAGNOSTICS_DIR = process.env.BLOG_DIAGNOSTICS_DIR || path.join(__dirname, '.diagnostics');
+const QUEUE_RETRY_DELAY_MS = 24 * 60 * 60 * 1000;
+const MAX_QUEUE_FAILURES = 3;
+const MAX_TOPICS_PER_RUN = 2;
 const PROVIDER_CONFIG = Object.freeze({
   minimax: {
     label: 'MiniMax',
@@ -107,6 +112,89 @@ function writeJson(filePath, value) {
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
 }
 
+function redactSecrets(value) {
+  let text = String(value);
+  for (const config of Object.values(PROVIDER_CONFIG)) {
+    if (config.apiKey) text = text.replaceAll(config.apiKey, '[REDACTED]');
+  }
+  return text;
+}
+
+function saveDiagnostic(item, phase, details, directory = DIAGNOSTICS_DIR) {
+  const { error, ...content } = details;
+  const record = {
+    recordedAt: new Date().toISOString(),
+    topic: item,
+    phase,
+    ...content,
+    ...(error ? { error: {
+      message: error.message,
+      status: getErrorStatus(error),
+      audit: error.audit,
+    } } : {}),
+  };
+  fs.mkdirSync(directory, { recursive: true });
+  const slug = String(item?.slug || 'model-response').replace(/[^a-z0-9-]/gi, '_');
+  const file = path.join(directory, `${slug}-${phase}-${randomUUID()}.json`);
+  fs.writeFileSync(file, redactSecrets(JSON.stringify(record, null, 2)), 'utf8');
+  return file;
+}
+
+function selectQueueItem(queue, existingSlugs, now = new Date()) {
+  return queue
+    .filter(item => item.status === 'pending' && !existingSlugs.has(item.slug)
+      && (!item.nextAttemptAt || Date.parse(item.nextAttemptAt) <= now.getTime()))
+    .sort((a, b) => (a.failureCount || 0) - (b.failureCount || 0)
+      || (Date.parse(a.lastAttemptAt) || 0) - (Date.parse(b.lastAttemptAt) || 0))[0];
+}
+
+function recordQueueFailure(item, error, now = new Date()) {
+  item.failureCount = (item.failureCount || 0) + 1;
+  item.lastAttemptAt = now.toISOString();
+  item.lastError = redactSecrets(error.message || String(error)).slice(0, 2000);
+  if (item.failureCount >= MAX_QUEUE_FAILURES) {
+    item.status = 'needs-review';
+    delete item.nextAttemptAt;
+  } else {
+    item.nextAttemptAt = new Date(now.getTime() + QUEUE_RETRY_DELAY_MS).toISOString();
+  }
+}
+
+async function generateFromQueue(queue, articles, research, {
+  now = new Date(), generate = generateArticle, diagnosticsDir = DIAGNOSTICS_DIR,
+} = {}) {
+  const existingSlugs = new Set(articles.map(article => article.slug));
+  let lastError;
+  for (let attempt = 0; attempt < MAX_TOPICS_PER_RUN; attempt++) {
+    const item = selectQueueItem(queue, existingSlugs, now);
+    if (!item) {
+      if (lastError) throw lastError;
+      return null;
+    }
+    let article;
+    try {
+      const cluster = findSeoCluster(item, research);
+      article = await generate(item, articles, cluster);
+      const structuralScore = scoreArticle(article, item, cluster);
+      if (structuralScore < 75) throw new Error(`Structural score ${structuralScore}/100 is below the 75-point publishing threshold.`);
+      item.lastAttemptAt = now.toISOString();
+      saveDiagnostic(item, 'validated', { article, structuralScore }, diagnosticsDir);
+      return { item, article, structuralScore };
+    } catch (error) {
+      // Provider outages must not consume a topic's editorial retry budget.
+      if (['auth', 'unconfigured', 'permanent', 'transient', 'timeout'].includes(classifyModelError(error))) {
+        saveDiagnostic(item, 'provider-failure', { article, error }, diagnosticsDir);
+        throw error;
+      }
+      recordQueueFailure(item, error, now);
+      saveDiagnostic(item, 'queue-failure', { article, error }, diagnosticsDir);
+      lastError = error;
+      console.warn(`Deferred ${item.slug} after failure ${item.failureCount}/${MAX_QUEUE_FAILURES}: ${error.message}`);
+    }
+  }
+  throw lastError;
+}
+
 function parseJson(text) {
   const cleaned = text.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
   const start = cleaned.indexOf('{');
@@ -174,7 +262,7 @@ function classifyModelError(error) {
   if (status === 429 || status >= 500 || /quota|RESOURCE_EXHAUSTED|high demand/i.test(message)) return 'transient';
   if (/AbortError|aborted|timeout/i.test(message)) return 'timeout';
   if (/Connection|ECONNRESET|socket|network|fetch/i.test(message)) return 'transient';
-  if (/JSON object|JSON.parse|Unexpected token|Unexpected end/i.test(message)) return 'retryable-output';
+  if (error instanceof SyntaxError || /JSON object|JSON.parse|Unexpected token|Unexpected end/i.test(message)) return 'retryable-output';
   return 'unknown';
 }
 
@@ -231,7 +319,9 @@ async function requestJsonModel(model, messages, { label, temperature, maxTokens
     throw error;
   }
   let lastError;
+  let retryInstruction;
   for (let attempt = 1; attempt <= MAX_MODEL_ATTEMPTS; attempt++) {
+    let responseText = '';
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(new Error(`Model timeout after ${Math.round(API_TIMEOUT_MS / 1000)}s`)), API_TIMEOUT_MS);
     const payload = {
@@ -242,7 +332,7 @@ async function requestJsonModel(model, messages, { label, temperature, maxTokens
       top_p: 0.95,
       max_tokens: resolveMaxTokens(route.provider, label, maxTokens),
       response_format: { type: 'json_object' },
-      messages,
+      messages: retryInstruction ? [...messages, { role: 'user', content: retryInstruction }] : messages,
       ...(route.provider === 'minimax' ? { reasoning_split: true } : {}),
       ...(route.provider === 'deepseek' ? {
         thinking: { type: label === 'source-audit' ? 'enabled' : 'disabled' },
@@ -259,13 +349,18 @@ async function requestJsonModel(model, messages, { label, temperature, maxTokens
         console.log(`[${label}] ${model} does not accept response_format; retrying with prompt-enforced JSON.`);
         response = await client.chat.completions.create({ ...payload, response_format: undefined }, { signal: controller.signal });
       }
-      const data = parseJson(response.choices?.[0]?.message?.content || '');
+      responseText = response.choices?.[0]?.message?.content || '';
+      const data = parseJson(responseText);
       Object.defineProperty(data, MODEL_ROUTE, { value: model, enumerable: false, configurable: true });
       console.log(`[${label}] ${model} returned valid JSON.`);
       return data;
     } catch (error) {
       lastError = error;
       const kind = classifyModelError(error);
+      saveDiagnostic(null, label, { model, attempt, rawResponse: responseText || undefined, error });
+      if (kind === 'retryable-output') {
+        retryInstruction = 'The last response was not valid JSON. Return one JSON object only. Escape double quotes and line breaks inside string values; do not include raw control characters or markdown fences.';
+      }
       const status = getErrorStatus(error);
       const summary = status ? `HTTP ${status}` : (error.message || 'Unknown error');
       console.warn(`[${label}] ${model} failed: ${summary}`);
@@ -340,16 +435,27 @@ function countWords(value) {
 }
 
 function findAbsoluteProductClaim(value) {
-  const text = String(value).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  const text = String(value)
+    .replace(/<\/(?:p|li|h[23]|blockquote|pre)>/gi, '\n')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&(?:apos|#39|#x27);/gi, "'")
+    .replace(/[^\S\n]+/g, ' ');
   const patterns = [
-    /\bnever fails\b/i,
-    /\bunlimited\s+(?:usage|requests?|access|credits?|storage|generations?|downloads?)\b/i,
-    /\bguaranteed\s+(?:results?|quality|accuracy|availability|uptime|success)\b/i,
-    /\balways\s+(?:works?|available|free|accurate|secure|private|succeeds?|produces?|delivers?|supports?)\b/i,
+    /\bnever fails\b/ig,
+    /\bunlimited\s+(?:usage|requests?|access|credits?|storage|generations?|downloads?)\b/ig,
+    /\bguaranteed\s+(?:results?|quality|accuracy|availability|uptime|success)\b/ig,
+    /\balways\s+(?:works?|available|free|accurate|secure|private|succeeds?|produces?|delivers?|supports?)\b/ig,
   ];
   for (const pattern of patterns) {
-    const match = text.match(pattern);
-    if (match) return match[0];
+    for (const match of text.matchAll(pattern)) {
+      const prefix = text.slice(Math.max(0, match.index - 120), match.index).split(/[.!?;:\n]/).pop();
+      const suffix = text.slice(match.index + match[0].length, match.index + match[0].length + 100);
+      // Recognize explicit absence, without exempting other claims in the sentence.
+      const negatedBefore = /\b(?:no|without)\s+(?:(?:a|an|any|documented|contractual|explicit|evidence|promise|of)\s+){0,4}$/i.test(prefix)
+        || /\b(?:not|never|cannot|can't|doesn't|don't|isn't|aren't|won't)\s+(?:(?:be|offer|offers|offered|provide|provides|provided|promise|promises|promised|include|includes|included|assume|expect|claim|claims|claimed|have|has|imply|implies|implied|currently|necessarily|explicitly)\s+){0,5}$/i.test(prefix);
+      const negatedAfter = /^\s+(?:is|are|was|were)\s+not\s+(?:included|offered|provided|promised|documented|available|assured|established)\b/i.test(suffix);
+      if (!negatedBefore && !negatedAfter) return match[0];
+    }
   }
   return '';
 }
@@ -548,6 +654,7 @@ Content rules:
 - Mention Nano Banana naturally only when relevant. Do not keyword-stuff.
 - Avoid generic AI phrases such as “game-changer”, “seamlessly”, “delve into”, and “unlock the power”.
 - Do not claim first-hand testing unless the source or site content explicitly supports it.
+- Do not assert universal reliability, unlimited usage, or guaranteed product outcomes. Describe only the commitments and limitations documented by the supplied evidence.
 - Write for a technically curious beginner and keep the advice actionable.`;
 }
 
@@ -589,6 +696,7 @@ Fail when a claim about model identity, capabilities, weights, license, pricing,
       });
     } catch (error) {
       lastError = error;
+      saveDiagnostic(item, 'source-audit', { model: verifierModel, article, error, sourceRecords });
       continue;
     }
     const issueCount = ['unsupportedClaims', 'contradictions', 'missingQualifications']
@@ -649,6 +757,7 @@ Allowed evidence:
 ${evidence}
 
 Return exactly {"title":"...","description":"...","content":"..."}.
+Avoid repeating an absolute-product phrase flagged in the findings, including in a negation or heading. Use neutral wording about documented commitments or unknown limitations instead.
 Treat every audit finding as a deletion or correction instruction. Do not retain a disputed claim merely because it is generally plausible, and do not replace it with a nearby unsupported detail. Remove unsupported or conflicting ranks, scores, prices, sample counts, open-weight labels, and model status claims. Do not mention prices, costs, free tiers, quotas, regional availability, environment auto-loading, request-size limits, rate-limit advice, retry policy, model compatibility, alternative API names, or extra allowed values unless an official supplied source explicitly states them. For API code, preserve only the exact documented API surface and field names. If exact executable syntax is absent from the evidence, omit the code rather than guessing. When relevant evidence documents provenance labels or breaking API changes, include the practical implication with a nearby citation. For benchmark topics, explain the interpretation method and snapshot drift without copying a current leaderboard table. Preserve every required source URL and at least two required internal links in relevant anchor tags. Keep the title phrase verbatim. Use valid article-body HTML only.`,
       },
     ];
@@ -666,6 +775,7 @@ Treat every audit finding as a deletion or correction instruction. Do not retain
       return repaired;
     } catch (error) {
       lastError = error;
+      saveDiagnostic(item, 'source-repair', { model: repairModel, article: repaired || currentArticle, error, sourceRecords });
       console.warn(`[source-repair] ${repairModel} revision failed: ${error.message}`);
       if (repaired) {
         currentArticle = repaired;
@@ -700,6 +810,7 @@ async function generateArticle(item, existingArticles, cluster) {
       });
     } catch (error) {
       lastError = error;
+      saveDiagnostic(item, 'generation', { model, error });
       console.warn(`Model ${model} failed to respond: ${error.message}`);
       continue;
     }
@@ -727,6 +838,7 @@ async function generateArticle(item, existingArticles, cluster) {
     } catch (error) {
       lastError = error;
       console.warn(`Model ${model} produced invalid content: ${error.message}`);
+      saveDiagnostic(item, 'validation', { model, article, error, sourceRecords });
       continue;
     }
     return article;
@@ -819,17 +931,19 @@ async function main() {
   const queue = readJson(QUEUE_PATH);
   const articles = readJson(ARTICLES_PATH);
   const seoResearch = readJson(SEO_RESEARCH_PATH);
-  const existingSlugs = new Set(articles.map(article => article.slug));
-  const item = queue.find(entry => entry.status === 'pending' && !existingSlugs.has(entry.slug));
-  if (!item) {
-    console.log('No pending blog keyword.');
+  let result;
+  try {
+    result = await generateFromQueue(queue, articles, seoResearch);
+  } finally {
+    // Keep scheduling progress even when no article can pass publication checks.
+    writeJson(QUEUE_PATH, queue);
+  }
+  if (!result) {
+    console.log('No eligible blog keyword. Pending retries may be cooling down.');
     return;
   }
+  const { item, article, structuralScore } = result;
   const date = new Date().toISOString().slice(0, 10);
-  const cluster = findSeoCluster(item, seoResearch);
-  const article = await generateArticle(item, articles, cluster);
-  const structuralScore = scoreArticle(article, item, cluster);
-  if (structuralScore < 75) throw new Error(`Structural score ${structuralScore}/100 is below the 75-point publishing threshold.`);
   const htmlPath = path.join(BLOG_DIR, `${item.slug}.html`);
   if (fs.existsSync(htmlPath)) throw new Error(`Article already exists: ${item.slug}.html`);
   const backups = {
@@ -844,6 +958,8 @@ async function main() {
     item.status = 'done';
     item.structuralScore = structuralScore;
     item.sourceAudit = 'automated-pass';
+    delete item.nextAttemptAt;
+    delete item.lastError;
     writeJson(ARTICLES_PATH, articles);
     writeJson(QUEUE_PATH, queue);
     fs.writeFileSync(BLOG_INDEX_PATH, updateBlogIndex(article, item, date), 'utf8');
@@ -885,4 +1001,8 @@ export {
   validateArticle,
   verifierModelsForAuthor,
   resolveMaxTokens,
+  generateFromQueue,
+  recordQueueFailure,
+  saveDiagnostic,
+  selectQueueItem,
 };
