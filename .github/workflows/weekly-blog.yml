@@ -57,7 +57,7 @@ jobs:
       - name: Save drafts and generation diagnostics
         if: always()
         continue-on-error: true
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: blog-diagnostics-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/nano-banana-blog-diagnostics

@@ -256,7 +256,7 @@ function resolveMaxTokens(provider, label, requested) {
 function classifyModelError(error) {
   const status = getErrorStatus(error);
   const message = error?.message || '';
-  if (error?.code === 'PROVIDER_UNCONFIGURED') return 'unconfigured';
+  if (['PROVIDER_UNCONFIGURED', 'PROVIDER_UNAVAILABLE'].includes(error?.code)) return 'unconfigured';
   if (status === 401 || status === 403) return 'auth';
   if (status === 404 || status === 410 || status === 400) return 'permanent';
   if (status === 429 || status >= 500 || /quota|RESOURCE_EXHAUSTED|high demand/i.test(message)) return 'transient';
@@ -708,7 +708,7 @@ Fail when a claim about model identity, capabilities, weights, license, pricing,
     }
     return;
   }
-  throw lastError || new Error('All verifier models were unavailable.');
+  throw lastError || Object.assign(new Error('All verifier models were unavailable.'), { code: 'PROVIDER_UNAVAILABLE' });
 }
 
 function prepareArticle(article, item, cluster, requiredTerm) {
@@ -789,7 +789,7 @@ Treat every audit finding as a deletion or correction instruction. Do not retain
       }
     }
   }
-  throw lastError || new Error('All configured models failed to repair the source audit findings.');
+  throw lastError || Object.assign(new Error('All configured models failed to repair the source audit findings.'), { code: 'PROVIDER_UNAVAILABLE' });
 }
 
 async function generateArticle(item, existingArticles, cluster) {
@@ -819,6 +819,7 @@ async function generateArticle(item, existingArticles, cluster) {
         prepareArticle(article, item, cluster, requiredTerm);
       } catch (error) {
         if (!isRepairableContentError(error)) throw error;
+        saveDiagnostic(item, 'preparation', { model, article, error, sourceRecords });
         article = await repairArticleAfterAudit(article, item, sourceRecords, cluster, requiredTerm, {
           verdict: 'fail',
           unsupportedClaims: [],
@@ -843,7 +844,7 @@ async function generateArticle(item, existingArticles, cluster) {
     }
     return article;
   }
-  throw lastError || new Error('All configured models failed to produce a valid article.');
+  throw lastError || Object.assign(new Error('All configured models failed to produce a valid article.'), { code: 'PROVIDER_UNAVAILABLE' });
 }
 
 function buildArticleHtml(article, item, date) {

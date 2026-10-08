@@ -48,6 +48,7 @@ assert.equal(classifyModelError({ status: 410, message: 'Gone' }), 'permanent');
 assert.equal(classifyModelError({ status: 429, message: 'Rate limited' }), 'transient');
 assert.equal(classifyModelError({ status: 401, message: 'Unauthorized' }), 'auth');
 assert.equal(classifyModelError({ code: 'PROVIDER_UNCONFIGURED' }), 'unconfigured');
+assert.equal(classifyModelError({ code: 'PROVIDER_UNAVAILABLE' }), 'unconfigured');
 assert.equal(findAbsoluteProductClaim('<p>Always validate the response before saving it.</p>'), '');
 assert.equal(findAbsoluteProductClaim('<p>The API always works in every region.</p>').toLowerCase(), 'always works');
 assert.equal(findAbsoluteProductClaim('<p>Usage is not guaranteed and quotas may change.</p>'), '');
@@ -196,6 +197,10 @@ try {
     now, diagnosticsDir, generate: async () => { throw Object.assign(new Error('Unauthorized'), { status: 401 }); },
   }), /Unauthorized/);
   assert.ok(outageQueue.every(topic => !topic.failureCount && topic.status === 'pending'));
+  await assert.rejects(generateFromQueue(outageQueue, [], research, {
+    now, diagnosticsDir, generate: async () => { throw Object.assign(new Error('All verifier models were unavailable.'), { code: 'PROVIDER_UNAVAILABLE' }); },
+  }), /unavailable/);
+  assert.ok(outageQueue.every(topic => !topic.failureCount));
   assert.equal(await generateFromQueue([failedTopic], [], research, { now, diagnosticsDir }), null);
 } finally {
   fs.rmSync(diagnosticsDir, { recursive: true, force: true });
