@@ -285,5 +285,20 @@
       "https://www.runpod.io/gpu-instance/pricing",
       "https://www.nano-banana.live/guides/cloud-deployment.html"
     ]
+  },
+  {
+    "slug": "runpod-versus-vastai-image-generation",
+    "publishDate": "2026-10-08",
+    "title": "RunPod vs Vast.ai: Choosing a cloud GPU for AI image generation",
+    "description": "Compare RunPod and Vast.ai for AI image generation: pricing models, setup, reliability, and how to stop cloud GPU charges when you are done.",
+    "category": "Cloud GPU",
+    "emoji": "🔄",
+    "keyword": "RunPod versus Vast.ai for image generation",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://www.runpod.io/gpu-instance/pricing",
+      "https://vast.ai/pricing"
+    ]
   }
 ]

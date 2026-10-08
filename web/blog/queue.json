@@ -242,11 +242,14 @@
     "category": "Cloud GPU",
     "emoji": "🔄",
     "depth": "standard",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://www.runpod.io/gpu-instance/pricing",
       "https://vast.ai/pricing"
-    ]
+    ],
+    "lastAttemptAt": "2026-10-08T05:16:46.087Z",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "rent a GPU for one AI image project",
