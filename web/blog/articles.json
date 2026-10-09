@@ -300,5 +300,21 @@
       "https://www.runpod.io/gpu-instance/pricing",
       "https://vast.ai/pricing"
     ]
+  },
+  {
+    "slug": "rent-gpu-for-one-ai-image-project",
+    "publishDate": "2026-10-09",
+    "title": "Rent a Cloud GPU for AI Image Generation: Setup and Reliability",
+    "description": "Plan a cloud GPU for AI image generation for one project. A practical RunPod vs Vast.ai walkthrough covering setup, storage billing, and reliability checks.",
+    "category": "Cloud GPU",
+    "emoji": "💳",
+    "keyword": "rent a GPU for one AI image project",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://docs.runpod.io/pods/manage-pods",
+      "https://www.nano-banana.live/blog/run-without-gpu.html",
+      "https://www.nano-banana.live/guides/cloud-deployment.html"
+    ]
   }
 ]

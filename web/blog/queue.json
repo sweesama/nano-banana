@@ -257,12 +257,15 @@
     "category": "Cloud GPU",
     "emoji": "💳",
     "depth": "brief",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://docs.runpod.io/pods/manage-pods",
       "https://www.nano-banana.live/blog/run-without-gpu.html",
       "https://www.nano-banana.live/guides/cloud-deployment.html"
-    ]
+    ],
+    "lastAttemptAt": "2026-10-09T06:05:20.036Z",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "cloud GPU security checklist for AI images",
