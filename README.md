@@ -34,14 +34,25 @@ This repository is not an official Google, Gemini, Qwen, Tencent, or HiDream pro
 - Drafts, audit findings, and malformed model responses are retained for 14 days in the run's `blog-diagnostics` artifact. Queue progress is committed even if generation fails, while the run still reports failure.
 - Manual `dry_run` runs generate and validate without publishing. Publishing is restricted to `main`; local diagnostic files are ignored by Git.
 - To retry a reviewed topic, set its status to `pending` and remove `failureCount`, `nextAttemptAt`, and `lastError` from `web/blog/queue.json`.
-- `sync-benchmarks.yml` runs weekly, validates the static site, and commits only changed benchmark data.
+- Blog publication updates the blog index date in the sitemap and the published-article directories in both AI summary files. Failed writes restore these files with the rest of the publication.
+- Publication also updates task-based article directories on the homepage, quickstart, cloud guide, benchmarks, and FAQ, together with modification dates for changed hubs. These pages participate in the same rollback.
+- Shared SEO templates preserve article dates and existing schema, add visible breadcrumbs and a publisher link to About, and provide PNG social previews. They do not invent tests, authors, or article-specific images.
+- Titles are rewritten by the editor when too long or incomplete, never shortened by cutting off words.
+- `sync-benchmarks.yml` runs weekly, validates the static site, and commits the benchmark snapshot together with its sitemap modification date.
 - Both publishers share one concurrency group, rebase on the latest `main`, revalidate, and only then push.
 - Run the local checks with:
 
 ```bash
 node scripts/validate-site.js
+node scripts/test-content-metadata.cjs
+node scripts/test-page-seo.cjs
+npm --prefix web/blog/scripts test
 python -m py_compile code/nano_api.py
 ```
+
+## Metadata maintenance
+
+After editing page titles, descriptions, or article records, run `node scripts/sync-page-seo.cjs` to refresh derived metadata and task directories. Use `--date YYYY-MM-DD --modified path/to/page.html` only for real content changes; do not refresh every sitemap date for metadata-only edits.
 
 ## Primary references
 

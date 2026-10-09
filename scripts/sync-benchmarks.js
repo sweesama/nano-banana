@@ -1,15 +1,11 @@
 const fs = require('fs');
 const path = require('path');
+const { SITE_URL, updateSitemapDates } = require('./content-metadata.cjs');
 
 const API_KEY = process.env.AA_API_KEY;
 const ROOT = path.resolve(__dirname, '..');
 const HTML_PATH = path.join(ROOT, 'web', 'benchmarks', 'index.html');
 const API_BASE = 'https://artificialanalysis.ai/api/v2/media';
-
-if (!API_KEY) {
-  console.error('Missing AA_API_KEY. Create an Artificial Analysis API key and expose it only as a server-side secret.');
-  process.exit(1);
-}
 
 function escapeHtml(value) {
   return String(value ?? '—')
@@ -161,13 +157,8 @@ async function fetchLeaderboard(endpoint) {
   throw lastError || new Error(`${endpoint} returned no usable response`);
 }
 
-async function main() {
-  const [textToImage, imageEditing] = await Promise.all([
-    fetchLeaderboard('text-to-image'),
-    fetchLeaderboard('image-editing'),
-  ]);
-  const refreshed = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }).format(new Date());
-  let html = fs.readFileSync(HTML_PATH, 'utf8');
+function refreshBenchmarkHtml(html, textToImage, imageEditing, now = new Date()) {
+  const refreshed = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }).format(now);
   html = replaceTbody(html, 'text-to-image', textRows(textToImage));
   html = replaceTbody(html, 'image-editing', editingRows(imageEditing));
   for (const field of ['samples', 'release_date', 'price_per_1k_images']) {
@@ -181,12 +172,43 @@ async function main() {
   html = html.replace(/Data refreshed: <strong>.*?<\/strong>/, `Data refreshed: <strong>${refreshed}</strong>`);
   html = html.replace(/<th style="text-align:center;">Released<\/th>\s*<th style="text-align:right;">API Pricing<\/th>/, '<th style="text-align:center;">Released</th>\n                <th style="text-align:right;">API Pricing</th>');
   html = html.replace(/Updated April \d{1,2}, \d{4}/, `Updated ${refreshed}`);
-  fs.writeFileSync(HTML_PATH, html, 'utf8');
-  console.log(`Updated ${textToImage.length} text-to-image and ${imageEditing.length} image-editing models.`);
-  console.log(`Snapshot date: ${refreshed}`);
+  return html;
 }
 
-main().catch((error) => {
-  console.error(error.message);
-  process.exit(1);
-});
+function writeBenchmarkSnapshot(html, date, webDir = path.join(ROOT, 'web'), write = fs.writeFileSync) {
+  const htmlPath = path.join(webDir, 'benchmarks', 'index.html');
+  const sitemapPath = path.join(webDir, 'sitemap.xml');
+  const originalHtml = fs.readFileSync(htmlPath, 'utf8');
+  const originalSitemap = fs.readFileSync(sitemapPath, 'utf8');
+  const sitemap = updateSitemapDates(originalSitemap, { [SITE_URL + '/benchmarks/']: date });
+  try {
+    write(htmlPath, html, 'utf8');
+    write(sitemapPath, sitemap, 'utf8');
+  } catch (error) {
+    fs.writeFileSync(htmlPath, originalHtml, 'utf8');
+    fs.writeFileSync(sitemapPath, originalSitemap, 'utf8');
+    throw error;
+  }
+}
+
+async function main() {
+  if (!API_KEY) throw new Error('Missing AA_API_KEY. Create an Artificial Analysis API key and expose it only as a server-side secret.');
+  const [textToImage, imageEditing] = await Promise.all([
+    fetchLeaderboard('text-to-image'),
+    fetchLeaderboard('image-editing'),
+  ]);
+  const now = new Date();
+  const html = refreshBenchmarkHtml(fs.readFileSync(HTML_PATH, 'utf8'), textToImage, imageEditing, now);
+  writeBenchmarkSnapshot(html, now.toISOString().slice(0, 10));
+  console.log('Updated ' + textToImage.length + ' text-to-image and ' + imageEditing.length + ' image-editing models.');
+  console.log('Snapshot date: ' + now.toISOString().slice(0, 10));
+}
+
+if (require.main === module) {
+  main().catch(error => {
+    console.error(error.message);
+    process.exit(1);
+  });
+}
+
+module.exports = { refreshBenchmarkHtml, writeBenchmarkSnapshot };

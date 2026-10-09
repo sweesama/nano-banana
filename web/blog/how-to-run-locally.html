@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>How to Run Nano Banana Locally | Integration Guide | Nano Banana</title>
     <meta name="description"
-        content="Step-by-step guide to running the Nano Banana Python client locally. Understand why the Pro model is cloud-based and how to control it from your terminal." />
+        content="Set up the Nano Banana Python API client with an isolated environment and API key. Understand cloud inference, offline alternatives, and common setup errors." />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://www.nano-banana.live/blog/how-to-run-locally.html" />
     <link rel="stylesheet" href="../styles.css" />
@@ -18,6 +18,22 @@
             background-image: radial-gradient(circle at 50% 0%, rgba(192, 235, 117, 0.05) 0%, transparent 50%);
         }
     </style>
+<!-- PAGE-METADATA:START -->
+<meta property="og:title" content="How to Run Nano Banana Locally | Integration Guide | Nano Banana">
+<meta property="og:description" content="Set up the Nano Banana Python API client with an isolated environment and API key. Understand cloud inference, offline alternatives, and common setup errors.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.nano-banana.live/blog/how-to-run-locally.html">
+<meta property="og:image" content="https://www.nano-banana.live/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nano Banana: image editing, benchmarks and quickstart">
+<meta property="og:site_name" content="Nano Banana">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Run Nano Banana Locally | Integration Guide | Nano Banana">
+<meta name="twitter:description" content="Set up the Nano Banana Python API client with an isolated environment and API key. Understand cloud inference, offline alternatives, and common setup errors.">
+<meta name="twitter:image" content="https://www.nano-banana.live/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"Article","name":"Can Nano Banana 2 Run Locally? The Client Explained","description":"Set up the Nano Banana Python API client with an isolated environment and API key. Understand cloud inference, offline alternatives, and common setup errors.","url":"https://www.nano-banana.live/blog/how-to-run-locally.html","headline":"Can Nano Banana 2 Run Locally? The Client Explained","datePublished":"2026-01-20","dateModified":"2026-10-09","publisher":{"@id":"https://www.nano-banana.live/#publisher"},"author":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/blog/how-to-run-locally.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.nano-banana.live/blog.html"},{"@type":"ListItem","position":3,"name":"Can Nano Banana 2 Run Locally? The Client Explained","item":"https://www.nano-banana.live/blog/how-to-run-locally.html"}]}]}</script>
+<!-- PAGE-METADATA:END -->
 </head>
 
 <body>
@@ -32,24 +48,20 @@
                 <a href="../blog.html" class="active">Blog</a>
             </div>
         </nav>
+<!-- BREADCRUMBS:START -->
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="../blog.html">Blog</a></li><li><span aria-current="page">Can Nano Banana 2 Run Locally? The Client Explained</span></li></ol></nav>
+<!-- BREADCRUMBS:END -->
 
         <article class="article-container">
             <a href="../blog.html" class="article-back">← Back to Blog</a>
             <header class="article-header">
-                <div class="meta" style="justify-content: center; display: flex;">Integration • Jan 20, 2026</div>
+                <div class="meta" style="justify-content: center; display: flex;">Integration • Jan 20, 2026 • Updated Oct 9, 2026</div>
                 <h1>Can Nano Banana 2 Run Locally? The Client Explained</h1>
-                <p class="lead" style="margin: 20px auto;">Everything you need to know about setting up the local Python
-                    client.</p>
-                <div class="article-image bg-gradient-1"
-                    style="height: 400px; margin-top: 40px; display: flex; align-items: center; justify-content: center;">
-                    <div style="text-align: center;">
-                        <div style="font-size: 4em; margin-bottom: 0px;">💻</div>
-                        <div style="font-family: monospace; color: rgba(255,255,255,0.7);">nano_api.py</div>
-                    </div>
-                </div>
+                <p class="lead" style="margin: 20px auto;"><strong>No: Nano Banana 2 does not perform inference on your PC.</strong> You can install its Python API client locally without a local GPU, but generation runs in Google's cloud and requires a connection. A different open-weight model is needed for offline inference.</p>
             </header>
 
             <div class="article-content">
+                <p class="source-note">Model selection checked <time datetime="2026-10-09">October 9, 2026</time>: Google recommends <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">Nano Banana 2.1 for new projects</a>. The linked Nano Banana 2 tutorial remains pinned to <code>gemini-3.1-flash-image</code>. This page explains client setup, not a conversion of Google's model into local weights.</p>
                 <div
                     style="background: rgba(255, 0, 0, 0.1); border-left: 4px solid #f87171; padding: 20px; margin-bottom: 30px; border-radius: 0 8px 8px 0;">
                     <h3 style="margin-top: 0; color: #f87171;">The "Closed Source" Reality</h3>
@@ -68,9 +80,7 @@
                     <li>Click "Get API Key".</li>
                     <li>Copy it to a safe place.</li>
                 </ol>
-                <p>As checked on August 18, 2026, Google's <a href="https://ai.google.dev/gemini-api/docs/pricing"
-                    target="_blank" rel="noopener">live pricing page</a> lists no standard free tier for
-                    <code>gemini-3.1-flash-image</code>. Check that page again before relying on any cost estimate.</p>
+                <p>Before sending images, check <a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">current pricing</a> for the exact model and account. This setup guide does not promise a free tier or a fixed generation cost.</p>
 
                 <h2>Step 2: Prepare Your Environment</h2>
                 <p>You don't need a GPU, but you do need Python.</p>
@@ -88,11 +98,31 @@ source venv/bin/activate</code></pre>
 
                 <h2>Step 3: Install the Client SDK</h2>
                 <p>We use the official Google GenAI SDK to communicate with the Nano Banana 2 model.</p>
-                <pre><code class="language-bash">pip install -U google-genai</code></pre>
+                <pre><code class="language-bash">python -m pip install --upgrade google-genai
+python -c "from google import genai; print('SDK import OK')"</code></pre>
+                <p>The import check does not call Google or test model access. If it fails, confirm that the activated environment and <code>python -m pip</code> refer to the same Python installation.</p>
 
-                <h2>Step 4: Use the Current Image-Editing Example</h2>
+                <h2>Step 4: Configure the API Key</h2>
+                <p>Google's <a href="https://ai.google.dev/gemini-api/docs/api-key" target="_blank" rel="noopener">API-key documentation</a> supports <code>GEMINI_API_KEY</code> or <code>GOOGLE_API_KEY</code>; when both exist, <code>GOOGLE_API_KEY</code> takes precedence. Keep keys out of public repositories and browser-side code.</p>
+                <p>For the current PowerShell session:</p>
+                <pre><code class="language-powershell">$env:GEMINI_API_KEY = "YOUR_API_KEY"</code></pre>
+                <p>For the current Bash or Zsh session:</p>
+                <pre><code class="language-bash">export GEMINI_API_KEY="YOUR_API_KEY"</code></pre>
+                <p>Check that a key is present without printing its value:</p>
+                <pre><code class="language-bash">python -c "import os; print(bool(os.getenv('GOOGLE_API_KEY') or os.getenv('GEMINI_API_KEY')))"</code></pre>
+                <p>For persistent Windows configuration and terminal refresh behavior, see <a href="gemini-image-api-environment-variables-windows.html">the Windows environment-variable guide</a>.</p>
+
+                <h2>Step 5: Send One Image with a Versioned Example</h2>
                 <p>The API surface changes over time, so use the maintained <a href="nano-banana-api-image-editing-python.html">Nano Banana 2 Python tutorial</a>. It follows Google's current <code>gemini-3.1-flash-image</code> Interactions API, keeps the key in an environment variable, uploads the input with its MIME type, and decodes the returned image.</p>
                 <p>For the underlying source of truth, compare the example against <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">Google's image-generation documentation</a>.</p>
+                <p>Start with one input and save the model ID, SDK version, prompt, output and any error. Then continue with <a href="gemini-image-editing-api-input-image-workflow.html">the image input workflow</a> or <a href="gemini-image-api-aspect-ratio-resolution.html">aspect-ratio and resolution settings</a>.</p>
+
+                <h2>If Setup Fails</h2>
+                <ul>
+                    <li><strong>Import or interpreter errors:</strong> revisit the virtual environment and the <a href="troubleshooting-install.html">installation troubleshooting guide</a>.</li>
+                    <li><strong>Authentication, quota or model-access errors:</strong> use the exact error response and the <a href="gemini-image-api-403-quota-model-errors.html">403/429 troubleshooting guide</a>; successful SDK installation does not establish account access.</li>
+                    <li><strong>Data-handling questions:</strong> review <a href="gemini-image-api-privacy-cloud-processing.html">cloud processing and API privacy</a> before uploading private images.</li>
+                </ul>
 
                 <h2>What About ChatGPT Image 2?</h2>
                 <p><strong>Same boundary:</strong> OpenAI documents <a
@@ -102,11 +132,8 @@ source venv/bin/activate</code></pre>
                 <p>A tutorial can run an API client on your computer, but that does not make the underlying model local.</p>
 
                 <h2>Want True Offline?</h2>
-                <p>If you strictly need to run without internet (e.g., for air-gapped security), you cannot use Nano
-                    Banana 2 or ChatGPT Image 2. Instead, check out <strong>HunyuanImage 3.0</strong>, <strong>Qwen-Image-Edit-2511</strong>, and
-                    <strong>Z-Image</strong> alternatives in our <a href="../guides/quickstart.html">Quickstart
-                        Guide</a>. These open models can run fully offline, but usually require a stronger GPU and more
-                    setup than the cloud client.</p>
+                <p>Choose a separate model from the <a href="../guides/quickstart.html#installation-guides">offline-model route chooser</a>. Begin with <a href="qwen-image-local-image-editing-guide.html">Qwen image editing</a>, <a href="hunyuanimage-local-deployment-requirements.html">HunyuanImage hardware requirements</a>, or <a href="../guides/z-image.html">Z-Image generation</a>, depending on the task.</p>
+                <p>Prepare the checkpoint and dependencies before disconnecting, check the exact license, and validate the pipeline without network access. Different precision, resolution and inputs can change memory use; consult <a href="local-ai-image-model-vram-requirements.html">the VRAM planning guide</a> rather than assuming one GPU minimum fits every model.</p>
             </div>
         </article>
 

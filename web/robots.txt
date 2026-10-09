@@ -8,7 +8,7 @@ Sitemap: https://www.nano-banana.live/sitemap.xml
 
 # AI & search crawlers (explicit groups; '*' above already allows sitewide except /admin/ & /private/)
 # LLM content summaries
-LLM-Content: https://www.nano-banana.live/llms.txt
+# Summary: https://www.nano-banana.live/llms.txt
 
 # OpenAI
 User-agent: GPTBot

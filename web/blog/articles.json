@@ -3,7 +3,8 @@
     "slug": "how-to-run-locally",
     "publishDate": "2026-01-20",
     "title": "Can Nano Banana 2 Run Locally? The Client Explained",
-    "description": "Understand the difference between the Nano Banana cloud client and true offline image models.",
+    "description": "Set up the Nano Banana Python API client with an isolated environment and API key. Understand cloud inference, offline alternatives, and common setup errors.",
+    "modifiedDate": "2026-10-09",
     "category": "Integration",
     "emoji": "💻"
   },
@@ -195,7 +196,7 @@
   {
     "slug": "hunyuanimage-versus-qwen-image-local-editing",
     "publishDate": "2026-09-14",
-    "title": "HunyuanImage vs Qwen Image: Which local AI image model should you",
+    "title": "HunyuanImage vs Qwen Image: choosing a local AI image model",
     "description": "Compare HunyuanImage 3.0 and Qwen-Image-Edit-2511 for local editing. Learn VRAM needs, installation steps, and which open-weights model fits your GPU.",
     "category": "Local Models",
     "emoji": "⚖️",
@@ -205,7 +206,8 @@
     "sourceUrls": [
       "https://github.com/Tencent-Hunyuan/HunyuanImage-3.0",
       "https://huggingface.co/Qwen/Qwen-Image-Edit-2511"
-    ]
+    ],
+    "modifiedDate": "2026-10-09"
   },
   {
     "slug": "local-ai-image-model-vram-requirements",
@@ -274,7 +276,7 @@
   {
     "slug": "runpod-gpu-choice-ai-image-models",
     "publishDate": "2026-09-28",
-    "title": "Choosing a cloud GPU for AI image generation: RunPod GPU pricing and",
+    "title": "RunPod GPU pricing: choosing a cloud GPU for AI image generation",
     "description": "A practical guide to picking a RunPod GPU for open-weight image models, comparing per-hour pricing, setup steps, and reliability against Vast.ai.",
     "category": "Cloud GPU",
     "emoji": "☁️",
@@ -284,7 +286,8 @@
     "sourceUrls": [
       "https://www.runpod.io/gpu-instance/pricing",
       "https://www.nano-banana.live/guides/cloud-deployment.html"
-    ]
+    ],
+    "modifiedDate": "2026-10-09"
   },
   {
     "slug": "runpod-versus-vastai-image-generation",

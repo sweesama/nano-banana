@@ -1,0 +1,8 @@
+{
+  "name": "nano-banana-site-tools",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "node test-content-metadata.cjs && node test-page-seo.cjs"
+  }
+}

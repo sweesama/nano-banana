@@ -36,6 +36,11 @@ jobs:
       - name: Validate the current site
         run: node scripts/validate-site.js
 
+      - name: Test content metadata
+        run: |
+          node scripts/test-content-metadata.cjs
+          node scripts/test-page-seo.cjs
+
       - name: Install generator dependencies
         working-directory: web/blog/scripts
         run: npm ci --no-audit --no-fund
@@ -65,7 +70,9 @@ jobs:
           if-no-files-found: ignore
 
       - name: Validate the generated site
-        run: node scripts/validate-site.js
+        run: |
+          node scripts/validate-site.js
+          node scripts/test-page-seo.cjs
 
       - name: Commit, rebase, revalidate, and publish
         if: github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.dry_run != true)
@@ -76,7 +83,7 @@ jobs:
           set -euo pipefail
           git config user.name "Nano Banana Blog Bot"
           git config user.email "bot@nano-banana.live"
-          git add web/blog.html web/blog web/sitemap.xml
+          git add web/blog.html web/blog web/sitemap.xml web/llms.txt web/llms-full.txt web/index.html web/guides/quickstart.html web/guides/cloud-deployment.html web/benchmarks/index.html web/faq.html
           if git diff --staged --quiet; then
             echo "No article changes detected."
             exit 0
@@ -88,6 +95,7 @@ jobs:
           fi
           git pull --rebase origin main
           node scripts/validate-site.js
+          node scripts/test-page-seo.cjs
           git push origin HEAD:main
 
       - name: Confirm dry-run validation

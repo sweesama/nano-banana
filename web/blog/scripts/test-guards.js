@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import pageSeo from '../../../scripts/page-seo.cjs';
 
 import {
   MODELS,
@@ -15,6 +16,8 @@ import {
   hasDanglingDescriptionEnding,
   normalizeDescription,
   normalizeTitle,
+  buildArticleHtml,
+  hasDanglingTitleEnding,
   parseModelList,
   parseModelRoute,
   sanitizeHtml,
@@ -100,8 +103,14 @@ const normalizedTitle = normalizeTitle(
   'A very long introduction before the required phrase AI image benchmark and several unnecessary trailing promises for every reader',
   'AI image benchmark',
 );
-assert.ok(normalizedTitle.length <= 70);
+assert.equal(normalizedTitle, 'A very long introduction before the required phrase AI image benchmark and several unnecessary trailing promises for every reader');
 assert.match(normalizedTitle.toLowerCase(), /ai image benchmark/);
+assert.equal(normalizeTitle('  Gemini image API:\n  deployment guide  '), 'Gemini image API: deployment guide');
+assert.equal(hasDanglingTitleEnding('RunPod GPU pricing and'), true);
+assert.equal(hasDanglingTitleEnding('Which local AI image model should you'), true);
+assert.equal(hasDanglingTitleEnding('Which local AI image model should you choose?'), false);
+assert.equal(isRepairableContentError(new Error('Title is too long.')), true);
+assert.equal(isRepairableContentError(new Error('Title ends with an incomplete phrase.')), true);
 
 const sourceUrl = 'https://ai.google.dev/gemini-api/docs/image-generation';
 const internalOne = 'https://www.nano-banana.live/faq.html';
@@ -130,6 +139,16 @@ const baseArticle = {
 };
 
 assert.doesNotThrow(() => validateArticle(baseArticle, item, cluster));
+const generatedHtml = buildArticleHtml(baseArticle, { ...item, slug: 'example-api-client', category: 'API Tutorial' }, '2026-10-09');
+assert.match(generatedHtml, /property="og:type" content="article"/);
+assert.match(generatedHtml, /og\.png/);
+assert.match(generatedHtml, /aria-label="Breadcrumb"/);
+const generatedGraph = JSON.parse(generatedHtml.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])['@graph'];
+assert.equal(pageSeo.applyPageSeo(generatedHtml, 'blog/example-api-client.html', [{ slug: 'example-api-client', publishDate: '2026-10-09' }]), generatedHtml);
+assert.equal(generatedGraph.find(node => node['@type'] === 'Article').headline, baseArticle.title);
+assert.equal(generatedGraph.find(node => node['@type'] === 'BreadcrumbList').itemListElement.length, 3);
+assert.throws(() => validateArticle({ ...baseArticle, title: 'Gemini image API: pricing and' }, item, cluster), /incomplete phrase/);
+assert.throws(() => validateArticle({ ...baseArticle, title: normalizeTitle(normalizedTitle) }, item, cluster), /Title is too long/);
 assert.throws(
   () => validateArticle({ ...baseArticle, content: `${baseArticle.content}<a href="#">broken</a>` }, item, cluster),
   /Placeholder link/,
@@ -203,7 +222,10 @@ try {
   assert.ok(outageQueue.every(topic => !topic.failureCount));
   assert.equal(await generateFromQueue([failedTopic], [], research, { now, diagnosticsDir }), null);
 } finally {
-  fs.rmSync(diagnosticsDir, { recursive: true, force: true });
+  const target = fs.realpathSync(diagnosticsDir);
+  assert.equal(path.dirname(target), fs.realpathSync(os.tmpdir()));
+  assert.ok(path.basename(target).startsWith('nano-banana-blog-tests-'));
+  fs.rmSync(target, { recursive: true, force: true });
 }
 
 console.log('Publishing guard and queue recovery tests passed.');

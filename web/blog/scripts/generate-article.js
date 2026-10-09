@@ -3,6 +3,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
+import contentMetadata from '../../../scripts/content-metadata.cjs';
+import pageSeo from '../../../scripts/page-seo.cjs';
+
+const { SITE_URL, updateSitemapDates, updateArticleSummary } = contentMetadata;
+const { HUBS, applyPageSeo, buildPageMetadata, breadcrumbsFor, renderBreadcrumbs, updateTopicHub } = pageSeo;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,6 +19,7 @@ const ARTICLES_PATH = path.join(BLOG_DIR, 'articles.json');
 const SEO_RESEARCH_PATH = path.join(BLOG_DIR, 'seo-research.json');
 const BLOG_INDEX_PATH = path.join(WEB_DIR, 'blog.html');
 const SITEMAP_PATH = path.join(WEB_DIR, 'sitemap.xml');
+const SUMMARY_PATHS = ['llms.txt', 'llms-full.txt'].map(file => path.join(WEB_DIR, file));
 const DIAGNOSTICS_DIR = process.env.BLOG_DIAGNOSTICS_DIR || path.join(__dirname, '.diagnostics');
 const QUEUE_RETRY_DELAY_MS = 24 * 60 * 60 * 1000;
 const MAX_QUEUE_FAILURES = 3;
@@ -292,20 +298,13 @@ function normalizeDescription(value, maxLength = 170) {
   return finishDescription(candidate.slice(0, cutAt > 0 ? cutAt : maxLength - 1));
 }
 
-function normalizeTitle(value, requiredTerm, maxLength = 70) {
-  const compact = String(value || '').replace(/\s+/g, ' ').trim();
-  if (compact.length <= maxLength) return compact;
-  const truncate = text => {
-    const candidate = text.slice(0, maxLength + 1);
-    const wordBoundary = candidate.lastIndexOf(' ');
-    return candidate.slice(0, wordBoundary >= 20 ? wordBoundary : maxLength).replace(/[\s:;,.\-]+$/g, '');
-  };
-  const shortened = truncate(compact);
-  if (!requiredTerm || shortened.toLowerCase().includes(requiredTerm.toLowerCase())) return shortened;
+function normalizeTitle(value) {
+  // Length is repaired by the editor; slicing words can destroy the title's meaning.
+  return String(value || '').replace(/\s+/g, ' ').trim();
+}
 
-  const termPattern = new RegExp(requiredTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'ig');
-  const remainder = compact.replace(termPattern, '').replace(/^[\s:;,.\-]+|[\s:;,.\-]+$/g, '');
-  return truncate(`${requiredTerm}: ${remainder}`);
+function hasDanglingTitleEnding(value) {
+  return /\b(?:and|or|versus|vs\.?|should you)$/i.test(String(value || '').trim().replace(/[:,;\-]+$/g, '').trim());
 }
 
 async function requestJsonModel(model, messages, { label, temperature, maxTokens }) {
@@ -486,6 +485,7 @@ function validateArticle(article, item, cluster) {
     if (typeof article[field] !== 'string' || !article[field].trim()) throw new Error(`Missing article field: ${field}`);
   }
   if (article.title.length > 80) throw new Error('Title is too long.');
+  if (hasDanglingTitleEnding(article.title)) throw new Error('Title ends with an incomplete phrase.');
   if (article.description.length > 180) throw new Error('Description is too long.');
   if (hasDanglingDescriptionEnding(article.description)) throw new Error('Description ends with an incomplete phrase.');
   if (/<(script|iframe|object|embed|form)\b/i.test(article.content)) throw new Error('Unsafe HTML detected.');
@@ -509,7 +509,7 @@ function validateArticle(article, item, cluster) {
 }
 
 function isRepairableContentError(error) {
-  return /researched primary keyword|researched internal links|cite every required source|absolute product claim|free-tier claim|first-party experience|testimonial claim/i.test(error?.message || '');
+  return /title is too long|title ends with an incomplete phrase|researched primary keyword|researched internal links|cite every required source|absolute product claim|free-tier claim|first-party experience|testimonial claim/i.test(error?.message || '');
 }
 
 function extractRelevantSourceText(value, keyword = '', maxChars = 12000) {
@@ -635,6 +635,7 @@ Content rules:
 - Use h2, h3, p, ul, ol, li, pre, code, strong, em, blockquote, and a tags only.
 - Include at least two h2 headings, one practical list, and concrete steps or comparisons.
 - The title MUST contain the required title phrase above, word-for-word (case-insensitive), and use related terms only where they help the reader.
+- Write a complete, concise title of 35-70 characters. Do not leave an unfinished question or cut off a phrase to meet the length.
 - Answer the search intent directly in the opening paragraph; never stuff keywords or write a generic introduction.
 - Include at least two links from the preferred internal-link list with descriptive anchor text.
 - Cite claims by linking to source URLs near the relevant discussion. Do not add a Sources section — the publishing script generates one automatically.
@@ -717,7 +718,7 @@ function prepareArticle(article, item, cluster, requiredTerm) {
   article.title = normalizeTitle(article.title, requiredTerm);
   article.description = normalizeDescription(article.description);
   if (article.title !== originalTitle) {
-    console.log(`Shortened title from ${String(originalTitle || '').length} to ${article.title.length} characters.`);
+    console.log(`Normalized title whitespace from ${String(originalTitle || '').length} to ${article.title.length} characters.`);
   }
   if (article.description !== originalDescription) {
     console.log(`Shortened meta description from ${String(originalDescription || '').length} to ${article.description.length} characters.`);
@@ -757,6 +758,7 @@ Allowed evidence:
 ${evidence}
 
 Return exactly {"title":"...","description":"...","content":"..."}.
+Write a complete title of 35-70 characters; rewrite it concisely instead of truncating words.
 Avoid repeating an absolute-product phrase flagged in the findings, including in a negation or heading. Use neutral wording about documented commitments or unknown limitations instead.
 Treat every audit finding as a deletion or correction instruction. Do not retain a disputed claim merely because it is generally plausible, and do not replace it with a nearby unsupported detail. Remove unsupported or conflicting ranks, scores, prices, sample counts, open-weight labels, and model status claims. Do not mention prices, costs, free tiers, quotas, regional availability, environment auto-loading, request-size limits, rate-limit advice, retry policy, model compatibility, alternative API names, or extra allowed values unless an official supplied source explicitly states them. For API code, preserve only the exact documented API surface and field names. If exact executable syntax is absent from the evidence, omit the code rather than guessing. When relevant evidence documents provenance labels or breaking API changes, include the practical implication with a nearby citation. For benchmark topics, explain the interpretation method and snapshot drift without copying a current leaderboard table. Preserve every required source URL and at least two required internal links in relevant anchor tags. Keep the title phrase verbatim. Use valid article-body HTML only.`,
       },
@@ -848,6 +850,8 @@ async function generateArticle(item, existingArticles, cluster) {
 }
 
 function buildArticleHtml(article, item, date) {
+  const canonical = SITE_URL + '/blog/' + item.slug + '.html';
+  const breadcrumbs = breadcrumbsFor(canonical, article.title);
   const sources = item.sourceUrls.map(url => `<li><a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(url)}</a></li>`).join('');
   const schema = JSON.stringify({
     '@context': 'https://schema.org',
@@ -861,6 +865,7 @@ function buildArticleHtml(article, item, date) {
     mainEntityOfPage: `https://www.nano-banana.live/blog/${item.slug}.html`,
     isPartOf: { '@type': 'Blog', name: 'Nano Banana Blog', url: 'https://www.nano-banana.live/blog.html' },
   }).replace(/</g, '\\u003c');
+  const metadata = buildPageMetadata({ title: article.title + ' | Nano Banana', description: article.description, canonical, schemas: [JSON.parse(schema)], breadcrumbs });
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -870,7 +875,7 @@ function buildArticleHtml(article, item, date) {
   <meta name="description" content="${escapeHtml(article.description)}">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.nano-banana.live/blog/${escapeHtml(item.slug)}.html">
-  <script type="application/ld+json">${schema}</script>
+  ${metadata}
   <link rel="stylesheet" href="../styles.css">
   <script src="../analytics.js" defer></script>
 </head>
@@ -886,6 +891,7 @@ function buildArticleHtml(article, item, date) {
         <a href="../blog.html" class="active">Blog</a>
       </div>
     </nav>
+    ${renderBreadcrumbs(breadcrumbs, canonical)}
     <article class="article-container">
       <a href="../blog.html" class="article-back">← Back to Blog</a>
       <header class="article-header">
@@ -915,11 +921,13 @@ function updateBlogIndex(article, item, date) {
   return html.slice(0, rowEnd) + card + html.slice(rowEnd);
 }
 
-function updateSitemap(slug, date) {
+function updateSitemap(slug, date, changedHubUrls = []) {
   const sitemap = fs.readFileSync(SITEMAP_PATH, 'utf8');
-  const entry = `  <url>\n    <loc>https://www.nano-banana.live/blog/${slug}.html</loc>\n    <lastmod>${date}</lastmod>\n  </url>\n`;
-  if (sitemap.includes(`/blog/${slug}.html`)) return sitemap.replace(new RegExp(`(<loc>https://www\\.nano-banana\\.live/blog/${slug}\\.html<\\/loc>\\s*<lastmod>).*?(<\\/lastmod>)`), `$1${date}$2`);
-  return sitemap.replace('</urlset>', `${entry}</urlset>`);
+  return updateSitemapDates(sitemap, {
+    [SITE_URL + '/blog/' + slug + '.html']: date,
+    [SITE_URL + '/blog.html']: date,
+    ...Object.fromEntries(changedHubUrls.map(url => [url, date])),
+  });
 }
 
 async function main() {
@@ -952,6 +960,8 @@ async function main() {
     queue: fs.readFileSync(QUEUE_PATH, 'utf8'),
     blog: fs.readFileSync(BLOG_INDEX_PATH, 'utf8'),
     sitemap: fs.readFileSync(SITEMAP_PATH, 'utf8'),
+    summaries: SUMMARY_PATHS.map(file => [file, fs.readFileSync(file, 'utf8')]),
+    hubs: HUBS.map(hub => [path.join(WEB_DIR, hub.file), fs.readFileSync(path.join(WEB_DIR, hub.file), 'utf8')]),
   };
   try {
     fs.writeFileSync(htmlPath, buildArticleHtml(article, item, date), 'utf8');
@@ -964,13 +974,28 @@ async function main() {
     writeJson(ARTICLES_PATH, articles);
     writeJson(QUEUE_PATH, queue);
     fs.writeFileSync(BLOG_INDEX_PATH, updateBlogIndex(article, item, date), 'utf8');
-    fs.writeFileSync(SITEMAP_PATH, updateSitemap(item.slug, date), 'utf8');
+    const changedHubUrls = [];
+    for (const [file, source] of backups.hubs) {
+      const relative = path.relative(WEB_DIR, file).replaceAll('\\', '/');
+      const hub = HUBS.find(entry => entry.file === relative);
+      const normalized = source.replace(/\r\n/g, '\n');
+      const linked = updateTopicHub(normalized, articles, hub);
+      if (linked === normalized) continue;
+      fs.writeFileSync(file, applyPageSeo(linked, relative, articles, { modifiedDate: date }), 'utf8');
+      changedHubUrls.push(linked.match(/<link\s+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i)[1]);
+    }
+    fs.writeFileSync(SITEMAP_PATH, updateSitemap(item.slug, date, changedHubUrls), 'utf8');
+    for (const [file, source] of backups.summaries) {
+      fs.writeFileSync(file, updateArticleSummary(source, articles), 'utf8');
+    }
     console.log(`Prepared source-audited article ${item.slug}.html with structural score ${structuralScore}/100.`);
   } catch (error) {
     fs.writeFileSync(ARTICLES_PATH, backups.articles, 'utf8');
     fs.writeFileSync(QUEUE_PATH, backups.queue, 'utf8');
     fs.writeFileSync(BLOG_INDEX_PATH, backups.blog, 'utf8');
     fs.writeFileSync(SITEMAP_PATH, backups.sitemap, 'utf8');
+    for (const [file, source] of backups.summaries) fs.writeFileSync(file, source, 'utf8');
+    for (const [file, source] of backups.hubs) fs.writeFileSync(file, source, 'utf8');
     if (fs.existsSync(htmlPath)) fs.unlinkSync(htmlPath);
     throw error;
   }
@@ -995,6 +1020,8 @@ export {
   hasDanglingDescriptionEnding,
   normalizeDescription,
   normalizeTitle,
+  buildArticleHtml,
+  hasDanglingTitleEnding,
   parseModelList,
   parseModelRoute,
   findAbsoluteProductClaim,

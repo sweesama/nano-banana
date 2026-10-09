@@ -1,5 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const { updateArticleSummary } = require('./content-metadata.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 const WEB = path.join(ROOT, 'web');
@@ -23,7 +24,7 @@ const AUTHORITATIVE_SOURCE_HOSTS = new Set([
 ]);
 
 function walk(dir) {
-  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+  return fs.readdirSync(dir, { withFileTypes: true }).filter(entry => !['node_modules', '.diagnostics'].includes(entry.name)).flatMap((entry) => {
     const target = path.join(dir, entry.name);
     return entry.isDirectory() ? walk(target) : [target];
   });
@@ -71,7 +72,7 @@ function expectedCanonical(file) {
 
 function resolveInternalHref(file, href) {
   const clean = href.split('#')[0].split('?')[0];
-  if (!clean || /^(?:https?:|mailto:|tel:|javascript:)/i.test(clean)) return null;
+  if (!clean || /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(clean)) return null;
   const base = clean.startsWith('/') ? WEB : path.dirname(file);
   let target = path.resolve(base, clean.replace(/^\//, ''));
   if (clean === '/') target = path.join(WEB, 'index.html');
@@ -115,6 +116,16 @@ for (const file of htmlFiles) {
     const target = resolveInternalHref(file, href);
     if (target && !fs.existsSync(target)) add(file, `broken internal link: ${href}`);
   }
+  for (const match of html.matchAll(/<(?:img|script|link|source)\b[^>]*>/gi)) {
+    const tag = match[0];
+    const urls = [...tag.matchAll(/\b(?:src|href)=["']([^"']+)["']/gi)].map(attr => attr[1]);
+    const srcset = tag.match(/\bsrcset=["']([^"']+)["']/i)?.[1];
+    if (srcset) urls.push(...srcset.split(',').map(candidate => candidate.trim().split(/\s+/)[0]));
+    for (const url of urls) {
+      const target = resolveInternalHref(file, url);
+      if (target && !fs.existsSync(target)) add(file, 'missing local asset: ' + url);
+    }
+  }
 }
 
 const factualFiles = [
@@ -155,6 +166,11 @@ for (const url of sitemapUrls) {
 const articlesPath = path.join(WEB, 'blog', 'articles.json');
 try {
   const articles = JSON.parse(fs.readFileSync(articlesPath, 'utf8'));
+  for (const name of ['llms.txt', 'llms-full.txt']) {
+    const file = path.join(WEB, name);
+    const source = fs.readFileSync(file, 'utf8');
+    if (updateArticleSummary(source, articles) !== source) add(file, 'published-article index is out of sync');
+  }
   const slugs = articles.map((article) => article.slug);
   if (new Set(slugs).size !== slugs.length) add(articlesPath, 'contains duplicate slugs');
   for (const slug of slugs) {

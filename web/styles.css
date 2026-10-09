@@ -778,9 +778,40 @@ details[open]>div {
 
 .article-content a {
   color: var(--primary);
+  overflow-wrap: anywhere;
   text-decoration: none;
   border-bottom: 1px solid rgba(192, 235, 117, 0.3);
   transition: border-color 0.2s;
+}
+
+.breadcrumbs { font-size: 0.875rem; margin: 16px 0; color: var(--text-muted); }
+.breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0; }
+.breadcrumbs li { min-width: 0; overflow-wrap: anywhere; }
+.breadcrumbs a { color: var(--secondary); text-decoration: underline; }
+.breadcrumbs li + li::before { content: "/"; margin-right: 6px; color: var(--text-muted); }
+.source-note { font-size: 0.875rem; line-height: 1.6; color: var(--text-muted); }
+.source-note a, .guide-index a, .deployment-check a { color: var(--secondary); text-decoration: underline; overflow-wrap: anywhere; }
+.route-heading { font-size: 40px; line-height: 1.2; margin-bottom: 12px; }
+.route-table-wrap { max-width: 100%; overflow-x: auto; }
+.route-table { width: 100%; min-width: 660px; border-collapse: collapse; font-size: 0.95rem; }
+.route-table th, .route-table td { padding: 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--glass-border); }
+.route-table th { color: var(--text); }
+.route-table a { color: var(--secondary); text-decoration: underline; }
+.guide-index-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; }
+.guide-index h3 { font-size: 1.125rem; }
+.guide-index summary { cursor: pointer; }
+.guide-index summary h2 { display: inline; font-size: 1.5rem; }
+.guide-index[open] .guide-index-grid { margin-top: 24px; }
+details.guide-index { border: 0; border-radius: 0; background: transparent; box-shadow: none; padding: 24px 0; }
+details.guide-index summary { border: 0; background: transparent; padding: 0; }
+.guide-index ul { padding-left: 20px; line-height: 1.7; }
+.guide-index li { margin-bottom: 10px; }
+.deployment-check { padding-top: 24px; }
+.deployment-check ol { padding-left: 24px; line-height: 1.7; }
+.deployment-check li { margin-bottom: 12px; }
+@media (max-width: 768px) {
+  .guide-index-grid { grid-template-columns: minmax(0, 1fr); }
+  .route-heading { font-size: 32px; }
 }
 
 .article-content a:hover {

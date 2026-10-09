@@ -19,27 +19,18 @@
   <meta name="color-scheme" content="dark" />
   <title>Run Nano Banana Locally? API & Offline Alternatives</title>
   <meta name="description"
-    content="Nano Banana 2 is Google's cloud-hosted Gemini 3.1 Flash Image model. Compare its Python API with verified open-weight image models you can self-host." />
+    content="Can Nano Banana run locally or offline? Compare Google's cloud API client, open-weight image models, hardware planning, and step-by-step setup guides." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://www.nano-banana.live/" />
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
   <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
-  <meta property="og:title" content="Nano Banana 2 API & Open-Weight Alternatives | Mzu" />
-  <meta property="og:description"
-    content="Understand what runs in Google's cloud, what can run on your hardware, and how to test each route." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.nano-banana.live/" />
-  <meta property="og:image" content="https://www.nano-banana.live/og.svg" />
-  <meta property="og:site_name" content="Nano Banana" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <link rel="apple-touch-icon" href="/nano.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="icon" href="/favicon.png" type="image/png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="stylesheet" href="./styles.css" />
   <script src="./analytics.js" defer></script>
-  <link rel="preload" as="image" href="/nano.png" />
   <style>
     h1 {
       font-size: clamp(34px, 3.6vw, 44px);
@@ -95,15 +86,22 @@
       display: block !important
     }
   </style>
-  <script type="application/ld+json">{
-    "@context":"https://schema.org",
-    "@type":"WebSite",
-    "name":"Nano Banana",
-    "url":"https://www.nano-banana.live/",
-    "inLanguage":"en",
-    "description":"Independent Nano Banana 2 API and local-model reference with source-backed guides, dated benchmark snapshots, prompts, and disclosed visual examples.",
-    "publisher":{"@type":"Organization","name":"Nano Banana"}
-  }</script>
+<!-- PAGE-METADATA:START -->
+<meta property="og:title" content="Run Nano Banana Locally? API &amp; Offline Alternatives">
+<meta property="og:description" content="Can Nano Banana run locally or offline? Compare Google&#39;s cloud API client, open-weight image models, hardware planning, and step-by-step setup guides.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.nano-banana.live/">
+<meta property="og:image" content="https://www.nano-banana.live/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nano Banana: image editing, benchmarks and quickstart">
+<meta property="og:site_name" content="Nano Banana">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Run Nano Banana Locally? API &amp; Offline Alternatives">
+<meta name="twitter:description" content="Can Nano Banana run locally or offline? Compare Google&#39;s cloud API client, open-weight image models, hardware planning, and step-by-step setup guides.">
+<meta name="twitter:image" content="https://www.nano-banana.live/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"WebSite","name":"Nano Banana","url":"https://www.nano-banana.live/","inLanguage":"en","description":"Can Nano Banana run locally or offline? Compare Google's cloud API client, open-weight image models, hardware planning, and step-by-step setup guides.","publisher":{"@id":"https://www.nano-banana.live/#publisher"},"@id":"https://www.nano-banana.live/#website"}]}</script>
+<!-- PAGE-METADATA:END -->
 </head>
 
 <body>
@@ -129,14 +127,15 @@
       <a class="tag" href="#use-cases">Use cases</a>
       <a class="tag" href="#evidence">Sources</a>
       <a class="tag" href="#share">Share</a>
-      <a class="tag" href="#latest">Latest articles</a>
+      <a class="tag" href="#latest">Guides by task</a>
     </div>
 
     <section class="hero">
       <div class="hero-grid">
         <div>
-          <h1>Run Nano Banana 2 Locally? Cloud API vs Open Models</h1>
+          <h1>Run Nano Banana Locally? Cloud API vs Open Models</h1>
           <p><strong>Nano Banana 2 itself does not run locally:</strong> it is Google's hosted Gemini 3.1 Flash Image model. You can call it from a local Python script, or self-host a separate open-weight alternative such as <strong>Qwen-Image-Edit-2511</strong>, <strong>HiDream-O1-Image</strong>, or <strong>HunyuanImage 3.0</strong>. This independent guide keeps those two routes separate.</p>
+          <p class="source-note">Model selection checked <time datetime="2026-10-09">October 9, 2026</time>: Google now recommends <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">Nano Banana 2.1 for new projects</a>. Nano Banana 2 examples here remain explicitly versioned; a newer API model does not change the cloud/local distinction.</p>
           <p>
             <a class="btn" href="benchmarks/index.html">See benchmark data</a>
             <span style="margin-left:12px"></span>
@@ -152,8 +151,11 @@
           </div>
         </div>
         <div>
-          <img class="art" src="./nano.png" alt="Nano Banana illustration" width="1256" height="1247"
-            fetchpriority="high" decoding="async" />
+          <picture>
+            <source type="image/webp" srcset="./nano-640.webp 640w, ./nano-960.webp 960w, ./nano-1256.webp 1256w"
+              sizes="(max-width: 650px) calc(100vw - 48px), (max-width: 900px) 600px, 480px" />
+            <img class="art" src="./nano-960.jpg" alt="Nano Banana illustration" width="1256" height="1247" decoding="async" />
+          </picture>
         </div>
       </div>
     </section>
@@ -168,14 +170,18 @@
     </section>
 
     <section class="section" id="comparison">
-      <h2>Start Creating</h2>
-      <p class="lead" style="text-align: center; margin-top: 40px;">
-        Explore documented examples, current model sources, and the difference between calling Nano Banana through a cloud API and running open weights locally.
-      </p>
-
-      <p class="lead mt8" style="text-align: center;">
-        <a href="guides/quickstart.html" class="btn btn-glass">Get Started & View Models →</a>
-      </p>
+      <h2>Choose a Local or Cloud Route</h2>
+      <div class="route-table-wrap" role="region" aria-label="Deployment route comparison" tabindex="0">
+        <table class="route-table">
+          <thead><tr><th scope="col">Your requirement</th><th scope="col">Where inference runs</th><th scope="col">Next step</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Use Nano Banana without a local GPU</th><td>Google's cloud; your computer runs the API client</td><td><a href="blog/how-to-run-locally.html">Set up the Python client</a></td></tr>
+            <tr><th scope="row">Keep inference on your own hardware</th><td>A separate open-weight model on your machine</td><td><a href="guides/quickstart.html#installation-guides">Choose an offline model and check its requirements</a></td></tr>
+            <tr><th scope="row">Run open weights without owning suitable GPUs</th><td>A rented machine, not your local computer</td><td><a href="guides/cloud-deployment.html">Plan a cloud GPU deployment</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>For privacy, hardware, cost and maintenance trade-offs, read <a href="blog/cloud-api-versus-local-ai-image-models.html">cloud APIs versus local image models</a>. A rental is still remote infrastructure, not an offline solution.</p>
     </section>
 
     <section class="section" id="what">
@@ -200,6 +206,7 @@
     <section class="section" id="benchmarks">
       <h2>Benchmarks & Evidence</h2>
       <p class="lead">Our first-party comparisons publish inputs and settings where they are available. The broader leaderboard is a dated snapshot from Artificial Analysis and is labeled as third-party data. Treat model rankings as changing evidence, not permanent product claims.</p>
+      <p><a href="benchmarks/portrait-editing.html">Inspect a disclosed editing example</a> or learn <a href="blog/ai-image-model-benchmark-elo-explained.html">how to interpret image-model Elo scores</a>.</p>
     </section>
 
     <section class="section" id="why">
@@ -277,31 +284,15 @@
       </div>
     </section>
 
-    <section class="section" id="latest">
-      <h2>Latest</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>Quickstart (Local Install)</h3>
-          <p>Separate Google's hosted Nano Banana API from independently released open-weight models and their real hardware requirements.</p>
-          <a href="guides/quickstart.html">Read guide →</a>
-        </div>
-        <div class="card" style="border-color: rgba(248, 113, 113, 0.4); background: linear-gradient(145deg, rgba(248, 113, 113, 0.05) 0%, rgba(0,0,0,0) 100%);">
-          <h3>ChatGPT Image 2 — Can It Run Locally?</h3>
-          <p><strong>No.</strong> It is cloud-only. Compare released open-weight alternatives by license, hardware, and official setup support.</p>
-          <a href="guides/quickstart.html#chatgpt-image-2" style="color: #fca5a5; font-weight: 500;">See alternatives →</a>
-        </div>
-        <div class="card" style="border-color: rgba(77, 171, 247, 0.4); background: linear-gradient(145deg, rgba(77, 171, 247, 0.05) 0%, rgba(0,0,0,0) 100%);">
-          <h3>Cloud Deployment Guide</h3>
-          <p>Choose a rental only after matching the exact model to its official GPU count, VRAM, software, storage, and current price.</p>
-          <a href="guides/cloud-deployment.html" style="color: #60a5fa; font-weight: 500;">View cloud tutorial →</a>
-        </div>
-        <div class="card">
-          <h3>FAQ & Support</h3>
-          <p>Common questions about AI image editing, character consistency, and commercial usage.</p>
-          <a href="faq.html">Read FAQ →</a>
-        </div>
-      </div>
-    </section>
+    <div id="latest">
+      <!-- TOPIC-LINKS:START -->
+<section class="section guide-index" id="related-guides"><h2>Guides by task</h2><div class="guide-index-grid">
+<div><h3>Cloud API and troubleshooting</h3><ul><li><a href="blog/gemini-image-api-privacy-cloud-processing.html">Gemini image API Privacy and Cloud Processing Explained</a></li><li><a href="blog/gemini-image-api-403-quota-model-errors.html">AI image editing workflow: fixing Gemini image API 403 and 429 errors</a></li><li><a href="blog/gemini-image-api-aspect-ratio-resolution.html">Gemini image API: Setting Aspect Ratio and Resolution</a></li></ul></div>
+<div><h3>Offline models and hardware</h3><ul><li><a href="blog/open-weights-versus-open-source-image-models.html">Open Weights vs Open Source: Choosing a local AI image model</a></li><li><a href="blog/install-local-ai-image-model-diffusers.html">How to Install a Local AI Image Model with Diffusers</a></li><li><a href="blog/flux-hunyuanimage-qwen-image-comparison.html">Choosing a local AI image model: FLUX vs HunyuanImage 3.0 vs Qwen</a></li><li><a href="guides/hidream-o1-image.html">HiDream-O1-Image installation guide</a></li><li><a href="guides/z-image.html">Z-Image model guide</a></li></ul></div>
+<div><h3>Cloud GPUs and deployment choices</h3><ul><li><a href="blog/rent-gpu-for-one-ai-image-project.html">Rent a Cloud GPU for AI Image Generation: Setup and Reliability</a></li><li><a href="blog/runpod-versus-vastai-image-generation.html">RunPod vs Vast.ai: Choosing a cloud GPU for AI image generation</a></li><li><a href="blog/runpod-gpu-choice-ai-image-models.html">RunPod GPU pricing: choosing a cloud GPU for AI image generation</a></li></ul></div>
+</div></section>
+<!-- TOPIC-LINKS:END -->
+    </div>
 
     <footer class="footer">
       <div class="footer-content">
