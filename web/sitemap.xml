@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-12</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/benchmarks/</loc>
@@ -18,7 +18,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/quickstart.html</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-12</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/hidream-o1-image.html</loc>
@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/cloud-deployment.html</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-12</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/run-without-gpu.html</loc>
@@ -46,7 +46,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog.html</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-12</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/how-to-run-locally.html</loc>
@@ -143,5 +143,9 @@
   <url>
     <loc>https://www.nano-banana.live/blog/rent-gpu-for-one-ai-image-project.html</loc>
     <lastmod>2026-10-09</lastmod>
+  </url>
+  <url>
+    <loc>https://www.nano-banana.live/blog/cloud-gpu-security-checklist-ai-images.html</loc>
+    <lastmod>2026-10-12</lastmod>
   </url>
 </urlset>

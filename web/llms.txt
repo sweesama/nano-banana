@@ -55,6 +55,7 @@ Official sources:
 <!-- BLOG-INDEX:START -->
 ## Published articles
 
+- [Cloud GPU for AI Image Generation: Security Checklist](https://www.nano-banana.live/blog/cloud-gpu-security-checklist-ai-images.html) (published 2026-10-12)
 - [Rent a Cloud GPU for AI Image Generation: Setup and Reliability](https://www.nano-banana.live/blog/rent-gpu-for-one-ai-image-project.html) (published 2026-10-09)
 - [RunPod vs Vast.ai: Choosing a cloud GPU for AI image generation](https://www.nano-banana.live/blog/runpod-versus-vastai-image-generation.html) (published 2026-10-08)
 - [RunPod GPU pricing: choosing a cloud GPU for AI image generation](https://www.nano-banana.live/blog/runpod-gpu-choice-ai-image-models.html) (published 2026-09-28; updated 2026-10-09)

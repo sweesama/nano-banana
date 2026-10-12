@@ -319,5 +319,20 @@
       "https://www.nano-banana.live/blog/run-without-gpu.html",
       "https://www.nano-banana.live/guides/cloud-deployment.html"
     ]
+  },
+  {
+    "slug": "cloud-gpu-security-checklist-ai-images",
+    "publishDate": "2026-10-12",
+    "title": "Cloud GPU for AI Image Generation: Security Checklist",
+    "description": "A practical security checklist for cloud GPU for AI image generation: account controls, model fit, image handling, and pre-flight steps.",
+    "category": "Cloud GPU",
+    "emoji": "🛡️",
+    "keyword": "cloud GPU security checklist for AI images",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://www.runpod.io/legal/privacy-policy",
+      "https://www.nano-banana.live/blog/run-without-gpu.html"
+    ]
   }
 ]

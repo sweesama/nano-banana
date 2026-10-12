@@ -273,11 +273,14 @@
     "category": "Cloud GPU",
     "emoji": "🛡️",
     "depth": "standard",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://www.runpod.io/legal/privacy-policy",
       "https://www.nano-banana.live/blog/run-without-gpu.html"
-    ]
+    ],
+    "lastAttemptAt": "2026-10-12T05:52:48.833Z",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "local GPU versus API cost for image editing",
