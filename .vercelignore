@@ -1,0 +1,2 @@
+# Not served by the site (rewrites point to /web); excluded to cut deployment storage
+pics/
