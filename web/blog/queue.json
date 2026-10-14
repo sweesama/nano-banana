@@ -288,11 +288,14 @@
     "category": "Cloud GPU",
     "emoji": "📉",
     "depth": "deep",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://artificialanalysis.ai/image/providers",
       "https://www.nano-banana.live/benchmarks/"
-    ]
+    ],
+    "lastAttemptAt": "2026-10-14T04:49:43.544Z",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "how to stop a cloud GPU and avoid charges",

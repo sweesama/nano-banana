@@ -49,6 +49,7 @@ Third-party leaderboard information is a dated snapshot and may change. Cloud GP
 <!-- BLOG-INDEX:START -->
 ## Published articles
 
+- [Cloud GPU for AI Image Generation: Local vs API Cost](https://www.nano-banana.live/blog/local-gpu-versus-api-cost-image-editing.html) (published 2026-10-14)
 - [Cloud GPU for AI Image Generation: Security Checklist](https://www.nano-banana.live/blog/cloud-gpu-security-checklist-ai-images.html) (published 2026-10-12)
 - [Rent a Cloud GPU for AI Image Generation: Setup and Reliability](https://www.nano-banana.live/blog/rent-gpu-for-one-ai-image-project.html) (published 2026-10-09)
 - [RunPod vs Vast.ai: Choosing a cloud GPU for AI image generation](https://www.nano-banana.live/blog/runpod-versus-vastai-image-generation.html) (published 2026-10-08)
