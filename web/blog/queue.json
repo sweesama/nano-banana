@@ -303,11 +303,14 @@
     "category": "Cloud GPU",
     "emoji": "⏹️",
     "depth": "brief",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://docs.runpod.io/pods/manage-pods",
       "https://www.nano-banana.live/guides/cloud-deployment.html"
-    ]
+    ],
+    "lastAttemptAt": "2026-10-16T04:28:03.457Z",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "prompt structure for precise AI image editing",

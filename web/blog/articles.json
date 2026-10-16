@@ -349,5 +349,20 @@
       "https://artificialanalysis.ai/image/providers",
       "https://www.nano-banana.live/benchmarks/"
     ]
+  },
+  {
+    "slug": "stop-cloud-gpu-avoid-charges",
+    "publishDate": "2026-10-16",
+    "title": "How to Stop a cloud GPU for AI image generation and Avoid Charges",
+    "description": "Learn how to stop a cloud GPU for AI image generation on RunPod, what still bills after stopping, and how to terminate safely to avoid surprise charges.",
+    "category": "Cloud GPU",
+    "emoji": "⏹️",
+    "keyword": "how to stop a cloud GPU and avoid charges",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://docs.runpod.io/pods/manage-pods",
+      "https://www.nano-banana.live/guides/cloud-deployment.html"
+    ]
   }
 ]
