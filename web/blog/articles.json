@@ -364,5 +364,20 @@
       "https://docs.runpod.io/pods/manage-pods",
       "https://www.nano-banana.live/guides/cloud-deployment.html"
     ]
+  },
+  {
+    "slug": "prompt-structure-precise-ai-image-editing",
+    "publishDate": "2026-10-19",
+    "title": "AI image editing prompts: a four-clause structure",
+    "description": "A reusable four-clause structure for AI image editing prompts, covering background replacement, identity preservation, product edits, and multi-image inputs.",
+    "category": "Prompting",
+    "emoji": "✍️",
+    "keyword": "prompt structure for precise AI image editing",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/image-generation",
+      "https://www.nano-banana.live/prompts/"
+    ]
   }
 ]

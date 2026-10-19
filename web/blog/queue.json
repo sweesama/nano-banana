@@ -318,11 +318,14 @@
     "category": "Prompting",
     "emoji": "✍️",
     "depth": "standard",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://www.nano-banana.live/prompts/"
-    ]
+    ],
+    "lastAttemptAt": "2026-10-19T04:36:36.706Z",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "preserve identity and lighting in AI image edits",
