@@ -22,7 +22,8 @@
     "title": "Can My PC Run It? Hardware Truths",
     "description": "Understand why cloud client mode needs no GPU while offline models need dedicated VRAM.",
     "category": "Hardware",
-    "emoji": "⚙️"
+    "emoji": "⚙️",
+    "modifiedDate": "2026-10-20"
   },
   {
     "slug": "troubleshooting-install",
@@ -151,8 +152,8 @@
   {
     "slug": "gemini-image-api-aspect-ratio-resolution",
     "publishDate": "2026-09-04",
-    "title": "Gemini image API: Setting Aspect Ratio and Resolution",
-    "description": "A hands-on guide to controlling aspect_ratio and image_size in the Gemini image API's response_format field, based on the official image-generation documentation.",
+    "title": "Gemini image API: Aspect Ratio and 4K Resolution",
+    "description": "How Gemini image_size tokens map to pixels. Nano Banana 2.1 documents 1K, 2K, and 4K, and 4K is not one fixed pixel size.",
     "category": "API Tutorial",
     "emoji": "📐",
     "keyword": "Gemini image generation API aspect ratio and resolution",
@@ -161,7 +162,8 @@
     "sourceUrls": [
       "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://ai.google.dev/gemini-api/docs/models"
-    ]
+    ],
+    "modifiedDate": "2026-10-20"
   },
   {
     "slug": "gemini-image-api-403-quota-model-errors",
@@ -229,8 +231,8 @@
   {
     "slug": "flux-hunyuanimage-qwen-image-comparison",
     "publishDate": "2026-09-21",
-    "title": "Choosing a local AI image model: FLUX vs HunyuanImage 3.0 vs Qwen",
-    "description": "Compare FLUX.1-dev, HunyuanImage 3.0, and Qwen Image for local use. Learn VRAM requirements, installation steps, and which open weights model fits your GPU.",
+    "title": "Local AI Image Model Comparison: VRAM, Speed, and License",
+    "description": "Compare FLUX.1-dev, HunyuanImage 3.0, and Qwen-Image-Edit-2511 using published VRAM guidance, documented speed notes, and license terms. Missing numbers are omitted.",
     "category": "Local Models",
     "emoji": "🧪",
     "keyword": "Flux versus HunyuanImage versus Qwen Image",
@@ -239,8 +241,11 @@
     "sourceUrls": [
       "https://huggingface.co/black-forest-labs/FLUX.1-dev",
       "https://github.com/Tencent-Hunyuan/HunyuanImage-3.0",
-      "https://www.nano-banana.live/guides/quickstart.html"
-    ]
+      "https://www.nano-banana.live/guides/quickstart.html",
+      "https://huggingface.co/Qwen/Qwen-Image-Edit-2511",
+      "https://www.nano-banana.live/blog/hardware-requirements.html"
+    ],
+    "modifiedDate": "2026-10-20"
   },
   {
     "slug": "install-local-ai-image-model-diffusers",

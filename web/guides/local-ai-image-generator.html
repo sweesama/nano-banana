@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3758496128431673"
+    crossorigin="anonymous"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0f14">
+  <meta name="color-scheme" content="dark">
+  <title>Local AI Image Generator Guide | FLUX and ComfyUI</title>
+  <meta name="description" content="What a local AI image generator actually is. FLUX.1-dev in ComfyUI and Diffusers, the 8GB SDXL floor, and which Mac paths are documented.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/guides/local-ai-image-generator.html">
+  <link rel="icon" href="../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+<!-- PAGE-METADATA:START -->
+<meta property="og:title" content="Local AI Image Generator Guide | FLUX and ComfyUI">
+<meta property="og:description" content="What a local AI image generator actually is. FLUX.1-dev in ComfyUI and Diffusers, the 8GB SDXL floor, and which Mac paths are documented.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.nano-banana.live/guides/local-ai-image-generator.html">
+<meta property="og:image" content="https://www.nano-banana.live/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nano Banana: image editing, benchmarks and quickstart">
+<meta property="og:site_name" content="Nano Banana">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Local AI Image Generator Guide | FLUX and ComfyUI">
+<meta name="twitter:description" content="What a local AI image generator actually is. FLUX.1-dev in ComfyUI and Diffusers, the 8GB SDXL floor, and which Mac paths are documented.">
+<meta name="twitter:image" content="https://www.nano-banana.live/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"TechArticle","name":"Local AI Image Generator: FLUX, ComfyUI, and Offline Routes","description":"What a local AI image generator actually is. FLUX.1-dev in ComfyUI and Diffusers, the 8GB SDXL floor, and which Mac paths are documented.","url":"https://www.nano-banana.live/guides/local-ai-image-generator.html","headline":"Local AI Image Generator: FLUX, ComfyUI, and Offline Routes","dateModified":"2026-10-20","publisher":{"@id":"https://www.nano-banana.live/#publisher"},"author":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/guides/local-ai-image-generator.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Quickstart","item":"https://www.nano-banana.live/guides/quickstart.html"},{"@type":"ListItem","position":3,"name":"Local AI Image Generator: FLUX, ComfyUI, and Offline Routes","item":"https://www.nano-banana.live/guides/local-ai-image-generator.html"}]}]}</script>
+<!-- PAGE-METADATA:END -->
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../about.html">About</a>
+        <a href="../blog.html">Blog</a>
+      </div>
+    </nav>
+<!-- BREADCRUMBS:START -->
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="quickstart.html">Quickstart</a></li><li><span aria-current="page">Local AI Image Generator: FLUX, ComfyUI, and Offline Routes</span></li></ol></nav>
+<!-- BREADCRUMBS:END -->
+    <article class="article-container">
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Local Models • Oct 20, 2026</div>
+        <h1>Local AI Image Generator: FLUX, ComfyUI, and Offline Routes</h1>
+        <p class="lead" style="margin:20px auto;">A local AI image generator loads open weights on hardware you control. Nano Banana 2.1 does not do that. This page separates the documented FLUX.1-dev route from the 8GB and Mac cases this site already covers.</p>
+      </header>
+      <div class="article-content">
+        <p>People searching for a local AI image generator usually want one of three things: a model whose weights run on their own GPU, a ComfyUI workflow, or a way to generate images on a Mac or an 8GB card. Those are different constraints. This guide uses only the distinctions already published here and on the linked model cards.</p>
+
+        <h2>Local weights are not a local API client</h2>
+        <p>Nano Banana 2.1 is Google's hosted image model <code>gemini-nano-banana-2.1</code>. Google's <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">image-generation documentation</a> recommends it for new projects and describes 1K, 2K, and 4K output. Nano Banana 2 remains <code>gemini-3.1-flash-image</code>. In both cases the Python program can sit on your computer, including a Mac, while the model runs on Google's servers. That client is not an offline generator and there are no Nano Banana weights to install.</p>
+        <p>An offline route is a separate open-weight project. This site documents several, with different licenses and hardware notes: <a href="https://huggingface.co/black-forest-labs/FLUX.1-dev" target="_blank" rel="noopener">FLUX.1-dev</a>, <a href="../blog/qwen-image-local-image-editing-guide.html">Qwen-Image-Edit-2511</a>, <a href="hidream-o1-image.html">HiDream-O1-Image</a>, <a href="z-image.html">Z-Image</a>, and <a href="../blog/hunyuanimage-local-deployment-requirements.html">HunyuanImage 3.0</a>. FLUX 3 is not one of them. The <a href="quickstart.html#flux-3">quickstart</a> lists FLUX 3 as early access without public weights or a local deployment path.</p>
+
+        <h2>FLUX.1-dev in ComfyUI and Diffusers</h2>
+        <p>The <a href="https://huggingface.co/black-forest-labs/FLUX.1-dev" target="_blank" rel="noopener">FLUX.1-dev model card</a> describes a 12 billion parameter rectified flow transformer from Black Forest Labs. It generates images from text. The card says output quality is second only to FLUX.1 [pro], and that the model was trained with guidance distillation. The Hugging Face repository is gated: you accept the license before the files download.</p>
+        <p>Two local routes are named on that card:</p>
+        <ul>
+          <li><strong>ComfyUI.</strong> The card says FLUX.1-dev is available in ComfyUI for local inference with a node-based workflow. It does not publish a node graph, a Mac build, or a minimum VRAM figure for that workflow.</li>
+          <li><strong>Diffusers.</strong> The documented example installs Diffusers, loads <code>FluxPipeline</code> in <code>bfloat16</code>, and calls <code>enable_model_cpu_offload()</code> to move weights to CPU when GPU memory is tight. The example uses a 1024×1024 output and 50 steps.</li>
+        </ul>
+        <pre><code>pip install -U diffusers</code></pre>
+        <pre><code>import torch
+from diffusers import FluxPipeline
+
+pipe = FluxPipeline.from_pretrained("black-forest-labs/FLUX.1-dev", torch_dtype=torch.bfloat16)
+pipe.enable_model_cpu_offload()  # save some VRAM by offloading the model to CPU
+
+image = pipe(
+    "A cat holding a sign that says hello world",
+    height=1024,
+    width=1024,
+    guidance_scale=3.5,
+    num_inference_steps=50,
+    max_sequence_length=512,
+    generator=torch.Generator("cpu").manual_seed(0)
+).images[0]
+image.save("flux-dev.png")</code></pre>
+        <p>Editing is not a feature of this checkpoint. The <a href="../blog/flux-hunyuanimage-qwen-image-comparison.html">local model comparison</a> treats FLUX.1-Fill-dev, FLUX.1-Redux-dev, FLUX.1-canny-dev, and FLUX.1-Depth-dev as separate FLUX.1 checkpoints, not as features built into FLUX.1-dev. Prompt recipes for background replacement and product shots live on the <a href="../prompts/index.html">prompts page</a>; which model can run them depends on the checkpoint you actually load.</p>
+        <p>The model card places FLUX.1-dev under the FLUX.1 [dev] Non-Commercial License. It also says generated outputs can be used for personal, scientific, and commercial purposes as described in that license. Read the license before a commercial deployment. The <a href="../blog/flux-hunyuanimage-qwen-image-comparison.html">local model comparison</a> puts this next to HunyuanImage and Qwen-Image-Edit-2511.</p>
+
+        <h2>What 8GB of VRAM is documented to cover</h2>
+        <p>The <a href="../blog/hardware-requirements.html">hardware guide</a> gives an NVIDIA RTX 3060 with 8GB of VRAM and 16GB of system RAM as the floor for SDXL-class generation and basic inpainting. That figure is not a FLUX.1-dev minimum. The FLUX.1-dev card does not state one. CPU offload in the Diffusers example is a way to reduce GPU memory, not a promise that an 8GB card is enough.</p>
+        <p>Other published hardware notes on this site are wider than 8GB:</p>
+        <ul>
+          <li><strong>Qwen-Image-Edit-2511</strong> is a 20B BF16 model. Its model card does not publish one universal VRAM minimum. The card's Diffusers example is the thing to measure.</li>
+          <li><strong>HunyuanImage 3.0</strong> is in a different class. The hardware guide, citing Tencent's model table, lists at least 3 × 80GB for the base checkpoint and at least 8 × 80GB for Instruct and Distil.</li>
+        </ul>
+        <p>If a number is missing from the model card, this page leaves it out. The <a href="../blog/local-ai-image-model-vram-requirements.html">VRAM guide</a> explains why parameter count, precision, and offload change the result.</p>
+
+        <h2>Mac: what is documented, and what is not</h2>
+        <p>A Mac can run the Nano Banana API client. The hardware guide's cloud-client verdict includes a MacBook Air, because that path needs no GPU. The image is still generated in Google's cloud.</p>
+        <p>For weights on the machine itself, the sources diverge:</p>
+        <ul>
+          <li>The Qwen-Image-Edit-2511 card mentions switching the device to <code>"mps"</code> for Apple devices. That is a device string in the example, not a measured memory budget.</li>
+          <li>The HunyuanImage 3.0 repository documents CUDA 12.8 and does not describe a macOS path.</li>
+          <li>The FLUX.1-dev card documents ComfyUI and Diffusers. It does not document a Mac requirement or a Mac install.</li>
+        </ul>
+
+        <h2>Pick the next page</h2>
+        <ul>
+          <li><a href="../blog/flux-hunyuanimage-qwen-image-comparison.html">Compare FLUX.1-dev, HunyuanImage 3.0, and Qwen</a> on published VRAM notes, speed notes, and licenses.</li>
+          <li><a href="../blog/install-local-ai-image-model-diffusers.html">Install a local model with Diffusers</a> when you already know which checkpoint you want.</li>
+          <li><a href="quickstart.html#installation-guides">Open the quickstart</a> for the full model list, including HiDream-O1-Image and Z-Image.</li>
+          <li><a href="../guides/cloud-deployment.html">Plan a rented GPU</a> when the checkpoint's own hardware table does not fit the computer you own. A rental is still remote hardware.</li>
+        </ul>
+
+        <h2>Sources</h2>
+        <ul>
+          <li><a href="https://huggingface.co/black-forest-labs/FLUX.1-dev" target="_blank" rel="noopener">https://huggingface.co/black-forest-labs/FLUX.1-dev</a></li>
+          <li><a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/image-generation</a></li>
+          <li><a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noopener">https://huggingface.co/Qwen/Qwen-Image-Edit-2511</a></li>
+          <li><a href="https://github.com/Tencent-Hunyuan/HunyuanImage-3.0" target="_blank" rel="noopener">https://github.com/Tencent-Hunyuan/HunyuanImage-3.0</a></li>
+        </ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>

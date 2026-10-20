@@ -6,11 +6,11 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/</loc>
-    <lastmod>2026-10-16</lastmod>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/benchmarks/</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/benchmarks/portrait-editing.html</loc>
@@ -18,7 +18,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/quickstart.html</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/hidream-o1-image.html</loc>
@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/cloud-deployment.html</loc>
-    <lastmod>2026-10-16</lastmod>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/run-without-gpu.html</loc>
@@ -38,7 +38,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/faq.html</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/about.html</loc>
@@ -54,7 +54,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/hardware-requirements.html</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/troubleshooting-install.html</loc>
@@ -102,7 +102,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/gemini-image-api-aspect-ratio-resolution.html</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/gemini-image-api-403-quota-model-errors.html</loc>
@@ -122,7 +122,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/flux-hunyuanimage-qwen-image-comparison.html</loc>
-    <lastmod>2026-09-21</lastmod>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/install-local-ai-image-model-diffusers.html</loc>
@@ -159,5 +159,9 @@
   <url>
     <loc>https://www.nano-banana.live/blog/prompt-structure-precise-ai-image-editing.html</loc>
     <lastmod>2026-10-19</lastmod>
+  </url>
+  <url>
+    <loc>https://www.nano-banana.live/guides/local-ai-image-generator.html</loc>
+    <lastmod>2026-10-20</lastmod>
   </url>
 </urlset>
