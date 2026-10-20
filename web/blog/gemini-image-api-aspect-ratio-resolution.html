@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Gemini image API: Setting Aspect Ratio and Resolution | Nano Banana</title>
-  <meta name="description" content="A hands-on guide to controlling aspect_ratio and image_size in the Gemini image API&#39;s response_format field, based on the official image-generation documentation.">
+  <title>Gemini image API: Aspect Ratio and 4K Resolution | Nano Banana</title>
+  <meta name="description" content="How Gemini image_size tokens map to pixels. Nano Banana 2.1 documents 1K, 2K, and 4K, and 4K is not one fixed pixel size.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.nano-banana.live/blog/gemini-image-api-aspect-ratio-resolution.html">
   <link rel="stylesheet" href="../styles.css">
   <script src="../analytics.js" defer></script>
 <!-- PAGE-METADATA:START -->
-<meta property="og:title" content="Gemini image API: Setting Aspect Ratio and Resolution | Nano Banana">
-<meta property="og:description" content="A hands-on guide to controlling aspect_ratio and image_size in the Gemini image API&#39;s response_format field, based on the official image-generation documentation.">
+<meta property="og:title" content="Gemini image API: Aspect Ratio and 4K Resolution | Nano Banana">
+<meta property="og:description" content="How Gemini image_size tokens map to pixels. Nano Banana 2.1 documents 1K, 2K, and 4K, and 4K is not one fixed pixel size.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://www.nano-banana.live/blog/gemini-image-api-aspect-ratio-resolution.html">
 <meta property="og:image" content="https://www.nano-banana.live/og.png">
@@ -20,10 +20,10 @@
 <meta property="og:image:alt" content="Nano Banana: image editing, benchmarks and quickstart">
 <meta property="og:site_name" content="Nano Banana">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Gemini image API: Setting Aspect Ratio and Resolution | Nano Banana">
-<meta name="twitter:description" content="A hands-on guide to controlling aspect_ratio and image_size in the Gemini image API&#39;s response_format field, based on the official image-generation documentation.">
+<meta name="twitter:title" content="Gemini image API: Aspect Ratio and 4K Resolution | Nano Banana">
+<meta name="twitter:description" content="How Gemini image_size tokens map to pixels. Nano Banana 2.1 documents 1K, 2K, and 4K, and 4K is not one fixed pixel size.">
 <meta name="twitter:image" content="https://www.nano-banana.live/og.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"Article","headline":"Gemini image API: Setting Aspect Ratio and Resolution","description":"A hands-on guide to controlling aspect_ratio and image_size in the Gemini image API's response_format field, based on the official image-generation documentation.","datePublished":"2026-09-04","dateModified":"2026-09-04","author":{"@id":"https://www.nano-banana.live/#publisher"},"publisher":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/blog/gemini-image-api-aspect-ratio-resolution.html"},"isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.nano-banana.live/blog.html"},{"@type":"ListItem","position":3,"name":"Gemini image API: Setting Aspect Ratio and Resolution","item":"https://www.nano-banana.live/blog/gemini-image-api-aspect-ratio-resolution.html"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"Article","headline":"Gemini image API: Aspect Ratio and 4K Resolution","description":"How Gemini image_size tokens map to pixels. Nano Banana 2.1 documents 1K, 2K, and 4K, and 4K is not one fixed pixel size.","datePublished":"2026-09-04","dateModified":"2026-10-20","author":{"@id":"https://www.nano-banana.live/#publisher"},"publisher":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/blog/gemini-image-api-aspect-ratio-resolution.html"},"isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.nano-banana.live/blog.html"},{"@type":"ListItem","position":3,"name":"Gemini image API: Aspect Ratio and 4K Resolution","item":"https://www.nano-banana.live/blog/gemini-image-api-aspect-ratio-resolution.html"}]}]}</script>
 <!-- PAGE-METADATA:END -->
 </head>
 <body>
@@ -39,14 +39,14 @@
       </div>
     </nav>
 <!-- BREADCRUMBS:START -->
-<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="../blog.html">Blog</a></li><li><span aria-current="page">Gemini image API: Setting Aspect Ratio and Resolution</span></li></ol></nav>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="../blog.html">Blog</a></li><li><span aria-current="page">Gemini image API: Aspect Ratio and 4K Resolution</span></li></ol></nav>
 <!-- BREADCRUMBS:END -->
     <article class="article-container">
       <a href="../blog.html" class="article-back">← Back to Blog</a>
       <header class="article-header">
-        <div class="meta" style="justify-content:center;display:flex;">API Tutorial • Sep 4, 2026</div>
-        <h1>Gemini image API: Setting Aspect Ratio and Resolution</h1>
-        <p class="lead" style="margin:20px auto;">A hands-on guide to controlling aspect_ratio and image_size in the Gemini image API&#39;s response_format field, based on the official image-generation documentation.</p>
+        <div class="meta" style="justify-content:center;display:flex;">API Tutorial • Sep 4, 2026 • Updated Oct 20, 2026</div>
+        <h1>Gemini image API: Aspect Ratio and 4K Resolution</h1>
+        <p class="lead" style="margin:20px auto;">How aspect_ratio and image_size work in the Gemini image API, including the 1K, 2K, and 4K sizes documented for Nano Banana 2.1.</p>
       </header>
       <div class="article-content">
         <p>If you have already placed a <strong>Gemini image API</strong> call and ended up with the wrong shape or a soft-looking output, the fix usually lives in one place: the <code>response_format</code> object passed to <code>interactions.create()</code>. Two nested fields, <code>aspect_ratio</code> and <code>image_size</code>, control the rendered image, and setting them explicitly is the difference between a predictable asset and a one-off generation. The behavior below is taken from Google's image-generation documentation, so you can match it against the live page if a token changes.</p>
@@ -68,7 +68,12 @@
 <p>The only aspect ratio value explicitly shown in the current image-generation documentation is <code>"16:9"</code>, used inside <code>response_format</code> for the official landscape infographic example. For prompt-only requests with no <code>response_format</code> supplied, the documented default is 1:1 squares. The docs do not enumerate a wider list of supported aspect ratio tokens on this page, so the safest path is to start from the official example and confirm any additional tokens in the model reference at <a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/models</a> before using them. Pass the value as a string exactly as it appears in the model reference, not as a number or a colon-free shorthand.</p>
 
 <h2>Choosing an image_size</h2>
-<p>The single image-size token explicitly confirmed in the current image-generation docs is <code>"2K"</code>, used together with <code>"16:9"</code> to produce a higher-resolution landscape image in the multi-turn infographic example. Treat this token as the documented high-resolution switch for the <strong>Gemini image API</strong>; the docs do not enumerate a wider list at the time of writing, so confirm any additional tokens in the model reference at <a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/models</a> before relying on them.</p>
+<p>Checked <time datetime="2026-10-20">October 20, 2026</time> against <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">Google's image-generation docs</a>: Gemini 3 image models generate 1K images by default and can also output 2K and 4K. The <code>image_size</code> value must use an uppercase K, such as <code>"1K"</code>, <code>"2K"</code>, or <code>"4K"</code>. Lowercase values are rejected. A 512px size is documented for Gemini 3.1 Flash Image only, and the Gemini 3.1 Flash Lite image model is documented for 1K only.</p>
+<p>The Python example later on this page stays pinned to <code>gemini-3.1-flash-image</code> and <code>"2K"</code>, which is still a documented token. For a new project, Google's model list recommends Nano Banana 2.1, <code>gemini-nano-banana-2.1</code>.</p>
+
+<h2>Native 4K is not one pixel size</h2>
+<p>On the Nano Banana 2.1 table in those docs, the 1:1 row is 1024×1024 at 1K, 2048×2048 at 2K, and 4096×4096 at 4K. The same "4K" label on the 16:9 row is 5504×3072, not 4096×4096. So 4K is an <code>image_size</code> token whose pixel dimensions depend on aspect ratio. The docs list the other ratios; this note does not restate every cell.</p>
+<p>That API size is also different from a local model's native resolution. The quickstart describes HiDream-O1-Image as an 8B model with native 2048px generation. That sentence is about an open-weight checkpoint, not about Gemini's 4K token, and it is not a quality comparison.</p>
 
 <h2>Defaults and when they kick in</h2>
 <p>Google's docs state that the output size "automatically matches the size of the input image, or is generated as 1:1 squares." That has two practical consequences:</p>
@@ -108,7 +113,7 @@ if interaction.output_image:
 
 <h2>Quick checklist before you ship</h2>
 <ul>
-<li>Confirm the model name in the model reference at <a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/models</a>; <code>gemini-3.1-flash-image</code> is the current generation example in the image-generation docs.</li>
+<li>Confirm the model name in the model reference at <a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/models</a>. The example below stays on <code>gemini-3.1-flash-image</code>. Google's image docs recommend <code>gemini-nano-banana-2.1</code> for new projects.</li>
 <li>Always pass <code>aspect_ratio</code> and <code>image_size</code> for asset-style output rather than relying on defaults.</li>
 <li>Set <code>type: "image"</code> on <code>response_format</code> when you do not want a text reply, or use an array form for text-plus-image.</li>
 <li>Remember that every generated image carries a SynthID watermark, per the image-generation documentation.</li>

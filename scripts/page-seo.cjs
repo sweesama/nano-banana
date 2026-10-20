@@ -157,6 +157,7 @@ function updateTopicHub(source, articles, hub) {
     const selected = sorted.filter(article => topic.categories.includes(article.category)).slice(0, hub.limit || sorted.length);
     const links = selected.map(article => '<li><a href="' + escapeHtml(relativeHref(canonical, SITE_URL + '/blog/' + article.slug + '.html')) + '">' + escapeHtml(article.title) + '</a></li>');
     if (key === 'local') {
+      links.push('<li><a href="' + relativeHref(canonical, SITE_URL + '/guides/local-ai-image-generator.html') + '">Local AI image generator guide</a></li>');
       links.push('<li><a href="' + relativeHref(canonical, SITE_URL + '/guides/hidream-o1-image.html') + '">HiDream-O1-Image installation guide</a></li>');
       links.push('<li><a href="' + relativeHref(canonical, SITE_URL + '/guides/z-image.html') + '">Z-Image model guide</a></li>');
     }
