@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI image editing prompts: Preserve identity and lighting | Nano Banana</title>
+  <meta name="description" content="Build AI image editing prompts that preserve identity, geometry, composition, and lighting while changing backgrounds, products, outfits, text, or logos.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/preserve-identity-lighting-ai-image-edits.html">
+  <!-- PAGE-METADATA:START -->
+<meta property="og:title" content="AI image editing prompts: Preserve identity and lighting | Nano Banana">
+<meta property="og:description" content="Build AI image editing prompts that preserve identity, geometry, composition, and lighting while changing backgrounds, products, outfits, text, or logos.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.nano-banana.live/blog/preserve-identity-lighting-ai-image-edits.html">
+<meta property="og:image" content="https://www.nano-banana.live/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nano Banana: image editing, benchmarks and quickstart">
+<meta property="og:site_name" content="Nano Banana">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI image editing prompts: Preserve identity and lighting | Nano Banana">
+<meta name="twitter:description" content="Build AI image editing prompts that preserve identity, geometry, composition, and lighting while changing backgrounds, products, outfits, text, or logos.">
+<meta name="twitter:image" content="https://www.nano-banana.live/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"Article","headline":"AI image editing prompts: Preserve identity and lighting","description":"Build AI image editing prompts that preserve identity, geometry, composition, and lighting while changing backgrounds, products, outfits, text, or logos.","datePublished":"2026-10-21","dateModified":"2026-10-21","author":{"@id":"https://www.nano-banana.live/#publisher"},"publisher":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/blog/preserve-identity-lighting-ai-image-edits.html"},"isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.nano-banana.live/blog.html"},{"@type":"ListItem","position":3,"name":"AI image editing prompts: Preserve identity and lighting","item":"https://www.nano-banana.live/blog/preserve-identity-lighting-ai-image-edits.html"}]}]}</script>
+<!-- PAGE-METADATA:END -->
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <!-- BREADCRUMBS:START -->
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="../blog.html">Blog</a></li><li><span aria-current="page">AI image editing prompts: Preserve identity and lighting</span></li></ol></nav>
+<!-- BREADCRUMBS:END -->
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Prompting • Oct 21, 2026</div>
+        <h1>AI image editing prompts: Preserve identity and lighting</h1>
+        <p class="lead" style="margin:20px auto;">Build AI image editing prompts that preserve identity, geometry, composition, and lighting while changing backgrounds, products, outfits, text, or logos.</p>
+      </header>
+      <div class="article-content">
+        <p>Preserve identity and lighting by giving the model an explicit contract: name the one allowed change, list facial and scene features to protect, choose whether original illumination stays or changes, and specify necessary shadows or reflections. Send the source image with that instruction, compare the result, then correct one issue per follow-up. This is the core pattern behind useful AI image editing prompts for portraits, products, and backgrounds; vague requests leave too much to infer.</p>
+<h2>Build a five-part edit contract</h2>
+<p>The <a href="https://www.nano-banana.live/prompts/" target="_blank" rel="noopener">AI image prompt recipes</a> make this distinction visible: one background recipe preserves subject lighting and pose, while an identity recipe protects character identity and facial features. Convert that distinction into five explicit controls:</p>
+<ol>
+<li><strong>Allowed edit:</strong> Name the only element the model may change.</li>
+<li><strong>Identity lock:</strong> Protect facial geometry, expression, hairstyle, skin tone, and distinguishing marks.</li>
+<li><strong>Scene lock:</strong> Preserve pose, camera angle, crop, clothing, and object geometry unless instructed otherwise.</li>
+<li><strong>Lighting rule:</strong> State whether to retain the original illumination or relight the subject for the destination.</li>
+<li><strong>Integration rule:</strong> Define consistent contact shadows, cast shadows, reflections, and color spill only where visible.</li>
+</ol>
+<p>Use this prompt skeleton:</p>
+<pre><code>Source of truth: Use the uploaded image as the sole identity reference.
+Allowed edit: [name the exact change].
+Identity lock: Keep facial geometry, expression, hairstyle, skin tone, and distinguishing marks unchanged.
+Scene lock: Preserve pose, camera angle, crop, clothing, and object geometry unless named.
+Lighting rule: [preserve the existing light] or [match the destination light].
+Integration: Require consistent shadows, reflections, and color spill only where visible.
+Do not change: Any unlisted person, product, text, or scene feature.</code></pre>
+<p>Fill every placeholder before submission. The <a href="https://www.nano-banana.live/blog/top-prompt-recipes.html" target="_blank" rel="noopener">instruction-based recipe examples</a> reinforce the same approach: describe concretely what changes and what must remain intact.</p>
+<h2>Decide whether lighting is preserved or relit</h2>
+<p>Preserving identity and preserving lighting overlap, but they are not identical. Facial structure can remain fixed while illumination changes. The recipe collection lists entries for both preserving subject lighting and matching new lighting, and the blog's Lighting Match recipe calls for blue and pink light on the face. Choose one objective before writing the prompt.</p>
+<h3>Preserve the original lighting</h3>
+<p>Use this version when the subject's existing light must remain visually unchanged:</p>
+<pre><code>Replace only the background with a clean, pale studio wall. Preserve facial geometry, expression, hairstyle, skin tone, clothing, pose, crop, camera angle, and the original key-light direction, softness, contrast, and color temperature. Add only a restrained contact shadow that agrees with the existing light. Do not relight the face.</code></pre>
+<h3>Relight for a new environment</h3>
+<p>Use this version when the subject should look naturally placed in the destination scene:</p>
+<pre><code>Replace only the background with a rainy cyberpunk street at night. Preserve the person's facial geometry, expression, hairstyle, skin tone, pose, clothing, and camera angle. Update illumination on the face and clothing to match blue and pink signs, using one consistent shadow direction. Do not add or remove objects.</code></pre>
+<p>If the original illumination must remain, use the first version and explicitly forbid face relighting. If environmental integration is the goal, use the second version. In both cases, the identity lock protects facial structure while the lighting rule controls how illumination affects it.</p>
+<h2>Adapt the contract for common edits</h2>
+<p>A background replacement prompt, product image editing prompt, and portrait edit can share this structure even though their protected features differ.</p>
+<h3>Background and product replacement</h3>
+<p>For a product image editing prompt, define geometry and product markings as protected:</p>
+<pre><code>Place the exact product on a white seamless background with a soft natural shadow. Preserve its geometry, proportions, surface colors, label spelling, and camera angle. Add no props and make no packaging changes.</code></pre>
+<h3>Keep a face unchanged during an outfit edit</h3>
+<p>For a keep face unchanged AI edit, or a preserve identity AI image edit, localize the allowed material change:</p>
+<pre><code>Change only the jacket to red leather. Keep the face, hair, body, pose, hands, camera angle, crop, background, and lighting unchanged. Preserve the garment boundaries and do not alter any other object.</code></pre>
+<h3>Text and logo placement</h3>
+<p>The recipe collection lists both complex text rendering and multi-image fusion capabilities. For an AI image prompt for text and logos, specify the exact wording, visual style, placement, scale, perspective, and role of each reference image:</p>
+<pre><code>Use Image 1 as the product reference and Image 2 as the logo reference. Preserve the logo's exact spelling, symbol proportions, and colors. Place it on [surface] at [location and scale], aligned with the product perspective and matched to the scene lighting. Change nothing else.</code></pre>
+<p>Check every character after generation rather than assuming that a detailed typography instruction produced the intended result.</p>
+<h2>Use the pattern across cloud and local workflows</h2>
+<p>The official <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">Gemini image-generation documentation</a> shows a text instruction and a base64 image supplied through the <code>input</code> parameter. It also describes multi-turn conversation as the recommended way to iterate on images and shows <code>previous_interaction_id</code> for follow-up edits. Begin with the full contract, then use a narrow correction such as: Keep the current background; correct only the contact shadow.</p>
+<p>The prompt library gives values such as <code>seed=42</code>, <code>steps=30</code>, <code>guidance=4.0</code>, and <code>strength=0.6</code> as starting points for compatible open-model pipelines and explicitly says they are not Gemini API parameters. A local API client does not make Nano Banana a local model: the cited January 2026 recipe describes Nano Banana 2 as closed and cloud-hosted. For offline editing, run those open-model starting points in a supported offline alternative rather than passing them to the Gemini API as undocumented fields.</p>
+<h2>Review one variable at a time</h2>
+<ol>
+<li><strong>Identity:</strong> Compare facial geometry, expression, hairstyle, skin tone, and distinguishing marks.</li>
+<li><strong>Composition:</strong> Check pose, crop, camera angle, object boundaries, and unrequested additions.</li>
+<li><strong>Lighting:</strong> Compare direction, softness, contrast, color, shadows, and reflections.</li>
+<li><strong>Text:</strong> Verify wording, capitalization, font style, placement, and logo proportions character by character.</li>
+</ol>
+<p>If one check fails, do not merely repeat preserve identity. Name the violated feature, identify the single permitted correction, and send that as a focused follow-up. Prompt constraints guide the edit, but checking the rendered result remains part of the workflow. For related workflow questions, see the <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">Nano Banana FAQ</a>.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/image-generation</a></li><li><a href="https://www.nano-banana.live/prompts/" target="_blank" rel="noopener">https://www.nano-banana.live/prompts/</a></li><li><a href="https://www.nano-banana.live/blog/top-prompt-recipes.html" target="_blank" rel="noopener">https://www.nano-banana.live/blog/top-prompt-recipes.html</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>

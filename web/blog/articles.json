@@ -384,5 +384,21 @@
       "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://www.nano-banana.live/prompts/"
     ]
+  },
+  {
+    "slug": "preserve-identity-lighting-ai-image-edits",
+    "publishDate": "2026-10-21",
+    "title": "AI image editing prompts: Preserve identity and lighting",
+    "description": "Build AI image editing prompts that preserve identity, geometry, composition, and lighting while changing backgrounds, products, outfits, text, or logos.",
+    "category": "Prompting",
+    "emoji": "💡",
+    "keyword": "preserve identity and lighting in AI image edits",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/image-generation",
+      "https://www.nano-banana.live/prompts/",
+      "https://www.nano-banana.live/blog/top-prompt-recipes.html"
+    ]
   }
 ]

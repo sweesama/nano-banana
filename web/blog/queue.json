@@ -333,12 +333,15 @@
     "category": "Prompting",
     "emoji": "💡",
     "depth": "standard",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://www.nano-banana.live/prompts/",
       "https://www.nano-banana.live/blog/top-prompt-recipes.html"
-    ]
+    ],
+    "lastAttemptAt": "2026-10-21T04:42:19.282Z",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "AI image prompt recipes for background replacement",
