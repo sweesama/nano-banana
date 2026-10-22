@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/</loc>
-    <lastmod>2026-10-20</lastmod>
+    <lastmod>2026-10-22</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/benchmarks/</loc>
@@ -18,7 +18,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/quickstart.html</loc>
-    <lastmod>2026-10-21</lastmod>
+    <lastmod>2026-10-22</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/hidream-o1-image.html</loc>
@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/cloud-deployment.html</loc>
-    <lastmod>2026-10-20</lastmod>
+    <lastmod>2026-10-22</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/run-without-gpu.html</loc>
@@ -162,10 +162,18 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/local-ai-image-generator.html</loc>
-    <lastmod>2026-10-20</lastmod>
+    <lastmod>2026-10-22</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/preserve-identity-lighting-ai-image-edits.html</loc>
     <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://www.nano-banana.live/guides/first-last-frame-video.html</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+  <url>
+    <loc>https://www.nano-banana.live/guides/minimax-h3-locally.html</loc>
+    <lastmod>2026-10-22</lastmod>
   </url>
 </urlset>

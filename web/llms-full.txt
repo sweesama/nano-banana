@@ -19,6 +19,8 @@ As checked on October 9, 2026, Google recommends Nano Banana 2.1 (`gemini-nano-b
 - Home and model distinction: https://www.nano-banana.live/
 - Quickstart and route chooser: https://www.nano-banana.live/guides/quickstart.html
 - Local AI image generator guide: https://www.nano-banana.live/guides/local-ai-image-generator.html
+- Run MiniMax H3 locally: https://www.nano-banana.live/guides/minimax-h3-locally.html
+- First and last frame video: https://www.nano-banana.live/guides/first-last-frame-video.html
 - Gemini Python editing tutorial: https://www.nano-banana.live/blog/nano-banana-api-image-editing-python.html
 - Qwen editing tutorial: https://www.nano-banana.live/blog/qwen-image-local-image-editing-guide.html
 - Hunyuan deployment requirements: https://www.nano-banana.live/blog/hunyuanimage-local-deployment-requirements.html
@@ -34,6 +36,9 @@ Claims about model names, IDs, licenses, weights, commands, and hardware should 
 - Qwen-Image-Edit-2511: https://huggingface.co/Qwen/Qwen-Image-Edit-2511
 - HunyuanImage 3.0: https://github.com/Tencent-Hunyuan/HunyuanImage-3.0
 - HiDream-O1-Image: https://github.com/HiDream-ai/HiDream-O1-Image
+- MiniMax H3 model card: https://huggingface.co/MiniMaxAI/MiniMax-H3
+- MiniMax H3 repository: https://github.com/MiniMax-AI/MiniMax-H3
+- MiniMax H3 local deployment guide: https://platform.minimax.io/docs/guides/local-deploy-h3
 - FLUX 3 announcement: https://bfl.ai/blog/flux-3
 - Qwen-Image 3.0 announcement: https://qwen.ai/blog?id=qwen-image-3.0
 

@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3758496128431673"
+    crossorigin="anonymous"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0f14">
+  <meta name="color-scheme" content="dark">
+  <title>Run MiniMax H3 Locally: Hardware and the API Boundary</title>
+  <meta name="description" content="How to run MiniMax H3 locally. Separate the cloud API from H3-Base weights, with dated hardware notes from MiniMax's own docs.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/guides/minimax-h3-locally.html">
+  <link rel="icon" href="../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+  <style>
+    .table-wrap { overflow-x: auto; margin: 0 0 24px; }
+    .table-wrap table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    .table-wrap th, .table-wrap td { border-bottom: 1px solid var(--glass-border); text-align: left; vertical-align: top; padding: 12px; color: var(--text-muted); }
+    .table-wrap th { color: #fff; }
+  </style>
+<!-- PAGE-METADATA:START -->
+<meta property="og:title" content="Run MiniMax H3 Locally: Hardware and the API Boundary">
+<meta property="og:description" content="How to run MiniMax H3 locally. Separate the cloud API from H3-Base weights, with dated hardware notes from MiniMax&#39;s own docs.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.nano-banana.live/guides/minimax-h3-locally.html">
+<meta property="og:image" content="https://www.nano-banana.live/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nano Banana: image editing, benchmarks and quickstart">
+<meta property="og:site_name" content="Nano Banana">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Run MiniMax H3 Locally: Hardware and the API Boundary">
+<meta name="twitter:description" content="How to run MiniMax H3 locally. Separate the cloud API from H3-Base weights, with dated hardware notes from MiniMax&#39;s own docs.">
+<meta name="twitter:image" content="https://www.nano-banana.live/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"TechArticle","name":"How to Run MiniMax H3 Locally","description":"How to run MiniMax H3 locally. Separate the cloud API from H3-Base weights, with dated hardware notes from MiniMax's own docs.","url":"https://www.nano-banana.live/guides/minimax-h3-locally.html","headline":"How to Run MiniMax H3 Locally","dateModified":"2026-10-22","publisher":{"@id":"https://www.nano-banana.live/#publisher"},"author":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/guides/minimax-h3-locally.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Quickstart","item":"https://www.nano-banana.live/guides/quickstart.html"},{"@type":"ListItem","position":3,"name":"How to Run MiniMax H3 Locally","item":"https://www.nano-banana.live/guides/minimax-h3-locally.html"}]}]}</script>
+<!-- PAGE-METADATA:END -->
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../about.html">About</a>
+        <a href="../blog.html">Blog</a>
+      </div>
+    </nav>
+<!-- BREADCRUMBS:START -->
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="quickstart.html">Quickstart</a></li><li><span aria-current="page">How to Run MiniMax H3 Locally</span></li></ol></nav>
+<!-- BREADCRUMBS:END -->
+    <article class="article-container">
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Local models • Checked October 22, 2026</div>
+        <h1>How to Run MiniMax H3 Locally</h1>
+        <p class="lead" style="margin:20px auto;">MiniMax H3 can run as open H3-Base weights on hardware you control, or as a hosted MiniMax API. Those are different systems. This independent page only covers the local-run boundary, the published hardware notes, and where a first and last frame fit.</p>
+      </header>
+      <div class="article-content">
+        <p>nano-banana.live is not a MiniMax site, does not distribute H3 weights, and has not benchmarked H3. Figures below are transcribed from MiniMax's model card, repository, and local-deploy guide, re-read on October 22, 2026. The deploy guide itself says it was last reviewed on August 26, 2026. Re-check those pages before you buy hardware or pin a commit.</p>
+
+        <h2 id="cloud-versus-local">A local client is not local inference</h2>
+        <p>The <a href="https://huggingface.co/MiniMaxAI/MiniMax-H3" target="_blank" rel="noopener">MiniMax-H3 model card</a> lists two hosted ways to use the full product: the Open Platform API at platform.minimax.io (global) or platform.minimaxi.com (China), and the Hailuo apps at hailuoai.video and hailuoai.com. A Python script on your laptop that calls those endpoints is a client. The model still runs on MiniMax's service.</p>
+        <p>True local inference means the open weights execute on a machine you control. The same card says the complete H3 system has three modules, and only one of them is in the open release:</p>
+        <ul>
+          <li><strong>H3-Context-IR</strong> turns free-form multimodal instructions into a structured representation. MiniMax says it depends on hosted models and is not in the open-source release.</li>
+          <li><strong>H3-Base</strong> generates 768p video with synchronized stereo audio. This is the part you can download.</li>
+          <li><strong>H3-Regenerate-2K</strong> regenerates a 2K result from the 768p output and the original context. MiniMax says this module is not open-sourced yet. The card's "2K" line is this hosted step, not a flag on the local checkpoint.</li>
+        </ul>
+        <p>MiniMax's <a href="https://platform.minimax.io/docs/guides/local-deploy-h3" target="_blank" rel="noopener">local-deploy guide</a> states the consequence directly: a self-hosted H3-Base service does not reproduce the complete platform Context-IR and 2K workflow. The "Full 2K workflow" on the model card mixes a local SGLang process with those two hosted APIs. That mix is not offline.</p>
+
+        <h2 id="what-is-released">What the open release contains</h2>
+        <p>The model card and the <a href="https://github.com/MiniMax-AI/MiniMax-H3" target="_blank" rel="noopener">MiniMax-H3 repository</a> describe two task checkpoints. Both are CFG-distilled Omni Transformer weights, shipped with a processor, tokenizer, text encoder, visual VAE, and audio VAE.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Checkpoint</th><th>Tasks</th><th>Inputs</th><th>Output</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>H3-Base FL2VA</td>
+                <td><code>t2va</code> text-to-audio-video, and <code>fl2va</code> first/last-frame-to-audio-video</td>
+                <td>Text. Optionally a first frame, a last frame, or both.</td>
+                <td>Video and audio, BF16</td>
+              </tr>
+              <tr>
+                <td>H3-Base Ref2VA</td>
+                <td><code>ref2va</code> reference-to-audio-video</td>
+                <td>Text plus reference images, videos, and/or audio. The card caps this at 9 images, 3 video clips, and 3 audio clips, with at most 12 files combined. Each clip is 2–15 seconds, and the combined duration of each modality is at most 15 seconds.</td>
+                <td>Video and audio, BF16</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The card's published output contract, checked the same day, is 4–15 seconds, a short side of 768 pixels by default, 24 FPS, and 32 kHz stereo. Aspect ratios it names include 21:9, 16:9, 4:3, 1:1, 3:4, and 9:16. Dialogue has stable support for Arabic, Chinese, English, French, German, Italian, Japanese, Korean, Portuguese, Russian, and Spanish. FL2VA and Ref2VA are not interchangeable: the deploy guide says an FL2VA server will not serve <code>ref2va</code>.</p>
+        <p>On architecture, the card says H3-Omni-Transformer is a 33B-parameter dense model, with about 13B of those parameters in AdaLN branches that do not need to be loaded for inference-only deployment. The text encoder uses the full Qwen3-VL-32B weights and reads hidden states from layer 50. Those are parameter counts, not a measured VRAM minimum.</p>
+        <p>The weights are under the MiniMax H3 Community License Agreement. The license text on the model card and in the repository is the authority for territory, commercial use, and acceptable use. This page does not restate those terms.</p>
+
+        <h2 id="run-locally">How to run MiniMax H3 locally</h2>
+        <p>The model card names four inference frameworks and points each one at its own guide: SGLang, vLLM, Diffusers, and ComfyUI. MiniMax's deploy guide, last reviewed August 26, 2026, splits them into a visual ComfyUI path and a pinned SGLang service. It treats the vLLM-Omni recipe as community-maintained, not as that page's reproducible baseline.</p>
+
+        <h3>ComfyUI on a workstation</h3>
+        <p>This is the path the deploy guide recommends for interactive local use. It is still local inference only for the converted weights ComfyUI downloads. Those files come from <code>Comfy-Org/MiniMax-H3</code>, including INT8 and NVFP4 components. MiniMax says they are not the same numerical baseline as the official mixed BF16/FP32 checkpoint, so memory and quality can differ.</p>
+        <p>The guide's reviewed baseline is ComfyUI <code>0.30.0</code> or later, with built-in T2V, I2V, and R2V templates. It also says a minimum GPU memory figure is not published for that ComfyUI guide. The steps it lists are:</p>
+        <ol>
+          <li>Update ComfyUI to <code>0.30.0</code> or later and start it.</li>
+          <li>Open Template Library, then Video.</li>
+          <li>Choose MiniMax H3 T2V, I2V, or R2V. T2V and I2V use the FL2VA diffusion model. R2V uses the separate Ref2VA model.</li>
+          <li>Let the model-scan pop-up download the files the template asks for. Restart ComfyUI if the model list does not refresh.</li>
+          <li>Set the prompt and any image, video, or audio references. I2V takes an input image, with optional first and last frames.</li>
+          <li>In Resolution Selector, use 0.98 megapixels with dimensions that are multiples of 32, or set 1344×768 directly. The guide says not to use the 1.0 megapixel step, because it resolves to 1376×768, above the H3-Base 768×1344 pixel-area limit.</li>
+          <li>Queue the workflow. The documented result is an MP4 with a 24 FPS video stream and synchronized stereo audio.</li>
+        </ol>
+        <p>Duration snaps to the model's <code>17k + 5</code> frame grid at 24 FPS, so a requested length can move to a legal frame count. The example FL2VA workflow uses 20 steps, with an optional 8-step Turbo LoRA that the guide says can reduce motion and audio quality. Record the LoRA if you compare outputs.</p>
+
+        <h3>SGLang for a self-hosted API</h3>
+        <p>The model card's short FL2VA example is a four-GPU serve command. It does not name the GPU:</p>
+        <pre><code>sglang serve \
+  --model-path MiniMaxAI/MiniMax-H3 \
+  --num-gpus 4 \
+  --ulysses-degree 4 \
+  --performance-mode speed \
+  --host 0.0.0.0 \
+  --port 30010 \
+  --model-variant fl2va</code></pre>
+        <p>Read that host flag carefully. The deploy guide's pinned quickstart binds <code>127.0.0.1</code> instead, and it says to put authentication, TLS, quotas, and the license's hosted-service safeguards in front of the port before anyone changes the bind to <code>0.0.0.0</code>. Copying the model-card command onto a public interface is not the guide's baseline.</p>
+        <p>The same guide's reproducible baseline, reviewed August 26, 2026, is narrower than "install SGLang and go":</p>
+        <ul>
+          <li>Model <code>MiniMaxAI/MiniMax-H3</code> at revision <code>42ed227ee7df40d41602854ae760620d6eb651fe</code>.</li>
+          <li>SGLang source commit <code>2511743bd784e69e5a81ca3d926a000711dae4ab</code>. The page says H3 support ships in SGLang v0.5.17 and later on PyPI, and that the diffusion install still uses <code>--prerelease=allow</code>. It also says H3 diffusion serving is not yet a stable SGLang release contract.</li>
+          <li>Download only the partition you will serve. For FL2VA that is <code>model_index.json</code> plus <code>FL2VA/*</code>. Keep the repository root as <code>--model-path</code> and select the partition with <code>--model-variant fl2va</code>. Do not point the server at the <code>FL2VA/</code> subdirectory.</li>
+          <li>The quickstart hardware line is one node with 8× NVIDIA B200, Ulysses degree 8, and resident components. The page calls this a reference configuration, not a minimum.</li>
+          <li>Readiness is <code>/health</code> returning <code>{"status":"ok"}</code>. <code>/liveness</code> only means the HTTP process is up.</li>
+        </ul>
+        <p>The model card's download for a single task family is:</p>
+        <pre><code>hf download MiniMaxAI/MiniMax-H3 --include "model_index.json" "FL2VA/*" --local-dir MiniMax-H3</code></pre>
+        <p>For an air-gapped machine, the deploy guide says to run that download on a connected computer, copy the directory, confirm <code>model_index.json</code> and the chosen <code>FL2VA/</code> or <code>Ref2VA/</code> directory are present, and start with <code>HF_HUB_OFFLINE=1</code>. The mainland China mirror <code>MiniMax/MiniMax-H3</code> is mentioned, and the guide says revision parity with the pinned Hugging Face commit has not been documented, so the pinned baseline does not use it.</p>
+        <p>The model card also points at Diffusers and at a vLLM recipe. Diffusers is a loader for the same Hugging Face repository, not a second model. The vLLM-Omni section on MiniMax's deploy page is labeled experimental and community-maintained. Neither one turns the hosted Context-IR or 2K modules into local code.</p>
+
+        <h2 id="hardware">Hardware and system requirements</h2>
+        <p>There is no single "minimum PC" in the sources read on October 22, 2026. The deploy guide says an unpublished requirement is not the same thing as no requirement. Use the row that matches the path you actually install.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Path</th><th>What MiniMax published</th><th>How to read it</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SGLang quickstart</td>
+                <td>8× NVIDIA B200 on one node, Ulysses degree 8, official mixed BF16/FP32 weights, resident components. Linux and Python 3.12 for that page's source install.</td>
+                <td>Reference topology in the deploy guide, last reviewed August 26, 2026. Not a minimum. Host RAM for this recipe is not published. No H3-specific CUDA or driver minimum is published.</td>
+              </tr>
+              <tr>
+                <td>Model-card SGLang example</td>
+                <td><code>--num-gpus 4</code> and <code>--ulysses-degree 4</code>.</td>
+                <td>The deploy guide says this command does not name the GPU and does not publish peak VRAM, host RAM, disk, interconnect, driver, CUDA, or latency for that command.</td>
+              </tr>
+              <tr>
+                <td>Disk for the official weights</td>
+                <td>The SGLang section says the exact requirement is not published, and that the upstream cookbook reports approximately 108 GB of model weights. The vLLM section on the same page says about 135 GiB per checkpoint partition, or roughly 270 GiB if you keep both.</td>
+                <td>Two different upstream write-ups. Reserve extra space for caches and outputs. Do not add the numbers together.</td>
+              </tr>
+              <tr>
+                <td>ComfyUI</td>
+                <td>ComfyUI 0.30.0 or later. Minimum GPU memory and performance are not published in the ComfyUI H3 guide.</td>
+                <td>Validate the selected template on your machine. Pruned and quantized Comfy-Org files are a different artifact from the BF16/FP32 baseline.</td>
+              </tr>
+              <tr>
+                <td>SGLang upstream, consumer GPUs</td>
+                <td>2× RTX 5090 32 GB, TP 2 plus layerwise offload, lossless, the quickstart profile at 50 steps: 559.67 s end to end and 26.3 GiB sampled peak per GPU. 1× RTX 4090 24 GB with layerwise offload and <code>kitchen_int8</code>: about 18 GB GPU peak, with latency depending on host RAM and offload bandwidth.</td>
+                <td>Transcribed on MiniMax's page from SGLang upstream. The page says to treat consumer, offload, quantization, AMD, and multi-node recipes as upstream configurations, not as MiniMax-verified hardware, until MiniMax publishes a test matrix.</td>
+              </tr>
+              <tr>
+                <td>vLLM-Omni upstream</td>
+                <td>The two-GPU offload recipe requires at least 200 GiB of available system RAM, and a 384 GiB host is recommended. One published consumer row is 2× RTX 5090 32 GB, TP 2 plus distributed layerwise offload, T2VA at 1344×768, 124 frames, 50 steps: 8 min 38 s client end to end and about 22.6 GiB sampled peak per GPU, from a single validation run.</td>
+                <td>Community recipe reviewed August 26, 2026. Not the pinned SGLang baseline, and not comparable to the SGLang rows unless the workload matches. <code>ffmpeg</code> and <code>ffprobe</code> must be on <code>PATH</code>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The deploy guide also transcribes data-center timings, including a 4× H200 lossless mean of 75.10 seconds for a 1344×768, 124-frame, 24 FPS, 50-step, 5-second T2VA workload. Those rows were measured on upstream builds, not on the exact commit the page pins. They are capacity notes from that page, not a result from this site.</p>
+        <p>If the published multi-GPU shape does not fit the computer you own, a rented machine is still remote hardware. The <a href="cloud-deployment.html">cloud GPU guide</a> on this site is about planning a rental for image checkpoints. It does not add an H3 VRAM number, and a rental does not make H3-Context-IR or H3-Regenerate-2K local.</p>
+
+        <h2 id="versus-alternatives">MiniMax H3 versus the hosted API</h2>
+        <p>The useful comparison is the system boundary, not a quality ranking. This site has not run a side-by-side.</p>
+        <ul>
+          <li><strong>Hosted API or Hailuo app.</strong> You send the request to MiniMax. The full stack can include Context-IR and 2K regeneration. You do not install weights. Inference is not local.</li>
+          <li><strong>Local H3-Base.</strong> You download FL2VA, Ref2VA, or both, and you run SGLang, vLLM, Diffusers, or the Comfy-Org conversion. Output stays in the 768p contract above unless you call the hosted 2K API afterward.</li>
+          <li><strong>Comfy-Org weights versus the official checkpoint.</strong> Both can run on your machine. MiniMax says they are different artifacts. Do not mix their benchmark claims.</li>
+        </ul>
+        <p>Image models already documented here are a different task, not a substitute checkpoint for H3. <a href="local-ai-image-generator.html">FLUX.1-dev</a>, <a href="hidream-o1-image.html">HiDream-O1-Image</a>, <a href="z-image.html">Z-Image</a>, <a href="../blog/qwen-image-local-image-editing-guide.html">Qwen-Image-Edit-2511</a>, and <a href="../blog/hunyuanimage-local-deployment-requirements.html">HunyuanImage 3.0</a> generate or edit still images. They do not implement H3's <code>fl2va</code> audio-video task. No latency or preference score between those models and H3 is claimed here.</p>
+
+        <h2 id="prompts">Prompt structure from the official skill</h2>
+        <p>MiniMax ships a prompt-writing skill in the <a href="https://github.com/MiniMax-AI/MiniMax-H3/blob/main/skills/h3-prompt-writing/SKILL.md" target="_blank" rel="noopener">H3 repository</a>. It is a format guide, not a measured quality score. For the base modes the skill says to keep three fields in this order: <code>integrated_multimodal_description</code>, <code>overall_soundscape</code>, then <code>non_diegetic_music</code>. The modes it names are:</p>
+        <ul>
+          <li><strong>T2VA:</strong> build the audiovisual timeline from text.</li>
+          <li><strong>I2VA:</strong> start from the first frame and move forward.</li>
+          <li><strong>FL2VA:</strong> describe a continuous path between the first and last frames.</li>
+          <li><strong>L2VA:</strong> infer a plausible opening that lands on the supplied last frame.</li>
+        </ul>
+        <p>Ref2VA is a separate six-part rewrite: <code>subject_definitions</code>, <code>summary</code>, <code>retention_analysis</code>, <code>detailed_description</code>, <code>overall_soundscape</code>, and <code>non_diegetic_music</code>. The skill says to write the rewrite in English, keep dialogue and on-screen text in their original language, match the description to the requested duration (4–15 seconds), and state how a keyframe connects to the timeline. The full templates are <code>references/base-en.txt</code> and <code>references/ref-en.txt</code> next to that skill. This page does not add prompts of its own.</p>
+
+        <h2 id="first-last-frame">First and last frame</h2>
+        <p>FL2VA is the local checkpoint for that job. The model card says zero images means text-to-video, one image means a first-frame or last-frame condition, and two images mean first-and-last-frame generation. The deploy guide maps the same idea to SGLang task <code>fl2va</code> with one or two image conditions whose role is <code>keyframe</code>, and to the ComfyUI I2V template.</p>
+        <p>This site cannot run that generation. If you already have a clip and need the opening and closing images as files, the <a href="first-last-frame-video.html">first and last frame video</a> page extracts them in the browser. It does not call MiniMax.</p>
+
+        <h2>Sources</h2>
+        <ul>
+          <li><a href="https://huggingface.co/MiniMaxAI/MiniMax-H3" target="_blank" rel="noopener">https://huggingface.co/MiniMaxAI/MiniMax-H3</a> — model card, re-read October 22, 2026.</li>
+          <li><a href="https://github.com/MiniMax-AI/MiniMax-H3" target="_blank" rel="noopener">https://github.com/MiniMax-AI/MiniMax-H3</a> — repository, including the prompt skill.</li>
+          <li><a href="https://platform.minimax.io/docs/guides/local-deploy-h3" target="_blank" rel="noopener">https://platform.minimax.io/docs/guides/local-deploy-h3</a> — local-deploy guide, last reviewed August 26, 2026, re-read October 22, 2026.</li>
+          <li><a href="https://github.com/MiniMax-AI/MiniMax-H3/blob/main/skills/h3-prompt-writing/SKILL.md" target="_blank" rel="noopener">https://github.com/MiniMax-AI/MiniMax-H3/blob/main/skills/h3-prompt-writing/SKILL.md</a></li>
+        </ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana. Independent notes, not an official MiniMax site.</p></footer>
+  </div>
+</body>
+</html>
