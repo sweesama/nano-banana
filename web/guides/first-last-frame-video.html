@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3758496128431673"
+    crossorigin="anonymous"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0f14">
+  <meta name="color-scheme" content="dark">
+  <title>First and Last Frame Video: Extract Frames in the Browser</title>
+  <meta name="description" content="Extract the first and last frame of a video in your browser. A guide to first-and-last-frame video generation, with no upload and no fake generate button.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/guides/first-last-frame-video.html">
+  <link rel="icon" href="../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+  <style>
+    .frame-tool { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px; margin: 8px 0 32px; }
+    .frame-tool label { display: block; font-weight: 600; color: #fff; margin-bottom: 8px; }
+    .frame-tool input[type="file"] { color: var(--text-muted); max-width: 100%; }
+    .frame-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .frame-grid figure { margin: 0; }
+    .frame-grid figcaption { color: #fff; font-weight: 600; margin-bottom: 8px; }
+    .frame-grid canvas { width: 100%; height: auto; background: #000; border-radius: 12px; border: 1px solid var(--glass-border); display: block; }
+    .frame-tool video { width: 100%; border-radius: 12px; margin: 16px 0; background: #000; }
+    .frame-tool button.btn { cursor: pointer; font: inherit; margin-top: 10px; }
+    .frame-tool button.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    #frame-status { min-height: 1.5em; }
+    @media (max-width: 700px) { .frame-grid { grid-template-columns: 1fr; } }
+  </style>
+<!-- PAGE-METADATA:START -->
+<meta property="og:title" content="First and Last Frame Video: Extract Frames in the Browser">
+<meta property="og:description" content="Extract the first and last frame of a video in your browser. A guide to first-and-last-frame video generation, with no upload and no fake generate button.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.nano-banana.live/guides/first-last-frame-video.html">
+<meta property="og:image" content="https://www.nano-banana.live/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nano Banana: image editing, benchmarks and quickstart">
+<meta property="og:site_name" content="Nano Banana">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="First and Last Frame Video: Extract Frames in the Browser">
+<meta name="twitter:description" content="Extract the first and last frame of a video in your browser. A guide to first-and-last-frame video generation, with no upload and no fake generate button.">
+<meta name="twitter:image" content="https://www.nano-banana.live/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"TechArticle","name":"First and Last Frame Video","headline":"First and Last Frame Video","description":"Extract the first and last frame of a video in your browser. A guide to first-and-last-frame video generation, with no upload and no fake generate button.","url":"https://www.nano-banana.live/guides/first-last-frame-video.html","dateModified":"2026-10-22","publisher":{"@id":"https://www.nano-banana.live/#publisher"},"author":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/guides/first-last-frame-video.html"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does this page generate a first-and-last-frame video?","acceptedAnswer":{"@type":"Answer","text":"No. The tool on this page only reads a video file in your browser and saves the opening frame and the closing frame as PNG images. It does not call a video model, and it does not upload the file to nano-banana.live."}},{"@type":"Question","name":"Are videos uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. The file is opened with a local object URL, drawn to a canvas in this browser tab, and downloaded from that canvas. Closing the tab or choosing another file drops that local copy. This page has no generate request and no video upload endpoint."}},{"@type":"Question","name":"What is first-and-last-frame video generation?","acceptedAnswer":{"@type":"Answer","text":"A generator is given the image a clip should start on, the image it should end on, or both, and it produces the frames in between. MiniMax's H3-Base FL2VA model card describes that input pattern: no image is text-to-video, one image is a first-frame or last-frame condition, and two images are first-and-last-frame generation. Checked October 22, 2026."}},{"@type":"Question","name":"Can nano-banana.live run that generation for me?","acceptedAnswer":{"@type":"Answer","text":"No. This site does not host MiniMax H3 and does not proxy the MiniMax API. The local-run guide links the documented H3-Base paths. MiniMax's own platform is the hosted service. A script on your computer that only calls their API is still cloud inference."}},{"@type":"Question","name":"Why can the saved last frame be slightly before the final timestamp?","acceptedAnswer":{"@type":"Answer","text":"Browsers often cannot seek to the exact duration. This tool seeks a short step before the reported duration and draws the frame the browser decodes there. On a one-frame or very short file, the first and last images can match."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Quickstart","item":"https://www.nano-banana.live/guides/quickstart.html"},{"@type":"ListItem","position":3,"name":"First and Last Frame Video","item":"https://www.nano-banana.live/guides/first-last-frame-video.html"}]}]}</script>
+<!-- PAGE-METADATA:END -->
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../about.html">About</a>
+        <a href="../blog.html">Blog</a>
+      </div>
+    </nav>
+<!-- BREADCRUMBS:START -->
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="quickstart.html">Quickstart</a></li><li><span aria-current="page">First and Last Frame Video</span></li></ol></nav>
+<!-- BREADCRUMBS:END -->
+    <article class="article-container">
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Browser tool • Checked October 22, 2026</div>
+        <h1>First and Last Frame Video</h1>
+        <p class="lead" style="margin:20px auto;">A first-and-last-frame video starts on one image and ends on another. This page extracts those two frames from a file you already have. It does not generate the clip between them.</p>
+      </header>
+      <div class="article-content">
+        <p>nano-banana.live has no video-generation API and no upload endpoint for this tool. The extractor below uses a <code>video</code> element and a <code>canvas</code> in your browser. The file is not sent to this site. Turning the two images into a transition still requires a model or a hosted service that accepts a first frame, a last frame, or both.</p>
+
+        <h2 id="extract">Extract the first and last frame</h2>
+        <div class="frame-tool">
+          <form id="frame-form">
+            <label for="video-file">Choose a video on this device</label>
+            <input id="video-file" name="video" type="file" accept="video/*">
+          </form>
+          <p id="frame-status" role="status">Choose a video file. Nothing is uploaded.</p>
+          <video id="frame-video" controls playsinline muted hidden></video>
+          <div class="frame-grid">
+            <figure>
+              <figcaption>First frame</figcaption>
+              <canvas id="first-canvas" width="16" height="9" aria-label="First frame preview"></canvas>
+              <button type="button" class="btn btn-glass" id="first-download" disabled>Download first frame</button>
+            </figure>
+            <figure>
+              <figcaption>Last frame</figcaption>
+              <canvas id="last-canvas" width="16" height="9" aria-label="Last frame preview"></canvas>
+              <button type="button" class="btn btn-glass" id="last-download" disabled>Download last frame</button>
+            </figure>
+          </div>
+        </div>
+
+        <h2 id="what-it-means">What the two frames are for</h2>
+        <p>First-and-last-frame generation is a conditioning pattern. You supply the opening image, the closing image, or just one of them, and a video model fills the frames between those constraints. The images are inputs. They are not the finished video, and saving them does not start a render.</p>
+        <p>One published implementation is MiniMax H3-Base FL2VA. Its <a href="https://huggingface.co/MiniMaxAI/MiniMax-H3" target="_blank" rel="noopener">model card</a>, re-read October 22, 2026, says that checkpoint accepts zero, one, or two images: none is text-to-video, one is a first-frame or last-frame condition, and two are first-and-last-frame generation. MiniMax's <a href="https://platform.minimax.io/docs/guides/local-deploy-h3" target="_blank" rel="noopener">local-deploy guide</a>, last reviewed August 26, 2026, maps that to the ComfyUI I2V template and to SGLang task <code>fl2va</code>. Hugging Face's <a href="https://github.com/huggingface/diffusers/blob/main/docs/source/en/api/pipelines/minimax_h3.md" target="_blank" rel="noopener">Diffusers documentation</a> for the same checkpoint names the inputs <code>image</code> and <code>last_image</code>. Those pages are the workflows. This website does not call them.</p>
+
+        <h2 id="tutorial">Use the frames in a real workflow</h2>
+        <ol>
+          <li>Pick a video you have the rights to use. The status line should keep saying the file stays in this tab.</li>
+          <li>Wait until the status line reports both a first-frame time and a last-frame time, then download the two PNGs. The pixel size is whatever the browser decoded, not a model's required canvas.</li>
+          <li>Treat the PNGs as conditions. A generator still has to produce the in-between frames, the frame rate, and, for H3-Base, the stereo audio.</li>
+          <li>For a documented local path, follow <a href="minimax-h3-locally.html">How to Run MiniMax H3 Locally</a>. That guide separates H3-Base weights from MiniMax's hosted API. H3-Context-IR and H3-Regenerate-2K are not in the open weights.</li>
+          <li>If you want MiniMax to run the job on their servers, use the platform linked from the model card. A script on your computer that only calls that API is still cloud inference. Image-only local routes on this site, such as the <a href="local-ai-image-generator.html">local AI image generator guide</a>, do not perform this video task.</li>
+        </ol>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>Does this page generate a first-and-last-frame video?</h3>
+        <p>No. The tool on this page only reads a video file in your browser and saves the opening frame and the closing frame as PNG images. It does not call a video model, and it does not upload the file to nano-banana.live.</p>
+        <h3>Are videos uploaded to a server?</h3>
+        <p>No. The file is opened with a local object URL, drawn to a canvas in this browser tab, and downloaded from that canvas. Closing the tab or choosing another file drops that local copy. This page has no generate request and no video upload endpoint.</p>
+        <h3>What is first-and-last-frame video generation?</h3>
+        <p>A generator is given the image a clip should start on, the image it should end on, or both, and it produces the frames in between. MiniMax's H3-Base FL2VA model card describes that input pattern: no image is text-to-video, one image is a first-frame or last-frame condition, and two images are first-and-last-frame generation. Checked October 22, 2026.</p>
+        <h3>Can nano-banana.live run that generation for me?</h3>
+        <p>No. This site does not host MiniMax H3 and does not proxy the MiniMax API. The local-run guide links the documented H3-Base paths. MiniMax's own platform is the hosted service. A script on your computer that only calls their API is still cloud inference.</p>
+        <h3>Why can the saved last frame be slightly before the final timestamp?</h3>
+        <p>Browsers often cannot seek to the exact duration. This tool seeks a short step before the reported duration and draws the frame the browser decodes there. On a one-frame or very short file, the first and last images can match.</p>
+
+        <h2>Sources</h2>
+        <ul>
+          <li><a href="https://huggingface.co/MiniMaxAI/MiniMax-H3" target="_blank" rel="noopener">https://huggingface.co/MiniMaxAI/MiniMax-H3</a></li>
+          <li><a href="https://platform.minimax.io/docs/guides/local-deploy-h3" target="_blank" rel="noopener">https://platform.minimax.io/docs/guides/local-deploy-h3</a></li>
+          <li><a href="https://github.com/huggingface/diffusers/blob/main/docs/source/en/api/pipelines/minimax_h3.md" target="_blank" rel="noopener">https://github.com/huggingface/diffusers/blob/main/docs/source/en/api/pipelines/minimax_h3.md</a></li>
+          <li><a href="minimax-h3-locally.html">How to Run MiniMax H3 Locally</a></li>
+        </ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+  <script>
+    (function () {
+      var form = document.getElementById("frame-form");
+      var input = document.getElementById("video-file");
+      var video = document.getElementById("frame-video");
+      var status = document.getElementById("frame-status");
+      var firstCanvas = document.getElementById("first-canvas");
+      var lastCanvas = document.getElementById("last-canvas");
+      var firstButton = document.getElementById("first-download");
+      var lastButton = document.getElementById("last-download");
+      var objectUrl = "";
+      var runId = 0;
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+      });
+
+      function setReady(button, ready) {
+        button.disabled = !ready;
+      }
+
+      function clearCanvas(canvas) {
+        var context = canvas.getContext("2d");
+        canvas.width = 16;
+        canvas.height = 9;
+        context.fillStyle = "#000";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      function resetOutputs() {
+        setReady(firstButton, false);
+        setReady(lastButton, false);
+        clearCanvas(firstCanvas);
+        clearCanvas(lastCanvas);
+      }
+
+      function waitFor(target, eventName, timeoutMs) {
+        return new Promise(function (resolve, reject) {
+          var timer = setTimeout(function () {
+            cleanup();
+            reject(new Error("This file took too long to decode. Try a shorter clip or another browser."));
+          }, timeoutMs);
+          function onReady() { cleanup(); resolve(); }
+          function onError() { cleanup(); reject(new Error("The browser could not decode this file.")); }
+          function cleanup() {
+            clearTimeout(timer);
+            target.removeEventListener(eventName, onReady);
+            target.removeEventListener("error", onError);
+          }
+          target.addEventListener(eventName, onReady);
+          target.addEventListener("error", onError);
+        });
+      }
+
+      function seekTo(time) {
+        return new Promise(function (resolve, reject) {
+          var settled = false;
+          var finalSeek = false;
+          var timer = setTimeout(function () {
+            fail(new Error("The browser could not seek to the closing frame."));
+          }, 10000);
+          function afterBump() {
+            video.removeEventListener("seeked", afterBump);
+            finalSeek = true;
+            try { video.currentTime = time; } catch (error) { fail(error); }
+          }
+          function cleanup() {
+            clearTimeout(timer);
+            video.removeEventListener("seeked", onSeeked);
+            video.removeEventListener("seeked", afterBump);
+            video.removeEventListener("error", onError);
+          }
+          function succeed() {
+            if (settled) return;
+            settled = true;
+            cleanup();
+            resolve(video.currentTime);
+          }
+          function fail(error) {
+            if (settled) return;
+            settled = true;
+            cleanup();
+            reject(error);
+          }
+          function onError() { fail(new Error("The browser could not decode this file.")); }
+          function onSeeked() {
+            if (finalSeek && Math.abs(video.currentTime - time) <= 0.05) succeed();
+          }
+          video.addEventListener("seeked", onSeeked);
+          video.addEventListener("error", onError);
+          try {
+            if (Math.abs(video.currentTime - time) < 0.001) {
+              var bump = time <= 0 ? Math.min(0.05, (video.duration || 0.05) / 2) : Math.max(0, time - 0.05);
+              if (Math.abs(bump - time) < 0.001) {
+                succeed();
+                return;
+              }
+              video.addEventListener("seeked", afterBump);
+              video.currentTime = bump;
+              return;
+            }
+            finalSeek = true;
+            video.currentTime = time;
+          } catch (error) {
+            fail(error);
+          }
+        });
+      }
+
+      function drawCurrentFrame(canvas) {
+        if (!video.videoWidth || !video.videoHeight) {
+          throw new Error("This file did not produce a video frame. Try another browser or another encode.");
+        }
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.style.aspectRatio = video.videoWidth + " / " + video.videoHeight;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        var x = Math.min(canvas.width - 1, Math.floor(canvas.width / 2));
+        var y = Math.min(canvas.height - 1, Math.floor(canvas.height / 2));
+        return ctx.getImageData(x, y, 1, 1).data[3] > 0;
+      }
+
+      function paintFrame(canvas) {
+        return new Promise(function (resolve, reject) {
+          var attempts = 0;
+          function tryDraw() {
+            var painted;
+            attempts += 1;
+            try {
+              painted = drawCurrentFrame(canvas);
+            } catch (error) {
+              reject(error);
+              return;
+            }
+            if (painted) {
+              resolve();
+              return;
+            }
+            if (attempts >= 8) {
+              reject(new Error("This file did not produce a video frame. Try another browser or another encode."));
+              return;
+            }
+            requestAnimationFrame(tryDraw);
+          }
+          tryDraw();
+        });
+      }
+
+      function formatSeconds(time) {
+        return (Math.round(time * 1000) / 1000).toFixed(3) + "s";
+      }
+
+      function downloadCanvas(canvas, filename) {
+        canvas.toBlob(function (blob) {
+          if (!blob) {
+            status.textContent = "The browser could not encode the PNG.";
+            return;
+          }
+          var url = URL.createObjectURL(blob);
+          var link = document.createElement("a");
+          link.href = url;
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
+        }, "image/png");
+      }
+
+      firstButton.addEventListener("click", function () {
+        if (!firstButton.disabled) downloadCanvas(firstCanvas, "first-frame.png");
+      });
+      lastButton.addEventListener("click", function () {
+        if (!lastButton.disabled) downloadCanvas(lastCanvas, "last-frame.png");
+      });
+
+      input.addEventListener("change", function () {
+        var file = input.files && input.files[0];
+        var currentRun = ++runId;
+        resetOutputs();
+        video.pause();
+        video.removeAttribute("src");
+        video.hidden = true;
+        if (objectUrl) {
+          URL.revokeObjectURL(objectUrl);
+          objectUrl = "";
+        }
+        if (!file) {
+          status.textContent = "Choose a video file. Nothing is uploaded.";
+          return;
+        }
+        status.textContent = "Reading the file locally. Nothing is uploaded.";
+        objectUrl = URL.createObjectURL(file);
+        var decoded = waitFor(video, "loadeddata", 15000);
+        video.hidden = false;
+        video.src = objectUrl;
+
+        decoded.then(function () {
+          if (currentRun !== runId) return;
+          if (!Number.isFinite(video.duration) || video.duration < 0) {
+            throw new Error("Could not read a duration for this file.");
+          }
+          return video.play().catch(function () {
+            return undefined;
+          }).then(function () {
+            video.pause();
+            if (currentRun !== runId) return;
+            return seekTo(0);
+          });
+        }).then(function () {
+          if (currentRun !== runId) return;
+          return paintFrame(firstCanvas);
+        }).then(function () {
+          if (currentRun !== runId) return;
+          var step = Math.min(0.05, video.duration / 2);
+          var target = Math.max(0, video.duration - step);
+          return seekTo(target).then(function (actualTime) {
+            if (currentRun !== runId) return;
+            if (target > 0.2 && actualTime < 0.05) {
+              throw new Error("The browser could not seek to the closing frame.");
+            }
+            return paintFrame(lastCanvas).then(function () {
+              if (currentRun !== runId) return;
+              setReady(firstButton, true);
+              setReady(lastButton, true);
+              var note = actualTime < 0.001 ? " The first and last images match." : "";
+              status.textContent = "Decoded the first frame at 0.000s and the last frame at " + formatSeconds(actualTime) + ". Size " + firstCanvas.width + "x" + firstCanvas.height + "." + note;
+            });
+          });
+        }).catch(function (error) {
+          if (currentRun !== runId) return;
+          resetOutputs();
+          status.textContent = error && error.message ? error.message : "Could not read frames from this file.";
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
