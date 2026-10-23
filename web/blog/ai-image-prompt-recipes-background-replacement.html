@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI image editing prompts for background replacement | Nano Banana</title>
+  <meta name="description" content="AI image editing prompts for background replacement, organized as target, preservation, integration, and constraints, with documented Gemini API steps.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/ai-image-prompt-recipes-background-replacement.html">
+  <!-- PAGE-METADATA:START -->
+<meta property="og:title" content="AI image editing prompts for background replacement | Nano Banana">
+<meta property="og:description" content="AI image editing prompts for background replacement, organized as target, preservation, integration, and constraints, with documented Gemini API steps.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.nano-banana.live/blog/ai-image-prompt-recipes-background-replacement.html">
+<meta property="og:image" content="https://www.nano-banana.live/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nano Banana: image editing, benchmarks and quickstart">
+<meta property="og:site_name" content="Nano Banana">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI image editing prompts for background replacement | Nano Banana">
+<meta name="twitter:description" content="AI image editing prompts for background replacement, organized as target, preservation, integration, and constraints, with documented Gemini API steps.">
+<meta name="twitter:image" content="https://www.nano-banana.live/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"Article","headline":"AI image editing prompts for background replacement","description":"AI image editing prompts for background replacement, organized as target, preservation, integration, and constraints, with documented Gemini API steps.","datePublished":"2026-10-23","dateModified":"2026-10-23","author":{"@id":"https://www.nano-banana.live/#publisher"},"publisher":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/blog/ai-image-prompt-recipes-background-replacement.html"},"isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.nano-banana.live/blog.html"},{"@type":"ListItem","position":3,"name":"AI image editing prompts for background replacement","item":"https://www.nano-banana.live/blog/ai-image-prompt-recipes-background-replacement.html"}]}]}</script>
+<!-- PAGE-METADATA:END -->
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <!-- BREADCRUMBS:START -->
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="../blog.html">Blog</a></li><li><span aria-current="page">AI image editing prompts for background replacement</span></li></ol></nav>
+<!-- BREADCRUMBS:END -->
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Prompting • Oct 23, 2026</div>
+        <h1>AI image editing prompts for background replacement</h1>
+        <p class="lead" style="margin:20px auto;">AI image editing prompts for background replacement, organized as target, preservation, integration, and constraints, with documented Gemini API steps.</p>
+      </header>
+      <div class="article-content">
+        <p>A practical background-replacement prompt separates what to change, what to request unchanged, and how the new scene should connect to the subject. The official <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">Gemini image-generation documentation</a> demonstrates passing a text instruction and a base64-encoded source image in the same interaction. The <a href="https://www.nano-banana.live/blog/top-prompt-recipes.html" target="_blank" rel="noopener">recipe article</a> recommends concrete instructions that describe what to change and what to preserve rather than a list of tags.</p>
+
+<h2>The target-preserve-integrate-constrain prompt</h2>
+<p>The <a href="https://www.nano-banana.live/prompts/" target="_blank" rel="noopener">background replacement recipe collection</a> provides copyable prompts involving subject identity, pose, lighting, shadows, and product geometry. Those elements can be organized into a four-part editing brief: target, preserve, integrate, and constrain.</p>
+
+<blockquote>Replace only the background with [new environment]. Preserve [identity or product geometry] and [pose, framing, and other fixed details]. Match the lighting, color, shadows, and perspective of the new environment to the subject. Do not crop, add objects, or restyle the subject.</blockquote>
+
+<p>Here, “preserve” is an instruction to the editor, not a guarantee of an identical result. Inspect details that matter to the final image after every edit.</p>
+
+<ul>
+<li><strong>Target:</strong> Name one replacement environment and limit the requested edit to the background.</li>
+<li><strong>Preserve:</strong> List the identity, facial features, pose, clothing, product geometry, camera angle, framing, or other details that should remain fixed.</li>
+<li><strong>Integrate:</strong> Specify the new light direction, color temperature, shadows, and perspective so the subject and background are visually connected.</li>
+<li><strong>Constrain:</strong> State what the editor should not change, including crops, added objects, typography, or restyling.</li>
+</ul>
+
+<h2>How to run the editing workflow</h2>
+<ol>
+<li><strong>Inspect the source.</strong> Check hair, hands, transparent materials, product edges, existing lettering, pose, and framing before prompting.</li>
+<li><strong>Build the instruction.</strong> Name the replacement environment, list the details to request unchanged, and describe the lighting and shadows to match.</li>
+<li><strong>Choose an execution path.</strong> Use the documented Gemini interaction for the cloud workflow. For a supported offline alternative, use the matching recipe and its stated starting settings where applicable.</li>
+<li><strong>Compare and refine.</strong> Compare the output with the source at full size. The official documentation describes multi-turn conversation as the recommended way to iterate on images.</li>
+</ol>
+
+<h2>Run the prompt through the Gemini image API</h2>
+<p>The following follows the Python input and output structure shown in the <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">official Gemini image-generation example</a>. The model identifier and API field names match the supplied example; the background-replacement wording is the prompt used for this workflow.</p>
+
+<pre><code>from google import genai
+import base64
+
+client = genai.Client()
+
+with open('input.png', 'rb') as f:
+    image_data = f.read()
+
+prompt = (
+    'Replace only the background with a bright modern studio. '
+    'Preserve the subject identity, face, expression, hairstyle, clothing, '
+    'pose, camera angle, and framing. Match the studio lighting, edge light, '
+    'and soft contact shadow to the subject. Do not change the subject.'
+)
+
+interaction = client.interactions.create(
+    model='gemini-nano-banana-2.1',
+    input=[
+        {'type': 'text', 'text': prompt},
+        {
+            'type': 'image',
+            'data': base64.b64encode(image_data).decode('utf-8'),
+            'mime_type': 'image/png'
+        }
+    ]
+)
+
+with open('background-replaced.png', 'wb') as f:
+    f.write(base64.b64decode(interaction.output_image.data))</code></pre>
+
+<p>For a follow-up, the documentation uses <code>previous_interaction_id</code> to continue from an earlier interaction. A narrow correction can focus on the visible mismatch: “Keep the face, pose, framing, and clothing unchanged. Correct only the background edge and match the subject’s shadow to the new light direction.”</p>
+
+<h2>Cloud API and compatible open-model pipelines</h2>
+<p>The <a href="https://www.nano-banana.live/blog/top-prompt-recipes.html" target="_blank" rel="noopener">recipe article</a> describes its discussed Nano Banana 2 workflow as closed and cloud-hosted. The <a href="https://www.nano-banana.live/prompts/" target="_blank" rel="noopener">prompt collection</a> says its recipes can be used with a cloud client or supported offline alternatives. It separately identifies <code>seed</code>, <code>steps</code>, <code>guidance</code>, and <code>strength</code> as starting points for compatible open-model pipelines, not Gemini API parameters.</p>
+
+<ul>
+<li><strong>Gemini API:</strong> Send the source image and text instruction together, then use a subsequent interaction if another edit is needed.</li>
+<li><strong>Compatible open-model pipeline:</strong> The listed background recipe begins “replace background with neon cyberpunk city, preserve subject lighting and pose.” Its stated starting point is <code>seed=42</code>, <code>steps=30</code>, <code>guidance=4.0</code>, and <code>strength=0.6</code>. Do not add those pipeline parameters to the Gemini request.</li>
+</ul>
+
+<h2>Four background-related prompt recipes to adapt</h2>
+
+<h3>1. Portrait or character identity</h3>
+<blockquote>Change the background to a sunny beach. Keep the character identity and facial features, and preserve the pose. Match the lighting and shadows to the beach.</blockquote>
+<p>This combines the prompt collection’s identity-consistency example with its background-lighting instruction. State which character details must remain fixed before adding unrelated edit requests.</p>
+
+<h3>2. Product on a seamless background</h3>
+<blockquote>Place the product on a white seamless background with a soft natural shadow. Preserve the product geometry. Do not redesign the product.</blockquote>
+<p>The prompt collection identifies this as a product-shadow recipe. Compare the product’s geometry and visible details with the source after generation rather than assuming the background change left them untouched.</p>
+
+<h3>3. AI image prompt for text and logos</h3>
+<blockquote>Add a neon sign on the building wall that reads “CAFE OPEN 24H” in Art Deco style typography. Match the perspective and lighting of the scene. Keep the foreground subject unchanged.</blockquote>
+<p>The <a href="https://www.nano-banana.live/prompts/" target="_blank" rel="noopener">prompt collection</a> includes this complex text-rendering example. If an edit involves a logo or other lettering, provide the exact visible string, style, and placement, then inspect every character. The supplied sources do not promise pixel-perfect logo or text reproduction.</p>
+
+<h3>4. Neon environment with matched lighting</h3>
+<blockquote>Change the background to a rainy cyberpunk street at night. CRITICAL: Update the lighting on the subject’s face to match the neon blue and pink signs from the street.</blockquote>
+<p>The recipe article presents lighting consistency as important when changing backgrounds. For a wider composition, also inspect lighting and shadows on the body and around the subject’s edges.</p>
+
+<h2>Inspect common failure points</h2>
+<ul>
+<li><strong>Identity changes:</strong> Repeat the instruction to change only the environment and restate the relevant identity and facial locks.</li>
+<li><strong>Lighting or edge mismatches:</strong> Name the new light direction and color, request matched lighting and shadows, and inspect the subject’s edges.</li>
+<li><strong>Pose or crop changes:</strong> Restate the original pose, camera angle, framing, subject scale, and the instruction not to crop or restyle.</li>
+<li><strong>Unwanted background objects:</strong> Use a direct command such as “Remove the crowd in the background. Replace them with empty chairs. Ensure the chairs cast shadows consistent with the sun.”</li>
+<li><strong>Lettering differences:</strong> Quote the exact string, type style, and placement, then inspect every visible character rather than assuming the typography is exact.</li>
+</ul>
+
+<p>Prompting describes the intended edit; it does not guarantee a perfect result. Compare the source and output for identity, geometry, edges, shadows, framing, lighting, and every visible character. Use the <a href="https://www.nano-banana.live/prompts/" target="_blank" rel="noopener">AI image prompt recipe collection</a> for additional examples, the <a href="https://www.nano-banana.live/blog/top-prompt-recipes.html" target="_blank" rel="noopener">recipe article</a> for lighting and typography examples, and the <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">Nano Banana FAQ</a> for related project information.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/image-generation</a></li><li><a href="https://www.nano-banana.live/prompts/" target="_blank" rel="noopener">https://www.nano-banana.live/prompts/</a></li><li><a href="https://www.nano-banana.live/blog/top-prompt-recipes.html" target="_blank" rel="noopener">https://www.nano-banana.live/blog/top-prompt-recipes.html</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>
