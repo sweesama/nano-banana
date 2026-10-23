@@ -48,5 +48,32 @@
       "destination": "https://www.nano-banana.live/$1",
       "permanent": true
     }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "geolocation=(), microphone=(), camera=()"
+        },
+        {
+          "key": "Content-Security-Policy-Report-Only",
+          "value": "default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://pagead2.googlesyndication.com https://securepubads.g.doubleclick.net https://www.googleadservices.com https://adservice.google.com https://www.google.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://www.google.com https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://securepubads.g.doubleclick.net https://pagead2.googlesyndication.com https://ad.doubleclick.net https://ade.googlesyndication.com https://adservice.google.com https://stats.g.doubleclick.net https://tpc.googlesyndication.com https://pub-64fe13b89b074ae5a8ecbcbc9787a1d6.r2.dev https://raw.githubusercontent.com https://github.com https://cdn.sanity.io; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.google.com https://*.google.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://securepubads.g.doubleclick.net https://www.googleadservices.com https://ad.doubleclick.net https://stats.g.doubleclick.net https://cct.google https://www.merchant-center-analytics.goog; frame-src 'self' https://www.googletagmanager.com https://googleads.g.doubleclick.net https://securepubads.g.doubleclick.net https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://www.google.com; media-src 'self' blob:; worker-src 'self' blob: https://www.googletagmanager.com"
+        }
+      ]
+    }
   ]
 }
