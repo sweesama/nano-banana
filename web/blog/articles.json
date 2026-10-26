@@ -416,5 +416,20 @@
       "https://www.nano-banana.live/prompts/",
       "https://www.nano-banana.live/blog/top-prompt-recipes.html"
     ]
+  },
+  {
+    "slug": "ai-image-editing-prompts-text-logos",
+    "publishDate": "2026-10-26",
+    "title": "AI Image Editing Prompts for Text and Logo Changes",
+    "description": "Practical AI image editing prompts for changing signs, packaging, and logos while preserving product geometry, lighting, and subject identity.",
+    "category": "Prompting",
+    "emoji": "🔤",
+    "keyword": "AI image editing prompts for text and logos",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/image-generation",
+      "https://www.nano-banana.live/prompts/"
+    ]
   }
 ]

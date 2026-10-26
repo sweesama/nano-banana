@@ -365,11 +365,14 @@
     "category": "Prompting",
     "emoji": "🔤",
     "depth": "standard",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://www.nano-banana.live/prompts/"
-    ]
+    ],
+    "lastAttemptAt": "2026-10-26T04:42:26.469Z",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "why AI image text is misspelled and how to fix it",

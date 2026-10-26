@@ -18,7 +18,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/quickstart.html</loc>
-    <lastmod>2026-10-23</lastmod>
+    <lastmod>2026-10-26</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/hidream-o1-image.html</loc>
@@ -38,7 +38,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/faq.html</loc>
-    <lastmod>2026-10-23</lastmod>
+    <lastmod>2026-10-26</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/about.html</loc>
@@ -46,7 +46,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog.html</loc>
-    <lastmod>2026-10-23</lastmod>
+    <lastmod>2026-10-26</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/how-to-run-locally.html</loc>
@@ -179,5 +179,9 @@
   <url>
     <loc>https://www.nano-banana.live/blog/ai-image-prompt-recipes-background-replacement.html</loc>
     <lastmod>2026-10-23</lastmod>
+  </url>
+  <url>
+    <loc>https://www.nano-banana.live/blog/ai-image-editing-prompts-text-logos.html</loc>
+    <lastmod>2026-10-26</lastmod>
   </url>
 </urlset>

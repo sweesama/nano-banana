@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI Image Editing Prompts for Text and Logo Changes | Nano Banana</title>
+  <meta name="description" content="Practical AI image editing prompts for changing signs, packaging, and logos while preserving product geometry, lighting, and subject identity.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/ai-image-editing-prompts-text-logos.html">
+  <!-- PAGE-METADATA:START -->
+<meta property="og:title" content="AI Image Editing Prompts for Text and Logo Changes | Nano Banana">
+<meta property="og:description" content="Practical AI image editing prompts for changing signs, packaging, and logos while preserving product geometry, lighting, and subject identity.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.nano-banana.live/blog/ai-image-editing-prompts-text-logos.html">
+<meta property="og:image" content="https://www.nano-banana.live/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nano Banana: image editing, benchmarks and quickstart">
+<meta property="og:site_name" content="Nano Banana">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Image Editing Prompts for Text and Logo Changes | Nano Banana">
+<meta name="twitter:description" content="Practical AI image editing prompts for changing signs, packaging, and logos while preserving product geometry, lighting, and subject identity.">
+<meta name="twitter:image" content="https://www.nano-banana.live/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"Article","headline":"AI Image Editing Prompts for Text and Logo Changes","description":"Practical AI image editing prompts for changing signs, packaging, and logos while preserving product geometry, lighting, and subject identity.","datePublished":"2026-10-26","dateModified":"2026-10-26","author":{"@id":"https://www.nano-banana.live/#publisher"},"publisher":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/blog/ai-image-editing-prompts-text-logos.html"},"isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.nano-banana.live/blog.html"},{"@type":"ListItem","position":3,"name":"AI Image Editing Prompts for Text and Logo Changes","item":"https://www.nano-banana.live/blog/ai-image-editing-prompts-text-logos.html"}]}]}</script>
+<!-- PAGE-METADATA:END -->
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <!-- BREADCRUMBS:START -->
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="../blog.html">Blog</a></li><li><span aria-current="page">AI Image Editing Prompts for Text and Logo Changes</span></li></ol></nav>
+<!-- BREADCRUMBS:END -->
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Prompting • Oct 26, 2026</div>
+        <h1>AI Image Editing Prompts for Text and Logo Changes</h1>
+        <p class="lead" style="margin:20px auto;">Practical AI image editing prompts for changing signs, packaging, and logos while preserving product geometry, lighting, and subject identity.</p>
+      </header>
+      <div class="article-content">
+        <p>When the visual problem is to change words on a sign, package, label, or logo without rebuilding the rest of the image, use a delta prompt: identify the one region to edit, quote the exact replacement copy, list what must remain fixed, and describe how the result should fit the existing light and perspective. A generic “replace the logo” instruction leaves too many decisions undefined. For image typography, Google’s <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">official Gemini image-generation guidance</a> says it works best to generate the text first and then request an image using it, so treat exact wording as a separate step.</p>
+
+<h2>Build a prompt that isolates one change</h2>
+<p>A useful AI image editing prompt contains four functional parts, not necessarily four sentences:</p>
+<ol>
+<li><strong>Name the edit and location.</strong> Identify the exact sign, label, logo, object, or region that should change.</li>
+<li><strong>Quote the replacement copy.</strong> Preserve capitalization, punctuation, spacing, and spelling exactly.</li>
+<li><strong>List protected details.</strong> State which geometry, identity, pose, composition, and surrounding objects must remain unchanged.</li>
+<li><strong>Describe integration.</strong> Match the scene’s perspective, illumination, shadows, material, and scale.</li>
+</ol>
+<pre><code>Edit the supplied image.
+Change only [object or region] from &quot;[current content]&quot; to &quot;[exact replacement]&quot;.
+Keep [protected identity, geometry, pose, and composition] unchanged.
+Match the existing [lighting, perspective, material, and scale].
+Do not add other words, logos, objects, or crop marks.</code></pre>
+<p>This structure is intentionally specific. It gives the editor a bounded change instead of inviting it to redesign the whole image.</p>
+
+<h2>Edit text and logos without rebuilding the scene</h2>
+<p>An AI image prompt for text and logos should separate content from integration. Put the desired wording in quotation marks, identify whether it is a wordmark, icon, sign, label, or package panel, and name the attributes that must remain attached to that surface. If the original typeface, color, or geometry matters, describe those visible properties rather than asking for a generic redesign.</p>
+<pre><code>Replace only the lettering on the storefront sign with &quot;OPEN LATE&quot;. Preserve the sign's shape, mounting, perspective, illumination, and surrounding facade. Use uppercase condensed white lettering. Do not change people, vehicles, architecture, camera position, or time of day. Do not add other words or logos.</code></pre>
+<p>For a logo edit, name the components separately: replace the icon, replace the wordmark, or replace both while retaining their spacing and alignment. If the logo appears on packaging, also protect the container shape and all other printed copy. These instructions constrain the edit; they do not ask the model to reconstruct the product.</p>
+<p>The <a href="https://www.nano-banana.live/prompts/" target="_blank" rel="noopener">Nano Banana prompt recipe library</a> provides a useful starting structure for adding a sign:</p>
+<pre><code>Add a neon sign on the building wall that reads &quot;CAFE OPEN 24H&quot; in Art Deco style typography. Match the perspective and lighting of the scene.</code></pre>
+<p>The library presents that recipe for Qwen-Image-Edit-2511 as a local-model example with a strong text-rendering focus. Treat it as model-specific rather than evidence that every cloud or local model renders typography equally well.</p>
+
+<h2>Background replacement prompt and identity lock</h2>
+<p>A product image editing prompt should protect geometry and label artwork as explicitly as it specifies the new setting.</p>
+<pre><code>Replace only the background with a clean white studio backdrop. Keep the bottle silhouette, label artwork, cap color, proportions, and camera angle unchanged. Add a soft natural shadow beneath the bottle and match the existing light direction. Do not alter the product geometry, label spelling, or add props.</code></pre>
+<p><strong>Preserve identity AI image edit:</strong> list identity-bearing features and scene features separately. The recipe library’s identity-consistency example changes a background to a sunny beach while retaining character identity and matching the new lighting and shadows.</p>
+<pre><code>Replace the background with a sunny beach. Keep the person's identity and facial features, hairstyle, expression, pose, and clothing unchanged. Match the scene's sunlight and cast a consistent shadow. Do not restyle the person or change the camera framing.</code></pre>
+<p>For a keep face unchanged AI edit, repeat facial identity, hairstyle, expression, pose, clothing, and framing as protected elements. The background and illumination may change; the person should not. These examples are available in the <a href="https://www.nano-banana.live/prompts/" target="_blank" rel="noopener">background and identity prompt collection</a>.</p>
+
+<h2>Run the edit as a controlled sequence</h2>
+<p>Use this order for repeatable image-editing recipes:</p>
+<ol>
+<li><strong>Supply the source image</strong> and state the intended difference in one sentence.</li>
+<li><strong>Quote the exact copy</strong> and identify its surface and location.</li>
+<li><strong>Separate the must-keep list</strong> from the elements that may change.</li>
+<li><strong>Describe integration</strong> with perspective, illumination, shadows, texture, and scale.</li>
+<li><strong>Inspect the result</strong> by checking the text character by character and comparing every protected element.</li>
+<li><strong>Make a narrow correction</strong> when one element fails instead of rewriting the entire edit.</li>
+</ol>
+<p>Google’s documentation demonstrates iterative editing with <code>previous_interaction_id</code>: a follow-up asks the model to change an infographic into Spanish while leaving every other element unchanged. The same pattern works for a sign: correct only the lettering and explicitly protect the rest of the image. Prompt wording is not a correctness guarantee, so verification remains part of the workflow.</p>
+<p>Google also states that generated images include a SynthID watermark. Plan for that provenance mark in the output rather than promising an unmarked deliverable. See the <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">official image-generation documentation</a> for the current behavior.</p>
+
+<h2>Match the workflow to a cloud or local model</h2>
+<ul>
+<li><strong>Gemini cloud API:</strong> The documented workflow accepts text instructions and input images. It is the appropriate choice when you want to send an image and a natural-language edit without configuring a local sampler.</li>
+<li><strong>Local open-weight workflow:</strong> Compatible local pipelines may expose settings such as <code>seed</code>, <code>steps</code>, <code>guidance</code>, and <code>strength</code>. The recipe library explicitly labels these as open-model starting points, not Gemini API parameters, so do not paste them into a Gemini request.</li>
+<li><strong>Model-specific choices:</strong> Start with a recipe written for the local model you actually run. The same natural-language prompt does not make a local model part of the Gemini API, and a recipe for one local model should not be treated as a capability guarantee for another.</li>
+</ul>
+<p>For additional patterns, compare the <a href="https://www.nano-banana.live/blog/top-prompt-recipes.html" target="_blank" rel="noopener">AI image prompt recipes</a> and check the <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">Nano Banana FAQ</a> for cloud-versus-local workflow details. The strongest editing prompt is not simply the longest one: it makes one measurable change, quotes the required content, and explicitly states what the model must preserve.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/image-generation</a></li><li><a href="https://www.nano-banana.live/prompts/" target="_blank" rel="noopener">https://www.nano-banana.live/prompts/</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>
