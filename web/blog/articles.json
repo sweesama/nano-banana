@@ -431,5 +431,21 @@
       "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://www.nano-banana.live/prompts/"
     ]
+  },
+  {
+    "slug": "fix-misspelled-text-ai-images",
+    "publishDate": "2026-10-28",
+    "title": "AI image editing prompts: Fix misspelled text and logos",
+    "description": "Practical AI image editing prompts for correcting misspelled text with exact copy, typography constraints, targeted edits, and character-by-character verification.",
+    "category": "Prompting",
+    "emoji": "📝",
+    "keyword": "why AI image text is misspelled and how to fix it",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/image-generation",
+      "https://www.nano-banana.live/prompts/",
+      "https://www.nano-banana.live/blog/top-prompt-recipes.html"
+    ]
   }
 ]

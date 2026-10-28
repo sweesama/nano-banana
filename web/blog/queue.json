@@ -380,12 +380,15 @@
     "category": "Prompting",
     "emoji": "📝",
     "depth": "standard",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://www.nano-banana.live/prompts/",
       "https://www.nano-banana.live/blog/top-prompt-recipes.html"
-    ]
+    ],
+    "lastAttemptAt": "2026-10-28T05:37:54.564Z",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "batch AI image editing workflow for creators",

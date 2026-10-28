@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI image editing prompts: Fix misspelled text and logos | Nano Banana</title>
+  <meta name="description" content="Practical AI image editing prompts for correcting misspelled text with exact copy, typography constraints, targeted edits, and character-by-character verification.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/fix-misspelled-text-ai-images.html">
+  <!-- PAGE-METADATA:START -->
+<meta property="og:title" content="AI image editing prompts: Fix misspelled text and logos | Nano Banana">
+<meta property="og:description" content="Practical AI image editing prompts for correcting misspelled text with exact copy, typography constraints, targeted edits, and character-by-character verification.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.nano-banana.live/blog/fix-misspelled-text-ai-images.html">
+<meta property="og:image" content="https://www.nano-banana.live/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nano Banana: image editing, benchmarks and quickstart">
+<meta property="og:site_name" content="Nano Banana">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI image editing prompts: Fix misspelled text and logos | Nano Banana">
+<meta name="twitter:description" content="Practical AI image editing prompts for correcting misspelled text with exact copy, typography constraints, targeted edits, and character-by-character verification.">
+<meta name="twitter:image" content="https://www.nano-banana.live/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"Article","headline":"AI image editing prompts: Fix misspelled text and logos","description":"Practical AI image editing prompts for correcting misspelled text with exact copy, typography constraints, targeted edits, and character-by-character verification.","datePublished":"2026-10-28","dateModified":"2026-10-28","author":{"@id":"https://www.nano-banana.live/#publisher"},"publisher":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/blog/fix-misspelled-text-ai-images.html"},"isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.nano-banana.live/blog.html"},{"@type":"ListItem","position":3,"name":"AI image editing prompts: Fix misspelled text and logos","item":"https://www.nano-banana.live/blog/fix-misspelled-text-ai-images.html"}]}]}</script>
+<!-- PAGE-METADATA:END -->
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <!-- BREADCRUMBS:START -->
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="../blog.html">Blog</a></li><li><span aria-current="page">AI image editing prompts: Fix misspelled text and logos</span></li></ol></nav>
+<!-- BREADCRUMBS:END -->
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Prompting • Oct 28, 2026</div>
+        <h1>AI image editing prompts: Fix misspelled text and logos</h1>
+        <p class="lead" style="margin:20px auto;">Practical AI image editing prompts for correcting misspelled text with exact copy, typography constraints, targeted edits, and character-by-character verification.</p>
+      </header>
+      <div class="article-content">
+        <p>Misspelled lettering is usually best treated as a constrained local edit rather than a broad scene-generation request. In <strong>AI image editing prompts</strong>, quote the exact copy, identify one text-bearing object, specify typography and placement, and list the elements that must remain unchanged. For a sign, package label, or logo whose wording must be exact, a deterministic alternative is to typeset the approved text outside the generator and composite it over the artwork.</p>
+
+<h2>Why AI-generated image text gets misspelled</h2>
+<p>The cited <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">official Gemini image-generation documentation</a> does not provide a measured breakdown of why a particular letter fails, so it would be inaccurate to attribute every error to one internal mechanism. The documented API examples handle images as inputs and outputs and do not document a separate editable text layer. The local recipe pages focus on prompt structure rather than an internal-cause diagnosis. It is therefore more accurate to treat misspellings as a control problem involving exact wording, edit scope, preservation constraints, typography, perspective, lighting, and verification.</p>
+<ul>
+<li><strong>The copy may be ambiguous.</strong> A broad label such as “Coffee shop” does not establish whether the sign should read COFFEE, COFFEE SHOP, or CAFÉ. Compare the result against one fixed string, including capitalization, spaces, and punctuation.</li>
+<li><strong>The target and preservation boundary may be unclear.</strong> A request that combines a background replacement, a label change, and a face-preservation request is harder to state and audit. Put one wording change in one request or separate the work into clearly ordered turns.</li>
+<li><strong>Typography and scene constraints may conflict.</strong> The local <a href="https://www.nano-banana.live/prompts/" target="_blank" rel="noopener">AI image prompt recipes</a> include a complex-text example that pairs exact wording with typography, perspective, and lighting. Exact copy and believable placement should be treated as separate checks.</li>
+<li><strong>Preservation may be too broad.</strong> “Keep the character” does not identify which attributes must remain fixed. Name the relevant face, hairstyle, pose, clothing, product geometry, background, or other details instead of relying on a broad preservation label.</li>
+</ul>
+<p>The January 2026 <a href="https://www.nano-banana.live/blog/top-prompt-recipes.html" target="_blank" rel="noopener">Nano Banana recipe guide</a> makes the operational point directly: Stop using tags. Start using instructions. It also cautions against claiming that one prompt style always beats another model. Its guidance is therefore useful for constructing a precise edit, not as a guarantee that every generated character will be correct.</p>
+
+<h2>Build a four-clause editing prompt</h2>
+<p>A practical <strong>AI image editing prompt</strong> can use four clauses: name the target, quote the exact text, describe its appearance, and state the preservation boundary. “Make a realistic sign” leaves each of those decisions open. A more constrained version looks like this:</p>
+<pre><code>Edit only the lettering on the storefront sign.
+Replace it with 'NANO BANANA'.
+Use bold white sans-serif capitals, centered with even spacing, and match the sign's perspective and lighting.
+Keep the sign shape, background, people, clothing, and every other element unchanged.</code></pre>
+<p>Make typography instructions concrete by specifying style, weight, capitalization, color, alignment, and position as needed. For lettering on an existing object, also request a match to its perspective and lighting. If the scene itself must change, make that a separate instruction so the text correction remains explicit.</p>
+
+<h2>Adapt the prompt to the editing task</h2>
+<h3>Background replacement and identity preservation</h3>
+<p>The prompt collection includes a background-replacement recipe that says to preserve subject lighting and pose, along with an identity-consistency recipe that keeps character identity and facial features while matching lighting and shadows. The January 2026 guide also gives a lighting-match instruction for changing a background to a rainy cyberpunk street. For a <strong>preserve identity AI image edit</strong>, those ideas can be combined:</p>
+<pre><code>Replace only the background with a rainy cyberpunk street at night.
+Keep the subject's face, identity, hairstyle, pose, clothing, and product geometry unchanged.
+Match the scene's blue and pink light to the subject while preserving natural facial detail.
+Do not introduce new lettering; preserve any foreground sign or label exactly.</code></pre>
+<p>Do not say “keep the original lighting” when the replacement environment is expected to cast colored light. Identify the geometry and identity attributes that are fixed, then state which illumination may change.</p>
+
+<h3>Product label correction</h3>
+<p>For a <strong>product image editing prompt</strong>, the preservation list commonly needs to cover the relevant product silhouette, label outline, materials, reflections, shadows, and background. The local recipe page includes a product-shadow example that preserves geometry and a scene-preservation example that retains composition, camera angle, and lighting. A label edit can follow the same narrow structure:</p>
+<pre><code>Edit only the bottle label.
+Replace the headline with 'CITRUS COLA' in uppercase white sans-serif type.
+Keep the bottle, cap, label outline, materials, reflections, shadows, and white background unchanged.</code></pre>
+
+<h3>Text and logo corrections</h3>
+<p>The recipe page’s text-rendering example specifies the exact words, an Art Deco type style, and the scene’s perspective and lighting. For an <strong>AI image prompt for text and logos</strong>, separate semantic accuracy from brand geometry. Quote the wordmark exactly, specify capitalization and type style, and state whether the symbol shape and color must remain unchanged. Do not ask the model to “make a better logo” when the task is a one-letter correction. If exact trademark artwork is required, retain the source logo as the master and use the generated image only for the surrounding scene.</p>
+
+<h2>Use an edit-and-check workflow</h2>
+<ol>
+<li><strong>Verify the input copy.</strong> Use one plain-text source string and place it in quotation marks in the prompt. Check its spelling before generation.</li>
+<li><strong>Isolate the target.</strong> Name the exact sign, label, shirt, or caption and state that only its lettering may change.</li>
+<li><strong>Generate one edit.</strong> Include typography, placement, perspective, lighting, and a short preservation list while avoiding unrelated style changes.</li>
+<li><strong>Inspect character by character.</strong> Compare the output with the fixed source string rather than deciding whether it merely looks plausible. Pay particular attention to similar letterforms and final characters.</li>
+<li><strong>Correct in the next turn.</strong> Google’s <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">Gemini image-generation documentation</a> describes multi-turn conversation as the recommended way to iterate on images. Its example uses <code>previous_interaction_id</code> to change an infographic’s language while instructing the model not to change other elements. Apply the same narrow editing principle to a sign correction.</li>
+<li><strong>Use a deterministic fallback.</strong> If repeated visual edits still miss the approved copy, render the text in a design tool and place it over the image. This removes spelling accuracy from the generative step.</li>
+</ol>
+
+<h2>Gemini API and open-model recipes are different workflows</h2>
+<p>The Gemini documentation presents an API workflow with image inputs, generated image output, and conversational editing. The local recipe page separately labels values such as <code>seed</code>, <code>steps</code>, <code>guidance</code>, and <code>strength</code> as open-model starting points. It says that these examples are starting points for compatible open-model pipelines and explicitly notes that they are not Gemini API parameters.</p>
+<p>The recipe collection includes model-specific examples, including a complex-text-rendering entry for Qwen-Image-Edit-2511, but those entries are not guarantees for every result. Do not copy controls from one workflow into an API request that does not document them. Select the workflow with the documented capability you need, verify the actual letters in the actual output, and keep exact spelling as an explicit acceptance check. For related questions about these workflows, see the <a href="https://www.nano-banana.live/faq.html" target="_blank" rel="noopener">FAQ</a>.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/image-generation</a></li><li><a href="https://www.nano-banana.live/prompts/" target="_blank" rel="noopener">https://www.nano-banana.live/prompts/</a></li><li><a href="https://www.nano-banana.live/blog/top-prompt-recipes.html" target="_blank" rel="noopener">https://www.nano-banana.live/blog/top-prompt-recipes.html</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>
