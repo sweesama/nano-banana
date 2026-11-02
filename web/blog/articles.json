@@ -447,5 +447,20 @@
       "https://www.nano-banana.live/prompts/",
       "https://www.nano-banana.live/blog/top-prompt-recipes.html"
     ]
+  },
+  {
+    "slug": "batch-ai-image-editing-workflow-creators",
+    "publishDate": "2026-11-02",
+    "title": "Batch AI Image Editing Workflow: A Practical Python Guide",
+    "description": "Build a reliable batch AI image editing workflow in Python, compare cloud and local processing, control image outputs, and fix common API failures.",
+    "category": "Workflows",
+    "emoji": "📚",
+    "keyword": "batch AI image editing workflow for creators",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://ai.google.dev/gemini-api/docs/image-generation",
+      "https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py"
+    ]
   }
 ]

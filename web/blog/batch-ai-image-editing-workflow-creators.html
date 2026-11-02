@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Batch AI Image Editing Workflow: A Practical Python Guide | Nano Banana</title>
+  <meta name="description" content="Build a reliable batch AI image editing workflow in Python, compare cloud and local processing, control image outputs, and fix common API failures.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/batch-ai-image-editing-workflow-creators.html">
+  <!-- PAGE-METADATA:START -->
+<meta property="og:title" content="Batch AI Image Editing Workflow: A Practical Python Guide | Nano Banana">
+<meta property="og:description" content="Build a reliable batch AI image editing workflow in Python, compare cloud and local processing, control image outputs, and fix common API failures.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.nano-banana.live/blog/batch-ai-image-editing-workflow-creators.html">
+<meta property="og:image" content="https://www.nano-banana.live/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nano Banana: image editing, benchmarks and quickstart">
+<meta property="og:site_name" content="Nano Banana">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Batch AI Image Editing Workflow: A Practical Python Guide | Nano Banana">
+<meta name="twitter:description" content="Build a reliable batch AI image editing workflow in Python, compare cloud and local processing, control image outputs, and fix common API failures.">
+<meta name="twitter:image" content="https://www.nano-banana.live/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"Article","headline":"Batch AI Image Editing Workflow: A Practical Python Guide","description":"Build a reliable batch AI image editing workflow in Python, compare cloud and local processing, control image outputs, and fix common API failures.","datePublished":"2026-11-02","dateModified":"2026-11-02","author":{"@id":"https://www.nano-banana.live/#publisher"},"publisher":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/blog/batch-ai-image-editing-workflow-creators.html"},"isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.nano-banana.live/blog.html"},{"@type":"ListItem","position":3,"name":"Batch AI Image Editing Workflow: A Practical Python Guide","item":"https://www.nano-banana.live/blog/batch-ai-image-editing-workflow-creators.html"}]}]}</script>
+<!-- PAGE-METADATA:END -->
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <!-- BREADCRUMBS:START -->
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="../blog.html">Blog</a></li><li><span aria-current="page">Batch AI Image Editing Workflow: A Practical Python Guide</span></li></ol></nav>
+<!-- BREADCRUMBS:END -->
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Workflows • Nov 2, 2026</div>
+        <h1>Batch AI Image Editing Workflow: A Practical Python Guide</h1>
+        <p class="lead" style="margin:20px auto;">Build a reliable batch AI image editing workflow in Python, compare cloud and local processing, control image outputs, and fix common API failures.</p>
+      </header>
+      <div class="article-content">
+        <p>This <strong>batch AI image editing workflow</strong> completes a creator job end to end: it sends each local image plus an edit instruction to Nano Banana’s hosted image API, saves one result per input, and keeps going after an individual request failure. It also gives you a focused way to <strong>fix AI image API errors</strong> instead of restarting the collection. The steps come from <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">Google’s official image-generation examples</a> and <a href="https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py" target="_blank" rel="noopener">Nano Banana’s Python client</a>; “local” describes the script and files, not the hosted model.</p>
+
+<h2>Turn one edit into batch AI image editing</h2>
+<p>The repository’s <code>edit_image()</code> helper provides a useful unit of automation. It checks the API key and input path, reads the file bytes, guesses a MIME type, base64-encodes the image, sends text plus the image through <code>client.interactions.create</code>, checks <code>output_image</code>, and decodes the returned data into an output file. A batch workflow keeps that contract for every asset but isolates a failed request so the remaining files can still run. <a href="https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py" target="_blank" rel="noopener">The reference implementation</a> provides the exact client structure used below.</p>
+<ul>
+<li><strong>Inputs:</strong> Put source images in one directory and preserve the originals outside the run.</li>
+<li><strong>Instruction:</strong> Start with one repeatable edit, such as a controlled background replacement.</li>
+<li><strong>Requests:</strong> Base64-encode each file and attach it to a text instruction in the same <code>input</code> array.</li>
+<li><strong>Outputs:</strong> Decode <code>output_image.data</code> and save a clearly named file for every successful edit.</li>
+<li><strong>Failures:</strong> Record the filename and full exception, continue with the next asset, and report a summary after the loop.</li>
+</ul>
+<p>This separation is useful when a creator is processing a product set, portrait series, or campaign variations. Google’s official examples demonstrate individual images and multi-turn interactions, while the repository shows how to package one local file for the hosted API. <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">The official documentation</a> provides the underlying request and response format.</p>
+
+<h2>AI image API vs local model: choose the execution path</h2>
+<p>The provided client is careful about what “local” means. Its comment states that it sends an image and editing instruction to Google’s hosted Gemini image model and that the model itself does not run on the local machine. The request contains base64 image data, not a path that the hosted service can open. That is the central distinction in an <strong>AI image API vs local model</strong> decision. <a href="https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py" target="_blank" rel="noopener">The Nano Banana client</a> sends the request; it does not turn Gemini into an offline generator.</p>
+<ul>
+<li><strong>Cloud API path:</strong> The SDK client runs on your computer, but <code>interactions.create</code> sends the prompt and encoded image to Google’s hosted service. The response is decoded and written back to local storage.</li>
+<li><strong>Local open-weight path:</strong> A local workflow would use model weights and an inference runtime on the machine performing the edit. Neither supplied source implements that path, so output parity, dependencies, and hardware requirements remain unknown here.</li>
+</ul>
+<p>For a <strong>cloud vs local AI image generator</strong> comparison, do not infer capabilities from the filename <code>nano_api.py</code>. If local execution is required, begin with the <a href="https://www.nano-banana.live/blog/troubleshooting-install.html" target="_blank" rel="noopener">Nano Banana installation and troubleshooting guide</a>. For the hosted path, use the <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">Nano Banana quickstart</a>. The supplied API client does not establish that a local model or offline procedure is available.</p>
+
+<h2>Prepare the batch without changing the API contract</h2>
+<p>Install the SDK and expose the key in the environment used to launch Python. The repository lists <code>google-genai</code> and accepts either <code>GOOGLE_API_KEY</code> or <code>GEMINI_API_KEY</code>. It reads those variables directly and does not load a key file automatically. <a href="https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py" target="_blank" rel="noopener">The repository prerequisites</a> show the supported setup.</p>
+<pre><code>python -m pip install -U google-genai
+export GEMINI_API_KEY='your-key-here'</code></pre>
+<p>Keep inputs and outputs separate. For example:</p>
+<pre><code>inputs/
+  portrait.jpg
+  product.jpg
+outputs/</code></pre>
+<p>The source client uses <code>mimetypes.guess_type()</code>, and the official examples show JPEG and PNG image inputs. Make extensions reflect the actual files rather than relying on the client’s PNG fallback for an unknown type. For the instruction itself, the <a href="https://www.nano-banana.live/prompts/" target="_blank" rel="noopener">Nano Banana prompt library</a> provides a useful place to develop a precise, repeatable edit before applying it to a collection.</p>
+
+<h2>Run a fault-tolerant Python batch</h2>
+<p>Before copying code, note a difference between the supplied sources. Google’s official interaction example uses <code>gemini-nano-banana-2.1</code>, while the repository snapshot calls <code>gemini-3.1-flash-image</code>. The evidence does not explain compatibility between those identifiers. The sample below keeps the value shown in Google’s supplied example in a <code>MODEL</code> constant; confirm the identifier in the <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">official Gemini documentation</a> before a long run.</p>
+<p>The code uses only the demonstrated API surface and sends one file at a time. It deliberately adds no automatic retry behavior because the supplied sources do not define a retry policy.</p>
+<pre><code>import base64
+import mimetypes
+import os
+from pathlib import Path
+
+from google import genai
+
+MODEL = 'gemini-nano-banana-2.1'
+
+
+def edit_batch(input_dir, output_dir, prompt):
+    api_key = os.getenv('GOOGLE_API_KEY') or os.getenv('GEMINI_API_KEY')
+    if not api_key:
+        raise RuntimeError(
+            'Set GOOGLE_API_KEY or GEMINI_API_KEY before running this script.'
+        )
+
+    client = genai.Client(api_key=api_key)
+    input_dir = Path(input_dir)
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    failures = []
+
+    for input_file in sorted(input_dir.iterdir()):
+        if not input_file.is_file():
+            continue
+
+        mime_type = mimetypes.guess_type(input_file.name)[0] or 'image/png'
+        if not mime_type.startswith('image/'):
+            failures.append(input_file.name)
+            print(f'[!] Unsupported input type: {mime_type}')
+            continue
+
+        image_bytes = input_file.read_bytes()
+        try:
+            interaction = client.interactions.create(
+                model=MODEL,
+                input=[
+                    {'type': 'text', 'text': prompt},
+                    {
+                        'type': 'image',
+                        'data': base64.b64encode(image_bytes).decode('utf-8'),
+                        'mime_type': mime_type,
+                    },
+                ],
+                response_format={
+                    'type': 'image',
+                    'mime_type': 'image/png',
+                },
+            )
+        except Exception as error:
+            failures.append(input_file.name)
+            print(f'[!] API Error for {input_file.name}: {error}')
+            continue
+
+        if not interaction.output_image:
+            failures.append(input_file.name)
+            print('[!] No image returned. Check the prompt and safety filters.')
+            continue
+
+        output_path = output_dir / f'{input_file.stem}_edited.png'
+        output_path.write_bytes(
+            base64.b64decode(interaction.output_image.data)
+        )
+        print(f'[+] Saved: {output_path}')
+
+    if failures:
+        raise RuntimeError(
+            f'{len(failures)} image(s) failed: {failures}'
+        )
+
+
+edit_batch(
+    'inputs',
+    'outputs',
+    'Replace the background with a neon cyberpunk city while preserving subject lighting.',
+)</code></pre>
+<p>The final call applies the same instruction to every image. A request exception is recorded against its filename, a missing <code>output_image</code> is reported, and successful data is decoded to the matching PNG output. The summary error appears only after all files have been attempted, so a single bad request does not silently remove other outputs.</p>
+
+<h2>Control AI image output formats and revisions</h2>
+<p>Google’s official examples demonstrate a <code>response_format</code> with type <code>image</code>, MIME types <code>image/jpeg</code> and <code>image/png</code>, an aspect ratio of <code>16:9</code>, and an image size of <code>2K</code>. The supplied extract does not publish the complete allowed matrix, so treat these as demonstrated values rather than an exhaustive compatibility list. Check the <a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">current official image-generation documentation</a> before changing format, ratio, or size.</p>
+<ul>
+<li>Keep the requested MIME type and file extension aligned; the example requests PNG and writes a <code>.png</code> file.</li>
+<li>Decode <code>output_image.data</code> before writing it rather than saving the base64 text as an image.</li>
+<li>Record the model, prompt, and input filename with each result so a later correction can be reproduced deliberately.</li>
+</ul>
+<p>For follow-up changes, Google describes multi-turn conversation as the recommended way to iterate on an image. Preserve <code>interaction.id</code> with the source filename, then pass it as <code>previous_interaction_id</code> in the next request:</p>
+<pre><code>revision = client.interactions.create(
+    model=MODEL,
+    input='Update this infographic to be in Spanish. Do not change other elements.',
+    previous_interaction_id=interaction.id,
+    response_format={
+        'type': 'image',
+        'mime_type': 'image/png',
+        'aspect_ratio': '16:9',
+        'image_size': '2K',
+    },
+)</code></pre>
+<p>This ties a correction to the generated interaction instead of blindly rerunning the original source image. The same base64 decoding step can save the revised output.</p>
+
+<h2>Fix AI image API errors without restarting</h2>
+<p>The repository’s checks and error messages provide a concrete troubleshooting sequence:</p>
+<ol>
+<li><strong>Missing API key:</strong> If Python raises <code>Set GOOGLE_API_KEY or GEMINI_API_KEY before running this script.</code>, set one of those variables in the process launching the script. Do not place the key in source code or diagnostic output.</li>
+<li><strong>Input file not found:</strong> The reference helper raises <code>FileNotFoundError</code> with the missing path. Check that the path is relative to the directory from which Python was launched, not necessarily the directory containing the script.</li>
+<li><strong>Unsupported input type:</strong> The helper rejects a detected MIME type that does not begin with <code>image/</code>. If detection returns nothing, the source falls back to <code>image/png</code>; do not use that fallback to disguise an unknown or incorrectly named file.</li>
+<li><strong>No returned image:</strong> When <code>interaction.output_image</code> is absent, the repository says to check the prompt and safety filters. Make the edit instruction more specific and test that single file before rerunning the collection.</li>
+<li><strong>Other API exception:</strong> The repository catches the exception and prints <code>[!] API Error</code> followed by its message. Preserve that complete text. Then reproduce the issue with one file using the reference <code>edit_image()</code> helper: a working single-file request points toward batch logic, while the same failure in both paths points toward the request itself.</li>
+<li><strong>Python image API proxy error:</strong> The supplied <code>nano_api.py</code> is an SDK client, not a documented proxy. The evidence therefore cannot identify a proxy-specific cause. If another Python wrapper sits in front of it, retain the wrapper’s complete exception and diagnostic text, then compare a direct request with the proxied request before deciding which layer failed.</li>
+</ol>
+<p>The supplied sources do not provide status-specific remedies, request limits, or retry rules, so avoid inventing them from a generic error message. Use the current official API documentation for those cases. For setup failures before a request is sent, the <a href="https://www.nano-banana.live/blog/troubleshooting-install.html" target="_blank" rel="noopener">installation and troubleshooting guide</a> is the right reference; for a valid request that returns no image, revisit the <a href="https://www.nano-banana.live/prompts/" target="_blank" rel="noopener">prompt library</a> and isolate the instruction on one known-good input.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://ai.google.dev/gemini-api/docs/image-generation" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/image-generation</a></li><li><a href="https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py" target="_blank" rel="noopener">https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>

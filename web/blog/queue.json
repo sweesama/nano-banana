@@ -396,11 +396,14 @@
     "category": "Workflows",
     "emoji": "📚",
     "depth": "deep",
-    "status": "pending",
+    "status": "done",
     "sourceUrls": [
       "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py"
-    ]
+    ],
+    "lastAttemptAt": "2026-11-02T05:57:29.646Z",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass"
   },
   {
     "keyword": "how Artificial Analysis image rankings work",
