@@ -12,8 +12,9 @@
 
 ## Start here
 
-- [Cloud API vs local models](https://www.nano-banana.live/)
-- [Route chooser and model guide](https://www.nano-banana.live/guides/quickstart.html)
+- [What Nano Banana is (overview)](https://www.nano-banana.live/)
+- [Getting started steps](https://www.nano-banana.live/guides/quickstart.html)
+- [Nano Banana 2 local model: API client install](https://www.nano-banana.live/blog/how-to-run-locally.html)
 - [Local AI image generator guide](https://www.nano-banana.live/guides/local-ai-image-generator.html)
 - [Run MiniMax H3 locally](https://www.nano-banana.live/guides/minimax-h3-locally.html)
 - [First and last frame video](https://www.nano-banana.live/guides/first-last-frame-video.html)
@@ -90,7 +91,7 @@ Official sources:
 - [HunyuanImage 3.0 Hardware Requirements](https://www.nano-banana.live/blog/hunyuanimage-local-deployment-requirements.html) (published 2026-08-03)
 - [Edit Images with Nano Banana 2 in Python](https://www.nano-banana.live/blog/nano-banana-api-image-editing-python.html) (published 2026-07-29)
 - [Run AI Image Models Without Owning a GPU](https://www.nano-banana.live/blog/run-without-gpu.html) (published 2026-06-23)
-- [Can Nano Banana 2 Run Locally? The Client Explained](https://www.nano-banana.live/blog/how-to-run-locally.html) (published 2026-01-20; updated 2026-10-09)
+- [Nano Banana 2 Local Model: API Client Install Guide](https://www.nano-banana.live/blog/how-to-run-locally.html) (published 2026-01-20; updated 2026-11-02)
 - [Can My PC Run It? Hardware Truths](https://www.nano-banana.live/blog/hardware-requirements.html) (published 2026-01-18; updated 2026-10-20)
 - [Troubleshooting Your Install](https://www.nano-banana.live/blog/troubleshooting-install.html) (published 2026-01-12)
 - [Top 5 Nano Banana Recipes](https://www.nano-banana.live/blog/top-prompt-recipes.html) (published 2026-01-08)

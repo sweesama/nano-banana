@@ -11,6 +11,31 @@
   ],
   "redirects": [
     {
+      "source": "/quickstart.html",
+      "destination": "/guides/quickstart.html",
+      "statusCode": 301
+    },
+    {
+      "source": "/how-to-run-locally.html",
+      "destination": "/blog/how-to-run-locally.html",
+      "statusCode": 301
+    },
+    {
+      "source": "/hardware-requirements.html",
+      "destination": "/blog/hardware-requirements.html",
+      "statusCode": 301
+    },
+    {
+      "source": "/troubleshooting-install.html",
+      "destination": "/blog/troubleshooting-install.html",
+      "statusCode": 301
+    },
+    {
+      "source": "/top-prompt-recipes.html",
+      "destination": "/blog/top-prompt-recipes.html",
+      "statusCode": 301
+    },
+    {
       "source": "/blog/run-ai-image-models-without-gpu.html",
       "destination": "/blog/run-without-gpu.html",
       "permanent": true
