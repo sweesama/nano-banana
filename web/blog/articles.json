@@ -2,9 +2,9 @@
   {
     "slug": "how-to-run-locally",
     "publishDate": "2026-01-20",
-    "title": "Can Nano Banana 2 Run Locally? The Client Explained",
-    "description": "Set up the Nano Banana Python API client with an isolated environment and API key. Understand cloud inference, offline alternatives, and common setup errors.",
-    "modifiedDate": "2026-10-09",
+    "title": "Nano Banana 2 Local Model: API Client Install Guide",
+    "description": "There is no Nano Banana 2 local model to download. This guide installs the Python API client on your computer; image generation still runs in Google's cloud.",
+    "modifiedDate": "2026-11-02",
     "category": "Integration",
     "emoji": "💻"
   },
