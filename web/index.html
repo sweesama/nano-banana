@@ -19,7 +19,7 @@
   <meta name="color-scheme" content="dark" />
   <title>What Is Nano Banana? Gemini Image API Overview</title>
   <meta name="description"
-    content="Nano Banana is Google's hosted Gemini image model. This overview explains what Nano Banana 2 is, how the cloud API works, and where the setup guides are." />
+    content="Nano Banana is Google's hosted Gemini image model. This overview explains what Nano Banana 2 is, how the cloud API works, and where the setup guides are. There is no official download or offline app." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://www.nano-banana.live/" />
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
@@ -88,7 +88,7 @@
   </style>
 <!-- PAGE-METADATA:START -->
 <meta property="og:title" content="What Is Nano Banana? Gemini Image API Overview">
-<meta property="og:description" content="Nano Banana is Google&#39;s hosted Gemini image model. This overview explains what Nano Banana 2 is, how the cloud API works, and where the setup guides are.">
+<meta property="og:description" content="Nano Banana is Google&#39;s hosted Gemini image model. This overview explains what Nano Banana 2 is, how the cloud API works, and where the setup guides are. There is no official download or offline app.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.nano-banana.live/">
 <meta property="og:image" content="https://www.nano-banana.live/og.png">
@@ -98,9 +98,9 @@
 <meta property="og:site_name" content="Nano Banana">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What Is Nano Banana? Gemini Image API Overview">
-<meta name="twitter:description" content="Nano Banana is Google&#39;s hosted Gemini image model. This overview explains what Nano Banana 2 is, how the cloud API works, and where the setup guides are.">
+<meta name="twitter:description" content="Nano Banana is Google&#39;s hosted Gemini image model. This overview explains what Nano Banana 2 is, how the cloud API works, and where the setup guides are. There is no official download or offline app.">
 <meta name="twitter:image" content="https://www.nano-banana.live/og.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"WebSite","name":"Nano Banana","url":"https://www.nano-banana.live/","inLanguage":"en","description":"Nano Banana is Google's hosted Gemini image model. This overview explains what Nano Banana 2 is, how the cloud API works, and where the setup guides are.","publisher":{"@id":"https://www.nano-banana.live/#publisher"},"@id":"https://www.nano-banana.live/#website"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"WebSite","name":"Nano Banana","url":"https://www.nano-banana.live/","inLanguage":"en","description":"Nano Banana is Google's hosted Gemini image model. This overview explains what Nano Banana 2 is, how the cloud API works, and where the setup guides are. There is no official download or offline app.","publisher":{"@id":"https://www.nano-banana.live/#publisher"},"@id":"https://www.nano-banana.live/#website"}]}</script>
 <!-- PAGE-METADATA:END -->
 </head>
 
@@ -121,6 +121,7 @@
     <div class="tags" role="navigation" aria-label="Quick jump">
       <a class="tag" href="#try">Try demo</a>
       <a class="tag" href="#comparison">Cloud vs local</a>
+      <a class="tag" href="#download">Download</a>
       <a class="tag" href="#what">Model basics</a>
       <a class="tag" href="#benchmarks">Benchmarks</a>
       <a class="tag" href="#why">Why it matters</a>
@@ -183,7 +184,13 @@
         </table>
       </div>
       <p>For privacy, hardware, cost and maintenance trade-offs, read <a href="blog/cloud-api-versus-local-ai-image-models.html">cloud APIs versus local image models</a>. A rental is still remote infrastructure, not an offline solution.</p>
-      <p id="download"><strong>Can you download Nano Banana?</strong> No. Google has not released Nano Banana's model weights, so there is no official file to download or install. You use it through the Gemini app or the Gemini API. If you need something to download and install on your own machine, <a href="guides/quickstart.html#installation-guides">pick an open-weight image model instead</a>.</p>
+    </section>
+
+    <section class="section" id="download">
+      <h2>Can you download Nano Banana?</h2>
+      <p><strong>No.</strong> Nano Banana is Google's hosted Gemini image model. There are no downloadable model weights, no official desktop app or .exe, and it cannot run offline.</p>
+      <p>You can use it in the Gemini app or on the web, in <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio</a>, or call the Gemini API from a local client or script. The <a href="guides/quickstart.html">quickstart</a> is the getting-started path, and the <a href="blog/how-to-run-locally.html">local guide</a> covers that API client. You can also download the images you generate. Those steps still need a network connection, because the model stays in Google's cloud.</p>
+      <p>If you need weights that actually run on your own machine, <a href="guides/quickstart.html#installation-guides">choose a separate open-weight image model</a>. That is not a Nano Banana download.</p>
     </section>
 
     <section class="section" id="what">
