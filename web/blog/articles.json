@@ -462,5 +462,20 @@
       "https://ai.google.dev/gemini-api/docs/image-generation",
       "https://github.com/sweesama/nano-banana/blob/main/code/nano_api.py"
     ]
+  },
+  {
+    "slug": "how-artificial-analysis-image-rankings-work",
+    "publishDate": "2026-11-04",
+    "title": "How an AI image model benchmark works: Elo and confidence",
+    "description": "Learn how Artificial Analysis image rankings use blind pairwise votes, Elo scores, 95% intervals, and API data to compare text-to-image models.",
+    "category": "Benchmarks",
+    "emoji": "🏁",
+    "keyword": "how Artificial Analysis image rankings work",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+      "https://artificialanalysis.ai/data-api/docs"
+    ]
   }
 ]

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>How an AI image model benchmark works: Elo and confidence | Nano Banana</title>
+  <meta name="description" content="Learn how Artificial Analysis image rankings use blind pairwise votes, Elo scores, 95% intervals, and API data to compare text-to-image models.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/how-artificial-analysis-image-rankings-work.html">
+  <!-- PAGE-METADATA:START -->
+<meta property="og:title" content="How an AI image model benchmark works: Elo and confidence | Nano Banana">
+<meta property="og:description" content="Learn how Artificial Analysis image rankings use blind pairwise votes, Elo scores, 95% intervals, and API data to compare text-to-image models.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.nano-banana.live/blog/how-artificial-analysis-image-rankings-work.html">
+<meta property="og:image" content="https://www.nano-banana.live/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nano Banana: image editing, benchmarks and quickstart">
+<meta property="og:site_name" content="Nano Banana">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How an AI image model benchmark works: Elo and confidence | Nano Banana">
+<meta name="twitter:description" content="Learn how Artificial Analysis image rankings use blind pairwise votes, Elo scores, 95% intervals, and API data to compare text-to-image models.">
+<meta name="twitter:image" content="https://www.nano-banana.live/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"Article","headline":"How an AI image model benchmark works: Elo and confidence","description":"Learn how Artificial Analysis image rankings use blind pairwise votes, Elo scores, 95% intervals, and API data to compare text-to-image models.","datePublished":"2026-11-04","dateModified":"2026-11-04","author":{"@id":"https://www.nano-banana.live/#publisher"},"publisher":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/blog/how-artificial-analysis-image-rankings-work.html"},"isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.nano-banana.live/blog.html"},{"@type":"ListItem","position":3,"name":"How an AI image model benchmark works: Elo and confidence","item":"https://www.nano-banana.live/blog/how-artificial-analysis-image-rankings-work.html"}]}]}</script>
+<!-- PAGE-METADATA:END -->
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <!-- BREADCRUMBS:START -->
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="../blog.html">Blog</a></li><li><span aria-current="page">How an AI image model benchmark works: Elo and confidence</span></li></ol></nav>
+<!-- BREADCRUMBS:END -->
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Benchmarks • Nov 4, 2026</div>
+        <h1>How an AI image model benchmark works: Elo and confidence</h1>
+        <p class="lead" style="margin:20px auto;">Learn how Artificial Analysis image rankings use blind pairwise votes, Elo scores, 95% intervals, and API data to compare text-to-image models.</p>
+      </header>
+      <div class="article-content">
+        <p>Artificial Analysis ranks text-to-image models by Elo, a preference score derived from blind pairwise human votes. Voters compare two images generated from the same prompt without knowing which model produced each image; higher Elo indicates that a model was preferred more often. That is the core of the <a href="https://artificialanalysis.ai/image/leaderboard/text-to-image" target="_blank" rel="noopener">Artificial Analysis image leaderboard</a>. Understanding the method is more useful than memorizing a live order because the roster, scores, and intervals can change.</p>
+
+<h2>What the leaderboard actually measures</h2>
+<p>The page identifies the board as AA-Image-T2I v2.1 and says it ranks models on generating an image from a text prompt. Its rankings use blind comparisons judged by validated private evaluators. The board is scoped to text-to-image generation rather than image editing.</p>
+<p>Elo is a relative preference measure within the benchmark. It describes what evaluators preferred on the prompts tested; it does not guarantee a particular result on a different prompt. If your work depends on precise text rendering or identity preservation, use the overall ranking as a starting filter and test candidates on your own inputs.</p>
+<p>The page provides Overall and Open weights views, along with controls to hide research previews and derived models. Those controls affect which entries you see, so apply the same settings to every candidate in a comparison.</p>
+
+<h2>Reading the Elo score and its confidence interval</h2>
+<p>Each leaderboard row pairs Elo with a margin, a 95% interval, and a comparison count. The interval provides context for uncertainty around the point score, while a rank may be displayed as a range when its position is not precise.</p>
+<p>Use intervals as a conservative separation check. If two 95% intervals overlap, treat the ordering as inconclusive rather than declaring a winner. A wide rank range likewise calls attention to positional uncertainty. Interval overlap is a reading aid, not a formal statistical significance test.</p>
+<ul>
+  <li><strong>Compare intervals, not just point scores.</strong> A higher Elo does not by itself establish a decisive difference.</li>
+  <li><strong>Check the comparison count.</strong> Treat it as context alongside the interval; the page does not specify a fixed cutoff for a meaningful sample.</li>
+  <li><strong>Record the board version.</strong> Values from a live, versioned leaderboard can drift, so note the version and date used for any comparison.</li>
+  <li><strong>Keep filters consistent.</strong> Do not mix filtered and unfiltered views without clearly identifying the difference.</li>
+</ul>
+<p>To avoid presenting stale information, this article does not reproduce current leaderboard values. Read the live <a href="https://artificialanalysis.ai/image/leaderboard/text-to-image" target="_blank" rel="noopener">text-to-image leaderboard</a> for the current entries, scores, intervals, comparison counts, and filters.</p>
+
+<h3>Why blind pairwise voting is used</h3>
+<p>The methodology is explicitly pairwise: voters see two images generated from the same prompt and do not know which model created each one. Those outcomes are aggregated into an Elo rating, with the comparison count and 95% interval published alongside the score. The result should therefore be read as comparative preference within the benchmark's evaluator pool and tested prompt set, rather than as a guarantee for every prompt.</p>
+
+<h2>Creator-API pricing is a separate axis</h2>
+<p>The leaderboard includes an API Pricing column. Its note defines that figure as the cost of generating 1,000 images on the model creator's API at 1024x1024 with the model's default settings. Use the figure only within that scope; it is not a price quote for another provider or a nondefault configuration. See the leaderboard's pricing note alongside its <a href="https://artificialanalysis.ai/image/leaderboard/text-to-image" target="_blank" rel="noopener">current model listings</a>.</p>
+<p>For a quality-versus-budget comparison, read Elo and the creator-API pricing figure together. A model with a slightly lower score but a substantially lower listed price may fit some constraints better, while a higher-scoring model may suit others. This is a comparison framework rather than a recommendation, and the displayed values can change.</p>
+
+<h2>Pulling the data through the API</h2>
+<p>Artificial Analysis publishes a Data API with a documented text-to-image endpoint. The <a href="https://artificialanalysis.ai/data-api/docs" target="_blank" rel="noopener">Data API documentation</a> lists the path as <code>/media/text-to-image/models/free</code> and states that endpoint access depends on the subscription. Consult the documentation's Tiers section for the current route-access rules.</p>
+<p>The supplied documentation excerpt does not show a complete response schema for this route, so the exact field names for Elo, intervals, and pricing are not confirmed here. Fetch the endpoint and inspect the response, or use the OpenAPI specification linked from the documentation; do not guess the field names.</p>
+<p>The documentation says responses share one envelope containing <code>tier</code>, pagination on lists, and <code>data</code>. Requests authenticate with the <code>x-api-key</code> header. Keys belong to organizations, regenerating a key revokes the old one immediately, and the documentation advises keeping keys server-side and out of source control.</p>
+<p>For attribution, the <a href="https://artificialanalysis.ai/data-api/docs" target="_blank" rel="noopener">API documentation</a> requires Artificial Analysis to be credited when API data is displayed or shared; a visible byline or footer link is described as sufficient. Include that credit if you publish a comparison table built from the API.</p>
+<p>The API's data conventions state that nulls mean not measured or not applicable and never mean zero. Filter null scores out of a comparison rather than treating them as the lowest result. Field names use <code>snake_case</code>, and deprecated fields are deprecated rather than renamed. When storing responses, follow the current OpenAPI schema instead of assuming that a replacement field has a new name.</p>
+
+<h2>A practical workflow for comparing models</h2>
+<ol>
+  <li>Open the <a href="https://artificialanalysis.ai/image/leaderboard/text-to-image" target="_blank" rel="noopener">Artificial Analysis image leaderboard</a> and select the category and filters that match your use case.</li>
+  <li>Record each candidate's Elo, 95% interval, rank range, and comparison count rather than relying on rank alone.</li>
+  <li>Treat overlapping intervals as inconclusive, not as proof that the models are equivalent.</li>
+  <li>Review the creator-API pricing note alongside the preference score.</li>
+  <li>Test the remaining candidates on your own prompts, because the benchmark reflects preferences on its tested prompt set.</li>
+</ol>
+<p>Related reading includes the <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart guide</a> and the <a href="https://www.nano-banana.live/benchmarks/" target="_blank" rel="noopener">benchmarks section</a>. A leaderboard result should remain one input to model selection rather than a substitute for testing your own workloads.</p>
+
+<h2>Limits to keep in mind</h2>
+<p>The supplied leaderboard measures preference on the prompts tested. It does not establish correctness, complex instruction-following, text rendering, identity preservation, latency, or throughput; evaluate those concerns separately.</p>
+<p>The evaluator pool is described as validated and private, but the supplied material does not state its size or composition. Keep that limitation explicit and treat Elo as the benchmark's comparative preference result rather than a guarantee for a particular use case.</p>
+<p>Because the page is live and versioned, any published comparison should record its date, board version, filters, and source link. Values from different snapshots should not be assumed to be interchangeable.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://artificialanalysis.ai/image/leaderboard/text-to-image" target="_blank" rel="noopener">https://artificialanalysis.ai/image/leaderboard/text-to-image</a></li><li><a href="https://artificialanalysis.ai/data-api/docs" target="_blank" rel="noopener">https://artificialanalysis.ai/data-api/docs</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>
