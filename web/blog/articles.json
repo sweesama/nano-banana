@@ -477,5 +477,20 @@
       "https://artificialanalysis.ai/image/leaderboard/text-to-image",
       "https://artificialanalysis.ai/data-api/docs"
     ]
+  },
+  {
+    "slug": "elo-score-versus-image-quality-benchmark",
+    "publishDate": "2026-11-06",
+    "title": "AI Image Model Benchmark: Elo vs Image Quality Scores",
+    "description": "Compare an image model Elo score with confidence intervals, pricing, and deployment requirements using reliable benchmark evidence.",
+    "category": "Benchmarks",
+    "emoji": "📈",
+    "keyword": "Elo score versus image quality benchmark score",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+      "https://www.nano-banana.live/benchmarks/"
+    ]
   }
 ]
