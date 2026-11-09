@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>How to Read AI Image Model Benchmark Confidence Intervals | Nano Banana</title>
+  <meta name="description" content="Learn how to interpret Elo estimates, 95% intervals, rank ranges, and sample evidence on the Artificial Analysis image leaderboard before comparing models.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/read-confidence-intervals-ai-leaderboards.html">
+  <!-- PAGE-METADATA:START -->
+<meta property="og:title" content="How to Read AI Image Model Benchmark Confidence Intervals | Nano Banana">
+<meta property="og:description" content="Learn how to interpret Elo estimates, 95% intervals, rank ranges, and sample evidence on the Artificial Analysis image leaderboard before comparing models.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.nano-banana.live/blog/read-confidence-intervals-ai-leaderboards.html">
+<meta property="og:image" content="https://www.nano-banana.live/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nano Banana: image editing, benchmarks and quickstart">
+<meta property="og:site_name" content="Nano Banana">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Read AI Image Model Benchmark Confidence Intervals | Nano Banana">
+<meta name="twitter:description" content="Learn how to interpret Elo estimates, 95% intervals, rank ranges, and sample evidence on the Artificial Analysis image leaderboard before comparing models.">
+<meta name="twitter:image" content="https://www.nano-banana.live/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"Article","headline":"How to Read AI Image Model Benchmark Confidence Intervals","description":"Learn how to interpret Elo estimates, 95% intervals, rank ranges, and sample evidence on the Artificial Analysis image leaderboard before comparing models.","datePublished":"2026-11-09","dateModified":"2026-11-09","author":{"@id":"https://www.nano-banana.live/#publisher"},"publisher":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/blog/read-confidence-intervals-ai-leaderboards.html"},"isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.nano-banana.live/blog.html"},{"@type":"ListItem","position":3,"name":"How to Read AI Image Model Benchmark Confidence Intervals","item":"https://www.nano-banana.live/blog/read-confidence-intervals-ai-leaderboards.html"}]}]}</script>
+<!-- PAGE-METADATA:END -->
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <!-- BREADCRUMBS:START -->
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="../blog.html">Blog</a></li><li><span aria-current="page">How to Read AI Image Model Benchmark Confidence Intervals</span></li></ol></nav>
+<!-- BREADCRUMBS:END -->
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Benchmarks • Nov 9, 2026</div>
+        <h1>How to Read AI Image Model Benchmark Confidence Intervals</h1>
+        <p class="lead" style="margin:20px auto;">Learn how to interpret Elo estimates, 95% intervals, rank ranges, and sample evidence on the Artificial Analysis image leaderboard before comparing models.</p>
+      </header>
+      <div class="article-content">
+        <p>To read an AI image leaderboard confidence interval, treat the Elo number as the center of an estimate and the interval as stated uncertainty—not as a guarantee that one model wins every prompt. The <a href="https://artificialanalysis.ai/image/leaderboard/text-to-image" target="_blank" rel="noopener">Artificial Analysis image leaderboard</a> says it ranks text-to-image systems with an Elo score derived from pairwise human-preference votes, and displays a ± margin and a 95% interval. For close models, read the interval, sample count, and displayed rank range together before declaring a winner.</p>
+
+<h2>Elo score and image quality: what is being measured?</h2>
+<p>An image model Elo score on this board is a relative preference measure: it orders systems from human choices between generated images. It is not a percentage, a resolution value, or a forecast for a particular prompt. The source snapshot fetched for this article labels the benchmark <strong>AA-Image-T2I v2.1</strong>. Compare values within that benchmark unless a source supplies a valid mapping to another version.</p>
+<p>For a row displayed as <code>Elo ± margin</code>, the lower and upper bounds are the estimate minus or plus that margin. The leaderboard labels those bounds as a 95% interval. A 95% confidence interval describes uncertainty in an estimated population quantity under the calculation procedure; it is not a 95% chance that the next generated image will fall inside it. The supplied excerpt does not disclose the interval calculation, prompt mix, vote weighting, or unit represented by “Samples,” so those methodological details remain unknown.</p>
+<ul>
+<li><strong>Point estimate:</strong> the central Elo value used for ordering.</li>
+<li><strong>± margin:</strong> the amount added and subtracted to obtain the displayed bounds.</li>
+<li><strong>95% interval:</strong> the leaderboard’s uncertainty range around the estimate.</li>
+<li><strong>Samples:</strong> the board’s visible evidence count; the supplied text does not define its unit.</li>
+<li><strong>Range:</strong> the board’s own placement, which may cover more than one position for closely ranked entries.</li>
+</ul>
+<blockquote>
+<p><strong>Practical rule:</strong> A higher Elo is a higher point estimate, not automatically a decisive win. When intervals overlap, do not present the ordering as settled; when they do not overlap, treat the separation as evidence worth checking rather than a guarantee for every workload.</p>
+</blockquote>
+
+<h2>How AI image rankings work: a comparison workflow</h2>
+<ol>
+<li><strong>Confirm the benchmark and version.</strong> Start on the same leaderboard. The supplied snapshot is AA-Image-T2I v2.1; do not splice Elo values from an unrelated image benchmark or silently compare different versions.</li>
+<li><strong>Measure the point-score gap.</strong> A very small difference and a much larger difference are not equally meaningful, even if both occupy neighboring rows. The source does not define a minimum practically important difference, so state the raw gap rather than inventing a threshold.</li>
+<li><strong>Inspect both intervals.</strong> <em>Hypothetical example—not a current ranking:</em> Model A is at 1200 ±10 and Model B is at 1198 ±15. Their displayed 95% ranges are 1190–1210 and 1183–1213. The two-point central gap is small and the ranges overlap. The defensible conclusion is “too close to call from this display,” not “Model A is statistically proven better” or “the models are identical.”</li>
+<li><strong>Check the Samples column.</strong> Keep the evidence count beside the uncertainty range. The supplied source does not say whether “Samples” means individual votes, prompts, matches, or another unit, and it does not publish the formula connecting sample count to interval width; avoid making either claim.</li>
+<li><strong>Use the displayed Range.</strong> The leaderboard shows rank ranges such as grouped positions rather than only a single integer. Use the board’s placement as supplied, but note that the excerpt does not define how those ranges are calculated.</li>
+</ol>
+<p>One subtle point: interval overlap is a warning against overstating a small ordering, not a formal equality test. Conversely, non-overlapping intervals do not prove that one model will win on your prompts, production constraints, or safety checks. The Elo result is evidence about relative human preference under this benchmark, not a complete purchasing decision.</p>
+
+<h2>Separate quality, price per 1000 images, and deployment</h2>
+<p>The leaderboard snapshot fetched for this article presents Elo, Samples, release information, and pricing in separate columns. It therefore supports using price as a separate decision variable rather than folding it into image quality. When you quote an <strong>image model price per 1000 images</strong>, record your retrieval date and link to the <a href="https://artificialanalysis.ai/image/leaderboard/text-to-image" target="_blank" rel="noopener">Artificial Analysis image leaderboard</a>; this article does not reproduce volatile prices or a live ranking table.</p>
+<p>The board also exposes an “Open weights” filter. That label describes model distribution, not where execution happens. A cloud API remains remotely hosted even when the named model has open weights, while a local open-weight workflow runs on infrastructure you control. Do not imply that a leaderboard score or an API client turns a hosted model into an offline model. For a broader side-by-side view, use the <a href="https://www.nano-banana.live/benchmarks/" target="_blank" rel="noopener">Nano Banana benchmark comparison guide</a>; for beginning an API workflow, see the <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">Nano Banana quickstart guide</a>.</p>
+
+<h2>Read the same evidence through the Data API</h2>
+<p>The <a href="https://artificialanalysis.ai/data-api/docs" target="_blank" rel="noopener">Artificial Analysis Data API documentation</a> lists a text-to-image models endpoint and shows that authenticated calls use the <code>x-api-key</code> header. The documented request is:</p>
+<pre><code>curl "https://artificialanalysis.ai/api/v2/media/text-to-image/models/free" \
+  -H "x-api-key: YOUR_API_KEY"</code></pre>
+<p>The API documentation says list responses share an envelope containing <code>tier</code>, <code>data</code>, and pagination, while the API key should remain server-side. The supplied documentation does not show the exact media-record field names for Elo, its interval, Samples, or Range. Do not guess those keys in production code; inspect the linked endpoint reference and OpenAPI specification for the current schema. The documentation also says that <code>null</code> means “not measured” or “not applicable,” never zero, so preserve that distinction when normalizing records.</p>
+<p>API use requires attribution across tiers. If you display or share retrieved data, provide a visible byline or footer link crediting <a href="https://artificialanalysis.ai/data-api/docs" target="_blank" rel="noopener">Artificial Analysis</a> as the source.</p>
+
+<h2>A practical AI leaderboard confidence interval checklist</h2>
+<ul>
+<li><strong>Pin the source:</strong> record the leaderboard, benchmark version, and retrieval date.</li>
+<li><strong>Write the estimate:</strong> report the central Elo and its ± margin together.</li>
+<li><strong>Show the range:</strong> include the stated 95% interval rather than only a rank.</li>
+<li><strong>Keep evidence visible:</strong> include Samples, but label its unit unknown unless the methodology defines it.</li>
+<li><strong>Use cautious language:</strong> say “close” or “provisional” when the displayed evidence does not support a decisive ordering.</li>
+<li><strong>Separate dimensions:</strong> assess Elo, prompt fit, price per 1000 images, deployment model, and operational needs independently.</li>
+</ul>
+<p>The bottom line is straightforward: an AI image model benchmark becomes useful when the score is treated as an estimate, not as a fact detached from uncertainty. Start with the Elo point estimate, read the 95% interval, inspect Samples and the displayed rank range, and state what the source does not establish. That method keeps close AI image rankings honest and makes comparisons easier to audit.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://artificialanalysis.ai/image/leaderboard/text-to-image" target="_blank" rel="noopener">https://artificialanalysis.ai/image/leaderboard/text-to-image</a></li><li><a href="https://artificialanalysis.ai/data-api/docs" target="_blank" rel="noopener">https://artificialanalysis.ai/data-api/docs</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>

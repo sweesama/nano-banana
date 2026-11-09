@@ -492,5 +492,20 @@
       "https://artificialanalysis.ai/image/leaderboard/text-to-image",
       "https://www.nano-banana.live/benchmarks/"
     ]
+  },
+  {
+    "slug": "read-confidence-intervals-ai-leaderboards",
+    "publishDate": "2026-11-09",
+    "title": "How to Read AI Image Model Benchmark Confidence Intervals",
+    "description": "Learn how to interpret Elo estimates, 95% intervals, rank ranges, and sample evidence on the Artificial Analysis image leaderboard before comparing models.",
+    "category": "Benchmarks",
+    "emoji": "📏",
+    "keyword": "how to read confidence intervals on AI leaderboards",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+      "https://artificialanalysis.ai/data-api/docs"
+    ]
   }
 ]
