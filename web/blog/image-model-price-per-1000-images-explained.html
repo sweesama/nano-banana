@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI Image Model Benchmark: Cloud Price per 1000 Images | Nano Banana</title>
+  <meta name="description" content="Compare cloud image models with Elo quality, 95% confidence intervals, generation time, and USD price per 1,000 images while keeping hosted APIs separate from local.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/blog/image-model-price-per-1000-images-explained.html">
+  <!-- PAGE-METADATA:START -->
+<meta property="og:title" content="AI Image Model Benchmark: Cloud Price per 1000 Images | Nano Banana">
+<meta property="og:description" content="Compare cloud image models with Elo quality, 95% confidence intervals, generation time, and USD price per 1,000 images while keeping hosted APIs separate from local.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.nano-banana.live/blog/image-model-price-per-1000-images-explained.html">
+<meta property="og:image" content="https://www.nano-banana.live/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nano Banana: image editing, benchmarks and quickstart">
+<meta property="og:site_name" content="Nano Banana">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Image Model Benchmark: Cloud Price per 1000 Images | Nano Banana">
+<meta name="twitter:description" content="Compare cloud image models with Elo quality, 95% confidence intervals, generation time, and USD price per 1,000 images while keeping hosted APIs separate from local.">
+<meta name="twitter:image" content="https://www.nano-banana.live/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"Article","headline":"AI Image Model Benchmark: Cloud Price per 1000 Images","description":"Compare cloud image models with Elo quality, 95% confidence intervals, generation time, and USD price per 1,000 images while keeping hosted APIs separate from local.","datePublished":"2026-11-11","dateModified":"2026-11-11","author":{"@id":"https://www.nano-banana.live/#publisher"},"publisher":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/blog/image-model-price-per-1000-images-explained.html"},"isPartOf":{"@type":"Blog","name":"Nano Banana Blog","url":"https://www.nano-banana.live/blog.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.nano-banana.live/blog.html"},{"@type":"ListItem","position":3,"name":"AI Image Model Benchmark: Cloud Price per 1000 Images","item":"https://www.nano-banana.live/blog/image-model-price-per-1000-images-explained.html"}]}]}</script>
+<!-- PAGE-METADATA:END -->
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="../guides/quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../blog.html" class="active">Blog</a>
+      </div>
+    </nav>
+    <!-- BREADCRUMBS:START -->
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="../blog.html">Blog</a></li><li><span aria-current="page">AI Image Model Benchmark: Cloud Price per 1000 Images</span></li></ol></nav>
+<!-- BREADCRUMBS:END -->
+    <article class="article-container">
+      <a href="../blog.html" class="article-back">← Back to Blog</a>
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Benchmarks • Nov 11, 2026</div>
+        <h1>AI Image Model Benchmark: Cloud Price per 1000 Images</h1>
+        <p class="lead" style="margin:20px auto;">Compare cloud image models with Elo quality, 95% confidence intervals, generation time, and USD price per 1,000 images while keeping hosted APIs separate from local.</p>
+      </header>
+      <div class="article-content">
+        <p>To compare cloud image models, use quality and unit economics as two separate filters. The [Artificial Analysis API provider benchmark](https://artificialanalysis.ai/image/providers) defines price as USD per 1,000 image generations, while the [Nano Banana benchmark snapshot](https://www.nano-banana.live/benchmarks/) describes relative image quality using blind user votes, Elo ratings, and a 95% confidence interval. A low price does not prove better quality, and a high Elo score does not reveal the cheapest provider. In the supplied provider-page capture, no provider rows were available, so exact current prices are unknown; consult the live source before making a budget decision.</p>
+
+<h2>What image model price per 1000 images means</h2>
+<p><strong>Price per 1000 images is a unit price, not a quality score.</strong> Artificial Analysis defines API Price as USD per 1,000 image generations and marks lower as better. It normalizes providers for the selected model; it does not transform price into an image-quality ranking.</p>
+<pre><code>images required ÷ 1,000 = priced units
+25,000-image workload = 25 × listed USD per 1,000</code></pre>
+<p>For a hypothetical 25,000-image workload, multiply the listed per-1,000 price by 25. This is budget arithmetic, not API request syntax. The supplied evidence does not include a runnable request example, so use the linked provider benchmark and its methodology rather than inventing one.</p>
+<p>Artificial Analysis links to its methodology for the price-per-image calculation and mentions inference time or steps as part of that explanation. The same provider view reports generation time in seconds per image, with lower being better. Its median covers the past three days and includes downloading from the provider where a URL is provided rather than receiving an image response. That makes the measure useful for cloud comparisons without pretending it isolates model inference from delivery.</p>
+<p>In the supplied provider capture, rows were unavailable, so this article does not quote an invented price. Reopen the <a href="https://artificialanalysis.ai/image/providers" target="_blank" rel="noopener">live Artificial Analysis provider benchmark</a> before using a number in a comparison.</p>
+
+<h2>How AI image rankings work: Elo and confidence</h2>
+<p>The <a href="https://www.nano-banana.live/benchmarks/" target="_blank" rel="noopener">Nano Banana benchmark page</a> describes its table as an automated Artificial Analysis snapshot built from blind user votes, Elo ratings, and a 95% confidence interval. For image quality, Elo is a relative, vote-based measure, not a percentage or a universal pass/fail grade. A model's position can change when the comparison set or a successful synchronization changes.</p>
+<ol>
+<li><strong>Compare within the same task.</strong> Text-to-image and image editing are separate tables, so a result in one does not establish performance in the other.</li>
+<li><strong>Read the score and interval together.</strong> A wider 95% interval signals less precision. If intervals overlap heavily or nearly touch, treat a small ordering as uncertain rather than a decisive quality win.</li>
+<li><strong>Check freshness.</strong> The supplied snapshot says its data was refreshed November 9, 2026, and warns that a later successful sync can change both scores and order.</li>
+<li><strong>Treat missing fields as unknown.</strong> Samples, release dates, and pricing appear only when Artificial Analysis returns them; otherwise they are omitted, not zero.</li>
+</ol>
+<p>Confidence intervals do not explain why a model wins; they quantify uncertainty around the estimate. Use them to temper a leaderboard story, not to replace inspection of the task and available metadata.</p>
+
+<h2>A practical quality-and-price comparison</h2>
+<p>Here is a repeatable process that keeps model quality, provider price, and latency separate:</p>
+<ol>
+<li><strong>Choose the relevant leaderboard table.</strong> Use text-to-image for generation comparisons or image editing for edit comparisons.</li>
+<li><strong>Record the model variant, Elo, 95% CI, sample field if present, and refresh date.</strong> Keep these values attached to the task rather than treating them as universal properties.</li>
+<li><strong>Open the Artificial Analysis provider benchmark and select the same model.</strong> This view compares providers across price and generation time.</li>
+<li><strong>If rows exist, capture API Price and generation time.</strong> If they do not, mark both as unavailable rather than estimating them.</li>
+<li><strong>Convert the planned workload into priced units.</strong> A hypothetical 25,000-image run is 25 units, so multiply the current quoted per-1,000 price by 25.</li>
+<li><strong>Use the price-versus-time view as triage.</strong> Artificial Analysis labels the favorable area the Most attractive quadrant, but that chart says nothing about image quality.</li>
+</ol>
+<p>Then return to the Elo evidence. A cheaper provider becomes relevant only after the underlying model has cleared the quality threshold for the selected task and its confidence interval does not make the apparent advantage look fragile.</p>
+
+<h2>Cloud APIs versus local open-weight models</h2>
+<p><strong>Cloud APIs and local open-weight models are different categories.</strong> The supplied Nano Banana page says Nano Banana 2.1 is Google's hosted model <code>gemini-nano-banana-2.1</code>, while Nano Banana 2 remains <code>gemini-3.1-flash-image</code>; it also says neither runs offline. Therefore, an API ranking for either service is not evidence that the model is locally available.</p>
+<p>A local open-weight deployment does not inherit a cloud provider's API price per 1,000 images. If someone exposes that model through a hosted service, that service needs its own price and latency measurement. The benchmark snapshot explicitly does not infer total operating cost when fields are absent, so any local cost estimate requires separate assumptions. Readers continuing with setup can consult the site's <a href="https://www.nano-banana.live/guides/quickstart.html" target="_blank" rel="noopener">quickstart guide</a>, while local deployment guidance is linked separately from the benchmark page.</p>
+
+<h2>A defensible decision rule</h2>
+<p>For quality, require a meaningful Elo separation in the correct task and keep the 95% confidence interval visible. For procurement, compare current USD-per-1,000 prices for the same model, then check median generation time over the stated three-day window. If the provider table has no data in the supplied capture, the honest result is price unknown, not a winner.</p>
+<blockquote><p>Shortlist by task and quality first; among models with meaningful quality evidence, choose the lowest current price per 1,000 for the actual workload, then verify latency and freshness.</p></blockquote>
+<p>This answers how AI image rankings work without confusing them with pricing: Elo summarizes relative blind preference, the confidence interval exposes uncertainty, and price per 1,000 is a separate provider metric. It also keeps hosted Gemini image APIs distinct from local open-weight deployment. Before publishing a numeric comparison, revisit the dated <a href="https://www.nano-banana.live/benchmarks/" target="_blank" rel="noopener">Nano Banana benchmark snapshot</a> and the <a href="https://artificialanalysis.ai/image/providers" target="_blank" rel="noopener">Artificial Analysis provider benchmark</a>.</p>
+        <h2>Sources</h2>
+        <ul><li><a href="https://artificialanalysis.ai/image/providers" target="_blank" rel="noopener">https://artificialanalysis.ai/image/providers</a></li><li><a href="https://www.nano-banana.live/benchmarks/" target="_blank" rel="noopener">https://www.nano-banana.live/benchmarks/</a></li></ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+</body>
+</html>

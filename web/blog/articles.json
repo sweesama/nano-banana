@@ -507,5 +507,20 @@
       "https://artificialanalysis.ai/image/leaderboard/text-to-image",
       "https://artificialanalysis.ai/data-api/docs"
     ]
+  },
+  {
+    "slug": "image-model-price-per-1000-images-explained",
+    "publishDate": "2026-11-11",
+    "title": "AI Image Model Benchmark: Cloud Price per 1000 Images",
+    "description": "Compare cloud image models with Elo quality, 95% confidence intervals, generation time, and USD price per 1,000 images while keeping hosted APIs separate from local.",
+    "category": "Benchmarks",
+    "emoji": "💰",
+    "keyword": "cloud image model price per 1000 images explained",
+    "structuralScore": 100,
+    "sourceAudit": "automated-pass",
+    "sourceUrls": [
+      "https://artificialanalysis.ai/image/providers",
+      "https://www.nano-banana.live/benchmarks/"
+    ]
   }
 ]
