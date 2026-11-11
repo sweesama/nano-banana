@@ -50,6 +50,17 @@ npm --prefix web/blog/scripts test
 python -m py_compile code/nano_api.py
 ```
 
+## IndexNow
+
+The key file is `8894b846bf144cbdb509ce481d85f7d9.txt` (body is the key, no extra newline) at the deployment root and in `web/`, so `https://www.nano-banana.live/8894b846bf144cbdb509ce481d85f7d9.txt` is served as `text/plain`. Submit URLs with:
+
+```bash
+node scripts/indexnow.mjs https://www.nano-banana.live/guides/quickstart.html
+node scripts/indexnow.mjs --sitemap
+```
+
+`--sitemap` reads `https://www.nano-banana.live/sitemap.xml` and sends only `www.nano-banana.live` URLs.
+
 ## Metadata maintenance
 
 After editing page titles, descriptions, or article records, run `node scripts/sync-page-seo.cjs` to refresh derived metadata and task directories. Use `--date YYYY-MM-DD --modified path/to/page.html` only for real content changes; do not refresh every sitemap date for metadata-only edits.
