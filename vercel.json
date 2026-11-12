@@ -5,16 +5,8 @@
       "destination": "/web/index.html"
     },
     {
-      "source": "/ar",
-      "destination": "/web/ar/index.html"
-    },
-    {
       "source": "/ar/",
       "destination": "/web/ar/index.html"
-    },
-    {
-      "source": "/es",
-      "destination": "/web/es/index.html"
     },
     {
       "source": "/es/",
@@ -26,6 +18,16 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/ar",
+      "destination": "/ar/",
+      "statusCode": 308
+    },
+    {
+      "source": "/es",
+      "destination": "/es/",
+      "statusCode": 308
+    },
     {
       "source": "/quickstart.html",
       "destination": "/guides/quickstart.html",
