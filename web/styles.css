@@ -885,3 +885,101 @@ details.guide-index summary { border: 0; background: transparent; padding: 0; }
     0 0 15px rgba(255, 255, 255, 0.05); /* very subtle glow */
   transform: translateY(-1px);
 }
+
+.lang-switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin: -24px 0 28px;
+  font-size: 0.92rem;
+}
+
+.lang-switch a {
+  color: var(--secondary);
+  text-decoration: none;
+}
+
+.lang-switch a[aria-current="page"] {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.locale-table-wrap {
+  overflow-x: auto;
+  margin: 0 0 24px;
+}
+
+.locale-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.locale-table th,
+.locale-table td {
+  border-bottom: 1px solid var(--glass-border);
+  text-align: start;
+  vertical-align: top;
+  padding: 12px;
+}
+
+.locale-table th {
+  color: #fff;
+}
+
+.locale-table td {
+  color: var(--text-muted);
+}
+
+html[dir="rtl"] body {
+  font-family: "Noto Naskh Arabic", "Noto Sans Arabic", "Geeza Pro", Tahoma, "Segoe UI", sans-serif;
+}
+
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
+html[dir="rtl"] h4 {
+  letter-spacing: 0;
+  line-height: 1.45;
+}
+
+html[dir="rtl"] .breadcrumbs li + li::before {
+  margin-right: 0;
+  margin-inline-end: 6px;
+}
+
+html[dir="rtl"] .guide-index ul,
+html[dir="rtl"] .locale-list {
+  padding-left: 0;
+  padding-inline-start: 1.25rem;
+}
+
+html[dir="rtl"] .article-content blockquote,
+html[dir="rtl"] .callout {
+  border-left: 0;
+  border-inline-start: 3px solid var(--primary);
+  padding-left: 0;
+  padding-inline-start: 16px;
+}
+
+html[dir="rtl"] pre,
+html[dir="rtl"] code,
+html[dir="rtl"] .ltr,
+html[dir="rtl"] .lang-switch {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+html[dir="rtl"] pre,
+html[dir="rtl"] .ltr {
+  text-align: left;
+}
+
+.callout {
+  border-inline-start: 3px solid var(--primary);
+  padding-inline-start: 16px;
+  margin: 0 0 24px;
+}
