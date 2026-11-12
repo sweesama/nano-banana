@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { updateArticleSummary } = require('./content-metadata.cjs');
+const { HOST_GUARD_SCRIPT } = require('./host-guard.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 const WEB = path.join(ROOT, 'web');
@@ -88,7 +89,23 @@ for (const file of htmlFiles) {
   if (count(html, /<title\b/gi) !== 1) add(file, 'must contain exactly one <title>');
   if (count(html, /<h1\b/gi) !== 1) add(file, 'must contain exactly one <h1>');
   if (!is404 && !/<meta\s+name=["']description["'][^>]+content=["'][^"']+/i.test(html)) add(file, 'missing non-empty meta description');
+  const headOpen = html.search(/<head\b/i);
+  const headClose = html.search(/<\/head>/i);
+  const guardAt = html.indexOf(HOST_GUARD_SCRIPT);
+  if (headOpen === -1 || headClose === -1 || guardAt === -1 || guardAt > headClose) add(file, 'missing host guard in <head>');
+  else {
+    const firstScript = html.slice(headOpen, headClose).search(/<script\b/i);
+    if (firstScript === -1 || headOpen + firstScript !== guardAt) add(file, 'host guard must be the first script in <head>');
+  }
+  const ogTag = html.match(/<meta\b[^>]*\bproperty=["']og:url["'][^>]*>/i)?.[0] || '';
+  const ogUrl = ogTag.match(/\bcontent=["']([^"']+)["']/i)?.[1] || '';
+  if (!ogUrl.startsWith('https://www.nano-banana.live/')) add(file, 'og:url must be an absolute https://www.nano-banana.live/ URL');
   if (!is404 && !/<link\s+rel=["']canonical["'][^>]+href=["']https:\/\/www\.nano-banana\.live\//i.test(html)) add(file, 'missing production canonical URL');
+  if (is404) {
+    const canonicalTag = html.match(/<link\b[^>]*\brel=["']canonical["'][^>]*>/i)?.[0] || '';
+    const canonical404 = canonicalTag.match(/\bhref=["']([^"']+)["']/i)?.[1] || '';
+    if (!canonical404.startsWith('https://www.nano-banana.live/')) add(file, 'canonical must be an absolute https://www.nano-banana.live/ URL');
+  }
   if (!is404) {
     const canonical = html.match(/<link\s+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i)?.[1];
     if (canonical && canonical !== expectedCanonical(file) && !NOINDEX_ALLOWLIST.has(rel(file))) add(file, `canonical mismatch: expected ${expectedCanonical(file)}, found ${canonical}`);
