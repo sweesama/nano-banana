@@ -40,6 +40,7 @@ jobs:
         run: |
           node scripts/test-content-metadata.cjs
           node scripts/test-page-seo.cjs
+          node scripts/test-host-guard.cjs
 
       - name: Install generator dependencies
         working-directory: web/blog/scripts

@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import pageSeo from '../../../scripts/page-seo.cjs';
+import hostGuard from '../../../scripts/host-guard.cjs';
 
 import {
   MODELS,
@@ -140,6 +141,7 @@ const baseArticle = {
 
 assert.doesNotThrow(() => validateArticle(baseArticle, item, cluster));
 const generatedHtml = buildArticleHtml(baseArticle, { ...item, slug: 'example-api-client', category: 'API Tutorial' }, '2026-10-09');
+assert.ok(generatedHtml.startsWith('<!doctype html>\n<html lang="en">\n<head>\n  ' + hostGuard.HOST_GUARD_SCRIPT));
 assert.match(generatedHtml, /property="og:type" content="article"/);
 assert.match(generatedHtml, /og\.png/);
 assert.match(generatedHtml, /aria-label="Breadcrumb"/);

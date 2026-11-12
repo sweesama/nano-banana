@@ -5,9 +5,11 @@ import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import contentMetadata from '../../../scripts/content-metadata.cjs';
 import pageSeo from '../../../scripts/page-seo.cjs';
+import hostGuard from '../../../scripts/host-guard.cjs';
 
 const { SITE_URL, updateSitemapDates, updateArticleSummary } = contentMetadata;
 const { HUBS, applyPageSeo, buildPageMetadata, breadcrumbsFor, renderBreadcrumbs, updateTopicHub } = pageSeo;
+const { HOST_GUARD_SCRIPT } = hostGuard;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -869,6 +871,7 @@ function buildArticleHtml(article, item, date) {
   return `<!doctype html>
 <html lang="en">
 <head>
+  ${HOST_GUARD_SCRIPT}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${escapeHtml(article.title)} | Nano Banana</title>
