@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#0b0f14">
   <meta name="color-scheme" content="dark">
   <title>Run MiniMax H3 Locally: Hardware and the API Boundary</title>
-  <meta name="description" content="How to run MiniMax H3 locally. Separate the cloud API from H3-Base weights, with dated hardware notes from MiniMax's own docs.">
+  <meta name="description" content="How to run MiniMax H3 locally, plus the hosted MiniMax-H3-Image API: endpoint, key, request, and published prices versus Nano Banana.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.nano-banana.live/guides/minimax-h3-locally.html">
   <link rel="icon" href="../favicon.png" type="image/png">
@@ -22,7 +22,7 @@
   </style>
 <!-- PAGE-METADATA:START -->
 <meta property="og:title" content="Run MiniMax H3 Locally: Hardware and the API Boundary">
-<meta property="og:description" content="How to run MiniMax H3 locally. Separate the cloud API from H3-Base weights, with dated hardware notes from MiniMax&#39;s own docs.">
+<meta property="og:description" content="How to run MiniMax H3 locally, plus the hosted MiniMax-H3-Image API: endpoint, key, request, and published prices versus Nano Banana.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://www.nano-banana.live/guides/minimax-h3-locally.html">
 <meta property="og:image" content="https://www.nano-banana.live/og.png">
@@ -32,9 +32,9 @@
 <meta property="og:site_name" content="Nano Banana">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Run MiniMax H3 Locally: Hardware and the API Boundary">
-<meta name="twitter:description" content="How to run MiniMax H3 locally. Separate the cloud API from H3-Base weights, with dated hardware notes from MiniMax&#39;s own docs.">
+<meta name="twitter:description" content="How to run MiniMax H3 locally, plus the hosted MiniMax-H3-Image API: endpoint, key, request, and published prices versus Nano Banana.">
 <meta name="twitter:image" content="https://www.nano-banana.live/og.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"TechArticle","name":"How to Run MiniMax H3 Locally","description":"How to run MiniMax H3 locally. Separate the cloud API from H3-Base weights, with dated hardware notes from MiniMax's own docs.","url":"https://www.nano-banana.live/guides/minimax-h3-locally.html","headline":"How to Run MiniMax H3 Locally","dateModified":"2026-10-22","publisher":{"@id":"https://www.nano-banana.live/#publisher"},"author":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/guides/minimax-h3-locally.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Quickstart","item":"https://www.nano-banana.live/guides/quickstart.html"},{"@type":"ListItem","position":3,"name":"How to Run MiniMax H3 Locally","item":"https://www.nano-banana.live/guides/minimax-h3-locally.html"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"TechArticle","name":"How to Run MiniMax H3 Locally","description":"How to run MiniMax H3 locally, plus the hosted MiniMax-H3-Image API: endpoint, key, request, and published prices versus Nano Banana.","url":"https://www.nano-banana.live/guides/minimax-h3-locally.html","headline":"How to Run MiniMax H3 Locally","dateModified":"2026-11-12","publisher":{"@id":"https://www.nano-banana.live/#publisher"},"author":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/guides/minimax-h3-locally.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Quickstart","item":"https://www.nano-banana.live/guides/quickstart.html"},{"@type":"ListItem","position":3,"name":"How to Run MiniMax H3 Locally","item":"https://www.nano-banana.live/guides/minimax-h3-locally.html"}]}]}</script>
 <!-- PAGE-METADATA:END -->
 </head>
 <body>
@@ -55,9 +55,9 @@
 <!-- BREADCRUMBS:END -->
     <article class="article-container">
       <header class="article-header">
-        <div class="meta" style="justify-content:center;display:flex;">Local models • Checked October 22, 2026</div>
+        <div class="meta" style="justify-content:center;display:flex;">Local models • Hardware notes checked October 22, 2026 • H3-Image API checked November 12, 2026</div>
         <h1>How to Run MiniMax H3 Locally</h1>
-        <p class="lead" style="margin:20px auto;">MiniMax H3 can run as open H3-Base weights on hardware you control, or as a hosted MiniMax API. Those are different systems. This independent page only covers the local-run boundary, the published hardware notes, and where a first and last frame fit.</p>
+        <p class="lead" style="margin:20px auto;">MiniMax H3 can run as open H3-Base video weights on hardware you control, or as a hosted MiniMax API. Those are different systems. The hardware notes below stay on that video boundary. A later section covers the separate still-image model, MiniMax-H3-Image, through the hosted API. This site has not benchmarked either one.</p>
       </header>
       <div class="article-content">
         <p>nano-banana.live is not a MiniMax site, does not distribute H3 weights, and has not benchmarked H3. Figures below are transcribed from MiniMax's model card, repository, and local-deploy guide, re-read on October 22, 2026. The deploy guide itself says it was last reviewed on August 26, 2026. Re-check those pages before you buy hardware or pin a commit.</p>
@@ -207,12 +207,61 @@
         <p>FL2VA is the local checkpoint for that job. The model card says zero images means text-to-video, one image means a first-frame or last-frame condition, and two images mean first-and-last-frame generation. The deploy guide maps the same idea to SGLang task <code>fl2va</code> with one or two image conditions whose role is <code>keyframe</code>, and to the ComfyUI I2V template.</p>
         <p>This site cannot run that generation. If you already have a clip and need the opening and closing images as files, the <a href="first-last-frame-video.html">first and last frame video</a> page extracts them in the browser. It does not call MiniMax.</p>
 
+        <h2 id="h3-image-api">MiniMax-H3-Image through the hosted API</h2>
+        <p>MiniMax-H3-Image is the still-image model: text-to-image and image editing. It is not an H3-Base video checkpoint, and a call to the hosted image API is not local inference. The facts in this section were read on November 12, 2026 from MiniMax's API reference, pricing page, and the <a href="https://huggingface.co/MiniMaxAI/MiniMax-H3-Image" target="_blank" rel="noopener">MiniMax-H3-Image model card</a>. Google's image prices were read the same day from the Gemini pricing page.</p>
+
+        <h3>Endpoint and API key</h3>
+        <p>The model card names two hosts. Global requests use <code>https://api.minimax.io</code>. The China host in the same card is <code>https://api.minimax.cn</code>. Text-to-image is <code>POST /v1/images/generations</code>. Image editing, 1 to 16 reference images, is <code>POST /v1/images/edits</code>. Both accept <code>MiniMax-H3-Image</code> and <code>MiniMax-H3-Image-Highspeed</code>. The OpenAPI security scheme is <code>Authorization: Bearer</code> plus the API key.</p>
+        <p>MiniMax's <a href="https://platform.minimax.io/docs/guides/quickstart-preparation" target="_blank" rel="noopener">preparation guide</a> says to register or log in on the API platform, then open API Keys and choose “Create new secret key” for pay-as-you-go. That guide says pay-as-you-go covers image models. The key is a credential: the <a href="https://platform.minimax.io/docs/faq/about-apis" target="_blank" rel="noopener">API FAQ</a> says not to share it or put it in browser or other client-side code. Store it in an environment variable such as <code>MINIMAX_API_KEY</code>. M Plan uses a separate subscription key; do not treat the two keys as interchangeable. Pay-as-you-go charges the account balance. This site does not issue a MiniMax key and does not add credit to an account.</p>
+        <p>The generations reference says the server waits up to 600 seconds, so the client timeout should be at least that long. The endpoint is not idempotent: after the request is sent, MiniMax finishes generation and charges for successful images even if the client disconnects, and a retry generates and charges again.</p>
+
+        <h3>A basic text-to-image request</h3>
+        <p>The reference marks <code>model</code> and <code>prompt</code> as required. <code>n</code> defaults to 1. The body below uses the prompt and the <code>2720x1536</code> size from the documented example, with one image and a URL response. Replace nothing except the key, which should already be in the environment.</p>
+        <pre><code>curl --max-time 600 https://api.minimax.io/v1/images/generations \
+  -H "Authorization: Bearer $MINIMAX_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "MiniMax-H3-Image",
+    "prompt": "An orange cat lying on a windowsill basking in the sun, warm afternoon light, film texture",
+    "size": "2720x1536",
+    "n": 1,
+    "response_format": "url"
+  }'</code></pre>
+        <p>For the China host, change the origin to <code>https://api.minimax.cn</code> and keep the same path. Download the image from the returned URL yourself; the reference says that URL is not guaranteed to remain available. Editing uses the other path and is documented separately.</p>
+
+        <h3>Price: hosted API, local weights, and Nano Banana</h3>
+        <p>MiniMax bills the hosted image API in tokens, and also publishes illustrative per-image totals. On the <a href="https://platform.minimax.io/docs/pricing/overview" target="_blank" rel="noopener">pricing overview</a>, standard <code>MiniMax-H3-Image</code> is $2.30 per million input text tokens, $1.50 per million input image tokens, and $3.80 per million output image tokens. <code>MiniMax-H3-Image-Highspeed</code> is $2.30, $3.00, and $7.60 on those same three meters. The page says the per-image amounts are estimates for one image and can change with the text-token count, including tokens added by prompt enhancement.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Hosted example, read November 12, 2026</th><th>Standard MiniMax-H3-Image</th><th>MiniMax-H3-Image-Highspeed</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Text-to-image, no input image, 1K (1024×1024)</td><td>$0.02179</td><td>$0.03529</td></tr>
+              <tr><td>Text-to-image, no input image, 2K (2048×2048)</td><td>$0.02333</td><td>$0.03622</td></tr>
+              <tr><td>Text-to-image, no input image, 4K (4096×4096)</td><td>$0.06879, or $0.03439 while the listed 50% offer applies</td><td>$0.13001, or $0.06501 while the listed 50% offer applies</td></tr>
+              <tr><td>Edit, one 1K reference, 1K output</td><td>$0.02654</td><td>$0.04525</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The same page says the 50% reduction runs until November 17, 2026 at 16:00 UTC, exclusive, and only when the delivered image has at least 16,600,000 pixels. The example table applies that note to the 4K rows. It is a dated offer, not the underlying token rate. A 4096×4096 image is 16,777,216 pixels, which meets the pixel test MiniMax wrote down; a 2048×2048 image does not.</p>
+        <p>Running the weights yourself does not have a dollar price on the model card or on that pricing page. The card lists the image repository at 68.65 GB, of which the DiT files are 66.28 GB and the image VAE is 2.34 GB, plus a 66.7 GB text encoder loaded from <code>MiniMaxAI/MiniMax-H3</code> rather than from the image repository. An optional prompt expander is listed at 17.9 GB. Those are download sizes. MiniMax does not publish electricity, a GPU purchase price, or a local cost per image, and this page does not invent one. A rented GPU would be a third bill, from the rental provider, and it would still be remote hardware.</p>
+        <p>Google's <a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">Gemini API pricing</a>, read the same day, prices Nano Banana by tokens as well, and it prints image-output equivalents that are not the same kind of total as MiniMax's examples. For standard <code>gemini-nano-banana-2.1</code> (Nano Banana 2.1), the free tier is listed as not available. Input is $1.50 per million tokens for text, image, and video. Image output is $30 per million tokens, which the footnote equates to $0.0336 for a 1K image (1024×1024, 1120 tokens), $0.0504 for 2K (2048×2048, 1680 tokens), and $0.113 for 4K (4096×4096, 3780 tokens). Text and thinking output is a separate $7.50 per million tokens. The same footnote prices Batch image output at $15 per million tokens. Those per-image lines are image-output equivalents. Input tokens, and any search grounding, are extra.</p>
+        <p>Nano Banana 2, <code>gemini-3.1-flash-image</code>, is another row. Its standard image output is $60 per million tokens: the footnote equates that to $0.067 at 1K, $0.101 at 2K, and $0.151 at 4K, with input at $0.50 per million text or image tokens, and the free tier again listed as not available. The English overview on this site says Google recommends Nano Banana 2.1 for new projects, as checked on October 9, 2026. That is a model-selection note, not a statement that 2.1 costs the same as Nano Banana 2.</p>
+        <p>Do not subtract MiniMax's $0.02179 example from Google's $0.0336 image-output equivalent and call the difference a saving. One figure is MiniMax's illustrative total for a sample prompt. The other is Google's image-output token price before input. Use the vendor page for the exact model ID, resolution, and prompt you will send.</p>
+
         <h2>Sources</h2>
         <ul>
-          <li><a href="https://huggingface.co/MiniMaxAI/MiniMax-H3" target="_blank" rel="noopener">https://huggingface.co/MiniMaxAI/MiniMax-H3</a> — model card, re-read October 22, 2026.</li>
+          <li><a href="https://huggingface.co/MiniMaxAI/MiniMax-H3" target="_blank" rel="noopener">https://huggingface.co/MiniMaxAI/MiniMax-H3</a> — video model card, re-read October 22, 2026.</li>
           <li><a href="https://github.com/MiniMax-AI/MiniMax-H3" target="_blank" rel="noopener">https://github.com/MiniMax-AI/MiniMax-H3</a> — repository, including the prompt skill.</li>
           <li><a href="https://platform.minimax.io/docs/guides/local-deploy-h3" target="_blank" rel="noopener">https://platform.minimax.io/docs/guides/local-deploy-h3</a> — local-deploy guide, last reviewed August 26, 2026, re-read October 22, 2026.</li>
           <li><a href="https://github.com/MiniMax-AI/MiniMax-H3/blob/main/skills/h3-prompt-writing/SKILL.md" target="_blank" rel="noopener">https://github.com/MiniMax-AI/MiniMax-H3/blob/main/skills/h3-prompt-writing/SKILL.md</a></li>
+          <li><a href="https://huggingface.co/MiniMaxAI/MiniMax-H3-Image" target="_blank" rel="noopener">https://huggingface.co/MiniMaxAI/MiniMax-H3-Image</a> — image model card, read November 12, 2026.</li>
+          <li><a href="https://platform.minimax.io/docs/api-reference/image-generation-h3-generations" target="_blank" rel="noopener">https://platform.minimax.io/docs/api-reference/image-generation-h3-generations</a> — hosted text-to-image reference.</li>
+          <li><a href="https://platform.minimax.io/docs/api-reference/image-generation-h3-edits" target="_blank" rel="noopener">https://platform.minimax.io/docs/api-reference/image-generation-h3-edits</a> — hosted image-edit reference.</li>
+          <li><a href="https://platform.minimax.io/docs/guides/quickstart-preparation" target="_blank" rel="noopener">https://platform.minimax.io/docs/guides/quickstart-preparation</a> — account and API key.</li>
+          <li><a href="https://platform.minimax.io/docs/pricing/overview" target="_blank" rel="noopener">https://platform.minimax.io/docs/pricing/overview</a> — hosted image prices, read November 12, 2026.</li>
+          <li><a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/pricing</a> — Nano Banana API prices, read November 12, 2026.</li>
         </ul>
       </div>
     </article>
