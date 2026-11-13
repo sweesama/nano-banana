@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <script>(function(){var h=location.hostname.toLowerCase();if(h==="nano-banana.live"||h==="www.nano-banana.live"||h==="localhost"||h==="127.0.0.1"||h.endsWith(".vercel.app"))return;location.replace("https://www.nano-banana.live"+location.pathname+location.search+location.hash)})();</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3758496128431673"
+    crossorigin="anonymous"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0f14">
+  <meta name="color-scheme" content="dark">
+  <title>在本機運行 MiniMax H3：硬件，以及 API 的邊界</title>
+  <meta name="description" content="如何在本機運行 MiniMax H3，並對照 MiniMax 官方 API、fal.ai、OpenRouter、Replicate 和 Nano Banana 已公佈的靜態圖像價格。查不到的價格標為未公佈。">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/zh-hant/guides/minimax-h3-locally.html">
+  <link rel="alternate" hreflang="en" href="https://www.nano-banana.live/guides/minimax-h3-locally.html">
+  <link rel="alternate" hreflang="zh-Hans" href="https://www.nano-banana.live/zh/guides/minimax-h3-locally.html">
+  <link rel="alternate" hreflang="zh-Hant" href="https://www.nano-banana.live/zh-hant/guides/minimax-h3-locally.html">
+  <link rel="alternate" hreflang="x-default" href="https://www.nano-banana.live/guides/minimax-h3-locally.html">
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css">
+  <script src="../../analytics.js" defer></script>
+  <style>
+    .table-wrap { overflow-x: auto; margin: 0 0 24px; }
+    .table-wrap table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    .table-wrap th, .table-wrap td { border-bottom: 1px solid var(--glass-border); text-align: left; vertical-align: top; padding: 12px; color: var(--text-muted); }
+    .table-wrap th { color: #fff; }
+  </style>
+<!-- PAGE-METADATA:START -->
+<meta property="og:title" content="在本機運行 MiniMax H3：硬件，以及 API 的邊界">
+<meta property="og:description" content="如何在本機運行 MiniMax H3，並對照 MiniMax 官方 API、fal.ai、OpenRouter、Replicate 和 Nano Banana 已公佈的靜態圖像價格。查不到的價格標為未公佈。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.nano-banana.live/zh-hant/guides/minimax-h3-locally.html">
+<meta property="og:locale" content="zh_HK">
+<meta property="og:image" content="https://www.nano-banana.live/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nano Banana: image editing, benchmarks and quickstart">
+<meta property="og:site_name" content="Nano Banana">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="在本機運行 MiniMax H3：硬件，以及 API 的邊界">
+<meta name="twitter:description" content="如何在本機運行 MiniMax H3，並對照 MiniMax 官方 API、fal.ai、OpenRouter、Replicate 和 Nano Banana 已公佈的靜態圖像價格。查不到的價格標為未公佈。">
+<meta name="twitter:image" content="https://www.nano-banana.live/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"TechArticle","name":"如何在本機運行 MiniMax H3","headline":"如何在本機運行 MiniMax H3","inLanguage":"zh-Hant","description":"如何在本機運行 MiniMax H3，並對照 MiniMax 官方 API、fal.ai、OpenRouter、Replicate 和 Nano Banana 已公佈的靜態圖像價格。查不到的價格標為未公佈。","url":"https://www.nano-banana.live/zh-hant/guides/minimax-h3-locally.html","dateModified":"2026-11-13","publisher":{"@id":"https://www.nano-banana.live/#publisher"},"author":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/zh-hant/guides/minimax-h3-locally.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首頁","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"快速入門","item":"https://www.nano-banana.live/guides/quickstart.html"},{"@type":"ListItem","position":3,"name":"如何在本機運行 MiniMax H3","item":"https://www.nano-banana.live/zh-hant/guides/minimax-h3-locally.html"}]}]}</script>
+<!-- PAGE-METADATA:END -->
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../../index.html"><img src="../../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../../benchmarks/index.html" lang="en">Benchmarks</a>
+        <a href="../../prompts/index.html" lang="en">Prompts</a>
+        <a href="../../guides/quickstart.html" lang="en">Quickstart</a>
+        <a href="../../faq.html" lang="en">FAQ</a>
+        <a href="../../about.html" lang="en">About</a>
+        <a href="../../blog.html" lang="en">Blog</a>
+      </div>
+    </nav>
+    <p class="lang-switch" dir="ltr">
+      <a href="../../guides/minimax-h3-locally.html" hreflang="en" lang="en">English</a>
+      <a href="../../zh/guides/minimax-h3-locally.html" hreflang="zh-Hans" lang="zh-Hans">简体中文</a>
+      <a href="../../zh-hant/guides/minimax-h3-locally.html" hreflang="zh-Hant" lang="zh-Hant" aria-current="page">繁體中文</a>
+    </p>
+    <nav class="breadcrumbs" aria-label="導覽路徑"><ol><li><a href="../../index.html">首頁</a></li><li><a href="../../guides/quickstart.html">快速入門</a></li><li><span aria-current="page">如何在本機運行 MiniMax H3</span></li></ol></nav>
+    <article class="article-container">
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">本機模型 • 硬件說明核對於 2026 年 10 月 22 日 • H3-Image API 核對於 2026 年 11 月 12 日 • 價格對比核對於 2026 年 11 月</div>
+        <h1>如何在本機運行 MiniMax H3</h1>
+        <p class="lead" style="margin:20px auto;">MiniMax H3 可以是你自己機器上的開源 H3-Base 影片權重，也可以是 MiniMax 的託管 API。這是兩套系統。下面的硬件說明只談影片這條邊界。後文單獨寫靜態圖像模型 MiniMax-H3-Image 的託管介面。本站沒有對兩者做過基準測試。</p>
+      </header>
+      <div class="article-content">
+        <p>nano-banana.live 不是 MiniMax 的網站，不分發 H3 權重，也沒有測過 H3。下面的數字轉錄自 MiniMax 的模型卡、倉庫和本機部署指南，2026 年 10 月 22 日重讀。部署指南自己寫的最後審閱日期是 2026 年 8 月 26 日。買硬件或鎖定某個 commit 之前，請再打開那些頁面看一遍。</p>
+
+        <h2 id="cloud-versus-local">本機客戶端不等於本機推論</h2>
+        <p><a href="https://huggingface.co/MiniMaxAI/MiniMax-H3" target="_blank" rel="noopener">MiniMax-H3 模型卡</a>列出兩種使用完整產品的託管方式：Open Platform API（全球用 platform.minimax.io，中國用 platform.minimaxi.com），以及 Hailuo 應用程式（hailuoai.video 和 hailuoai.com）。筆記本上的 Python 腳本去調這些地址，只是客戶端。模型仍跑在 MiniMax 的服務上。</p>
+        <p>真正的本機推論，是開源權重在你控制的機器上執行。同一張模型卡說，完整的 H3 系統有三個模組，開源發佈裡只有其中一個：</p>
+        <ul>
+          <li><strong>H3-Context-IR</strong> 把自由形式的多模態指令收成結構化表示。MiniMax 說它依賴託管模型，不在開源發佈裡。</li>
+          <li><strong>H3-Base</strong> 生成 768p 影片，並帶同步立體聲。這是你可以下載的部分。</li>
+          <li><strong>H3-Regenerate-2K</strong> 用 768p 輸出和原始上下文再生成 2K 結果。MiniMax 說這個模組尚未開源。模型卡上的「2K」指的是這一步託管處理，不是本機 checkpoint 上的一個開關。</li>
+        </ul>
+        <p>MiniMax 的<a href="https://platform.minimax.io/docs/guides/local-deploy-h3" target="_blank" rel="noopener">本機部署指南</a>把後果寫得很直接：自建的 H3-Base 服務重現不了平台上完整的 Context-IR 和 2K 流程。模型卡上的「完整 2K 工作流」是本機 SGLang 進程再加上那兩個託管 API。這種混用不是離線。</p>
+
+        <h2 id="what-is-released">開源發佈裡有什麼</h2>
+        <p>模型卡和 <a href="https://github.com/MiniMax-AI/MiniMax-H3" target="_blank" rel="noopener">MiniMax-H3 倉庫</a>描述了兩個任務 checkpoint。兩者都是經過 CFG 蒸餾的 Omni Transformer 權重，隨附 processor、tokenizer、文本編碼器、視覺 VAE 和音訊 VAE。</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Checkpoint</th><th>任務</th><th>輸入</th><th>輸出</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>H3-Base FL2VA</td>
+                <td><code>t2va</code> 文生有聲影片，以及 <code>fl2va</code> 首尾幀生有聲影片</td>
+                <td>文本。可選首幀、尾幀，或兩者都給。</td>
+                <td>影片和音訊，BF16</td>
+              </tr>
+              <tr>
+                <td>H3-Base Ref2VA</td>
+                <td><code>ref2va</code> 參考生有聲影片</td>
+                <td>文本，加上參考圖像、影片和/或音訊。模型卡的上限是 9 張圖、3 段影片、3 段音訊，合計最多 12 個檔案。每段 2–15 秒，每種模態的總時長最多 15 秒。</td>
+                <td>影片和音訊，BF16</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>同一天核對的輸出約定是：4–15 秒，短邊預設 768 像素，24 FPS，32 kHz 立體聲。點名的長寬比包括 21:9、16:9、4:3、1:1、3:4 和 9:16。對白穩定支援阿拉伯語、中文、英語、法語、德語、意大利語、日語、韓語、葡萄牙語、俄語和西班牙語。FL2VA 和 Ref2VA 不能互換：部署指南說，FL2VA 服務不會提供 <code>ref2va</code>。</p>
+        <p>架構上，模型卡說 H3-Omni-Transformer 是 330 億參數的稠密模型，其中約 130 億在 AdaLN 分支裡，只做推論時不必載入。文本編碼器使用完整的 Qwen3-VL-32B 權重，讀取第 50 層的隱藏狀態。這些是參數量，不是測出來的顯示記憶體下限。</p>
+        <p>權重使用 MiniMax H3 Community License Agreement。模型卡和倉庫裡的許可文本，才是地域、商用和可接受用途的依據。本頁不轉述那些條款。</p>
+
+        <h2 id="run-locally">怎樣在本機運行 MiniMax H3</h2>
+        <p>模型卡點了四個推論框架，各自有指南：SGLang、vLLM、Diffusers 和 ComfyUI。MiniMax 的部署指南最後審閱於 2026 年 8 月 26 日，分成視覺化的 ComfyUI 路徑，和鎖定版本的 SGLang 服務。它把 vLLM-Omni 配方視為社群維護，而不是該頁可重現的基線。</p>
+
+        <h3>工作站上的 ComfyUI</h3>
+        <p>這是部署指南為互動式本機使用推薦的路徑。它仍然只對 ComfyUI 下載的轉換後權重做本機推論。檔案來自 <code>Comfy-Org/MiniMax-H3</code>，包括 INT8 和 NVFP4 組件。MiniMax 說它們和官方的混合 BF16/FP32 checkpoint 不是同一套數值基線，顯示記憶體和畫質都可以不同。</p>
+        <p>指南審閱過的基線是 ComfyUI <code>0.30.0</code> 或更新版本，內置 T2V、I2V 和 R2V 模板。它也說，這份 ComfyUI 指南沒有公佈最低顯示記憶體。列出的步驟是：</p>
+        <ol>
+          <li>把 ComfyUI 更新到 <code>0.30.0</code> 或更新，然後啟動。</li>
+          <li>打開 Template Library，再打開 Video。</li>
+          <li>選擇 MiniMax H3 的 T2V、I2V 或 R2V。T2V 和 I2V 用 FL2VA 擴散模型。R2V 用單獨的 Ref2VA 模型。</li>
+          <li>讓模型掃描彈出視窗下載模板要求的檔案。模型列表沒刷新就重啟 ComfyUI。</li>
+          <li>填寫提示詞，以及需要的圖像、影片或音訊參考。I2V 接收一張輸入圖，可選首幀和尾幀。</li>
+          <li>在 Resolution Selector 裡用 0.98 百萬像素，邊長為 32 的倍數，或直接設 1344×768。指南說不要用 1.0 百萬像素那一檔，因為它會落到 1376×768，超過 H3-Base 768×1344 的像素面積上限。</li>
+          <li>把工作流加入佇列。文檔中的結果是一段 MP4：24 FPS 影片串流，加上同步立體聲。</li>
+        </ol>
+        <p>時長會對齊到模型在 24 FPS 下的 <code>17k + 5</code> 幀網格，所以你填的長度可能被挪到合法幀數。示例 FL2VA 工作流用 20 步，另有可選的 8 步 Turbo LoRA，指南說它可能降低動作和音訊質素。對比輸出時把 LoRA 記下來。</p>
+
+        <h3>用 SGLang 自建 API</h3>
+        <p>模型卡上的 FL2VA 短示例是一條四卡啟動命令。它沒有寫 GPU 型號：</p>
+        <pre><code>sglang serve \
+  --model-path MiniMaxAI/MiniMax-H3 \
+  --num-gpus 4 \
+  --ulysses-degree 4 \
+  --performance-mode speed \
+  --host 0.0.0.0 \
+  --port 30010 \
+  --model-variant fl2va</code></pre>
+        <p>這個 host 參數要看仔細。部署指南鎖定的快速入門綁定的是 <code>127.0.0.1</code>，並且說，在把綁定改成 <code>0.0.0.0</code> 之前，要先在連接埠前面放上認證、TLS、配額，以及授權所要求的託管服務防護。把模型卡上的命令直接暴露到公網，不是指南的基線。</p>
+        <p>同一份指南可重現的基線（審閱於 2026 年 8 月 26 日）比「裝上 SGLang 就能跑」窄得多：</p>
+        <ul>
+          <li>模型 <code>MiniMaxAI/MiniMax-H3</code>，修訂 <code>42ed227ee7df40d41602854ae760620d6eb651fe</code>。</li>
+          <li>SGLang 原始碼提交 <code>2511743bd784e69e5a81ca3d926a000711dae4ab</code>。該頁說 H3 支援從 SGLang v0.5.17 起隨 PyPI 提供，擴散安裝仍要加 <code>--prerelease=allow</code>。它也說，H3 擴散服務還不是穩定的 SGLang 發佈契約。</li>
+          <li>只下載你要服務的那一份。FL2VA 是 <code>model_index.json</code> 加上 <code>FL2VA/*</code>。<code>--model-path</code> 保持倉庫根目錄，用 <code>--model-variant fl2va</code> 選擇分區。不要把伺服器指到 <code>FL2VA/</code> 子目錄。</li>
+          <li>快速入門的硬件一行是：單機 8 張 NVIDIA B200，Ulysses 度數 8，組件常駐。該頁稱這是參考配置，不是最低配置。</li>
+          <li>就緒的標誌是 <code>/health</code> 返回 <code>{"status":"ok"}</code>。<code>/liveness</code> 只說明 HTTP 進程仍在運行。</li>
+        </ul>
+        <p>模型卡上單個任務族的下載命令是：</p>
+        <pre><code>hf download MiniMaxAI/MiniMax-H3 --include "model_index.json" "FL2VA/*" --local-dir MiniMax-H3</code></pre>
+        <p>對完全離線的機器，部署指南說：在能聯網的電腦上下載，複製目錄，確認 <code>model_index.json</code> 和所選的 <code>FL2VA/</code> 或 <code>Ref2VA/</code> 都在，再用 <code>HF_HUB_OFFLINE=1</code> 啟動。文中提到中國大陸鏡像 <code>MiniMax/MiniMax-H3</code>，並說它和鎖定的 Hugging Face 提交是否修訂一致尚未記錄，所以鎖定的基線不用這個鏡像。</p>
+        <p>模型卡也指向 Diffusers 和一份 vLLM 配方。Diffusers 是同一套 Hugging Face 倉庫的載入器，不是第二個模型。MiniMax 部署頁上的 vLLM-Omni 一節標為實驗性、由社群維護。兩者都不會把託管的 Context-IR 或 2K 模組變成本機程式碼。</p>
+
+        <h2 id="hardware">硬件和系統要求</h2>
+        <p>2026 年 10 月 22 日讀過的材料裡，沒有單一的「最低電腦配置」。部署指南說，沒有公佈的要求，不等於沒有要求。用和你實際安裝路徑對應的那一行。</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>路徑</th><th>MiniMax 公佈了什麼</th><th>怎麼讀</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SGLang 快速入門</td>
+                <td>單機 8 張 NVIDIA B200，Ulysses 度數 8，官方混合 BF16/FP32 權重，組件常駐。該頁原始碼安裝用 Linux 和 Python 3.12。</td>
+                <td>部署指南里的參考拓撲，最後審閱於 2026 年 8 月 26 日。不是最低配置。這份配方的主機記憶體未公佈。也沒有公佈 H3 專用的 CUDA 或驅動最低版本。</td>
+              </tr>
+              <tr>
+                <td>模型卡上的 SGLang 示例</td>
+                <td><code>--num-gpus 4</code> 和 <code>--ulysses-degree 4</code>。</td>
+                <td>部署指南說，這條命令沒有寫 GPU 型號，也沒有公佈峰值顯示記憶體、主機記憶體、磁碟、互聯、驅動、CUDA 或延遲。</td>
+              </tr>
+              <tr>
+                <td>官方權重的磁碟</td>
+                <td>SGLang 一節說確切需求未公佈，上游 cookbook 報告模型權重大約 108 GB。同一頁的 vLLM 一節說每個 checkpoint 分區約 135 GiB，兩份都留大約 270 GiB。</td>
+                <td>兩份不同的上游寫法。給快取和輸出再留空間。不要把這兩個數加在一起。</td>
+              </tr>
+              <tr>
+                <td>ComfyUI</td>
+                <td>ComfyUI 0.30.0 或更新。ComfyUI H3 指南沒有公佈最低顯示記憶體和效能。</td>
+                <td>在你的機器上驗證所選模板。裁剪和量化過的 Comfy-Org 檔案，和 BF16/FP32 基線不是同一份產物。</td>
+              </tr>
+              <tr>
+                <td>SGLang 上游，消費級 GPU</td>
+                <td>2 張 RTX 5090 32 GB，TP 2 加逐層卸載，無損，快速入門配置 50 步：端到端 559.67 秒，每卡採樣峰值 26.3 GiB。1 張 RTX 4090 24 GB，逐層卸載加 <code>kitchen_int8</code>：GPU 峰值約 18 GB，延遲取決於主機記憶體和卸載頻寬。</td>
+                <td>MiniMax 頁面轉錄自 SGLang 上游。該頁說，在 MiniMax 公佈測試矩陣之前，消費級、卸載、量化、AMD 和多機配方都應按上游配置看待，而不是 MiniMax 驗證過的硬件。</td>
+              </tr>
+              <tr>
+                <td>vLLM-Omni 上游</td>
+                <td>雙卡卸載配方要求至少 200 GiB 可用系統記憶體，建議主機 384 GiB。一條已公佈的消費級記錄是 2 張 RTX 5090 32 GB，TP 2 加分佈式逐層卸載，T2VA 1344×768、124 幀、50 步：客戶端端到端 8 分 38 秒，每卡採樣峰值約 22.6 GiB，來自單次驗證。</td>
+                <td>社群配方，審閱於 2026 年 8 月 26 日。不是鎖定的 SGLang 基線。工作負載對不上時，也不能和 SGLang 各行比較。<code>ffmpeg</code> 和 <code>ffprobe</code> 必須在 <code>PATH</code> 上。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>部署指南還轉錄了數據中心的計時，包括 4 張 H200 無損、均值 75.10 秒，對應 1344×768、124 幀、24 FPS、50 步、5 秒的 T2VA 負載。那些行是在上游構建上測的，不是該頁鎖定的那個 commit。它們是那一頁的容量筆記，不是本站的結果。</p>
+        <p>如果公佈的多卡形態裝不進你現有的電腦，租來的機器仍然是遠端硬件。本站的<a href="../../guides/cloud-deployment.html">雲 GPU 指南</a>談的是為圖像 checkpoint 規劃租賃。它沒有補上一個 H3 顯示記憶體數字，租賃也不會讓 H3-Context-IR 或 H3-Regenerate-2K 變成本機的。</p>
+
+        <h2 id="versus-alternatives">MiniMax H3 和託管 API</h2>
+        <p>有用的比較是系統邊界，不是質素排名。本站沒有做過並排測試。</p>
+        <ul>
+          <li><strong>託管 API 或 Hailuo 應用程式。</strong>請求發給 MiniMax。完整棧可以包含 Context-IR 和 2K 再生。你不安裝權重。推論不在本機。</li>
+          <li><strong>本機 H3-Base。</strong>你下載 FL2VA、Ref2VA 或兩者，用 SGLang、vLLM、Diffusers，或 Comfy-Org 的轉換權重來跑。除非事後再調託管的 2K API，輸出停在上面的 768p 約定裡。</li>
+          <li><strong>Comfy-Org 權重和官方 checkpoint。</strong>兩者都可以在你的機器上跑。MiniMax 說它們是不同產物。不要把兩邊的基準數字混在一起。</li>
+        </ul>
+        <p>本站已經寫過的圖像模型是另一項任務，不能當作 H3 的替代 checkpoint。<a href="../../guides/local-ai-image-generator.html">FLUX.1-dev</a>、<a href="../../guides/hidream-o1-image.html">HiDream-O1-Image</a>、<a href="../../guides/z-image.html">Z-Image</a>、<a href="../../blog/qwen-image-local-image-editing-guide.html">Qwen-Image-Edit-2511</a> 和 <a href="../../blog/hunyuanimage-local-deployment-requirements.html">HunyuanImage 3.0</a> 生成或編輯靜態圖像。它們不實現 H3 的 <code>fl2va</code> 有聲影片任務。這裡不聲稱這些模型和 H3 之間的延遲或偏好分數。這些指南目前是英文。</p>
+
+        <h2 id="prompts">官方 skill 裡的提示詞結構</h2>
+        <p>MiniMax 在 <a href="https://github.com/MiniMax-AI/MiniMax-H3/blob/main/skills/h3-prompt-writing/SKILL.md" target="_blank" rel="noopener">H3 倉庫</a>裡放了一份寫提示詞的 skill。它是格式指南，不是測出來的質素分數。對基礎模式，skill 要求按這個順序保留三個欄位：<code>integrated_multimodal_description</code>、<code>overall_soundscape</code>，然後是 <code>non_diegetic_music</code>。它點名的模式是：</p>
+        <ul>
+          <li><strong>T2VA：</strong>從文本搭出視聽時間線。</li>
+          <li><strong>I2VA：</strong>從首幀出發往前走。</li>
+          <li><strong>FL2VA：</strong>描述首幀和尾幀之間的連續路徑。</li>
+          <li><strong>L2VA：</strong>推斷一個合理的開場，落到給定的尾幀上。</li>
+        </ul>
+        <p>Ref2VA 是另一套六段改寫：<code>subject_definitions</code>、<code>summary</code>、<code>retention_analysis</code>、<code>detailed_description</code>、<code>overall_soundscape</code> 和 <code>non_diegetic_music</code>。skill 說改寫用英文寫，對白和畫面文字保留原文，描述要匹配所請求的時長（4–15 秒），並寫明關鍵幀怎樣接到時間線上。完整模板是該 skill 旁邊的 <code>references/base-en.txt</code> 和 <code>references/ref-en.txt</code>。本頁不另加提示詞。</p>
+
+        <h2 id="first-last-frame">首幀和尾幀</h2>
+        <p>FL2VA 是做這件事的本機 checkpoint。模型卡說：零張圖是文字生成影片，一張圖是首幀或尾幀條件，兩張圖是首尾幀生成。部署指南把同一件事映射到 SGLang 任務 <code>fl2va</code>，一到兩個角色為 <code>keyframe</code> 的圖像條件，以及 ComfyUI 的 I2V 模板。</p>
+        <p>本站不能做這次生成。如果你已經有一段影片，只需要把頭尾存成圖片檔案，<a href="../../guides/first-last-frame-video.html">首尾幀影片</a>頁面在瀏覽器裡提取。它不調用 MiniMax。該頁目前是英文。</p>
+
+        <h2 id="h3-image-api">通過託管 API 使用 MiniMax-H3-Image</h2>
+        <p>MiniMax-H3-Image 是靜態圖像模型：文生圖和圖像編輯。它不是 H3-Base 影片 checkpoint，調用託管圖像 API 也不是本機推論。這一節的事實在 2026 年 11 月 12 日讀自 MiniMax 的 API 參考、定價頁，以及 <a href="https://huggingface.co/MiniMaxAI/MiniMax-H3-Image" target="_blank" rel="noopener">MiniMax-H3-Image 模型卡</a>。Google 的圖像價格同一天讀自 Gemini 定價頁。</p>
+
+        <h3>端點和 API 密鑰</h3>
+        <p>模型卡寫了兩個主機。全球請求用 <code>https://api.minimax.io</code>。同一張卡上的中國主機是 <code>https://api.minimax.cn</code>。文生圖是 <code>POST /v1/images/generations</code>。圖像編輯（1 到 16 張參考圖）是 <code>POST /v1/images/edits</code>。兩者都接受 <code>MiniMax-H3-Image</code> 和 <code>MiniMax-H3-Image-Highspeed</code>。OpenAPI 的安全方案是 <code>Authorization: Bearer</code> 加上 API 密鑰。</p>
+        <p>MiniMax 的<a href="https://platform.minimax.io/docs/guides/quickstart-preparation" target="_blank" rel="noopener">準備指南</a>說，先在 API 平台註冊或登入，再打開 API Keys，為按量計費選擇 “Create new secret key”。該指南說按量計費涵蓋圖像模型。密鑰是憑證：<a href="https://platform.minimax.io/docs/faq/about-apis" target="_blank" rel="noopener">API FAQ</a>說不要分享它，也不要放進瀏覽器或其他客戶端程式碼。把它放在環境變數裡，例如 <code>MINIMAX_API_KEY</code>。M Plan 用另一把訂閱密鑰，不要把兩把鑰匙當成可以互換。按量計費從帳戶餘額扣款。本站不簽發 MiniMax 密鑰，也不給帳戶充值。</p>
+        <p>生成介面的參考說伺服器最多等 600 秒，所以客戶端超時至少要這麼長。這個端點不是冪等的：請求發出之後，即使客戶端斷開，MiniMax 仍會做完生成，並對成功的圖像收費；重試會再生成一次、再收一次費。</p>
+
+        <h3>一次基本的文生圖請求</h3>
+        <p>參考把 <code>model</code> 和 <code>prompt</code> 標為必填。<code>n</code> 預設是 1。下面的請求體用文檔示例裡的提示詞和 <code>2720x1536</code> 尺寸，一張圖，響應為 URL。除了已經在環境裡的密鑰，不要替換別的內容。</p>
+        <pre><code>curl --max-time 600 https://api.minimax.io/v1/images/generations \
+  -H "Authorization: Bearer $MINIMAX_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "MiniMax-H3-Image",
+    "prompt": "An orange cat lying on a windowsill basking in the sun, warm afternoon light, film texture",
+    "size": "2720x1536",
+    "n": 1,
+    "response_format": "url"
+  }'</code></pre>
+        <p>中國主機把源換成 <code>https://api.minimax.cn</code>，路徑不變。圖像 URL 要自己下載；參考說這個 URL 不保證一直可用。編輯走另一條路徑，文檔是分開的。</p>
+
+        <h3>價格：託管 API、本機權重和 Nano Banana</h3>
+        <p>MiniMax 按 token 給託管圖像 API 計費，同時也公佈了示意性的單張總價。在<a href="https://platform.minimax.io/docs/pricing/overview" target="_blank" rel="noopener">定價概覽</a>上，標準 <code>MiniMax-H3-Image</code> 是每百萬輸入文本 token 2.30 美元、每百萬輸入圖像 token 1.50 美元、每百萬輸出圖像 token 3.80 美元。<code>MiniMax-H3-Image-Highspeed</code> 在同樣三項上是 2.30、3.00 和 7.60 美元。該頁說，單張金額是一張圖的估計，會隨文本 token 數量變化，包括提示詞增強加進去的 token。</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>託管示例，讀於 2026 年 11 月 12 日</th><th>標準 MiniMax-H3-Image</th><th>MiniMax-H3-Image-Highspeed</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>文生圖，無輸入圖像，1K（1024×1024）</td><td>$0.02179</td><td>$0.03529</td></tr>
+              <tr><td>文生圖，無輸入圖像，2K（2048×2048）</td><td>$0.02333</td><td>$0.03622</td></tr>
+              <tr><td>文生圖，無輸入圖像，4K（4096×4096）</td><td>$0.06879；所列 50% 優惠生效時為 $0.03439</td><td>$0.13001；所列 50% 優惠生效時為 $0.06501</td></tr>
+              <tr><td>編輯，一張 1K 參考圖，1K 輸出</td><td>$0.02654</td><td>$0.04525</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>同一頁說，50% 減免持續到 2026 年 11 月 17 日 16:00 UTC，不含該時刻，並且只在最終圖像至少有 16,600,000 像素時適用。示例表把這條註記用在 4K 行上。這是有截止日期的優惠，不是底層 token 單價。4096×4096 的圖像是 16,777,216 像素，達到 MiniMax 寫下的像素條件；2048×2048 達不到。</p>
+        <p>自己跑權重，在模型卡和那張定價頁上都沒有一個美元單價。模型卡列出圖像倉庫 68.65 GB，其中 DiT 檔案 66.28 GB，圖像 VAE 2.34 GB，另外還要從 <code>MiniMaxAI/MiniMax-H3</code> 而不是圖像倉庫載入 66.7 GB 的文本編碼器。可選的提示詞擴展器列為 17.9 GB。這些是下載體積。MiniMax 沒有公佈電費、顯示卡購買價或本機的單張成本，本頁也不編一個。租來的 GPU 是第三張帳單，由租賃商開，而且仍然是遠端硬件。</p>
+        <p>Google 的 <a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">Gemini API 定價</a>同一天閱讀，Nano Banana 同樣按 token 計價，並印出圖像輸出的等價金額。那和 MiniMax 示例裡的合計不是同一種數。標準 <code>gemini-nano-banana-2.1</code>（Nano Banana 2.1）的免費層標為不可用。文本、圖像和影片輸入是每百萬 token 1.50 美元。圖像輸出是每百萬 token 30 美元，腳註把它換算成 1K 圖像 0.0336 美元（1024×1024，1120 token）、2K 0.0504 美元（2048×2048，1680 token）、4K 0.113 美元（4096×4096，3780 token）。文本和思考輸出另按每百萬 token 7.50 美元計。同一腳註把 Batch 圖像輸出標為每百萬 token 15 美元。這些單張數字是圖像輸出的等價額。輸入 token，以及任何搜尋接地，都另算。</p>
+        <p>Nano Banana 2，即 <code>gemini-3.1-flash-image</code>，是另一行。它的標準圖像輸出是每百萬 token 60 美元：腳註換算為 1K 0.067 美元、2K 0.101 美元、4K 0.151 美元，文本或圖像輸入為每百萬 token 0.50 美元，免費層同樣標為不可用。本站英文概覽說，截至 2026 年 10 月 9 日的核對，Google 建議新項目用 Nano Banana 2.1。這是選型說明，不是說 2.1 和 Nano Banana 2 同價。</p>
+        <p>不要用 MiniMax 的 0.02179 美元示例去減 Google 的 0.0336 美元圖像輸出口徑，然後把差額叫作省下來的錢。一個是 MiniMax 對示例提示詞的示意合計。另一個是 Google 在計入輸入之前的圖像輸出 token 價格。確切的模型 ID、解像度和你要發送的提示詞，以廠商頁面為準。</p>
+
+        <h2 id="price-comparison">每條路徑要花多少</h2>
+        <p>這張表比較的是 MiniMax-H3-Image 的一張靜態圖像。每個數字都在 2026 年 11 月（2026-11）讀自該服務商自己的公開定價頁。頁面沒有寫出的價格，儲存格裡寫「未公佈」。本站沒有調用這些 API。頁面前面的影片 checkpoint 和這些靜態圖像價格不是同一個產品。</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>路徑</th>
+                <th>已公佈價格</th>
+                <th>來源，核對於 2026-11</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>本機 MiniMax-H3-Image</td>
+                <td>API 費用為每張 $0。電費另計，單張美元成本未公佈。原始 checkpoint 加上 MiniMax-H3 文本編碼器的磁碟大約 135 GB。含 diffusers 副本的完整 Hugging Face 倉庫大約 204 GB。可選提示詞擴展器 17.9 GB。vLLM-Omni：一張 B200 或 B300 以大約 135 GiB 放下整個模型，一張 H200 則把文本編碼器卸載出去。SGLang 在空閒不足 130 GiB 時卸載組件。該 README 沒有公佈消費級 GPU 的單一最低顯示記憶體。</td>
+                <td><a href="https://github.com/MiniMax-AI/MiniMax-H3-Image/blob/main/README.md" target="_blank" rel="noopener">https://github.com/MiniMax-AI/MiniMax-H3-Image/blob/main/README.md</a></td>
+              </tr>
+              <tr>
+                <td>MiniMax API，標準 <code>MiniMax-H3-Image</code></td>
+                <td>每百萬輸入文本 token $2.30，每百萬輸入圖像 token $1.50，每百萬輸出圖像 token $3.80。單張示意合計：1K 文生圖 $0.02179，2K $0.02333，4K $0.06879，50% 優惠適用時為 $0.03439。一張 1K 參考圖編輯到 1K：$0.02654。50% 優惠到 2026 年 11 月 17 日 16:00 UTC 為止（不含該時刻），且僅當交付圖像至少有 16,600,000 像素。</td>
+                <td><a href="https://platform.minimax.io/docs/pricing/overview" target="_blank" rel="noopener">https://platform.minimax.io/docs/pricing/overview</a></td>
+              </tr>
+              <tr>
+                <td>MiniMax API，<code>MiniMax-H3-Image-Highspeed</code></td>
+                <td>同樣三項為每百萬 $2.30、$3.00 和 $7.60。1K 文生圖示意合計 $0.03529。4K 文生圖示意合計 $0.13001，同一 50% 優惠期間為 $0.06501。</td>
+                <td><a href="https://platform.minimax.io/docs/pricing/overview" target="_blank" rel="noopener">https://platform.minimax.io/docs/pricing/overview</a></td>
+              </tr>
+              <tr>
+                <td>fal.ai，標準文生圖和編輯</td>
+                <td>每百萬輸入文本 token $2.30，每百萬輸入圖像 token $1.50，每百萬輸出圖像 token $3.80。單張合計未公佈。</td>
+                <td><a href="https://fal.ai/models/minimax/h3-image/text-to-image/llms.txt" target="_blank" rel="noopener">文生圖</a>，<a href="https://fal.ai/models/minimax/h3-image/edit/llms.txt" target="_blank" rel="noopener">編輯</a></td>
+              </tr>
+              <tr>
+                <td>fal.ai，Highspeed</td>
+                <td>文生圖：每 1000 萬輸入文本 token $23，每 1000 萬輸出圖像 token $76，即每百萬 $2.30 和 $7.60。該文生圖頁面未公佈輸入圖像單價。編輯：每 1000 萬輸入文本、輸入圖像、輸出圖像 token 分別為 $23、$30 和 $76，即每百萬 $2.30、$3.00 和 $7.60。單張合計未公佈。</td>
+                <td><a href="https://fal.ai/models/minimax/h3-image/highspeed/text-to-image/llms.txt" target="_blank" rel="noopener">Highspeed 文生圖</a>，<a href="https://fal.ai/models/minimax/h3-image/highspeed/edit/llms.txt" target="_blank" rel="noopener">Highspeed 編輯</a></td>
+              </tr>
+              <tr>
+                <td>Replicate</td>
+                <td>靜態圖像 MiniMax-H3-Image 的價格未公佈。Replicate 上公開的 MiniMax H3 模型是影片：768P 每秒 $0.08，2K 每秒 $0.13。</td>
+                <td><a href="https://replicate.com/minimax/h3" target="_blank" rel="noopener">https://replicate.com/minimax/h3</a></td>
+              </tr>
+              <tr>
+                <td>OpenRouter，<code>minimax/minimax-h3-image</code></td>
+                <td>每百萬文本輸入 token $2.30，每百萬圖像輸入 token $1.50，每百萬圖像輸出 token $3.80。單張合計未公佈。</td>
+                <td><a href="https://openrouter.ai/minimax/minimax-h3-image" target="_blank" rel="noopener">https://openrouter.ai/minimax/minimax-h3-image</a></td>
+              </tr>
+              <tr>
+                <td>OpenRouter，<code>minimax/minimax-h3-image-highspeed</code></td>
+                <td>同樣三項為每百萬 $2.30、$3.00 和 $7.60。單張合計未公佈。</td>
+                <td><a href="https://openrouter.ai/minimax/minimax-h3-image-highspeed" target="_blank" rel="noopener">https://openrouter.ai/minimax/minimax-h3-image-highspeed</a></td>
+              </tr>
+              <tr>
+                <td>Nano Banana 2.1，<code>gemini-nano-banana-2.1</code>，標準檔</td>
+                <td>免費層：未提供。文本、圖像和影片輸入為每百萬 token $1.50。圖像輸出為每百萬 token $30：1K（1024×1024，1120 token）$0.0336，2K（1680 token）$0.0504，4K（3780 token）$0.113。文本和思考輸出另按每百萬 token $7.50。Batch 圖像輸出為每百萬 token $15（$0.0168、$0.0252、$0.0567）。單張數字是圖像輸出口徑。輸入 token 另計。</td>
+                <td><a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/pricing</a></td>
+              </tr>
+              <tr>
+                <td>Nano Banana 2，<code>gemini-3.1-flash-image</code>，標準檔</td>
+                <td>免費層：未提供。文本或圖像輸入為每百萬 token $0.50。圖像輸出為每百萬 token $60：0.5K（512px，747 token）$0.045，1K（1120 token）$0.067，2K（1680 token）$0.101，4K（2520 token）$0.151。文本和思考輸出為每百萬 token $3。輸入 token 另計。</td>
+                <td><a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/pricing</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>本機權重的 API 費用是每張 $0，電費和顯示卡另計；只有你已經擁有 README 所說那種機器（一張 B200 或 B300 上大約 135 GiB 常駐）時，這條路才更便宜，MiniMax 也沒有把電費公佈成單張美元成本。偶爾出幾張靜態圖像時，本頁已公佈的示意合計裡最低的是 MiniMax 標準 1K 示例 $0.02179；fal.ai 和 OpenRouter 列出的是同一套標準 token 單價，並沒有更低的單張價格，而 Nano Banana 2.1 在 1K 的 $0.0336 只是圖像輸出、還沒算輸入 token，所以這個差額不是同一口徑下省下的錢。Replicate 沒有公佈靜態圖像 H3 的價格，它的 H3 頁面按秒給影片計費：沒有那張顯示卡就用託管，也不要把 4K 的五折優惠當成長期價格，該優惠在 2026 年 11 月 17 日 16:00 UTC 結束。</p>
+
+        <h2>來源</h2>
+        <ul>
+          <li><a href="https://huggingface.co/MiniMaxAI/MiniMax-H3" target="_blank" rel="noopener">https://huggingface.co/MiniMaxAI/MiniMax-H3</a> — 影片模型卡，2026 年 10 月 22 日重讀。</li>
+          <li><a href="https://github.com/MiniMax-AI/MiniMax-H3" target="_blank" rel="noopener">https://github.com/MiniMax-AI/MiniMax-H3</a> — 倉庫，含提示詞 skill。</li>
+          <li><a href="https://platform.minimax.io/docs/guides/local-deploy-h3" target="_blank" rel="noopener">https://platform.minimax.io/docs/guides/local-deploy-h3</a> — 本機部署指南，最後審閱於 2026 年 8 月 26 日，2026 年 10 月 22 日重讀。</li>
+          <li><a href="https://github.com/MiniMax-AI/MiniMax-H3/blob/main/skills/h3-prompt-writing/SKILL.md" target="_blank" rel="noopener">https://github.com/MiniMax-AI/MiniMax-H3/blob/main/skills/h3-prompt-writing/SKILL.md</a></li>
+          <li><a href="https://huggingface.co/MiniMaxAI/MiniMax-H3-Image" target="_blank" rel="noopener">https://huggingface.co/MiniMaxAI/MiniMax-H3-Image</a> — 圖像模型卡，讀於 2026 年 11 月 12 日。</li>
+          <li><a href="https://platform.minimax.io/docs/api-reference/image-generation-h3-generations" target="_blank" rel="noopener">https://platform.minimax.io/docs/api-reference/image-generation-h3-generations</a> — 託管文生圖參考。</li>
+          <li><a href="https://platform.minimax.io/docs/api-reference/image-generation-h3-edits" target="_blank" rel="noopener">https://platform.minimax.io/docs/api-reference/image-generation-h3-edits</a> — 託管圖像編輯參考。</li>
+          <li><a href="https://platform.minimax.io/docs/guides/quickstart-preparation" target="_blank" rel="noopener">https://platform.minimax.io/docs/guides/quickstart-preparation</a> — 帳戶和 API 密鑰。</li>
+          <li><a href="https://github.com/MiniMax-AI/MiniMax-H3-Image/blob/main/README.md" target="_blank" rel="noopener">https://github.com/MiniMax-AI/MiniMax-H3-Image/blob/main/README.md</a> — 圖像模型的磁碟和記憶體說明，讀於 2026 年 11 月。</li>
+          <li><a href="https://platform.minimax.io/docs/pricing/overview" target="_blank" rel="noopener">https://platform.minimax.io/docs/pricing/overview</a> — 託管圖像價格，讀於 2026 年 11 月 12 日，2026 年 11 月覆核。</li>
+          <li><a href="https://fal.ai/models/minimax/h3-image/text-to-image/llms.txt" target="_blank" rel="noopener">https://fal.ai/models/minimax/h3-image/text-to-image/llms.txt</a> — fal 標準文生圖價格，讀於 2026 年 11 月。</li>
+          <li><a href="https://fal.ai/models/minimax/h3-image/edit/llms.txt" target="_blank" rel="noopener">https://fal.ai/models/minimax/h3-image/edit/llms.txt</a> — fal 標準編輯價格，讀於 2026 年 11 月。</li>
+          <li><a href="https://fal.ai/models/minimax/h3-image/highspeed/text-to-image/llms.txt" target="_blank" rel="noopener">https://fal.ai/models/minimax/h3-image/highspeed/text-to-image/llms.txt</a> — fal Highspeed 文生圖價格，讀於 2026 年 11 月。</li>
+          <li><a href="https://fal.ai/models/minimax/h3-image/highspeed/edit/llms.txt" target="_blank" rel="noopener">https://fal.ai/models/minimax/h3-image/highspeed/edit/llms.txt</a> — fal Highspeed 編輯價格，讀於 2026 年 11 月。</li>
+          <li><a href="https://replicate.com/minimax/h3" target="_blank" rel="noopener">https://replicate.com/minimax/h3</a> — Replicate 列出的是影片計費，不是靜態圖像 H3 價格，讀於 2026 年 11 月。</li>
+          <li><a href="https://openrouter.ai/minimax/minimax-h3-image" target="_blank" rel="noopener">https://openrouter.ai/minimax/minimax-h3-image</a> — OpenRouter 標準價格，讀於 2026 年 11 月。</li>
+          <li><a href="https://openrouter.ai/minimax/minimax-h3-image-highspeed" target="_blank" rel="noopener">https://openrouter.ai/minimax/minimax-h3-image-highspeed</a> — OpenRouter Highspeed 價格，讀於 2026 年 11 月。</li>
+          <li><a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/pricing</a> — Nano Banana API 價格，讀於 2026 年 11 月 12 日，2026 年 11 月覆核。</li>
+        </ul>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana。獨立筆記，不是 MiniMax 官方站點。</p></footer>
+  </div>
+</body>
+</html>

@@ -9,9 +9,13 @@
   <meta name="theme-color" content="#0b0f14">
   <meta name="color-scheme" content="dark">
   <title>Run MiniMax H3 Locally: Hardware and the API Boundary</title>
-  <meta name="description" content="How to run MiniMax H3 locally, plus the hosted MiniMax-H3-Image API: endpoint, key, request, and published prices versus Nano Banana.">
+  <meta name="description" content="How to run MiniMax H3 locally, with hardware notes and published still-image prices for the MiniMax API, fal.ai, OpenRouter, Replicate, and Nano Banana.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.nano-banana.live/guides/minimax-h3-locally.html">
+  <link rel="alternate" hreflang="en" href="https://www.nano-banana.live/guides/minimax-h3-locally.html">
+  <link rel="alternate" hreflang="zh-Hans" href="https://www.nano-banana.live/zh/guides/minimax-h3-locally.html">
+  <link rel="alternate" hreflang="zh-Hant" href="https://www.nano-banana.live/zh-hant/guides/minimax-h3-locally.html">
+  <link rel="alternate" hreflang="x-default" href="https://www.nano-banana.live/guides/minimax-h3-locally.html">
   <link rel="icon" href="../favicon.png" type="image/png">
   <link rel="stylesheet" href="../styles.css">
   <script src="../analytics.js" defer></script>
@@ -23,7 +27,7 @@
   </style>
 <!-- PAGE-METADATA:START -->
 <meta property="og:title" content="Run MiniMax H3 Locally: Hardware and the API Boundary">
-<meta property="og:description" content="How to run MiniMax H3 locally, plus the hosted MiniMax-H3-Image API: endpoint, key, request, and published prices versus Nano Banana.">
+<meta property="og:description" content="How to run MiniMax H3 locally, with hardware notes and published still-image prices for the MiniMax API, fal.ai, OpenRouter, Replicate, and Nano Banana.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://www.nano-banana.live/guides/minimax-h3-locally.html">
 <meta property="og:image" content="https://www.nano-banana.live/og.png">
@@ -33,9 +37,9 @@
 <meta property="og:site_name" content="Nano Banana">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Run MiniMax H3 Locally: Hardware and the API Boundary">
-<meta name="twitter:description" content="How to run MiniMax H3 locally, plus the hosted MiniMax-H3-Image API: endpoint, key, request, and published prices versus Nano Banana.">
+<meta name="twitter:description" content="How to run MiniMax H3 locally, with hardware notes and published still-image prices for the MiniMax API, fal.ai, OpenRouter, Replicate, and Nano Banana.">
 <meta name="twitter:image" content="https://www.nano-banana.live/og.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"TechArticle","name":"How to Run MiniMax H3 Locally","description":"How to run MiniMax H3 locally, plus the hosted MiniMax-H3-Image API: endpoint, key, request, and published prices versus Nano Banana.","url":"https://www.nano-banana.live/guides/minimax-h3-locally.html","headline":"How to Run MiniMax H3 Locally","dateModified":"2026-11-12","publisher":{"@id":"https://www.nano-banana.live/#publisher"},"author":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/guides/minimax-h3-locally.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Quickstart","item":"https://www.nano-banana.live/guides/quickstart.html"},{"@type":"ListItem","position":3,"name":"How to Run MiniMax H3 Locally","item":"https://www.nano-banana.live/guides/minimax-h3-locally.html"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"TechArticle","name":"How to Run MiniMax H3 Locally","description":"How to run MiniMax H3 locally, with hardware notes and published still-image prices for the MiniMax API, fal.ai, OpenRouter, Replicate, and Nano Banana.","url":"https://www.nano-banana.live/guides/minimax-h3-locally.html","headline":"How to Run MiniMax H3 Locally","dateModified":"2026-11-13","publisher":{"@id":"https://www.nano-banana.live/#publisher"},"author":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/guides/minimax-h3-locally.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Quickstart","item":"https://www.nano-banana.live/guides/quickstart.html"},{"@type":"ListItem","position":3,"name":"How to Run MiniMax H3 Locally","item":"https://www.nano-banana.live/guides/minimax-h3-locally.html"}]}]}</script>
 <!-- PAGE-METADATA:END -->
 </head>
 <body>
@@ -51,12 +55,17 @@
         <a href="../blog.html">Blog</a>
       </div>
     </nav>
+    <p class="lang-switch" dir="ltr">
+      <a href="minimax-h3-locally.html" hreflang="en" lang="en" aria-current="page">English</a>
+      <a href="../zh/guides/minimax-h3-locally.html" hreflang="zh-Hans" lang="zh-Hans">简体中文</a>
+      <a href="../zh-hant/guides/minimax-h3-locally.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a>
+    </p>
 <!-- BREADCRUMBS:START -->
 <nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="quickstart.html">Quickstart</a></li><li><span aria-current="page">How to Run MiniMax H3 Locally</span></li></ol></nav>
 <!-- BREADCRUMBS:END -->
     <article class="article-container">
       <header class="article-header">
-        <div class="meta" style="justify-content:center;display:flex;">Local models • Hardware notes checked October 22, 2026 • H3-Image API checked November 12, 2026</div>
+        <div class="meta" style="justify-content:center;display:flex;">Local models • Hardware notes checked October 22, 2026 • H3-Image API checked November 12, 2026 • Price comparison checked November 2026</div>
         <h1>How to Run MiniMax H3 Locally</h1>
         <p class="lead" style="margin:20px auto;">MiniMax H3 can run as open H3-Base video weights on hardware you control, or as a hosted MiniMax API. Those are different systems. The hardware notes below stay on that video boundary. A later section covers the separate still-image model, MiniMax-H3-Image, through the hosted API. This site has not benchmarked either one.</p>
       </header>
@@ -251,6 +260,73 @@
         <p>Nano Banana 2, <code>gemini-3.1-flash-image</code>, is another row. Its standard image output is $60 per million tokens: the footnote equates that to $0.067 at 1K, $0.101 at 2K, and $0.151 at 4K, with input at $0.50 per million text or image tokens, and the free tier again listed as not available. The English overview on this site says Google recommends Nano Banana 2.1 for new projects, as checked on October 9, 2026. That is a model-selection note, not a statement that 2.1 costs the same as Nano Banana 2.</p>
         <p>Do not subtract MiniMax's $0.02179 example from Google's $0.0336 image-output equivalent and call the difference a saving. One figure is MiniMax's illustrative total for a sample prompt. The other is Google's image-output token price before input. Use the vendor page for the exact model ID, resolution, and prompt you will send.</p>
 
+        <h2 id="price-comparison">What each route costs</h2>
+        <p>This table compares one still from MiniMax-H3-Image. Every figure was read from that provider’s own public pricing page in November 2026 (2026-11). If the page does not state a price, the cell says “not published”. This site did not call the APIs. The video checkpoint further up the page is a different product from these still-image rates.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Route</th>
+                <th>Published price</th>
+                <th>Source, checked 2026-11</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Local MiniMax-H3-Image</td>
+                <td>$0 API fee per image. Electricity is extra, and a dollar cost per image is not published. Disk for the original checkpoint plus the MiniMax-H3 text encoder is about 135 GB. The full Hugging Face repository, including the diffusers copy, is about 204 GB. The optional prompt expander is 17.9 GB. vLLM-Omni: one B200 or B300 holds the whole model in about 135 GiB, and one H200 offloads the text encoder. SGLang offloads components when less than 130 GiB is free. A single minimum VRAM figure for a consumer GPU is not published in that README.</td>
+                <td><a href="https://github.com/MiniMax-AI/MiniMax-H3-Image/blob/main/README.md" target="_blank" rel="noopener">https://github.com/MiniMax-AI/MiniMax-H3-Image/blob/main/README.md</a></td>
+              </tr>
+              <tr>
+                <td>MiniMax API, standard <code>MiniMax-H3-Image</code></td>
+                <td>$2.30 per million input text tokens, $1.50 per million input image tokens, $3.80 per million output image tokens. Illustrative totals for one image: 1K text-to-image $0.02179, 2K $0.02333, 4K $0.06879 or $0.03439 while the 50% offer applies. One 1K reference edited to 1K: $0.02654. The 50% offer runs until 17 November 2026 at 16:00 UTC, exclusive, and only when the delivered image has at least 16,600,000 pixels.</td>
+                <td><a href="https://platform.minimax.io/docs/pricing/overview" target="_blank" rel="noopener">https://platform.minimax.io/docs/pricing/overview</a></td>
+              </tr>
+              <tr>
+                <td>MiniMax API, <code>MiniMax-H3-Image-Highspeed</code></td>
+                <td>$2.30, $3.00, and $7.60 per million on those same three meters. Illustrative 1K text-to-image total: $0.03529. Illustrative 4K text-to-image total: $0.13001, or $0.06501 during the same 50% offer.</td>
+                <td><a href="https://platform.minimax.io/docs/pricing/overview" target="_blank" rel="noopener">https://platform.minimax.io/docs/pricing/overview</a></td>
+              </tr>
+              <tr>
+                <td>fal.ai, standard text-to-image and edit</td>
+                <td>$2.30 per million input text tokens, $1.50 per million input image tokens, $3.80 per million output image tokens. A per-image total is not published.</td>
+                <td><a href="https://fal.ai/models/minimax/h3-image/text-to-image/llms.txt" target="_blank" rel="noopener">text-to-image</a>, <a href="https://fal.ai/models/minimax/h3-image/edit/llms.txt" target="_blank" rel="noopener">edit</a></td>
+              </tr>
+              <tr>
+                <td>fal.ai, Highspeed</td>
+                <td>Text-to-image: $23 per 10 million input text tokens and $76 per 10 million output image tokens, which is $2.30 and $7.60 per million. An input-image rate is not published on that text-to-image page. Edit: $23, $30, and $76 per 10 million input text, input image, and output image tokens, which is $2.30, $3.00, and $7.60 per million. A per-image total is not published.</td>
+                <td><a href="https://fal.ai/models/minimax/h3-image/highspeed/text-to-image/llms.txt" target="_blank" rel="noopener">Highspeed text-to-image</a>, <a href="https://fal.ai/models/minimax/h3-image/highspeed/edit/llms.txt" target="_blank" rel="noopener">Highspeed edit</a></td>
+              </tr>
+              <tr>
+                <td>Replicate</td>
+                <td>A still-image MiniMax-H3-Image price is not published. The public MiniMax H3 model on Replicate is video: $0.08 per second at 768P and $0.13 per second at 2K.</td>
+                <td><a href="https://replicate.com/minimax/h3" target="_blank" rel="noopener">https://replicate.com/minimax/h3</a></td>
+              </tr>
+              <tr>
+                <td>OpenRouter, <code>minimax/minimax-h3-image</code></td>
+                <td>$2.30 per million text-input tokens, $1.50 per million image-input tokens, $3.80 per million image-output tokens. A per-image total is not published.</td>
+                <td><a href="https://openrouter.ai/minimax/minimax-h3-image" target="_blank" rel="noopener">https://openrouter.ai/minimax/minimax-h3-image</a></td>
+              </tr>
+              <tr>
+                <td>OpenRouter, <code>minimax/minimax-h3-image-highspeed</code></td>
+                <td>$2.30, $3.00, and $7.60 per million on those three meters. A per-image total is not published.</td>
+                <td><a href="https://openrouter.ai/minimax/minimax-h3-image-highspeed" target="_blank" rel="noopener">https://openrouter.ai/minimax/minimax-h3-image-highspeed</a></td>
+              </tr>
+              <tr>
+                <td>Nano Banana 2.1, <code>gemini-nano-banana-2.1</code>, standard</td>
+                <td>Free tier: not available. Input is $1.50 per million tokens for text, image, and video. Image output is $30 per million tokens: $0.0336 for a 1K image (1024×1024, 1120 tokens), $0.0504 for 2K (1680 tokens), and $0.113 for 4K (3780 tokens). Text and thinking output is a separate $7.50 per million tokens. Batch image output is $15 per million tokens ($0.0168, $0.0252, and $0.0567). The per-image lines are image-output equivalents. Input tokens are extra.</td>
+                <td><a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/pricing</a></td>
+              </tr>
+              <tr>
+                <td>Nano Banana 2, <code>gemini-3.1-flash-image</code>, standard</td>
+                <td>Free tier: not available. Input is $0.50 per million text or image tokens. Image output is $60 per million tokens: $0.045 at 0.5K (512px, 747 tokens), $0.067 at 1K (1120 tokens), $0.101 at 2K (1680 tokens), and $0.151 at 4K (2520 tokens). Text and thinking output is $3 per million tokens. Input tokens are extra.</td>
+                <td><a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/pricing</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Local weights charge $0 in API fees per image, with electricity and the GPU on top, and that is cheaper only after you already own a machine on the order of the README’s 135 GiB resident footprint on one B200 or B300; MiniMax does not publish electricity as a dollar cost per image. For a few stills, MiniMax’s standard 1K example of $0.02179 is the lowest published sample total here, fal.ai and OpenRouter list the same standard token rates without a lower per-image price, and Nano Banana 2.1’s $0.0336 at 1K is image output only, before input tokens, so the gap is not a like-for-like saving. Replicate does not publish a still-image H3 price, because its H3 page bills video by the second: use a host when you lack that GPU, and do not treat the 4K 50% offer, which ends at 16:00 UTC on 17 November 2026, as the lasting rate.</p>
+
         <h2>Sources</h2>
         <ul>
           <li><a href="https://huggingface.co/MiniMaxAI/MiniMax-H3" target="_blank" rel="noopener">https://huggingface.co/MiniMaxAI/MiniMax-H3</a> — video model card, re-read October 22, 2026.</li>
@@ -261,8 +337,16 @@
           <li><a href="https://platform.minimax.io/docs/api-reference/image-generation-h3-generations" target="_blank" rel="noopener">https://platform.minimax.io/docs/api-reference/image-generation-h3-generations</a> — hosted text-to-image reference.</li>
           <li><a href="https://platform.minimax.io/docs/api-reference/image-generation-h3-edits" target="_blank" rel="noopener">https://platform.minimax.io/docs/api-reference/image-generation-h3-edits</a> — hosted image-edit reference.</li>
           <li><a href="https://platform.minimax.io/docs/guides/quickstart-preparation" target="_blank" rel="noopener">https://platform.minimax.io/docs/guides/quickstart-preparation</a> — account and API key.</li>
-          <li><a href="https://platform.minimax.io/docs/pricing/overview" target="_blank" rel="noopener">https://platform.minimax.io/docs/pricing/overview</a> — hosted image prices, read November 12, 2026.</li>
-          <li><a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/pricing</a> — Nano Banana API prices, read November 12, 2026.</li>
+          <li><a href="https://github.com/MiniMax-AI/MiniMax-H3-Image/blob/main/README.md" target="_blank" rel="noopener">https://github.com/MiniMax-AI/MiniMax-H3-Image/blob/main/README.md</a> — image-model disk and memory notes, read November 2026.</li>
+          <li><a href="https://platform.minimax.io/docs/pricing/overview" target="_blank" rel="noopener">https://platform.minimax.io/docs/pricing/overview</a> — hosted image prices, read November 12, 2026 and rechecked November 2026.</li>
+          <li><a href="https://fal.ai/models/minimax/h3-image/text-to-image/llms.txt" target="_blank" rel="noopener">https://fal.ai/models/minimax/h3-image/text-to-image/llms.txt</a> — fal standard text-to-image price, read November 2026.</li>
+          <li><a href="https://fal.ai/models/minimax/h3-image/edit/llms.txt" target="_blank" rel="noopener">https://fal.ai/models/minimax/h3-image/edit/llms.txt</a> — fal standard edit price, read November 2026.</li>
+          <li><a href="https://fal.ai/models/minimax/h3-image/highspeed/text-to-image/llms.txt" target="_blank" rel="noopener">https://fal.ai/models/minimax/h3-image/highspeed/text-to-image/llms.txt</a> — fal Highspeed text-to-image price, read November 2026.</li>
+          <li><a href="https://fal.ai/models/minimax/h3-image/highspeed/edit/llms.txt" target="_blank" rel="noopener">https://fal.ai/models/minimax/h3-image/highspeed/edit/llms.txt</a> — fal Highspeed edit price, read November 2026.</li>
+          <li><a href="https://replicate.com/minimax/h3" target="_blank" rel="noopener">https://replicate.com/minimax/h3</a> — Replicate lists video billing, not a still-image H3 price, read November 2026.</li>
+          <li><a href="https://openrouter.ai/minimax/minimax-h3-image" target="_blank" rel="noopener">https://openrouter.ai/minimax/minimax-h3-image</a> — OpenRouter standard price, read November 2026.</li>
+          <li><a href="https://openrouter.ai/minimax/minimax-h3-image-highspeed" target="_blank" rel="noopener">https://openrouter.ai/minimax/minimax-h3-image-highspeed</a> — OpenRouter Highspeed price, read November 2026.</li>
+          <li><a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/docs/pricing</a> — Nano Banana API prices, read November 12, 2026 and rechecked November 2026.</li>
         </ul>
       </div>
     </article>
