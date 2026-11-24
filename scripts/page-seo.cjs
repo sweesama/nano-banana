@@ -162,6 +162,7 @@ function updateTopicHub(source, articles, hub) {
       links.push('<li><a href="' + relativeHref(canonical, SITE_URL + '/guides/z-image.html') + '">Z-Image model guide</a></li>');
       links.push('<li><a href="' + relativeHref(canonical, SITE_URL + '/guides/minimax-h3-locally.html') + '">Run MiniMax H3 locally</a></li>');
       links.push('<li><a href="' + relativeHref(canonical, SITE_URL + '/guides/first-last-frame-video.html') + '">First and last frame video</a></li>');
+      links.push('<li><a href="' + relativeHref(canonical, SITE_URL + '/guides/storyboard-grid.html') + '">Split a storyboard grid</a></li>');
     }
     if (key === 'benchmarks') links.push('<li><a href="' + relativeHref(canonical, SITE_URL + '/benchmarks/portrait-editing.html') + '">Inspect a disclosed image-editing example</a></li>');
     return '<div><h3>' + topic.title + '</h3><ul>' + links.join('') + '</ul></div>';

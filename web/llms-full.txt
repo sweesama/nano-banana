@@ -22,6 +22,7 @@ As checked on October 9, 2026, Google recommends Nano Banana 2.1 (`gemini-nano-b
 - Local AI image generator guide: https://www.nano-banana.live/guides/local-ai-image-generator.html
 - Run MiniMax H3 locally: https://www.nano-banana.live/guides/minimax-h3-locally.html
 - First and last frame video: https://www.nano-banana.live/guides/first-last-frame-video.html
+- Split a storyboard grid: https://www.nano-banana.live/guides/storyboard-grid.html
 - Gemini Python editing tutorial: https://www.nano-banana.live/blog/nano-banana-api-image-editing-python.html
 - Qwen editing tutorial: https://www.nano-banana.live/blog/qwen-image-local-image-editing-guide.html
 - Hunyuan deployment requirements: https://www.nano-banana.live/blog/hunyuanimage-local-deployment-requirements.html

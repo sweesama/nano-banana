@@ -18,6 +18,7 @@
 - [Local AI image generator guide](https://www.nano-banana.live/guides/local-ai-image-generator.html)
 - [Run MiniMax H3 locally](https://www.nano-banana.live/guides/minimax-h3-locally.html)
 - [First and last frame video](https://www.nano-banana.live/guides/first-last-frame-video.html)
+- [Split a storyboard grid](https://www.nano-banana.live/guides/storyboard-grid.html)
 - [Python image-editing example](https://www.nano-banana.live/blog/nano-banana-api-image-editing-python.html)
 - [Qwen-Image-Edit-2511 local guide](https://www.nano-banana.live/blog/qwen-image-local-image-editing-guide.html)
 - [HunyuanImage 3.0 hardware reality](https://www.nano-banana.live/blog/hunyuanimage-local-deployment-requirements.html)
