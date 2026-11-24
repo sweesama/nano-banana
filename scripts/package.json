@@ -3,6 +3,6 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "test": "node test-content-metadata.cjs && node test-page-seo.cjs && node test-host-guard.cjs"
+    "test": "node test-content-metadata.cjs && node test-page-seo.cjs && node test-host-guard.cjs && node test-storyboard-grid.cjs"
   }
 }

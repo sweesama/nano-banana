@@ -46,6 +46,7 @@ This repository is not an official Google, Gemini, Qwen, Tencent, or HiDream pro
 node scripts/validate-site.js
 node scripts/test-content-metadata.cjs
 node scripts/test-page-seo.cjs
+node scripts/test-storyboard-grid.cjs
 npm --prefix web/blog/scripts test
 python -m py_compile code/nano_api.py
 ```

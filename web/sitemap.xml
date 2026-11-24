@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/</loc>
-    <lastmod>2026-11-03</lastmod>
+    <lastmod>2026-11-24</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/ar/</loc>
@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/quickstart.html</loc>
-    <lastmod>2026-11-11</lastmod>
+    <lastmod>2026-11-24</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/hidream-o1-image.html</loc>
@@ -34,7 +34,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/cloud-deployment.html</loc>
-    <lastmod>2026-10-22</lastmod>
+    <lastmod>2026-11-24</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/blog/run-without-gpu.html</loc>
@@ -178,7 +178,7 @@
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/first-last-frame-video.html</loc>
-    <lastmod>2026-10-22</lastmod>
+    <lastmod>2026-11-24</lastmod>
   </url>
   <url>
     <loc>https://www.nano-banana.live/guides/minimax-h3-locally.html</loc>
@@ -223,5 +223,9 @@
   <url>
     <loc>https://www.nano-banana.live/blog/image-model-price-per-1000-images-explained.html</loc>
     <lastmod>2026-11-11</lastmod>
+  </url>
+  <url>
+    <loc>https://www.nano-banana.live/guides/storyboard-grid.html</loc>
+    <lastmod>2026-11-24</lastmod>
   </url>
 </urlset>

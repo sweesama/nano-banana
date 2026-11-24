@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script>(function(){var h=location.hostname.toLowerCase();if(h==="nano-banana.live"||h==="www.nano-banana.live"||h==="localhost"||h==="127.0.0.1"||h.endsWith(".vercel.app"))return;location.replace("https://www.nano-banana.live"+location.pathname+location.search+location.hash)})();</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3758496128431673"
+    crossorigin="anonymous"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0f14">
+  <meta name="color-scheme" content="dark">
+  <title>Split a Storyboard Grid into PNG Frames</title>
+  <meta name="description" content="Crop a regular PNG or JPEG storyboard grid into the panels you select. Download one PNG or an ordered ZIP in the browser. No upload and no video generation.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.nano-banana.live/guides/storyboard-grid.html">
+  <link rel="icon" href="../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js" defer></script>
+  <style>
+    .frame-tool { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px; margin: 8px 0 32px; }
+    .frame-tool label { display: block; font-weight: 600; color: #fff; margin-bottom: 8px; }
+    .frame-tool input[type="file"] { color: var(--text-muted); max-width: 100%; }
+    .frame-tool button.btn { cursor: pointer; font: inherit; margin-top: 10px; }
+    .frame-tool button.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .grid-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 16px; }
+    .grid-fields label { display: flex; flex-direction: column; gap: 6px; margin: 0; }
+    .grid-fields input { width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: #0b0f14; color: #fff; font: inherit; }
+    .grid-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+    .grid-actions .btn { margin-top: 0; }
+    #grid-status { min-height: 1.5em; }
+    .grid-stage { margin-top: 12px; }
+    .grid-preview { position: relative; }
+    .grid-preview canvas { width: 100%; height: auto; display: block; background: #000; border-radius: 12px; border: 1px solid var(--glass-border); }
+    .grid-boxes { position: absolute; inset: 0; }
+    .grid-box { position: absolute; box-sizing: border-box; border: 2px solid var(--primary); color: #fff; font-weight: 700; text-shadow: 0 1px 2px #000; background: rgba(0, 0, 0, 0.15); display: flex; align-items: flex-start; padding: 4px; cursor: pointer; }
+    .grid-box[aria-pressed="false"] { border-color: rgba(255, 255, 255, 0.35); opacity: 0.55; }
+    .shot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-top: 16px; }
+    .shot-grid figure { margin: 0; }
+    .shot-grid figcaption { color: #fff; font-weight: 600; margin-bottom: 8px; }
+    .shot-grid canvas { width: 100%; height: auto; display: block; background: #000; border-radius: 12px; border: 1px solid var(--glass-border); }
+  </style>
+<!-- PAGE-METADATA:START -->
+<meta property="og:title" content="Split a Storyboard Grid into PNG Frames">
+<meta property="og:description" content="Crop a regular PNG or JPEG storyboard grid into the panels you select. Download one PNG or an ordered ZIP in the browser. No upload and no video generation.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.nano-banana.live/guides/storyboard-grid.html">
+<meta property="og:image" content="https://www.nano-banana.live/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nano Banana: image editing, benchmarks and quickstart">
+<meta property="og:site_name" content="Nano Banana">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Split a Storyboard Grid into PNG Frames">
+<meta name="twitter:description" content="Crop a regular PNG or JPEG storyboard grid into the panels you select. Download one PNG or an ordered ZIP in the browser. No upload and no video generation.">
+<meta name="twitter:image" content="https://www.nano-banana.live/og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nano-banana.live/#publisher","name":"Nano Banana","url":"https://www.nano-banana.live/about.html","description":"Independent API and local-model reference, not an official Google website.","logo":{"@type":"ImageObject","url":"https://www.nano-banana.live/apple-touch-icon.png","width":180,"height":180}},{"@type":"TechArticle","name":"Split a Storyboard Grid into Frames","headline":"Split a Storyboard Grid into Frames","description":"Crop a regular PNG or JPEG storyboard grid into the panels you select. Download one PNG or an ordered ZIP in the browser. No upload and no video generation.","url":"https://www.nano-banana.live/guides/storyboard-grid.html","dateModified":"2026-11-24","publisher":{"@id":"https://www.nano-banana.live/#publisher"},"author":{"@id":"https://www.nano-banana.live/#publisher"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.nano-banana.live/guides/storyboard-grid.html"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does this page generate a video?","acceptedAnswer":{"@type":"Answer","text":"No. It only crops panels from a PNG or JPEG already on this device. It does not call a video model, and it does not make the panels consistent with each other."}},{"@type":"Question","name":"Is the image uploaded?","acceptedAnswer":{"@type":"Answer","text":"No. The file is decoded in this browser tab, and the PNG or ZIP is built in this tab. This page has no upload request, account, or payment step."}},{"@type":"Question","name":"What if the panel size would not be a whole number of pixels?","acceptedAnswer":{"@type":"Answer","text":"The page reports the leftover pixels, or a remaining width or height that is zero or negative, and it does not crop. It does not round a cell down, because that would include a strip of the gap or the next panel."}},{"@type":"Question","name":"Are captions or numbers inside a panel removed?","acceptedAnswer":{"@type":"Answer","text":"No. The crop keeps the decoded pixels in that rectangle, including a caption, number, or border that sits inside the panel."}},{"@type":"Question","name":"Does the download get sharper or larger?","acceptedAnswer":{"@type":"Answer","text":"No. Each PNG is that rectangle at the size the browser decoded. The page does not upscale, denoise, or redraw the panel."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.nano-banana.live/"},{"@type":"ListItem","position":2,"name":"Quickstart","item":"https://www.nano-banana.live/guides/quickstart.html"},{"@type":"ListItem","position":3,"name":"Split a Storyboard Grid into Frames","item":"https://www.nano-banana.live/guides/storyboard-grid.html"}]}]}</script>
+<!-- PAGE-METADATA:END -->
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="../index.html"><img src="../favicon.png" alt="Nano Banana" width="20" height="20">Nano Banana</a>
+      <div class="nav-links">
+        <a href="../benchmarks/index.html">Benchmarks</a>
+        <a href="../prompts/index.html">Prompts</a>
+        <a href="quickstart.html">Quickstart</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../about.html">About</a>
+        <a href="../blog.html">Blog</a>
+      </div>
+    </nav>
+<!-- BREADCRUMBS:START -->
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="quickstart.html">Quickstart</a></li><li><span aria-current="page">Split a Storyboard Grid into Frames</span></li></ol></nav>
+<!-- BREADCRUMBS:END -->
+    <article class="article-container">
+      <header class="article-header">
+        <div class="meta" style="justify-content:center;display:flex;">Browser tool • November 24, 2026</div>
+        <h1>Split a Storyboard Grid into Frames</h1>
+        <p class="lead" style="margin:20px auto;">You already have one image made of equal rectangular panels. This page cuts out the panels you select. It does not draw new frames, raise the resolution, or make the shots match.</p>
+      </header>
+      <div class="article-content">
+        <p>The file stays in this tab. There is no upload, account, model call, or payment step. PNG and JPEG are decoded by the browser you are using. A color profile, JPEG compression, or a JPEG orientation tag can make those pixels differ from another program. Opaque pixels are copied from that decoding. A partly transparent pixel can move by one level, because the browser canvas rounds it while undoing premultiplied alpha. The crop is that decoded rectangle at the same size, not a reconstruction or a larger image.</p>
+        <p>Set the rows, columns, outer padding, and the gaps between panels. Padding is the same on every outer edge. The horizontal gap is only the space between columns, and the vertical gap is only the space between rows. If a cell would not land on a whole number of pixels, the page stops and names what is left over. It will not round down and take a strip of the next panel or the gap. Hand-drawn boards, perspective collages, and grids whose gaps change from panel to panel are outside this tool. It does not search for edges.</p>
+        <p>One file can be at most 8192 px on a side and 32 million pixels, and the grid can have at most 100 panels. Anything larger is refused before a crop is built.</p>
+
+        <h2 id="crop">Crop the grid</h2>
+        <div class="frame-tool">
+          <noscript><p>This crop runs in the browser and needs JavaScript. Nothing is uploaded either way.</p></noscript>
+          <form id="grid-form">
+            <label for="grid-file">PNG or JPEG on this device</label>
+            <input id="grid-file" name="image" type="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg">
+            <div class="grid-fields">
+              <label for="grid-rows">Rows<input id="grid-rows" name="rows" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" value="2"></label>
+              <label for="grid-columns">Columns<input id="grid-columns" name="columns" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" value="3"></label>
+              <label for="grid-padding">Outer padding<input id="grid-padding" name="padding" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" value="0"></label>
+              <label for="grid-gap-x">Horizontal gap<input id="grid-gap-x" name="gap-x" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" value="0"></label>
+              <label for="grid-gap-y">Vertical gap<input id="grid-gap-y" name="gap-y" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" value="0"></label>
+            </div>
+            <button type="button" class="btn btn-glass" id="grid-clear">Clear</button>
+          </form>
+          <p>For example, a 1024×412 image with 2 rows, 3 columns, outer padding 20, and a gap of 12 on both axes divides into 320×180 panels. Use those numbers only when the file was built with that margin and gap. The boxes are numbered left to right, then the next row. <code>shot_01.png</code> stays panel 1 even when you leave other panels out.</p>
+          <div id="grid-status" role="status" aria-live="polite">Choose a PNG or JPEG. Nothing is uploaded.</div>
+          <div class="grid-stage" id="grid-stage" hidden>
+            <div class="grid-preview">
+              <canvas id="grid-source" width="16" height="9" aria-label="Storyboard source"></canvas>
+              <div id="grid-boxes" class="grid-boxes"></div>
+            </div>
+          </div>
+          <div class="grid-actions">
+            <button type="button" class="btn btn-glass" id="grid-all" disabled>Select all</button>
+            <button type="button" class="btn btn-glass" id="grid-none" disabled>Select none</button>
+            <button type="button" class="btn btn-glass" id="grid-download" disabled>Download</button>
+          </div>
+          <div id="grid-frames" class="shot-grid"></div>
+        </div>
+
+        <h2 id="files">What the files are</h2>
+        <p>The preview is scaled to fit this page. The pixel sizes next to the panels are the downloaded sizes. One selected panel downloads as its PNG. Two or more download as <code>storyboard-shots.zip</code>, in row-major source order. Panels 2 and 5 are <code>shot_02.png</code> and <code>shot_05.png</code>, not a renumbered pair. Choosing another file, or Clear, drops the previous crop before anything new is decoded. A file that cannot be read does not leave the last download active.</p>
+        <p>These files are the cropped panels only. Cropping does not remove a caption inside a panel, sharpen it, or produce the video those stills might later condition. If you already have a rendered clip and need its opening and closing images, that is a separate tool: <a href="first-last-frame-video.html">first and last frame video</a>. This page does not open a video, and that page does not cut a grid.</p>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>Does this page generate a video?</h3>
+        <p>No. It only crops panels from a PNG or JPEG already on this device. It does not call a video model, and it does not make the panels consistent with each other.</p>
+        <h3>Is the image uploaded?</h3>
+        <p>No. The file is decoded in this browser tab, and the PNG or ZIP is built in this tab. This page has no upload request, account, or payment step.</p>
+        <h3>What if the panel size would not be a whole number of pixels?</h3>
+        <p>The page reports the leftover pixels, or a remaining width or height that is zero or negative, and it does not crop. It does not round a cell down, because that would include a strip of the gap or the next panel.</p>
+        <h3>Are captions or numbers inside a panel removed?</h3>
+        <p>No. The crop keeps the decoded pixels in that rectangle, including a caption, number, or border that sits inside the panel.</p>
+        <h3>Does the download get sharper or larger?</h3>
+        <p>No. Each PNG is that rectangle at the size the browser decoded. The page does not upscale, denoise, or redraw the panel.</p>
+      </div>
+    </article>
+    <footer class="footer"><p style="text-align:center;">© <script>document.write(new Date().getFullYear())</script> Nano Banana</p></footer>
+  </div>
+  <script src="storyboard-grid.js"></script>
+  <script>
+    (function () {
+      var api = window.StoryboardGrid;
+      var form = document.getElementById('grid-form');
+      var fileInput = document.getElementById('grid-file');
+      var rowsInput = document.getElementById('grid-rows');
+      var columnsInput = document.getElementById('grid-columns');
+      var paddingInput = document.getElementById('grid-padding');
+      var gapXInput = document.getElementById('grid-gap-x');
+      var gapYInput = document.getElementById('grid-gap-y');
+      var clearButton = document.getElementById('grid-clear');
+      var status = document.getElementById('grid-status');
+      var stage = document.getElementById('grid-stage');
+      var source = document.getElementById('grid-source');
+      var boxes = document.getElementById('grid-boxes');
+      var frames = document.getElementById('grid-frames');
+      var allButton = document.getElementById('grid-all');
+      var noneButton = document.getElementById('grid-none');
+      var downloadButton = document.getElementById('grid-download');
+      var session = api ? api.createSession() : null;
+      var phase = 'empty';
+      var pixels = null;
+      var imageWidth = 0;
+      var imageHeight = 0;
+      var currentPlan = null;
+      var viewRevision = 0;
+      var objectUrl = '';
+      var downloadToken = 0;
+      var encoding = false;
+
+      if (!api || !session) {
+        status.textContent = 'The crop script did not load. Nothing was cropped.';
+        return;
+      }
+
+      form.addEventListener('submit', function (event) { event.preventDefault(); });
+      [rowsInput, columnsInput, paddingInput, gapXInput, gapYInput].forEach(function (input) {
+        input.addEventListener('input', recompute);
+      });
+      fileInput.addEventListener('change', onFile);
+      clearButton.addEventListener('click', clearImage);
+      allButton.addEventListener('click', function () { setChecked(true); });
+      noneButton.addEventListener('click', function () { setChecked(false); });
+      downloadButton.addEventListener('click', downloadSelection);
+
+      function setStatus(message) {
+        status.textContent = message;
+      }
+
+      function showProblems(errors) {
+        setStatus('Nothing was cropped. ' + errors.join(' '));
+      }
+
+      function revokeUrl() {
+        if (!objectUrl) return;
+        URL.revokeObjectURL(objectUrl);
+        objectUrl = '';
+      }
+
+      function cancelDownload() {
+        downloadToken += 1;
+        encoding = false;
+      }
+
+      function resetSource() {
+        var context = source.getContext('2d', { willReadFrequently: true });
+        source.width = 16;
+        source.height = 9;
+        context.fillStyle = '#000';
+        context.fillRect(0, 0, source.width, source.height);
+        stage.hidden = true;
+        boxes.replaceChildren();
+        frames.replaceChildren();
+        currentPlan = null;
+        viewRevision = 0;
+      }
+
+      function selectedIndexes() {
+        return Array.prototype.map.call(frames.querySelectorAll('figure'), function (figure) {
+          return figure.querySelector('input').checked ? Number(figure.dataset.index) : 0;
+        }).filter(function (index) { return index > 0; });
+      }
+
+      function updateDownload() {
+        var selected = selectedIndexes();
+        var ready = phase === 'ready' && currentPlan && viewRevision === session.revision();
+        allButton.disabled = !ready;
+        noneButton.disabled = !ready;
+        if (!ready || !selected.length || encoding) {
+          downloadButton.disabled = true;
+          downloadButton.textContent = selected.length ? 'Download' : 'Download';
+          if (ready && selected.length === 1) downloadButton.textContent = 'Download ' + currentPlan.frames.find(function (frame) { return frame.index === selected[0]; }).name;
+          if (ready && selected.length > 1) downloadButton.textContent = 'Download ZIP (' + selected.length + ' frames)';
+          downloadButton.disabled = !ready || !selected.length || encoding;
+          return;
+        }
+        if (selected.length === 1) {
+          downloadButton.textContent = 'Download ' + currentPlan.frames.find(function (frame) { return frame.index === selected[0]; }).name;
+        } else {
+          downloadButton.textContent = 'Download ZIP (' + selected.length + ' frames)';
+        }
+        downloadButton.disabled = false;
+      }
+
+      function syncBox(index, checked) {
+        var box = boxes.querySelector('[data-index="' + index + '"]');
+        if (box) box.setAttribute('aria-pressed', checked ? 'true' : 'false');
+      }
+
+      function setChecked(checked) {
+        frames.querySelectorAll('figure').forEach(function (figure) {
+          figure.querySelector('input').checked = checked;
+          syncBox(figure.dataset.index, checked);
+        });
+        updateDownload();
+      }
+
+      function percent(part, total) {
+        return (part / total * 100).toFixed(6) + '%';
+      }
+
+      function render(plan, crops) {
+        boxes.replaceChildren();
+        frames.replaceChildren();
+        plan.frames.forEach(function (frame) {
+          var box = document.createElement('button');
+          box.type = 'button';
+          box.className = 'grid-box';
+          box.dataset.index = String(frame.index);
+          box.dataset.x = String(frame.x);
+          box.dataset.y = String(frame.y);
+          box.dataset.w = String(frame.width);
+          box.dataset.h = String(frame.height);
+          box.dataset.name = frame.name;
+          box.style.left = percent(frame.x, imageWidth);
+          box.style.top = percent(frame.y, imageHeight);
+          box.style.width = percent(frame.width, imageWidth);
+          box.style.height = percent(frame.height, imageHeight);
+          box.textContent = String(frame.index);
+          box.setAttribute('aria-pressed', 'true');
+          box.setAttribute('aria-label', 'Panel ' + frame.index + ', ' + frame.width + ' by ' + frame.height + ' pixels');
+          box.addEventListener('click', function () {
+            var checkbox = frames.querySelector('figure[data-index="' + frame.index + '"] input');
+            if (!checkbox) return;
+            checkbox.checked = !checkbox.checked;
+            syncBox(frame.index, checkbox.checked);
+            updateDownload();
+          });
+          boxes.appendChild(box);
+
+          var card = document.createElement('figure');
+          card.dataset.index = String(frame.index);
+          card.dataset.name = frame.name;
+          var caption = document.createElement('figcaption');
+          var label = document.createElement('label');
+          var checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.checked = true;
+          checkbox.addEventListener('change', function () {
+            syncBox(frame.index, checkbox.checked);
+            updateDownload();
+          });
+          label.appendChild(checkbox);
+          label.appendChild(document.createTextNode(' Panel ' + frame.index + ' · ' + frame.width + '×' + frame.height + ' · ' + frame.name));
+          caption.appendChild(label);
+          var canvas = document.createElement('canvas');
+          canvas.width = frame.width;
+          canvas.height = frame.height;
+          canvas.setAttribute('aria-label', 'Cropped panel ' + frame.index);
+          var context = canvas.getContext('2d');
+          context.putImageData(new ImageData(new Uint8ClampedArray(crops[frame.index]), frame.width, frame.height), 0, 0);
+          card.appendChild(caption);
+          card.appendChild(canvas);
+          frames.appendChild(card);
+        });
+        stage.hidden = false;
+        updateDownload();
+      }
+
+      function recompute() {
+        cancelDownload();
+        if (phase === 'reading') {
+          setStatus('Reading the file locally. Nothing is uploaded.');
+          return;
+        }
+        if (phase === 'error') return;
+        var id = session.generation();
+        session.invalidate(id);
+        boxes.replaceChildren();
+        frames.replaceChildren();
+        currentPlan = null;
+        viewRevision = 0;
+        updateDownload();
+        if (phase !== 'ready' || !pixels) {
+          stage.hidden = true;
+          setStatus('Choose a PNG or JPEG. Nothing is uploaded.');
+          return;
+        }
+        var parsed = api.parseSettings({
+          rows: rowsInput.value,
+          columns: columnsInput.value,
+          padding: paddingInput.value,
+          gapX: gapXInput.value,
+          gapY: gapYInput.value
+        });
+        if (!parsed.ok) {
+          showProblems(parsed.errors);
+          return;
+        }
+        var plan = api.planGrid({
+          width: imageWidth,
+          height: imageHeight,
+          rows: parsed.settings.rows,
+          columns: parsed.settings.columns,
+          padding: parsed.settings.padding,
+          gapX: parsed.settings.gapX,
+          gapY: parsed.settings.gapY
+        });
+        if (!plan.ok) {
+          showProblems(plan.errors);
+          return;
+        }
+        var crops = api.buildCrops({ data: pixels, width: imageWidth, height: imageHeight }, plan);
+        if (!crops.ok) {
+          showProblems([crops.error]);
+          return;
+        }
+        var committed = session.commit(id, plan, crops.crops);
+        if (!committed.ok) {
+          if (session.generation() !== id) return;
+          showProblems([committed.error]);
+          return;
+        }
+        currentPlan = plan;
+        viewRevision = committed.revision;
+        render(plan, crops.crops);
+        var note = plan.notes.length ? ' ' + plan.notes.join(' ') : '';
+        setStatus('Source ' + imageWidth + '×' + imageHeight + '. Outer padding ' + plan.padding + ' px, horizontal gap ' + plan.gapX + ' px, vertical gap ' + plan.gapY + ' px. Remaining ' + plan.remainingWidth + '×' + plan.remainingHeight + '. Each panel is ' + plan.cellWidth + '×' + plan.cellHeight + '. ' + plan.frames.length + ' panels, numbered left to right, then the next row. The preview is scaled to the page. Downloaded PNGs stay at those pixel sizes.' + note);
+      }
+
+      function isPngOrJpeg(file) {
+        var type = (file.type || '').toLowerCase();
+        if (type === 'image/png' || type === 'image/jpeg') return true;
+        if (type && type !== 'application/octet-stream') return false;
+        var name = (file.name || '').toLowerCase();
+        return name.endsWith('.png') || name.endsWith('.jpg') || name.endsWith('.jpeg');
+      }
+
+      function onFile() {
+        var id = session.replaceImage().generation;
+        cancelDownload();
+        pixels = null;
+        currentPlan = null;
+        viewRevision = 0;
+        resetSource();
+        updateDownload();
+        revokeUrl();
+        var file = fileInput.files && fileInput.files[0];
+        if (!file) {
+          phase = 'empty';
+          setStatus('Choose a PNG or JPEG. Nothing is uploaded.');
+          return;
+        }
+        if (!isPngOrJpeg(file)) {
+          phase = 'error';
+          setStatus('Nothing was cropped. This file is not a PNG or JPEG (' + (file.type || 'unknown type') + ').');
+          return;
+        }
+        phase = 'reading';
+        setStatus('Reading the file locally. Nothing is uploaded.');
+        objectUrl = URL.createObjectURL(file);
+        var image = new Image();
+        image.onload = function () {
+          revokeUrl();
+          if (session.generation() !== id) return;
+          var sizeError = api.imageSizeError(image.naturalWidth, image.naturalHeight);
+          if (sizeError) {
+            phase = 'error';
+            pixels = null;
+            resetSource();
+            showProblems([sizeError]);
+            return;
+          }
+          source.width = image.naturalWidth;
+          source.height = image.naturalHeight;
+          var context = source.getContext('2d', { willReadFrequently: true });
+          context.imageSmoothingEnabled = false;
+          context.drawImage(image, 0, 0);
+          pixels = context.getImageData(0, 0, source.width, source.height).data;
+          imageWidth = source.width;
+          imageHeight = source.height;
+          phase = 'ready';
+          stage.hidden = false;
+          recompute();
+        };
+        image.onerror = function () {
+          revokeUrl();
+          if (session.generation() !== id) return;
+          phase = 'error';
+          pixels = null;
+          resetSource();
+          updateDownload();
+          setStatus('Nothing was cropped. The browser could not decode this image.');
+        };
+        image.src = objectUrl;
+      }
+
+      function clearImage() {
+        session.clear();
+        cancelDownload();
+        phase = 'empty';
+        pixels = null;
+        fileInput.value = '';
+        revokeUrl();
+        resetSource();
+        updateDownload();
+        setStatus('Cleared. The previous image can no longer be downloaded.');
+      }
+
+      function rgbaToPngBlob(frame) {
+        var canvas = document.createElement('canvas');
+        canvas.width = frame.width;
+        canvas.height = frame.height;
+        canvas.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(frame.bytes), frame.width, frame.height), 0, 0);
+        return new Promise(function (resolve, reject) {
+          canvas.toBlob(function (blob) {
+            if (!blob) reject(new Error('The browser could not encode the PNG.'));
+            else resolve(blob);
+          }, 'image/png');
+        });
+      }
+
+      function saveBlob(blob, filename) {
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
+      }
+
+      function downloadSelection() {
+        if (downloadButton.disabled || encoding) return;
+        var token = ++downloadToken;
+        var id = session.generation();
+        var revision = viewRevision;
+        var result = session.exportSelection(id, revision, selectedIndexes());
+        if (!result.ok) {
+          setStatus(result.error);
+          updateDownload();
+          return;
+        }
+        encoding = true;
+        updateDownload();
+        var encoded = Promise.all(result.frames.map(function (frame) {
+          return rgbaToPngBlob(frame).then(function (blob) {
+            return blob.arrayBuffer().then(function (buffer) {
+              return { name: frame.name, bytes: new Uint8Array(buffer) };
+            });
+          });
+        }));
+        encoded.then(function (files) {
+          if (token !== downloadToken) return;
+          if (session.generation() !== id || session.revision() !== revision) {
+            encoding = false;
+            setStatus('The image or the grid changed before the file was saved. Nothing was downloaded.');
+            updateDownload();
+            return;
+          }
+          if (result.kind === 'png') saveBlob(new Blob([files[0].bytes], { type: 'image/png' }), files[0].name);
+          else saveBlob(new Blob([api.zipStore(files)], { type: 'application/zip' }), result.name);
+          encoding = false;
+          updateDownload();
+        }).catch(function (error) {
+          if (token !== downloadToken) return;
+          encoding = false;
+          setStatus((error && error.message ? error.message : 'The browser could not encode the PNG.') + ' Nothing was downloaded.');
+          updateDownload();
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
